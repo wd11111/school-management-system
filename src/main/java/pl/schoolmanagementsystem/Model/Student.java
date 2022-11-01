@@ -23,11 +23,10 @@ public class Student {
 
     private String surname;
 
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "studentId")
+    @OneToMany(mappedBy = "studentId", cascade = CascadeType.ALL)
     private List<Mark> marks;
 
-
-
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "class", referencedColumnName = "name")
+    private SchoolClass schoolClass;
 }

@@ -1,8 +1,9 @@
-package pl.schoolmanagementsystem.Mark;
+package pl.schoolmanagementsystem.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.schoolmanagementsystem.Model.Mark;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface MarkRepository extends JpaRepository<Mark, Integer> {
             " from Mark m where m.studentId = ?1")
     List<Mark> findAllMarksForStudentById(int id);
 
-    public static interface MarkAvg {
+    interface MarkAvg {
 
         String getSubject();
 

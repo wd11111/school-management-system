@@ -1,9 +1,11 @@
-package pl.schoolmanagementsystem.student;
+package pl.schoolmanagementsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.Mark.Mark;
-import pl.schoolmanagementsystem.Mark.MarkRepository;
+import pl.schoolmanagementsystem.Model.Mark;
+import pl.schoolmanagementsystem.Repository.MarkRepository;
+import pl.schoolmanagementsystem.Model.Student;
+import pl.schoolmanagementsystem.Repository.StudentRepository;
 
 import java.util.HashMap;
 import java.util.List;

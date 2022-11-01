@@ -1,10 +1,9 @@
-package pl.schoolmanagementsystem.student;
+package pl.schoolmanagementsystem.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.schoolmanagementsystem.Mark.Mark;
 
 import javax.persistence.*;
 import java.util.List;

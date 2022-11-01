@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.student;
+package pl.schoolmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.Mark.MarkRepository;
+import pl.schoolmanagementsystem.Repository.MarkRepository;
+import pl.schoolmanagementsystem.Service.StudentService;
 
 import java.util.List;
 import java.util.Map;

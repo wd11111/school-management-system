@@ -24,8 +24,11 @@ public class Student {
 
     private String surname;
 
-    @OneToMany(mappedBy = "studentId", cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "studentId")
     private List<Mark> marks;
+
 
 
 }

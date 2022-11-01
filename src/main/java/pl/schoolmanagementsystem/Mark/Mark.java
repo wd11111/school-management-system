@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.schoolmanagementsystem.student.Student;
 
 import javax.persistence.*;
 
@@ -21,7 +20,7 @@ public class Mark {
 
     private int mark;
 
-    @ManyToOne
-    @JoinColumn(name = "studentId", referencedColumnName = "id")
-    private Student studentId;
+    private int studentId;
+
+    private String subject;
 }

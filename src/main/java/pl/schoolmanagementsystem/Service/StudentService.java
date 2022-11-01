@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.Model.Mark;
 import pl.schoolmanagementsystem.Repository.MarkRepository;
-import pl.schoolmanagementsystem.Model.Student;
 import pl.schoolmanagementsystem.Repository.StudentRepository;
 
 import java.util.HashMap;
@@ -18,18 +17,6 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final MarkRepository markRepository;
-
-    public Student save(Student student) {
-        return studentRepository.save(student);
-    }
-
-    public List<Student> findAllStudents() {
-        return studentRepository.findAll();
-    }
-
-    public Student findStudentById(int id) {
-        return studentRepository.findById(id).orElseThrow(RuntimeException::new);
-    }
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
         List<Mark> studentsMarks = markRepository.findAllMarksForStudentById(studentId);

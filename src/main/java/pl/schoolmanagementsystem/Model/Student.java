@@ -17,16 +17,16 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int StudentId;
 
     private String name;
 
     private String surname;
 
-    @OneToMany(mappedBy = "studentId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Mark> marks;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "class", referencedColumnName = "name")
+    @JoinColumn(name = "class_id")
     private SchoolClass schoolClass;
 }

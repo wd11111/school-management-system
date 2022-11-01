@@ -14,8 +14,8 @@ public interface MarkRepository extends JpaRepository<Mark, Integer> {
             "(select mark, subject from mark where student_id = ?1) group by subject")
     List<MarkAvg> findAllAverageMarksForStudentById(int id);
 
-    @Query("select new pl.schoolmanagementsystem.Model.Mark(0, m.mark, m.studentId, m.subject)" +
-            " from Mark m where m.studentId = ?1")
+    @Query("select new pl.schoolmanagementsystem.Model.Mark(0, m.mark, m.student, m.subject)" +
+            " from Mark m where m.student = ?1")
     List<Mark> findAllMarksForStudentById(int id);
 
     interface MarkAvg {

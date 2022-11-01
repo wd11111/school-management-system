@@ -20,12 +20,12 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/{studentId}/marks")
-    ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(@PathVariable int studentId) {
+    public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(@PathVariable int studentId) {
         return ResponseEntity.ok(studentService.getGroupedMarksBySubjectForStudent(studentId));
     }
 
     @GetMapping("/{studentId}/averagemarks")
-    List<MarkRepository.MarkAvg> getAllAverageMarksForStudentById(@PathVariable int studentId) {
+    public List<MarkRepository.MarkAvg> getAllAverageMarksForStudentById(@PathVariable int studentId) {
         return studentService.getAllAverageMarksForStudentById(studentId);
     }
 }

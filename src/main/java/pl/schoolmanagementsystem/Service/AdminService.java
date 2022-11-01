@@ -22,17 +22,20 @@ public class AdminService {
     private final SchoolClassRepository schoolClassRepository;
 
     public SchoolClass createSchoolClass(String name) {
-        return schoolClassRepository.save(new SchoolClass(0, name, Collections.emptyList()));
+        return schoolClassRepository.save(new SchoolClass(0, name, Collections.emptySet()));
     }
 
     public Student createStudent(CreateStudentDto createStudentDto) {
-        SchoolClass schoolClass = schoolClassRepository.findByName(createStudentDto.getSchoolClassName())
-                .orElseThrow();
+        SchoolClass schoolClass = getSchoolClass(createStudentDto);
         return new Student(0,
                 createStudentDto.getName(),
                 createStudentDto.getSurname(),
                 Collections.emptyList(),
                 schoolClass);
+    }
+
+    private SchoolClass getSchoolClass(CreateStudentDto createStudentDto) {
+        return schoolClassRepository.findByName(createStudentDto.getSchoolClassName()).orElseThrow();
     }
 
 }

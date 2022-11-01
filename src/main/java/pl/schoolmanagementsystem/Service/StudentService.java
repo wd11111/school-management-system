@@ -16,20 +16,22 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final MarkRepository markRepository;
+
+    private final MarkService markService;
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
-        List<Mark> studentsMarks = markRepository.findAllMarksForStudentById(studentId);
+        List<Mark> studentsMarks = markService.getAllMarksForStudentById(studentId);
         Map<String, List<Mark>> groupedMarks = groupMarksBySubject(studentsMarks);
         return refactorListOfMarksToListOfIntegers(groupedMarks);
     }
 
     public List<MarkRepository.MarkAvg> getAllAverageMarksForStudentById(int studentId) {
-        return markRepository.findAllAverageMarksForStudentById(studentId);
+        return markService.getAllAverageMarksForStudentById(studentId);
     }
 
     private Map<String, List<Mark>> groupMarksBySubject(List<Mark> studentsMarks) {
-        return studentsMarks.stream().collect(Collectors.groupingBy(Mark::getSubject));
+        return studentsMarks.stream()
+                .collect(Collectors.groupingBy(Mark::getSubject));
     }
 
     private Map<String, List<Integer>> refactorListOfMarksToListOfIntegers(Map<String, List<Mark>> mapToRefactor) {

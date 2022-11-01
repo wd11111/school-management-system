@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,10 +18,10 @@ public class SchoolClass implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int class_id;
+    private int classId;
 
     private String name;
 
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
-    private List<Student> students;
+    private Set<Student> students;
 }

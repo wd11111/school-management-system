@@ -7,7 +7,9 @@ import pl.schoolmanagementsystem.Model.SchoolClass;
 import java.util.Optional;
 
 @Repository
-public interface SchoolClassRepository extends JpaRepository<SchoolClass, Integer> {
+public interface SchoolClassRepository extends JpaRepository<SchoolClass, String> {
 
-    Optional<SchoolClass> findByName(String name);
+    Optional<SchoolClass> findBySchoolClassName(String schoolClassName);
+
+    boolean existsBySchoolClassName(String schoolClassName);
 }

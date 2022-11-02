@@ -1,8 +1,6 @@
 package pl.schoolmanagementsystem.Model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +8,8 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @Setter
 @NoArgsConstructor
 public class TeacherInClass {
@@ -31,6 +31,6 @@ public class TeacherInClass {
             joinColumns = {
                     @JoinColumn(name = "teacher_in_class_id", referencedColumnName = "teacherInClassId")},
             inverseJoinColumns = {
-                    @JoinColumn(name = "class_id", referencedColumnName = "classId")})
+                    @JoinColumn(name = "school_class_name", referencedColumnName = "schoolClassName")})
     private Set<SchoolClass> taughtClasses = new HashSet<>();
 }

@@ -1,9 +1,6 @@
 package pl.schoolmanagementsystem.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,15 +10,14 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class SchoolClass implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int classId;
-
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String schoolClassName;
 
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
     private Set<Student> students = new HashSet<>();

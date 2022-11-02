@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.Model.*;
 import pl.schoolmanagementsystem.Model.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.Model.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.Model.dto.Name;
 import pl.schoolmanagementsystem.Model.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.Repository.*;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +29,12 @@ public class AdminService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public SchoolClass createSchoolClass(String schoolClassName) {
-        if (doesSchoolClassAlreadyExistsInDatabase(schoolClassName)) {
+    public SchoolClass createSchoolClass(Name schoolClassName) {
+        if (doesSchoolClassAlreadyExistsInDatabase(schoolClassName.getPlainText())) {
             throw new RuntimeException();
         }
         return schoolClassRepository.save(SchoolClass.builder()
-                .schoolClassName(schoolClassName)
+                .schoolClassName(schoolClassName.getPlainText())
                 .build());
     }
 
@@ -48,7 +51,7 @@ public class AdminService {
         Teacher teacher = new Teacher();
         teacher.setName(createTeacherDto.getName());
         teacher.setSurname(createTeacherDto.getSurname());
-        teacher.getTaughtSubjects().addAll(createTeacherDto.getTaughtSubjects());
+        addTaughtSubjectsToTeacher(teacher, createTeacherDto.getTaughtSubjects());
         return teacherRepository.save(teacher);
     }
 
@@ -63,21 +66,32 @@ public class AdminService {
             throw new RuntimeException();
         }
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
-                .orElse(TeacherInClass.builder()
-                        .teacher(teacher)
-                        .taughtSubject(schoolSubject)
-                        .build());
+                .orElse(new TeacherInClass());
+        teacherInClass.setTeacher(teacher);
+        teacherInClass.setTaughtSubject(schoolSubject);
         teacherInClass.getTaughtClasses().add(schoolClass);
         return teacherInClassRepository.save(teacherInClass);
     }
 
-    public SchoolSubject addSchoolSubject(String subjectName) {
-        if (doesSubjectAlreadyExistsInDatabase(subjectName)) {
+    public SchoolSubject addSchoolSubject(Name subjectName) {
+        if (doesSubjectAlreadyExistsInDatabase(subjectName.getPlainText())) {
             throw new RuntimeException();
         }
         SchoolSubject schoolSubject = new SchoolSubject();
-        schoolSubject.setSubjectName(subjectName);
+        schoolSubject.setSubjectName(subjectName.getPlainText());
         return schoolSubjectRepository.save(schoolSubject);
+    }
+
+    private void addTaughtSubjectsToTeacher(Teacher teacher, Set<String> subjects) {
+        Set<SchoolSubject> subjectObjects = transformSetOfStringsToSetOfSchoolClassObjects(subjects);
+        subjectObjects.forEach(subject -> teacher.getTaughtSubjects().add(subject));
+    }
+
+    private Set<SchoolSubject> transformSetOfStringsToSetOfSchoolClassObjects(Set<String> subjects) {
+        return subjects.stream()
+                .filter(subject -> doesSubjectAlreadyExistsInDatabase(subject))
+                .map(subject -> getSchoolSubjectByName(subject).orElse(null))
+                .collect(Collectors.toSet());
     }
 
     private boolean doesTeacherTeachTheSubject(Teacher teacher, SchoolSubject schoolSubject) {

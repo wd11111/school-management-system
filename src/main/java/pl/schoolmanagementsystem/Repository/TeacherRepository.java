@@ -6,4 +6,5 @@ import pl.schoolmanagementsystem.Model.Teacher;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
+
 }

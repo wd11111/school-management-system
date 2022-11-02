@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.schoolmanagementsystem.Model.SchoolSubject;
-import pl.schoolmanagementsystem.Model.TeacherInClass;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -19,8 +18,5 @@ public class CreateTeacherDto {
 
     private String surname;
 
-    private Set<SchoolSubject> taughtSubjects;
-
-    private Set<TeacherInClass> teacherInClasses;
-
+    private Set<String> taughtSubjects = new HashSet<>();
 }

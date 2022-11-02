@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.Model.*;
 import pl.schoolmanagementsystem.Model.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.Model.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.Model.dto.Name;
 import pl.schoolmanagementsystem.Model.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.Service.AdminService;
 
@@ -21,8 +22,8 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/classes")
-    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody String name) {
-        return new ResponseEntity<>(adminService.createSchoolClass(name), HttpStatus.CREATED);
+    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody Name schoolClassName) {
+        return new ResponseEntity<>(adminService.createSchoolClass(schoolClassName), HttpStatus.CREATED);
     }
 
     @PostMapping("/students")
@@ -41,7 +42,7 @@ public class AdminController {
     }
 
     @PostMapping("/subjects")
-    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody String subjectName) {
+    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody Name subjectName) {
         return new ResponseEntity<>(adminService.addSchoolSubject(subjectName), HttpStatus.CREATED);
     }
 }

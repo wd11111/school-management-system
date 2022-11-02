@@ -1,8 +1,12 @@
 package pl.schoolmanagementsystem.Model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,12 +14,10 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@EqualsAndHashCode.Include
     private int teacherId;
 
     private String name;
@@ -28,5 +30,8 @@ public class Teacher {
                     @JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
             inverseJoinColumns = {
                     @JoinColumn(name = "subject_name", referencedColumnName = "subjectName")})
-    Set<SchoolSubject> taughtSubjects;
+    private Set<SchoolSubject> taughtSubjects;
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private Set<TeacherInClass> teacherInClasses = new HashSet<>();
 }

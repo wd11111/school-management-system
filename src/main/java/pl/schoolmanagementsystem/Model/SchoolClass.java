@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,5 +24,8 @@ public class SchoolClass implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
-    private Set<Student> students;
+    private Set<Student> students = new HashSet<>();
+
+    @ManyToMany(mappedBy = "taughtClasses", cascade = CascadeType.PERSIST)
+    private Set<TeacherInClass> teachersInClass = new HashSet<>();
 }

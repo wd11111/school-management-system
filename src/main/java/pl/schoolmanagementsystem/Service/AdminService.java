@@ -22,7 +22,7 @@ public class AdminService {
     private final SchoolClassRepository schoolClassRepository;
 
     public SchoolClass createSchoolClass(String name) {
-        return schoolClassRepository.save(new SchoolClass(0, name, Collections.emptySet()));
+        return schoolClassRepository.save(new SchoolClass(0, name, Collections.emptySet(), null));
     }
 
     public Student createStudent(CreateStudentDto createStudentDto) {

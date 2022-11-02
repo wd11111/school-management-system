@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Student {
     private String surname;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Mark> marks;
+    private List<Mark> marks = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "class_id")

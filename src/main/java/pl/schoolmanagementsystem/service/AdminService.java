@@ -29,12 +29,12 @@ public class AdminService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public SchoolClass createSchoolClass(NameDto schoolClassNameDto) {
-        if (doesSchoolClassAlreadyExistsInDatabase(schoolClassNameDto.getPlainText())) {
+    public SchoolClass createSchoolClass(NameDto schoolClassName) {
+        if (doesSchoolClassAlreadyExistsInDatabase(schoolClassName.getPlainText())) {
             throw new RuntimeException();
         }
         return schoolClassRepository.save(SchoolClass.builder()
-                .schoolClassName(schoolClassNameDto.getPlainText())
+                .schoolClassName(schoolClassName.getPlainText())
                 .build());
     }
 
@@ -61,19 +61,19 @@ public class AdminService {
         SchoolSubject schoolSubject = getSchoolSubjectByName(teacherInClassDto.getTaughtSubject())
                 .orElseThrow();
         if (!doesTeacherTeachTheSubject(teacher, schoolSubject)) {
-            throw new RuntimeException();//teacher nie uczy tego przedmiotu
+            throw new RuntimeException();//teacher nie uczy tego przedmiotu exception
         }
-        SchoolClass schoolClass = getSchoolClassByName(teacherInClassDto.getSchoolClassName())
+        SchoolClass schoolClass =   getSchoolClassByName(teacherInClassDto.getSchoolClassName())
                 .orElseThrow();
         return teacherInClassRepository.save(createTeacherInClass(teacher, schoolSubject, schoolClass));
     }
 
-    public SchoolSubject addSchoolSubject(NameDto subjectNameDto) {
-        if (doesSubjectAlreadyExistsInDatabase(subjectNameDto.getPlainText())) {
+    public SchoolSubject addSchoolSubject(NameDto subjectName) {
+        if (doesSubjectAlreadyExistsInDatabase(subjectName.getPlainText())) {
             throw new RuntimeException();
         }
         SchoolSubject schoolSubject = new SchoolSubject();
-        schoolSubject.setSubjectName(subjectNameDto.getPlainText());
+        schoolSubject.setSubjectName(subjectName.getPlainText());
         return schoolSubjectRepository.save(schoolSubject);
     }
 

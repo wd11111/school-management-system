@@ -3,16 +3,13 @@ package pl.schoolmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.*;
-import pl.schoolmanagementsystem.model.dto.StudentDto;
-import pl.schoolmanagementsystem.model.dto.TeacherDto;
-import pl.schoolmanagementsystem.model.dto.NameDto;
-import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.model.dto.*;
+import pl.schoolmanagementsystem.repository.StudentRepository;
 import pl.schoolmanagementsystem.service.AdminService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -20,6 +17,8 @@ import pl.schoolmanagementsystem.service.AdminService;
 public class AdminController {
 
     private final AdminService adminService;
+
+    private final StudentRepository studentRepository;
 
     @PostMapping("/classes")
     public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody NameDto schoolClassNameDto) {
@@ -44,5 +43,10 @@ public class AdminController {
     @PostMapping("/subjects")
     public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody NameDto subjectNameDto) {
         return new ResponseEntity<>(adminService.addSchoolSubject(subjectNameDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("xd")
+    public List<MarkAvg> xd() {
+        return studentRepository.findAllAverageMarksForStudentById(1);
     }
 }

@@ -10,20 +10,10 @@ import java.util.List;
 @Repository
 public interface MarkRepository extends JpaRepository<Mark, Integer> {
 
-    @Query(nativeQuery = true, value = "SELECT subject, avg(mark),  as avg FROM" +
-            "(select mark, subject from mark where student_id = ?1) group by subject")
-    List<MarkAvg> findAllAverageMarksForStudentById(int id);
-
     @Query("select new pl.schoolmanagementsystem.model.Mark(0, m.mark, m.student, m.subject)" +
             " from Mark m where m.student = ?1")
     List<Mark> findAllMarksForStudentById(int id);
 
-    interface MarkAvg {
-
-        String getSubject();
-
-        Double getAvg();
-    }
 }
 
 

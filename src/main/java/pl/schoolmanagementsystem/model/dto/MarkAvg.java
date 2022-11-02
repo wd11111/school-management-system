@@ -1,9 +1,9 @@
 package pl.schoolmanagementsystem.model.dto;
 
-import lombok.*;
-import pl.schoolmanagementsystem.model.Mark;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -12,5 +12,5 @@ import java.util.List;
 public class MarkAvg {
 
     private String subject;
-    private List<Mark> marks;
+    private double avg;
 }

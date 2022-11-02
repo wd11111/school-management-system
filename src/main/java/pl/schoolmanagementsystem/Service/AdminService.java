@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.Model.*;
 import pl.schoolmanagementsystem.Model.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.Model.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.Model.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.Repository.*;
 
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class AdminService {
         return studentRepository.save(Student.builder()
                 .name(createStudentDto.getName())
                 .surname(createStudentDto.getSurname())
+                .schoolClass(schoolClass)
                 .build());
     }
 
@@ -50,10 +52,13 @@ public class AdminService {
         return teacherRepository.save(teacher);
     }
 
-    public TeacherInClass addExistingTeacherToClass(int teacherId, String taughtSubject, String schoolClassName) {
-        Teacher teacher = getTeacherById(teacherId).orElseThrow();
-        SchoolSubject schoolSubject = getSchoolSubjectByName(taughtSubject).orElseThrow();
-        SchoolClass schoolClass = getSchoolClassByName(schoolClassName).orElseThrow();
+    public TeacherInClass addExistingTeacherToClass(TeacherInClassDto teacherInClassDto) {
+        Teacher teacher = getTeacherById(teacherInClassDto.getTeacherId())
+                .orElseThrow();
+        SchoolSubject schoolSubject = getSchoolSubjectByName(teacherInClassDto.getTaughtSubject())
+                .orElseThrow();
+        SchoolClass schoolClass = getSchoolClassByName(teacherInClassDto.getSchoolClassName())
+                .orElseThrow();
         if (!doesTeacherTeachTheSubject(teacher, schoolSubject)) {
             throw new RuntimeException();
         }
@@ -63,7 +68,7 @@ public class AdminService {
                         .taughtSubject(schoolSubject)
                         .build());
         teacherInClass.getTaughtClasses().add(schoolClass);
-        return teacherInClass;
+        return teacherInClassRepository.save(teacherInClass);
     }
 
     public SchoolSubject addSchoolSubject(String subjectName) {
@@ -102,5 +107,4 @@ public class AdminService {
     private Optional<Teacher> getTeacherById(int id) {
         return teacherRepository.findById(id);
     }
-
 }

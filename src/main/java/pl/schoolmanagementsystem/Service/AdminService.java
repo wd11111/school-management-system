@@ -84,7 +84,8 @@ public class AdminService {
 
     private void addTaughtSubjectsToTeacher(Teacher teacher, Set<String> subjects) {
         Set<SchoolSubject> subjectObjects = transformSetOfStringsToSetOfSchoolClassObjects(subjects);
-        subjectObjects.forEach(subject -> teacher.getTaughtSubjects().add(subject));
+        subjectObjects.forEach(subject ->
+                teacher.getTaughtSubjects().add(subject));
     }
 
     private Set<SchoolSubject> transformSetOfStringsToSetOfSchoolClassObjects(Set<String> subjects) {

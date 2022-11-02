@@ -16,8 +16,4 @@ public class MarkService {
     public List<Mark> getAllMarksForStudentById(int studentId) {
         return markRepository.findAllMarksForStudentById(studentId);
     }
-
-    public List<MarkRepository.MarkAvg> getAllAverageMarksForStudentById(int studentId) {
-        return markRepository.findAllAverageMarksForStudentById(studentId);
-    }
 }

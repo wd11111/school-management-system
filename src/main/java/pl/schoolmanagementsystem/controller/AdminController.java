@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.Model.*;
-import pl.schoolmanagementsystem.Model.dto.CreateStudentDto;
-import pl.schoolmanagementsystem.Model.dto.CreateTeacherDto;
-import pl.schoolmanagementsystem.Model.dto.Name;
-import pl.schoolmanagementsystem.Model.dto.TeacherInClassDto;
-import pl.schoolmanagementsystem.Service.AdminService;
+import pl.schoolmanagementsystem.model.*;
+import pl.schoolmanagementsystem.model.dto.StudentDto;
+import pl.schoolmanagementsystem.model.dto.TeacherDto;
+import pl.schoolmanagementsystem.model.dto.NameDto;
+import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.service.AdminService;
 
 @RestController
 @RequestMapping("/admin")
@@ -22,18 +22,18 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/classes")
-    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody Name schoolClassName) {
-        return new ResponseEntity<>(adminService.createSchoolClass(schoolClassName), HttpStatus.CREATED);
+    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody NameDto schoolClassNameDto) {
+        return new ResponseEntity<>(adminService.createSchoolClass(schoolClassNameDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/students")
-    public ResponseEntity<Student> createStudent(@RequestBody CreateStudentDto student) {
+    public ResponseEntity<Student> createStudent(@RequestBody StudentDto student) {
         return new ResponseEntity<>(adminService.createStudent(student), HttpStatus.CREATED);
     }
 
     @PostMapping("/teachers")
-    public ResponseEntity<Teacher> createTeacher(@RequestBody CreateTeacherDto createTeacherDto) {
-        return new ResponseEntity<>(adminService.createTeacher(createTeacherDto), HttpStatus.CREATED);
+    public ResponseEntity<Teacher> createTeacher(@RequestBody TeacherDto teacherDto) {
+        return new ResponseEntity<>(adminService.createTeacher(teacherDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/teachersinclass")
@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     @PostMapping("/subjects")
-    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody Name subjectName) {
-        return new ResponseEntity<>(adminService.addSchoolSubject(subjectName), HttpStatus.CREATED);
+    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody NameDto subjectNameDto) {
+        return new ResponseEntity<>(adminService.addSchoolSubject(subjectNameDto), HttpStatus.CREATED);
     }
 }

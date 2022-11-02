@@ -1,9 +1,9 @@
-package pl.schoolmanagementsystem.Service;
+package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.Repository.MarkRepository;
-import pl.schoolmanagementsystem.Repository.StudentRepository;
+import pl.schoolmanagementsystem.repository.MarkRepository;
+import pl.schoolmanagementsystem.repository.StudentRepository;
 
 @Service
 @RequiredArgsConstructor

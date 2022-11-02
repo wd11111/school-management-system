@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.Model;
+package pl.schoolmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

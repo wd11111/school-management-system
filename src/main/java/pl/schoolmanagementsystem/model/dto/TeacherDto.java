@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.Model.dto;
+package pl.schoolmanagementsystem.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTeacherDto {
+public class TeacherDto {
 
     private String name;
 

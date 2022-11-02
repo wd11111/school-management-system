@@ -1,7 +1,7 @@
-package pl.schoolmanagementsystem.Model.dto;
+package pl.schoolmanagementsystem.model.dto;
 
 import lombok.*;
-import pl.schoolmanagementsystem.Model.Mark;
+import pl.schoolmanagementsystem.model.Mark;
 
 import java.util.List;
 

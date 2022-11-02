@@ -1,13 +1,13 @@
-package pl.schoolmanagementsystem.Service;
+package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.Model.*;
-import pl.schoolmanagementsystem.Model.dto.CreateStudentDto;
-import pl.schoolmanagementsystem.Model.dto.CreateTeacherDto;
-import pl.schoolmanagementsystem.Model.dto.Name;
-import pl.schoolmanagementsystem.Model.dto.TeacherInClassDto;
-import pl.schoolmanagementsystem.Repository.*;
+import pl.schoolmanagementsystem.model.*;
+import pl.schoolmanagementsystem.model.dto.StudentDto;
+import pl.schoolmanagementsystem.model.dto.TeacherDto;
+import pl.schoolmanagementsystem.model.dto.NameDto;
+import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.repository.*;
 
 import java.util.Optional;
 import java.util.Set;
@@ -29,29 +29,29 @@ public class AdminService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public SchoolClass createSchoolClass(Name schoolClassName) {
-        if (doesSchoolClassAlreadyExistsInDatabase(schoolClassName.getPlainText())) {
+    public SchoolClass createSchoolClass(NameDto schoolClassNameDto) {
+        if (doesSchoolClassAlreadyExistsInDatabase(schoolClassNameDto.getPlainText())) {
             throw new RuntimeException();
         }
         return schoolClassRepository.save(SchoolClass.builder()
-                .schoolClassName(schoolClassName.getPlainText())
+                .schoolClassName(schoolClassNameDto.getPlainText())
                 .build());
     }
 
-    public Student createStudent(CreateStudentDto createStudentDto) {
-        SchoolClass schoolClass = getSchoolClassByName(createStudentDto.getSchoolClassName()).orElseThrow();
+    public Student createStudent(StudentDto studentDto) {
+        SchoolClass schoolClass = getSchoolClassByName(studentDto.getSchoolClassName()).orElseThrow();
         return studentRepository.save(Student.builder()
-                .name(createStudentDto.getName())
-                .surname(createStudentDto.getSurname())
+                .name(studentDto.getName())
+                .surname(studentDto.getSurname())
                 .schoolClass(schoolClass)
                 .build());
     }
 
-    public Teacher createTeacher(CreateTeacherDto createTeacherDto) {
+    public Teacher createTeacher(TeacherDto teacherDto) {
         Teacher teacher = new Teacher();
-        teacher.setName(createTeacherDto.getName());
-        teacher.setSurname(createTeacherDto.getSurname());
-        addTaughtSubjectsToTeacher(teacher, createTeacherDto.getTaughtSubjects());
+        teacher.setName(teacherDto.getName());
+        teacher.setSurname(teacherDto.getSurname());
+        addTaughtSubjectsToTeacher(teacher, teacherDto.getTaughtSubjects());
         return teacherRepository.save(teacher);
     }
 
@@ -65,21 +65,25 @@ public class AdminService {
         if (!doesTeacherTeachTheSubject(teacher, schoolSubject)) {
             throw new RuntimeException();
         }
+        return teacherInClassRepository.save(createTeacherInClass(teacher, schoolSubject, schoolClass));
+    }
+
+    public SchoolSubject addSchoolSubject(NameDto subjectNameDto) {
+        if (doesSubjectAlreadyExistsInDatabase(subjectNameDto.getPlainText())) {
+            throw new RuntimeException();
+        }
+        SchoolSubject schoolSubject = new SchoolSubject();
+        schoolSubject.setSubjectName(subjectNameDto.getPlainText());
+        return schoolSubjectRepository.save(schoolSubject);
+    }
+
+    private TeacherInClass createTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());
         teacherInClass.setTeacher(teacher);
         teacherInClass.setTaughtSubject(schoolSubject);
         teacherInClass.getTaughtClasses().add(schoolClass);
-        return teacherInClassRepository.save(teacherInClass);
-    }
-
-    public SchoolSubject addSchoolSubject(Name subjectName) {
-        if (doesSubjectAlreadyExistsInDatabase(subjectName.getPlainText())) {
-            throw new RuntimeException();
-        }
-        SchoolSubject schoolSubject = new SchoolSubject();
-        schoolSubject.setSubjectName(subjectName.getPlainText());
-        return schoolSubjectRepository.save(schoolSubject);
+        return teacherInClass;
     }
 
     private void addTaughtSubjectsToTeacher(Teacher teacher, Set<String> subjects) {

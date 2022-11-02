@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.Repository.MarkRepository;
-import pl.schoolmanagementsystem.Service.StudentService;
+import pl.schoolmanagementsystem.repository.MarkRepository;
+import pl.schoolmanagementsystem.service.StudentService;
 
 import java.util.List;
 import java.util.Map;

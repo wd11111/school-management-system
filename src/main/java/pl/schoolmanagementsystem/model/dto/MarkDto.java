@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.Model.dto;
+package pl.schoolmanagementsystem.model.dto;
 
 import lombok.*;
 

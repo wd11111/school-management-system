@@ -9,8 +9,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class TeacherInClass {
 
@@ -18,11 +18,11 @@ public class TeacherInClass {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int teacherInClassId;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_name")
     private SchoolSubject taughtSubject;
 

@@ -19,9 +19,9 @@ public class SchoolClass implements Serializable {
     @Column(nullable = false, unique = true)
     private String schoolClassName;
 
-    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Student> students = new HashSet<>();
 
-    @ManyToMany(mappedBy = "taughtClasses", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "taughtClasses", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<TeacherInClass> teachersInClass = new HashSet<>();
 }

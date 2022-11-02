@@ -21,7 +21,7 @@ public class Teacher {
 
     private String surname;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "teacher_subjects",
             joinColumns = {
                     @JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
@@ -29,6 +29,6 @@ public class Teacher {
                     @JoinColumn(name = "subject_name", referencedColumnName = "subjectName")})
     private Set<SchoolSubject> taughtSubjects = new HashSet<>();
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<TeacherInClass> teacherInClasses = new HashSet<>();
 }

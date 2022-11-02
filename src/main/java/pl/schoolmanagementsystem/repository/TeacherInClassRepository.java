@@ -1,5 +1,6 @@
 package pl.schoolmanagementsystem.repository;
 
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,5 @@ public interface TeacherInClassRepository extends JpaRepository<TeacherInClass, 
             " left join fetch t.teacher where t.teacher=?1 and t.taughtSubject=?2")
     Optional<TeacherInClass> findByTeacherAndTaughtSubject(Teacher teacher, SchoolSubject schoolSubject);
 
+    boolean existsByTeacherAndTaughtSubject(Teacher teacher, SchoolSubject schoolSubject);
 }

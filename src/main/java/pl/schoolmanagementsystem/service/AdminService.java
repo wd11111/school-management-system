@@ -3,9 +3,9 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.model.*;
+import pl.schoolmanagementsystem.model.dto.NameDto;
 import pl.schoolmanagementsystem.model.dto.StudentDto;
 import pl.schoolmanagementsystem.model.dto.TeacherDto;
-import pl.schoolmanagementsystem.model.dto.NameDto;
 import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.repository.*;
 
@@ -60,11 +60,11 @@ public class AdminService {
                 .orElseThrow();
         SchoolSubject schoolSubject = getSchoolSubjectByName(teacherInClassDto.getTaughtSubject())
                 .orElseThrow();
+        if (!doesTeacherTeachTheSubject(teacher, schoolSubject)) {
+            throw new RuntimeException();//teacher nie uczy tego przedmiotu
+        }
         SchoolClass schoolClass = getSchoolClassByName(teacherInClassDto.getSchoolClassName())
                 .orElseThrow();
-        if (!doesTeacherTeachTheSubject(teacher, schoolSubject)) {
-            throw new RuntimeException();
-        }
         return teacherInClassRepository.save(createTeacherInClass(teacher, schoolSubject, schoolClass));
     }
 
@@ -80,9 +80,11 @@ public class AdminService {
     private TeacherInClass createTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());
-        teacherInClass.setTeacher(teacher);
-        teacherInClass.setTaughtSubject(schoolSubject);
         teacherInClass.getTaughtClasses().add(schoolClass);
+        if (!doesTeacherAlreadyHaveEquivalent(teacher, schoolSubject)) {
+            teacherInClass.setTeacher(teacher);
+            teacherInClass.setTaughtSubject(schoolSubject);
+        }
         return teacherInClass;
     }
 
@@ -105,6 +107,10 @@ public class AdminService {
 
     private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher, SchoolSubject schoolSubject) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
+    }
+
+    private boolean doesTeacherAlreadyHaveEquivalent(Teacher teacher, SchoolSubject schoolSubject) {
+        return teacherInClassRepository.existsByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
     private boolean doesSubjectAlreadyExistsInDatabase(String subjectName) {

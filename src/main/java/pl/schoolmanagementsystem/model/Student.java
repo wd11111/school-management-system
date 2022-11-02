@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +17,9 @@ import java.util.List;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence",
+            allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     private int studentId;
 
     private String name;

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.model.Mark;
 import pl.schoolmanagementsystem.repository.MarkRepository;
-import pl.schoolmanagementsystem.repository.StudentRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +14,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentService {
 
-    private final StudentRepository studentRepository;
-
     private final MarkService markService;
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
         List<Mark> studentsMarks = markService.getAllMarksForStudentById(studentId);
         Map<String, List<Mark>> groupedMarks = groupMarksBySubject(studentsMarks);
-        return refactorListOfMarksToListOfIntegers(groupedMarks);
+        return transformListOfMarksToListOfIntegers(groupedMarks);
     }
 
     public List<MarkRepository.MarkAvg> getAllAverageMarksForStudentById(int studentId) {
@@ -34,7 +31,7 @@ public class StudentService {
                 .collect(Collectors.groupingBy(Mark::getSubject));
     }
 
-    private Map<String, List<Integer>> refactorListOfMarksToListOfIntegers(Map<String, List<Mark>> mapToRefactor) {
+    private Map<String, List<Integer>> transformListOfMarksToListOfIntegers(Map<String, List<Mark>> mapToRefactor) {
         Map<String, List<Integer>> resultMap = new HashMap<>();
         mapToRefactor.forEach((key, value) -> resultMap.put(key, value
                 .stream()

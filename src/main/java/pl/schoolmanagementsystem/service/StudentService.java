@@ -15,12 +15,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentService {
 
-    private final MarkService markService;
-
     private final StudentRepository studentRepository;
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
-        List<Mark> studentsMarks = markService.getAllMarksForStudentById(studentId);
+        List<Mark> studentsMarks = studentRepository.findAllMarksForStudentById(studentId);
         Map<String, List<Mark>> groupedMarks = groupMarksBySubject(studentsMarks);
         return transformListOfMarksToListOfIntegers(groupedMarks);
     }
@@ -34,9 +32,9 @@ public class StudentService {
                 .collect(Collectors.groupingBy(Mark::getSubject));
     }
 
-    private Map<String, List<Integer>> transformListOfMarksToListOfIntegers(Map<String, List<Mark>> mapToRefactor) {
+    private Map<String, List<Integer>> transformListOfMarksToListOfIntegers(Map<String, List<Mark>> mapToTransform) {
         Map<String, List<Integer>> resultMap = new HashMap<>();
-        mapToRefactor.forEach((key, value) -> resultMap.put(key, value
+        mapToTransform.forEach((key, value) -> resultMap.put(key, value
                 .stream()
                 .map(Mark::getMark)
                 .collect(Collectors.toList())));

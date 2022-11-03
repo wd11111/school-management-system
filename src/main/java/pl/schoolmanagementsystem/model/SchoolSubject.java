@@ -1,7 +1,6 @@
 package pl.schoolmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,12 +13,10 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class SchoolSubject {
 
     @Id
     @Column(nullable = false, unique = true)
-    @EqualsAndHashCode.Include
     private String subjectName;
 
     @JsonIgnore

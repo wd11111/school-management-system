@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NameDto {
+public class TextDto {
 
     private String plainText;
 }

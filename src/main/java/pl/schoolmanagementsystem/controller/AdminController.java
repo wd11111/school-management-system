@@ -6,10 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.*;
+import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
 import pl.schoolmanagementsystem.service.AdminService;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin")
@@ -20,9 +21,11 @@ public class AdminController {
 
     private final StudentRepository studentRepository;
 
+    private final SchoolSubjectRepository schoolSubjectRepository;
+
     @PostMapping("/classes")
-    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody NameDto schoolClassNameDto) {
-        return new ResponseEntity<>(adminService.createSchoolClass(schoolClassNameDto), HttpStatus.CREATED);
+    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody TextDto schoolClassTextDto) {
+        return new ResponseEntity<>(adminService.createSchoolClass(schoolClassTextDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/students")
@@ -41,12 +44,12 @@ public class AdminController {
     }
 
     @PostMapping("/subjects")
-    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody NameDto subjectNameDto) {
-        return new ResponseEntity<>(adminService.addSchoolSubject(subjectNameDto), HttpStatus.CREATED);
+    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody TextDto subjectTextDto) {
+        return new ResponseEntity<>(adminService.addSchoolSubject(subjectTextDto), HttpStatus.CREATED);
     }
 
     @GetMapping("xd")
-    public List<MarkAvg> xd() {
-        return studentRepository.findAllAverageMarksForStudentById(1);
+    public Set<Teacher> xd() {
+        return schoolSubjectRepository.findBySubjectName("english").orElseThrow().getTeachers();
     }
 }

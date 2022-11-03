@@ -12,8 +12,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeacherService {
 
-    private final MarkRepository markRepository;
-
     private final StudentRepository studentRepository;
 
     private final TeacherInClassRepository teacherInClassRepository;

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MarkAvg {
+public class MarkAvgDto {
 
     private String subject;
     private double avg;

@@ -13,5 +13,4 @@ public class TeacherInClassDto {
 
     private int teacherId;
     private String taughtSubject;
-    private String schoolClassName;
 }

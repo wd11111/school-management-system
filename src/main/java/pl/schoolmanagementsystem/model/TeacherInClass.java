@@ -1,5 +1,6 @@
 package pl.schoolmanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class TeacherInClass {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_name")
+    @JsonIgnore
     private SchoolSubject taughtSubject;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
@@ -32,5 +34,6 @@ public class TeacherInClass {
                     @JoinColumn(name = "teacher_in_class_id", referencedColumnName = "teacherInClassId")},
             inverseJoinColumns = {
                     @JoinColumn(name = "school_class_name", referencedColumnName = "schoolClassName")})
+    @JsonIgnore
     private Set<SchoolClass> taughtClasses = new HashSet<>();
 }

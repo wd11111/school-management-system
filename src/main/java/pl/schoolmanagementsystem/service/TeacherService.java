@@ -4,9 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
+import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
+import pl.schoolmanagementsystem.model.dto.TeacherDto;
 import pl.schoolmanagementsystem.repository.*;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -14,10 +20,7 @@ public class TeacherService {
 
     private final StudentRepository studentRepository;
 
-    private final AdminService adminService;
-
     private final MarkRepository markRepository;
-
 
     private final TeacherInClassRepository teacherInClassRepository;
 
@@ -25,8 +28,10 @@ public class TeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
+    private final SchoolClassRepository schoolClassRepository;
+
     public Mark addMark(MarkDto markDto) {
-        Student student = getStudentById(markDto.getStudentId())
+        Student student = studentRepository.findById(markDto.getStudentId())
                 .orElseThrow();
         SchoolClass studentsClass = student.getSchoolClass();
         Teacher teacher = teacherRepository.findById(markDto.getTeacherId())
@@ -43,15 +48,39 @@ public class TeacherService {
         throw new RuntimeException();
     }
 
+    public List<SubjectClassDto> showTaughtClassesByTeacher(int teacherId) {
+        return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
+    }
+
     private boolean doesTeacherTeachThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        return adminService.getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
+        return getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElseThrow()
                 .getTaughtClasses()
                 .contains(schoolClass);
     }
 
-    private Optional<Student> getStudentById(int studentId) {
-        return studentRepository.findById(studentId);
+    public Teacher createTeacher(TeacherDto teacherDto) {
+        return teacherRepository.save(Teacher.builder()
+                .name(teacherDto.getName())
+                .surname(teacherDto.getSurname())
+                .teacherInClasses(new HashSet<>())
+                .build());
     }
 
+    private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
+                                                                                       SchoolSubject schoolSubject) {
+        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
+    }
+
+    private Set<SchoolSubject> transformSetOfStringsToSetOfSchoolClassObjects(Set<String> subjects) {
+        return subjects.stream()
+                .filter(subject -> doesSubjectAlreadyExistInDatabase(subject))
+                .map(subject -> schoolSubjectRepository.findBySubjectName(subject)
+                        .orElse(null))
+                .collect(Collectors.toSet());
+    }
+
+    private boolean doesSubjectAlreadyExistInDatabase(String subjectName) {
+        return schoolSubjectRepository.existsBySubjectName(subjectName);
+    }
 }

@@ -37,7 +37,8 @@ public class AdminService {
     }
 
     public Student createStudent(StudentDto studentDto) {
-        SchoolClass schoolClass = getSchoolClassByName(studentDto.getSchoolClassName()).orElseThrow();
+        SchoolClass schoolClass = schoolClassRepository.findBySchoolClassName(studentDto.getSchoolClassName())
+                .orElseThrow();
         return studentRepository.save(Student.builder()
                 .name(studentDto.getName())
                 .surname(studentDto.getSurname())
@@ -54,17 +55,17 @@ public class AdminService {
     }
 
     public TeacherInClass addExistingTeacherToClass(TeacherInClassDto teacherInClassDto) {
-        Teacher teacherObject = getTeacherById(teacherInClassDto.getTeacherId())
+        Teacher teacherObject = teacherRepository.findById(teacherInClassDto.getTeacherId())
                 .orElseThrow();
-        SchoolSubject schoolSubject = getSchoolSubjectByName(teacherInClassDto.getTaughtSubject())
+        SchoolSubject schoolSubject = schoolSubjectRepository.findBySubjectName(teacherInClassDto.getTaughtSubject())
                 .orElseThrow();
         if (!doesTeacherTeachTheSubject(teacherObject, schoolSubject)) {
             throw new RuntimeException();//teacherObject nie uczy tego przedmiotu exception
         }
-        SchoolClass schoolClass = getSchoolClassByName(teacherInClassDto.getSchoolClassName())
+        SchoolClass schoolClass = schoolClassRepository.findBySchoolClassName(teacherInClassDto.getSchoolClassName())
                 .orElseThrow();
 
-        checkIfAnyOtherTeacherAlreadyTeachesThisSubject(schoolClass, schoolSubject)
+        findTeacherInClassWhichAlreadyTeachesThisSubject(schoolClass, schoolSubject)
                 .ifPresent(teacher -> {
                     throw new RuntimeException(); //new teacher already teaches
                 });
@@ -80,8 +81,13 @@ public class AdminService {
         return schoolSubjectRepository.save(schoolSubject);
     }
 
-    private Optional<TeacherInClass> checkIfAnyOtherTeacherAlreadyTeachesThisSubject(SchoolClass schoolClass,
-                                                                                     SchoolSubject schoolSubject) {
+    protected Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
+                                                                                         SchoolSubject schoolSubject) {
+        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
+    }
+
+    private Optional<TeacherInClass> findTeacherInClassWhichAlreadyTeachesThisSubject(SchoolClass schoolClass,
+                                                                                      SchoolSubject schoolSubject) {
         return schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject))
                 .findFirst();
@@ -107,16 +113,13 @@ public class AdminService {
     private Set<SchoolSubject> transformSetOfStringsToSetOfSchoolClassObjects(Set<String> subjects) {
         return subjects.stream()
                 .filter(subject -> doesSubjectAlreadyExistsInDatabase(subject))
-                .map(subject -> getSchoolSubjectByName(subject).orElse(null))
+                .map(subject -> schoolSubjectRepository.findBySubjectName(subject)
+                        .orElse(null))
                 .collect(Collectors.toSet());
     }
 
     private boolean doesTeacherTeachTheSubject(Teacher teacher, SchoolSubject schoolSubject) {
         return teacher.getTaughtSubjects().contains(schoolSubject);
-    }
-
-    private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher, SchoolSubject schoolSubject) {
-        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
     private boolean doesTeacherAlreadyHaveEquivalent(Teacher teacher, SchoolSubject schoolSubject) {
@@ -129,17 +132,5 @@ public class AdminService {
 
     private boolean doesSchoolClassAlreadyExistsInDatabase(String schoolClassName) {
         return schoolClassRepository.existsBySchoolClassName(schoolClassName);
-    }
-
-    private Optional<SchoolClass> getSchoolClassByName(String schoolClassName) {
-        return schoolClassRepository.findBySchoolClassName(schoolClassName);
-    }
-
-    private Optional<SchoolSubject> getSchoolSubjectByName(String schoolSubjectName) {
-        return schoolSubjectRepository.findBySubjectName(schoolSubjectName);
-    }
-
-    private Optional<Teacher> getTeacherById(int id) {
-        return teacherRepository.findById(id);
     }
 }

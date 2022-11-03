@@ -20,7 +20,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/{studentId}/marks")
-    public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(@PathVariable int studentId) {
+    public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudentById(@PathVariable int studentId) {
         return ResponseEntity.ok(studentService.getGroupedMarksBySubjectForStudent(studentId));
     }
 

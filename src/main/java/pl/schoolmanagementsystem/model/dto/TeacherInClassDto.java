@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.Model.dto;
+package pl.schoolmanagementsystem.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,4 @@ public class TeacherInClassDto {
 
     private int teacherId;
     private String taughtSubject;
-    private String schoolClassName;
 }

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.Model;
+package pl.schoolmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Teacher {
@@ -32,5 +33,5 @@ public class Teacher {
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<TeacherInClass> teacherInClasses = new HashSet<>();
+    private Set<TeacherInClass> teacherInClasses;
 }

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.Model;
+package pl.schoolmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -25,5 +25,6 @@ public class SchoolSubject {
 
     @JsonIgnore
     @OneToMany(mappedBy = "taughtSubject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<TeacherInClass> teachersInClass = new HashSet<>();
+    private Set<TeacherInClass> teachersInClasses = new HashSet<>();
+
 }

@@ -24,11 +24,4 @@ public class AdminController {
 
     private final TeacherRepository teacherRepository;
 
-/*    @PostMapping("/teachersinclass")
-    public ResponseEntity<TeacherInClass> addExistingTeacherToClass(@RequestBody TeacherInClassDto teacherInClassDto) {
-        return new ResponseEntity<>(adminService.addExistingTeacherToClass(teacherInClassDto), HttpStatus.CREATED);
-    }*/
-
-
-
 }

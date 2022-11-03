@@ -52,19 +52,19 @@ public class TeacherService {
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
-    private boolean doesTeacherTeachThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        return getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
-                .orElseThrow()
-                .getTaughtClasses()
-                .contains(schoolClass);
-    }
-
     public Teacher createTeacher(TeacherDto teacherDto) {
         return teacherRepository.save(Teacher.builder()
                 .name(teacherDto.getName())
                 .surname(teacherDto.getSurname())
                 .teacherInClasses(new HashSet<>())
                 .build());
+    }
+
+    private boolean doesTeacherTeachThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+        return getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
+                .orElseThrow()
+                .getTaughtClasses()
+                .contains(schoolClass);
     }
 
     private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,

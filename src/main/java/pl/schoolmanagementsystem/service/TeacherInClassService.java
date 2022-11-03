@@ -33,11 +33,18 @@ public class TeacherInClassService {
                 .orElseThrow();
         SchoolSubject schoolSubject = schoolSubjectRepository.findBySubjectName(teacherInClassDto.getTaughtSubject())
                 .orElseThrow();
+        if (!doesTeacherTeachTheSubject(teacherObject, schoolSubject)) {
+            throw new RuntimeException();
+        }
         checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject)
                 .ifPresent(teacher -> {
                     throw new RuntimeException(); //new teacher already teaches
                 });
         return teacherInClassRepository.save(createTeacherInClass(teacherObject, schoolSubject, schoolClass));
+    }
+
+    private boolean doesTeacherTeachTheSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        return teacher.getTaughtSubjects().contains(schoolSubject);
     }
 
     private TeacherInClass createTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {

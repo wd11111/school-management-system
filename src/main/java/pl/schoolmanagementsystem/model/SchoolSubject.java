@@ -20,8 +20,11 @@ public class SchoolSubject {
     private String subjectName;
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<Teacher> teachers = new HashSet<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "taughtSubject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<TeacherInClass> teachersInClasses = new HashSet<>();
-
 
 }

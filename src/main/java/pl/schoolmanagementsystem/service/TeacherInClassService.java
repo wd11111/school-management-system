@@ -54,7 +54,7 @@ public class TeacherInClassService {
     private void makeSureIfTeacherTeachThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
         boolean doesTeacherTeachTheSubject = teacher.getTaughtSubjects().contains(schoolSubject);
         if (!doesTeacherTeachTheSubject) {
-            throw new TeacherDoesNotTeachSubject(teacher, schoolSubject);
+            throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }
     }
 

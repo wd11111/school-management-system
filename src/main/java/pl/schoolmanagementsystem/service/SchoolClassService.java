@@ -13,8 +13,12 @@ public class SchoolClassService {
     private final SchoolClassRepository schoolClassRepository;
 
     public SchoolClass createSchoolClass(TextDto schoolClassName) {
-        return schoolClassRepository.save(SchoolClass.builder()
+        return schoolClassRepository.save(buildSchoolClass(schoolClassName));
+    }
+
+    private SchoolClass buildSchoolClass(TextDto schoolClassName) {
+        return SchoolClass.builder()
                 .schoolClassName(schoolClassName.getPlainText())
-                .build());
+                .build();
     }
 }

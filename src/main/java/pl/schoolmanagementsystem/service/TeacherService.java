@@ -2,6 +2,8 @@ package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
+import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
 import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
@@ -31,21 +33,14 @@ public class TeacherService {
     private final SchoolClassRepository schoolClassRepository;
 
     public Mark addMark(MarkDto markDto) {
-        Student student = studentRepository.findById(markDto.getStudentId())
-                .orElseThrow();
+        Student student = findStudent(markDto.getStudentId());
         SchoolClass studentsClass = student.getSchoolClass();
-        Teacher teacher = teacherRepository.findById(markDto.getTeacherId())
-                .orElseThrow();
-        SchoolSubject schoolSubject = schoolSubjectRepository.findBySubjectName(markDto.getSubject())
-                .orElseThrow();
-        if (doesTeacherTeachThisClass(teacher, schoolSubject, studentsClass)) {
-            Mark mark = new Mark();
-            mark.setMark(markDto.getMark());
-            mark.setStudent(student);
-            mark.setSubject(schoolSubject.getSubjectName());
-            return markRepository.save(mark);
+        Teacher teacher = findTeacher(markDto.getTeacherId());
+        SchoolSubject schoolSubject = findSubject(markDto.getSubject());
+        if (!doesTeacherTeachThisClass(teacher, schoolSubject, studentsClass)) {
+            throw new RuntimeException();
         }
-        throw new RuntimeException();
+        return markRepository.save(createMark(markDto.getMark(), student, schoolSubject));
     }
 
     public List<SubjectClassDto> showTaughtClassesByTeacher(int teacherId) {
@@ -58,6 +53,29 @@ public class TeacherService {
                 .surname(teacherDto.getSurname())
                 .teacherInClasses(new HashSet<>())
                 .build());
+    }
+
+    private SchoolSubject findSubject(String subjectName) {
+        return schoolSubjectRepository.findBySubjectName(subjectName)
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(subjectName));
+    }
+
+    private Mark createMark(int mark, Student student, SchoolSubject schoolSubject) {
+        return Mark.builder()
+                .mark(mark)
+                .student(student)
+                .subject(schoolSubject)
+                .build();
+    }
+
+    private Student findStudent(int id) {
+        return studentRepository.findById(id)
+                .orElseThrow();
+    }
+
+    private Teacher findTeacher(int id) {
+        return teacherRepository.findById(id)
+                .orElseThrow(() -> new NoSuchTeacherException(id));
     }
 
     private boolean doesTeacherTeachThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {

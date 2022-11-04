@@ -2,10 +2,10 @@ package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.model.Mark;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.model.dto.StudentDto;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
@@ -24,8 +24,8 @@ public class StudentService {
     private final SchoolClassRepository schoolClassRepository;
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
-        List<Mark> studentsMarks = studentRepository.findAllMarksForStudentById(studentId);
-        Map<String, List<Mark>> groupedMarks = groupMarksBySubject(studentsMarks);
+        List<MarkDtoWithTwoFields> studentsMarks = studentRepository.findAllMarksForStudentById(studentId);
+        Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
         return transformListOfMarksToListOfIntegers(groupedMarks);
     }
 
@@ -43,16 +43,16 @@ public class StudentService {
                 .build());
     }
 
-    private Map<String, List<Mark>> groupMarksBySubject(List<Mark> studentsMarks) {
+    private Map<String, List<MarkDtoWithTwoFields>> groupMarksBySubject(List<MarkDtoWithTwoFields> studentsMarks) {
         return studentsMarks.stream()
-                .collect(Collectors.groupingBy(Mark::getSubject));
+                .collect(Collectors.groupingBy(MarkDtoWithTwoFields::getSubject));
     }
 
-    private Map<String, List<Integer>> transformListOfMarksToListOfIntegers(Map<String, List<Mark>> mapToTransform) {
+    private Map<String, List<Integer>> transformListOfMarksToListOfIntegers(Map<String, List<MarkDtoWithTwoFields>> mapToTransform) {
         Map<String, List<Integer>> resultMap = new HashMap<>();
         mapToTransform.forEach((key, value) -> resultMap.put(key, value
                 .stream()
-                .map(Mark::getMark)
+                .map(MarkDtoWithTwoFields::getMark)
                 .collect(Collectors.toList())));
         return resultMap;
     }

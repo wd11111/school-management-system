@@ -13,15 +13,8 @@ public class SchoolSubjectService {
     private final SchoolSubjectRepository schoolSubjectRepository;
 
     public SchoolSubject addSchoolSubject(TextDto subjectName) {
-        if (doesSubjectAlreadyExistInDatabase(subjectName.getPlainText())) {
-            throw new RuntimeException();
-        }
         SchoolSubject schoolSubject = new SchoolSubject();
         schoolSubject.setSubjectName(subjectName.getPlainText());
         return schoolSubjectRepository.save(schoolSubject);
-    }
-
-    private boolean doesSubjectAlreadyExistInDatabase(String subjectName) {
-        return schoolSubjectRepository.existsBySubjectName(subjectName);
     }
 }

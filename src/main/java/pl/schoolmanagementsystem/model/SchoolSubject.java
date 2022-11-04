@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,5 +28,9 @@ public class SchoolSubject {
     @JsonIgnore
     @OneToMany(mappedBy = "taughtSubject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<TeacherInClass> teachersInClasses = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Mark> marks = new ArrayList<>();
 
 }

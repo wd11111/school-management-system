@@ -69,7 +69,7 @@ public class TeacherInClassService {
         return teacherInClass;
     }
 
-    protected Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
+    private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
                                                                                          SchoolSubject schoolSubject) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }

@@ -20,11 +20,16 @@ public class TeacherController {
 
     @PostMapping
     public ResponseEntity<Teacher> createTeacher(@RequestBody TeacherDto teacherDto) {
-        return new ResponseEntity<>(teacherService.buildTeacher(teacherDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(teacherService.createTeacher(teacherDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Teacher>> getAllTeachersInSchool() {
+        return ResponseEntity.ok(teacherService.getAllTeachersInSchool());
     }
 
     @GetMapping("/{id}/classes")
-    public ResponseEntity<List<SubjectClassDto>> showTaughtClassesByTeacher(@PathVariable int id) {
-        return ResponseEntity.ok(teacherService.showTaughtClassesByTeacher(id));
+    public ResponseEntity<List<SubjectClassDto>> getTaughtClassesByTeacher(@PathVariable int id) {
+        return ResponseEntity.ok(teacherService.getTaughtClassesByTeacher(id));
     }
 }

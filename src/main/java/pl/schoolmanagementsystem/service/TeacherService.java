@@ -32,8 +32,6 @@ public class TeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    private final SchoolClassRepository schoolClassRepository;
-
     public Mark addMark(MarkDto markDto, int studentId) {
         Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
@@ -43,16 +41,16 @@ public class TeacherService {
         return markRepository.save(buildMark(markDto.getMark(), student, schoolSubject));
     }
 
-    public List<SubjectClassDto> showTaughtClassesByTeacher(int teacherId) {
+    public List<SubjectClassDto> getTaughtClassesByTeacher(int teacherId) {
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
-    public Teacher buildTeacher(TeacherDto teacherDto) {
-        return teacherRepository.save(Teacher.builder()
-                .name(teacherDto.getName())
-                .surname(teacherDto.getSurname())
-                .teacherInClasses(new HashSet<>())
-                .build());
+    public Teacher createTeacher(TeacherDto teacherDto) {
+        return teacherRepository.save(buildTeacher(teacherDto));
+    }
+
+    public List<Teacher> getAllTeachersInSchool() {
+        return teacherRepository.findAll();
     }
 
     private Mark buildMark(int mark, Student student, SchoolSubject schoolSubject) {
@@ -60,6 +58,14 @@ public class TeacherService {
                 .mark(mark)
                 .student(student)
                 .subject(schoolSubject)
+                .build();
+    }
+
+    private Teacher buildTeacher(TeacherDto teacherDto) {
+        return Teacher.builder()
+                .name(teacherDto.getName())
+                .surname(teacherDto.getSurname())
+                .teacherInClasses(new HashSet<>())
                 .build();
     }
 

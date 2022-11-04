@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.Mark;
 import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.model.dto.MarkDto;
-import pl.schoolmanagementsystem.model.dto.StudentDto;
+import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
+import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
+import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
+import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
 import pl.schoolmanagementsystem.service.StudentService;
 import pl.schoolmanagementsystem.service.TeacherService;
 
@@ -35,12 +37,12 @@ public class StudentController {
     }
 
     @PostMapping("/{id}/marks")
-    public ResponseEntity<Mark> addMark(@PathVariable int id, @RequestBody MarkDto markDto) {
-        return new ResponseEntity<>(teacherService.addMark(markDto, id), HttpStatus.CREATED);
+    public ResponseEntity<MarkOutputDto> addMark(@PathVariable int id, @RequestBody MarkInputDto markInputDto) {
+        return new ResponseEntity<>(teacherService.addMark(markInputDto, id), HttpStatus.CREATED);
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody StudentDto student) {
-        return new ResponseEntity<>(studentService.createStudent(student), HttpStatus.CREATED);
+    public ResponseEntity<StudentOutputDto> createStudent(@RequestBody StudentInputDto studentInputDto) {
+        return new ResponseEntity<>(studentService.createStudent(studentInputDto), HttpStatus.CREATED);
     }
 }

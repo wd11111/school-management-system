@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.model.dto;
+package pl.schoolmanagementsystem.model.dto.input;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto {
+public class StudentInputDto {
 
     private String name;
     private String surname;

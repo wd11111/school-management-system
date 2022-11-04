@@ -3,11 +3,13 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
+import pl.schoolmanagementsystem.mapper.StudentMapper;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
-import pl.schoolmanagementsystem.model.dto.StudentDto;
+import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
+import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
 
@@ -34,19 +36,20 @@ public class StudentService {
         return studentRepository.findAllAverageMarksForStudentById(studentId);
     }
 
-    public Student createStudent(StudentDto studentDto) {
-        SchoolClass schoolClass = findSchoolClass(studentDto.getSchoolClassName());
-        return studentRepository.save(buildStudent(studentDto, schoolClass));
+    public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
+        SchoolClass schoolClass = findSchoolClass(studentInputDto.getSchoolClassName());
+        Student student = studentRepository.save(buildStudent(studentInputDto, schoolClass));
+        return StudentMapper.mapStudentToDtoOutput(student);
     }
 
     private List<MarkDtoWithTwoFields> findAllMarksForStudent(int id) {
         return studentRepository.findAllMarksForStudentById(id);
     }
 
-    private Student buildStudent(StudentDto studentDto, SchoolClass schoolClass) {
+    private Student buildStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {
         return Student.builder()
-                .name(studentDto.getName())
-                .surname(studentDto.getSurname())
+                .name(studentInputDto.getName())
+                .surname(studentInputDto.getSurname())
                 .schoolClass(schoolClass)
                 .build();
     }

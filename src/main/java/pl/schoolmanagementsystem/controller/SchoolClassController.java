@@ -27,8 +27,8 @@ public class SchoolClassController {
     }
 
     @PostMapping("/classes/{className}/teachers")
-    public ResponseEntity<TeacherInClassOutputDto> addTeacherToSchoolClass(@PathVariable String className,
-                                                                           @RequestBody TeacherInClassInputDto teacherInClassInputDto) {
+    public ResponseEntity<TeacherInClassOutputDto> addTeacherToSchoolClass(
+            @PathVariable String className, @RequestBody TeacherInClassInputDto teacherInClassInputDto) {
         return new ResponseEntity<>(teacherInClassService.addTeacherInClassToSchoolClass(
                 teacherInClassInputDto, className), HttpStatus.CREATED);
     }

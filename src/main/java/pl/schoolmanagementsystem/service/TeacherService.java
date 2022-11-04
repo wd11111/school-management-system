@@ -6,11 +6,13 @@ import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.mapper.MarkMapper;
 import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.model.*;
-import pl.schoolmanagementsystem.model.dto.MarkDto;
-import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
+import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
 import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
+import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.repository.*;
 
@@ -31,13 +33,14 @@ public class TeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public Mark addMark(MarkDto markDto, int studentId) {
+    public MarkOutputDto addMark(MarkInputDto markInputDto, int studentId) {
         Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
-        Teacher teacher = findTeacher(markDto.getTeacherId());
-        SchoolSubject schoolSubject = findSubject(markDto.getSubject());
+        Teacher teacher = findTeacher(markInputDto.getTeacherId());
+        SchoolSubject schoolSubject = findSubject(markInputDto.getSubject());
         checkIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
-        return markRepository.save(buildMark(markDto.getMark(), student, schoolSubject));
+        Mark mark = markRepository.save(buildMark(markInputDto.getMark(), student, schoolSubject));
+        return MarkMapper.mapMarkToOutput(mark);
     }
 
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {

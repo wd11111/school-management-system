@@ -24,5 +24,8 @@ public class Mark {
     @JsonIgnore
     private Student student;
 
-    private String subject;
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject")
+    @JsonIgnore
+    private SchoolSubject subject;
 }

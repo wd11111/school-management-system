@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.Mark;
+import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
-import pl.schoolmanagementsystem.service.AdminService;
+import pl.schoolmanagementsystem.model.dto.StudentDto;
 import pl.schoolmanagementsystem.service.StudentService;
 import pl.schoolmanagementsystem.service.TeacherService;
 
@@ -23,25 +24,23 @@ public class StudentController {
 
     private final TeacherService teacherService;
 
-    private final AdminService adminService;
-
     @GetMapping("/{id}/marks")
     public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(@PathVariable int id) {
         return ResponseEntity.ok(studentService.getGroupedMarksBySubjectForStudent(id));
     }
 
-    @GetMapping("/{id}/averagemarks")
-    public ResponseEntity<List<MarkAvgDto>> getAllAverageMarksForStudent(@PathVariable int id) {
-        return ResponseEntity.ok(studentService.getAllAverageMarksForStudentById(id));
+    @GetMapping("/{id}/averages")
+    public ResponseEntity<List<MarkAvgDto>> getAverageMarksForStudent(@PathVariable int id) {
+        return ResponseEntity.ok(studentService.getAverageMarksForStudent(id));
     }
 
     @PostMapping("/{id}/marks")
     public ResponseEntity<Mark> addMark(@PathVariable int id, @RequestBody MarkDto markDto) {
-        return new ResponseEntity<>(teacherService.addMark(markDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(teacherService.addMark(markDto, id), HttpStatus.CREATED);
     }
-/*
-    @PostMapping()
+
+    @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody StudentDto student) {
-        return new ResponseEntity<>(adminService.createStudent(student), HttpStatus.CREATED);
-    }*/
+        return new ResponseEntity<>(studentService.createStudent(student), HttpStatus.CREATED);
+    }
 }

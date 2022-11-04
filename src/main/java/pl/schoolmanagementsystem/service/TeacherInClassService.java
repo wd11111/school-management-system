@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.schoolmanagementsystem.exception.*;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.SchoolSubject;
 import pl.schoolmanagementsystem.model.Teacher;
@@ -27,27 +28,37 @@ public class TeacherInClassService {
     private final TeacherInClassRepository teacherInClassRepository;
 
     public TeacherInClass addTeacherInClassToSchoolClass(TeacherInClassDto teacherInClassDto, String schoolClassName) {
-        Teacher teacherObject = teacherRepository.findById(teacherInClassDto.getTeacherId())
-                .orElseThrow();
-        SchoolClass schoolClass = schoolClassRepository.findBySchoolClassName(schoolClassName)
-                .orElseThrow();
-        SchoolSubject schoolSubject = schoolSubjectRepository.findBySubjectName(teacherInClassDto.getTaughtSubject())
-                .orElseThrow();
-        if (!doesTeacherTeachTheSubject(teacherObject, schoolSubject)) {
-            throw new RuntimeException();
+        Teacher teacherObject = findTeacher(teacherInClassDto.getTeacherId());
+        SchoolClass schoolClass = findSchoolClass(schoolClassName);
+        SchoolSubject schoolSubject = findSchoolSubject(teacherInClassDto.getTaughtSubject());
+        makeSureIfTeacherTeachThisSubject(teacherObject, schoolSubject);
+        checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
+        return teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
+    }
+
+    private Teacher findTeacher(int id) {
+        return teacherRepository.findById(id)
+                .orElseThrow(() -> new NoSuchTeacherException(id));
+    }
+
+    private SchoolClass findSchoolClass(String name) {
+        return schoolClassRepository.findBySchoolClassName(name)
+                .orElseThrow(() -> new NoSuchSchoolClassException(name));
+    }
+
+    private SchoolSubject findSchoolSubject(String name) {
+        return schoolSubjectRepository.findBySubjectName(name)
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
+    }
+
+    private void makeSureIfTeacherTeachThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        boolean doesTeacherTeachTheSubject = teacher.getTaughtSubjects().contains(schoolSubject);
+        if (!doesTeacherTeachTheSubject) {
+            throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }
-        checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject)
-                .ifPresent(teacher -> {
-                    throw new RuntimeException(); //new teacher already teaches
-                });
-        return teacherInClassRepository.save(createTeacherInClass(teacherObject, schoolSubject, schoolClass));
     }
 
-    private boolean doesTeacherTeachTheSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        return teacher.getTaughtSubjects().contains(schoolSubject);
-    }
-
-    private TeacherInClass createTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+    private TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());
         teacherInClass.getTaughtClasses().add(schoolClass);
@@ -58,7 +69,7 @@ public class TeacherInClassService {
         return teacherInClass;
     }
 
-    protected Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
+    private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
                                                                                          SchoolSubject schoolSubject) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
@@ -67,11 +78,14 @@ public class TeacherInClassService {
         return teacherInClassRepository.existsByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
-    private Optional<TeacherInClass> checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass,
-                                                                                    SchoolSubject schoolSubject) {
-        return schoolClass.getTeachersInClass().stream()
+    private void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass,
+                                                                SchoolSubject schoolSubject) {
+        schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject))
-                .findFirst();
+                .findFirst()
+                .ifPresent(teacher -> {
+                    throw new ClassAlreadyHasTeacherException(teacher, schoolSubject, schoolClass);
+                });
     }
 
 }

@@ -12,16 +12,13 @@ public class SchoolSubjectService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public SchoolSubject addSchoolSubject(TextDto subjectName) {
-        if (doesSubjectAlreadyExistInDatabase(subjectName.getPlainText())) {
-            throw new RuntimeException();
-        }
-        SchoolSubject schoolSubject = new SchoolSubject();
-        schoolSubject.setSubjectName(subjectName.getPlainText());
-        return schoolSubjectRepository.save(schoolSubject);
+    public SchoolSubject createSchoolSubject(TextDto subjectName) {
+        return schoolSubjectRepository.save(buildSchoolSubject(subjectName));
     }
 
-    private boolean doesSubjectAlreadyExistInDatabase(String subjectName) {
-        return schoolSubjectRepository.existsBySubjectName(subjectName);
+    private SchoolSubject buildSchoolSubject(TextDto subjectName) {
+        return SchoolSubject.builder()
+                .subjectName(subjectName.getPlainText())
+                .build();
     }
 }

@@ -17,7 +17,7 @@ public class SchoolSubjectController {
     private final SchoolSubjectService schoolSubjectService;
 
     @PostMapping("/subjects")
-    public ResponseEntity<SchoolSubject> addSchoolSubject(@RequestBody TextDto subjectTextDto) {
-        return new ResponseEntity<>(schoolSubjectService.addSchoolSubject(subjectTextDto), HttpStatus.CREATED);
+    public ResponseEntity<SchoolSubject> createSchoolSubject(@RequestBody TextDto subjectTextDto) {
+        return new ResponseEntity<>(schoolSubjectService.createSchoolSubject(subjectTextDto), HttpStatus.CREATED);
     }
 }

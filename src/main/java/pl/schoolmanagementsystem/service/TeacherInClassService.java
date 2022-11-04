@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.schoolmanagementsystem.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.SchoolSubject;
 import pl.schoolmanagementsystem.model.Teacher;
@@ -36,10 +37,7 @@ public class TeacherInClassService {
         if (!doesTeacherTeachTheSubject(teacherObject, schoolSubject)) {
             throw new RuntimeException();
         }
-        checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject)
-                .ifPresent(teacher -> {
-                    throw new RuntimeException(); //new teacher already teaches
-                });
+        checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
         return teacherInClassRepository.save(createTeacherInClass(teacherObject, schoolSubject, schoolClass));
     }
 
@@ -67,11 +65,14 @@ public class TeacherInClassService {
         return teacherInClassRepository.existsByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
-    private Optional<TeacherInClass> checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass,
-                                                                                    SchoolSubject schoolSubject) {
-        return schoolClass.getTeachersInClass().stream()
+    private void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass,
+                                                                SchoolSubject schoolSubject) {
+        schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject))
-                .findFirst();
+                .findFirst()
+                .ifPresent(teacher -> {
+                    throw new ClassAlreadyHasTeacherException(teacher, schoolSubject, schoolClass);
+                });
     }
 
 }

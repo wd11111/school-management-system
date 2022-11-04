@@ -3,7 +3,9 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
+import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
+import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachThisClassException;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
 import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
@@ -37,9 +39,7 @@ public class TeacherService {
         SchoolClass studentsClass = student.getSchoolClass();
         Teacher teacher = findTeacher(markDto.getTeacherId());
         SchoolSubject schoolSubject = findSubject(markDto.getSubject());
-        if (!doesTeacherTeachThisClass(teacher, schoolSubject, studentsClass)) {
-            throw new RuntimeException();
-        }
+        checkIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
         return markRepository.save(createMark(markDto.getMark(), student, schoolSubject));
     }
 
@@ -55,11 +55,6 @@ public class TeacherService {
                 .build());
     }
 
-    private SchoolSubject findSubject(String subjectName) {
-        return schoolSubjectRepository.findBySubjectName(subjectName)
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(subjectName));
-    }
-
     private Mark createMark(int mark, Student student, SchoolSubject schoolSubject) {
         return Mark.builder()
                 .mark(mark)
@@ -68,9 +63,14 @@ public class TeacherService {
                 .build();
     }
 
+    private SchoolSubject findSubject(String subjectName) {
+        return schoolSubjectRepository.findBySubjectName(subjectName)
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(subjectName));
+    }
+
     private Student findStudent(int id) {
         return studentRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchStudentException(id));
     }
 
     private Teacher findTeacher(int id) {
@@ -78,9 +78,9 @@ public class TeacherService {
                 .orElseThrow(() -> new NoSuchTeacherException(id));
     }
 
-    private boolean doesTeacherTeachThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+    private boolean checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         return getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
-                .orElseThrow()
+                .orElseThrow(() -> new TeacherDoesNotTeachThisClassException(schoolSubject, schoolClass))
                 .getTaughtClasses()
                 .contains(schoolClass);
     }

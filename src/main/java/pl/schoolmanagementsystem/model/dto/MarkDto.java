@@ -10,7 +10,6 @@ import lombok.Setter;
 public class MarkDto {
 
     private int teacherId;
-    private int studentId;
     private int mark;
     private String subject;
 

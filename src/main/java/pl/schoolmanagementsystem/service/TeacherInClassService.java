@@ -33,7 +33,7 @@ public class TeacherInClassService {
         SchoolSubject schoolSubject = findSchoolSubject(teacherInClassDto.getTaughtSubject());
         makeSureIfTeacherTeachThisSubject(teacherObject, schoolSubject);
         checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
-        return teacherInClassRepository.save(createTeacherInClass(teacherObject, schoolSubject, schoolClass));
+        return teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
     }
 
     private Teacher findTeacher(int id) {
@@ -58,7 +58,7 @@ public class TeacherInClassService {
         }
     }
 
-    private TeacherInClass createTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+    private TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());
         teacherInClass.getTaughtClasses().add(schoolClass);

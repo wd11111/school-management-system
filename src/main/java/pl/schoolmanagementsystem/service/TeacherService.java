@@ -34,20 +34,20 @@ public class TeacherService {
 
     private final SchoolClassRepository schoolClassRepository;
 
-    public Mark addMark(MarkDto markDto) {
-        Student student = findStudent(markDto.getStudentId());
+    public Mark addMark(MarkDto markDto, int studentId) {
+        Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
         Teacher teacher = findTeacher(markDto.getTeacherId());
         SchoolSubject schoolSubject = findSubject(markDto.getSubject());
         checkIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
-        return markRepository.save(createMark(markDto.getMark(), student, schoolSubject));
+        return markRepository.save(buildMark(markDto.getMark(), student, schoolSubject));
     }
 
     public List<SubjectClassDto> showTaughtClassesByTeacher(int teacherId) {
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
-    public Teacher createTeacher(TeacherDto teacherDto) {
+    public Teacher buildTeacher(TeacherDto teacherDto) {
         return teacherRepository.save(Teacher.builder()
                 .name(teacherDto.getName())
                 .surname(teacherDto.getSurname())
@@ -55,7 +55,7 @@ public class TeacherService {
                 .build());
     }
 
-    private Mark createMark(int mark, Student student, SchoolSubject schoolSubject) {
+    private Mark buildMark(int mark, Student student, SchoolSubject schoolSubject) {
         return Mark.builder()
                 .mark(mark)
                 .student(student)

@@ -20,7 +20,7 @@ public class TeacherController {
 
     @PostMapping
     public ResponseEntity<Teacher> createTeacher(@RequestBody TeacherDto teacherDto) {
-        return new ResponseEntity<>(teacherService.createTeacher(teacherDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(teacherService.buildTeacher(teacherDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/classes")

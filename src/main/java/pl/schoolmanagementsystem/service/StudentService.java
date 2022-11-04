@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
@@ -24,23 +25,35 @@ public class StudentService {
     private final SchoolClassRepository schoolClassRepository;
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
-        List<MarkDtoWithTwoFields> studentsMarks = studentRepository.findAllMarksForStudentById(studentId);
+        List<MarkDtoWithTwoFields> studentsMarks = findAllMarksForStudent(studentId);
         Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
         return transformListOfMarksToListOfIntegers(groupedMarks);
     }
 
-    public List<MarkAvgDto> getAllAverageMarksForStudentById(int studentId) {
+    public List<MarkAvgDto> getAverageMarksForStudent(int studentId) {
         return studentRepository.findAllAverageMarksForStudentById(studentId);
     }
 
     public Student createStudent(StudentDto studentDto) {
-        SchoolClass schoolClass = schoolClassRepository.findBySchoolClassName(studentDto.getSchoolClassName())
-                .orElseThrow();
-        return studentRepository.save(Student.builder()
+        SchoolClass schoolClass = findSchoolClass(studentDto.getSchoolClassName());
+        return studentRepository.save(buildStudent(studentDto, schoolClass));
+    }
+
+    private List<MarkDtoWithTwoFields> findAllMarksForStudent(int id) {
+        return studentRepository.findAllMarksForStudentById(id);
+    }
+
+    private Student buildStudent(StudentDto studentDto, SchoolClass schoolClass) {
+        return Student.builder()
                 .name(studentDto.getName())
                 .surname(studentDto.getSurname())
                 .schoolClass(schoolClass)
-                .build());
+                .build();
+    }
+
+    private SchoolClass findSchoolClass(String name) {
+        return schoolClassRepository.findBySchoolClassName(name)
+                .orElseThrow(() -> new NoSuchSchoolClassException(name));
     }
 
     private Map<String, List<MarkDtoWithTwoFields>> groupMarksBySubject(List<MarkDtoWithTwoFields> studentsMarks) {

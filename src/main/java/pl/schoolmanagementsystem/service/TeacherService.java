@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
-import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachThisClassException;
+import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachClassException;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
 import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
@@ -80,7 +80,7 @@ public class TeacherService {
 
     private boolean checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         return getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
-                .orElseThrow(() -> new TeacherDoesNotTeachThisClassException(schoolSubject, schoolClass))
+                .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass))
                 .getTaughtClasses()
                 .contains(schoolClass);
     }

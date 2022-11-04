@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.model.SchoolClass;
-import pl.schoolmanagementsystem.model.dto.TextDto;
+import pl.schoolmanagementsystem.model.dto.input.TextDto;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 
 @Service

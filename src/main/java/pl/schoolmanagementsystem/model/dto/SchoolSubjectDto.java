@@ -7,11 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class TeacherDto {
+@NoArgsConstructor
+public class SchoolSubjectDto {
 
-    private String name;
-
-    private String surname;
+    private String subject;
 }

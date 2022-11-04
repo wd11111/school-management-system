@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.model.SchoolSubject;
-import pl.schoolmanagementsystem.model.dto.TextDto;
+import pl.schoolmanagementsystem.model.dto.input.TextDto;
 import pl.schoolmanagementsystem.service.SchoolSubjectService;
 
 @RestController

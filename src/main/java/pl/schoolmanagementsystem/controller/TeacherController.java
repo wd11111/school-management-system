@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.Teacher;
 import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
-import pl.schoolmanagementsystem.model.dto.TeacherDto;
+import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
+import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.service.TeacherService;
 
 import java.util.List;
@@ -19,12 +20,12 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping
-    public ResponseEntity<Teacher> createTeacher(@RequestBody TeacherDto teacherDto) {
-        return new ResponseEntity<>(teacherService.createTeacher(teacherDto), HttpStatus.CREATED);
+    public ResponseEntity<Teacher> createTeacher(@RequestBody TeacherInputDto teacherInputDto) {
+        return new ResponseEntity<>(teacherService.createTeacher(teacherInputDto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Teacher>> getAllTeachersInSchool() {
+    public ResponseEntity<List<TeacherOutputDto>> getAllTeachersInSchool() {
         return ResponseEntity.ok(teacherService.getAllTeachersInSchool());
     }
 

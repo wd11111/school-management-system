@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.TeacherInClass;
 import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
-import pl.schoolmanagementsystem.model.dto.TextDto;
+import pl.schoolmanagementsystem.model.dto.input.TextDto;
 import pl.schoolmanagementsystem.service.SchoolClassService;
 import pl.schoolmanagementsystem.service.TeacherInClassService;
 

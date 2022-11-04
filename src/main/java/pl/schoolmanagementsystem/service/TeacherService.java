@@ -6,16 +6,15 @@ import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
 import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
-import pl.schoolmanagementsystem.model.dto.TeacherDto;
+import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
+import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.repository.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +31,8 @@ public class TeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
+    private final TeacherMapper teacherMapper;
+
     public Mark addMark(MarkDto markDto, int studentId) {
         Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
@@ -45,12 +46,16 @@ public class TeacherService {
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
-    public Teacher createTeacher(TeacherDto teacherDto) {
-        return teacherRepository.save(buildTeacher(teacherDto));
+    public Teacher createTeacher(TeacherInputDto teacherInputDto) {
+        return teacherRepository.save(buildTeacher(teacherInputDto));
     }
 
-    public List<Teacher> getAllTeachersInSchool() {
-        return teacherRepository.findAll();
+    public List<TeacherOutputDto> getAllTeachersInSchool() {
+        return teacherRepository.findAll()
+                .stream()
+                .map(teacher -> teacherMapper.mapTeacherToTeacherDto(teacher))
+                .sorted(Comparator.comparing(TeacherOutputDto::getSurname))
+                .collect(Collectors.toList());
     }
 
     private Mark buildMark(int mark, Student student, SchoolSubject schoolSubject) {
@@ -61,10 +66,10 @@ public class TeacherService {
                 .build();
     }
 
-    private Teacher buildTeacher(TeacherDto teacherDto) {
+    private Teacher buildTeacher(TeacherInputDto teacherInputDto) {
         return Teacher.builder()
-                .name(teacherDto.getName())
-                .surname(teacherDto.getSurname())
+                .name(teacherInputDto.getName())
+                .surname(teacherInputDto.getSurname())
                 .teacherInClasses(new HashSet<>())
                 .build();
     }

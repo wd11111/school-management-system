@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.model.dto;
+package pl.schoolmanagementsystem.model.dto.input;
 
 import lombok.Getter;
 import lombok.Setter;

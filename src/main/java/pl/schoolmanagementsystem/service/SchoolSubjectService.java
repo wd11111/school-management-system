@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.model.SchoolSubject;
-import pl.schoolmanagementsystem.model.dto.input.TextDto;
+import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
 
 @Service
@@ -12,13 +12,14 @@ public class SchoolSubjectService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public SchoolSubject createSchoolSubject(TextDto subjectName) {
-        return schoolSubjectRepository.save(buildSchoolSubject(subjectName));
+    public SchoolSubjectDto createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
+        schoolSubjectRepository.save(buildSchoolSubject(schoolSubjectDto));
+        return schoolSubjectDto;
     }
 
-    private SchoolSubject buildSchoolSubject(TextDto subjectName) {
+    private SchoolSubject buildSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         return SchoolSubject.builder()
-                .subjectName(subjectName.getPlainText())
+                .subjectName(schoolSubjectDto.getSubject())
                 .build();
     }
 }

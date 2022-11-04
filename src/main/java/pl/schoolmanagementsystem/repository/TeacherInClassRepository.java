@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import pl.schoolmanagementsystem.model.SchoolSubject;
 import pl.schoolmanagementsystem.model.Teacher;
 import pl.schoolmanagementsystem.model.TeacherInClass;
-import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,11 +21,12 @@ public interface TeacherInClassRepository extends JpaRepository<TeacherInClass, 
 
     boolean existsByTeacherAndTaughtSubject(Teacher teacher, SchoolSubject schoolSubject);
 
-    @Query("select new pl.schoolmanagementsystem.model.dto.SubjectClassDto(tc.taughtSubject.subjectName, tics.schoolClassName) " +
+    @Query("select new pl.schoolmanagementsystem.model.dto.output." +
+            "SubjectAndClassOutputDto(tc.taughtSubject.subjectName, tics.schoolClassName) " +
             "from TeacherInClass tc " +
             "left join tc.taughtClasses tics " +
             "where tc.teacher.teacherId=?1")
-    List<SubjectClassDto> findTaughtClassesByTeacher(int teacherId);
+    List<SubjectAndClassOutputDto> findTaughtClassesByTeacher(int teacherId);
 
 
 }

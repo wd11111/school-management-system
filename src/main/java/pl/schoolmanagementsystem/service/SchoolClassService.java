@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.model.SchoolClass;
-import pl.schoolmanagementsystem.model.dto.input.TextDto;
+import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 
 @Service
@@ -13,21 +13,23 @@ public class SchoolClassService {
 
     private final SchoolClassRepository schoolClassRepository;
 
-    public SchoolClass createSchoolClass(TextDto schoolClassName) {
-        checkIfClassAlreadyExists(schoolClassName);
-        return schoolClassRepository.save(buildSchoolClass(schoolClassName));
+    public SchoolClassDto createSchoolClass(SchoolClassDto schoolClassDto) {
+        checkIfClassAlreadyExists(schoolClassDto);
+        schoolClassRepository.save(buildSchoolClass(schoolClassDto));
+        return schoolClassDto;
     }
 
-    private SchoolClass buildSchoolClass(TextDto schoolClassName) {
+    private SchoolClass buildSchoolClass(SchoolClassDto schoolClassDto) {
         return SchoolClass.builder()
-                .schoolClassName(schoolClassName.getPlainText())
+                .schoolClassName(schoolClassDto.getSchoolClassName())
                 .build();
     }
 
-    private void checkIfClassAlreadyExists(TextDto schoolClassName) {
-        boolean existsBySchoolClassName = schoolClassRepository.existsBySchoolClassName(schoolClassName.getPlainText());
+    private void checkIfClassAlreadyExists(SchoolClassDto schoolClassDto) {
+        boolean existsBySchoolClassName = schoolClassRepository.existsBySchoolClassName(
+                schoolClassDto.getSchoolClassName());
         if (existsBySchoolClassName) {
-            throw new ClassAlreadyExistsException(schoolClassName);
+            throw new ClassAlreadyExistsException(schoolClassDto);
         }
     }
 }

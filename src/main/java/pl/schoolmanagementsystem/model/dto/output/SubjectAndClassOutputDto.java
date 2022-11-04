@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.model.dto;
+package pl.schoolmanagementsystem.model.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectClassDto {
+public class SubjectAndClassOutputDto {
 
     private String schoolSubject;
     private String schoolClass;

@@ -3,11 +3,13 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.*;
+import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.SchoolSubject;
 import pl.schoolmanagementsystem.model.Teacher;
 import pl.schoolmanagementsystem.model.TeacherInClass;
-import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.model.dto.input.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.model.dto.output.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.repository.TeacherInClassRepository;
@@ -27,13 +29,14 @@ public class TeacherInClassService {
 
     private final TeacherInClassRepository teacherInClassRepository;
 
-    public TeacherInClass addTeacherInClassToSchoolClass(TeacherInClassDto teacherInClassDto, String schoolClassName) {
-        Teacher teacherObject = findTeacher(teacherInClassDto.getTeacherId());
+    public TeacherInClassOutputDto addTeacherInClassToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
+        Teacher teacherObject = findTeacher(teacherInClassInputDto.getTeacherId());
         SchoolClass schoolClass = findSchoolClass(schoolClassName);
-        SchoolSubject schoolSubject = findSchoolSubject(teacherInClassDto.getTaughtSubject());
+        SchoolSubject schoolSubject = findSchoolSubject(teacherInClassInputDto.getTaughtSubject());
         makeSureIfTeacherTeachThisSubject(teacherObject, schoolSubject);
         checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
-        return teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
+        teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
+        return TeacherMapper.mapTeacherInClassInputDtoToOutput(teacherInClassInputDto, schoolClassName);
     }
 
     private Teacher findTeacher(int id) {
@@ -70,7 +73,7 @@ public class TeacherInClassService {
     }
 
     private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
-                                                                                         SchoolSubject schoolSubject) {
+                                                                                       SchoolSubject schoolSubject) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 

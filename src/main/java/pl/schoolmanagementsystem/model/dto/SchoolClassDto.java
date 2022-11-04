@@ -5,13 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class MarkDtoWithTwoFields {
+public class SchoolClassDto {
 
-    private int mark;
-    private String subject;
-
+    private String schoolClassName;
 }

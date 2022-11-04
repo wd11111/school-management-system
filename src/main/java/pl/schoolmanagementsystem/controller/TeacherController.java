@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.Teacher;
-import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
 import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.service.TeacherService;
@@ -30,7 +30,7 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}/classes")
-    public ResponseEntity<List<SubjectClassDto>> getTaughtClassesByTeacher(@PathVariable int id) {
+    public ResponseEntity<List<SubjectAndClassOutputDto>> getTaughtClassesByTeacher(@PathVariable int id) {
         return ResponseEntity.ok(teacherService.getTaughtClassesByTeacher(id));
     }
 }

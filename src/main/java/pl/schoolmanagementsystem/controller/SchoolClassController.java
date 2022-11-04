@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.model.SchoolClass;
-import pl.schoolmanagementsystem.model.TeacherInClass;
-import pl.schoolmanagementsystem.model.dto.TeacherInClassDto;
-import pl.schoolmanagementsystem.model.dto.input.TextDto;
+import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.model.dto.input.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.model.dto.output.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.service.SchoolClassService;
 import pl.schoolmanagementsystem.service.TeacherInClassService;
 
@@ -23,15 +22,15 @@ public class SchoolClassController {
     private final TeacherInClassService teacherInClassService;
 
     @PostMapping("/classes")
-    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody TextDto schoolClassTextDto) {
-        return new ResponseEntity<>(schoolClassService.createSchoolClass(schoolClassTextDto), HttpStatus.CREATED);
+    public ResponseEntity<SchoolClassDto> createSchoolClass(@RequestBody SchoolClassDto schoolClassDto) {
+        return new ResponseEntity<>(schoolClassService.createSchoolClass(schoolClassDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/classes/{className}/teachers")
-    public ResponseEntity<TeacherInClass> addTeacherInClassToSchoolClass(@PathVariable String className,
-                                                                         @RequestBody TeacherInClassDto teacherInClassDto) {
+    public ResponseEntity<TeacherInClassOutputDto> addTeacherToSchoolClass(@PathVariable String className,
+                                                                           @RequestBody TeacherInClassInputDto teacherInClassInputDto) {
         return new ResponseEntity<>(teacherInClassService.addTeacherInClassToSchoolClass(
-                teacherInClassDto, className), HttpStatus.CREATED);
+                teacherInClassInputDto, className), HttpStatus.CREATED);
     }
 
 }

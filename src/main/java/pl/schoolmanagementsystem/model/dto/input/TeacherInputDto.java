@@ -12,6 +12,5 @@ import lombok.Setter;
 public class TeacherInputDto {
 
     private String name;
-
     private String surname;
 }

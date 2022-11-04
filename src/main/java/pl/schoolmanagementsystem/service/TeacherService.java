@@ -9,7 +9,7 @@ import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachClassException;
 import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.MarkDto;
-import pl.schoolmanagementsystem.model.dto.SubjectClassDto;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
 import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.repository.*;
@@ -31,8 +31,6 @@ public class TeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    private final TeacherMapper teacherMapper;
-
     public Mark addMark(MarkDto markDto, int studentId) {
         Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
@@ -42,7 +40,7 @@ public class TeacherService {
         return markRepository.save(buildMark(markDto.getMark(), student, schoolSubject));
     }
 
-    public List<SubjectClassDto> getTaughtClassesByTeacher(int teacherId) {
+    public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
@@ -53,7 +51,7 @@ public class TeacherService {
     public List<TeacherOutputDto> getAllTeachersInSchool() {
         return teacherRepository.findAll()
                 .stream()
-                .map(teacher -> teacherMapper.mapTeacherToTeacherDto(teacher))
+                .map(TeacherMapper::mapTeacherToTeacherOutputDto)
                 .sorted(Comparator.comparing(TeacherOutputDto::getSurname))
                 .collect(Collectors.toList());
     }

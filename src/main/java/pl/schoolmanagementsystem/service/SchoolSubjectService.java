@@ -12,9 +12,13 @@ public class SchoolSubjectService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public SchoolSubject addSchoolSubject(TextDto subjectName) {
-        SchoolSubject schoolSubject = new SchoolSubject();
-        schoolSubject.setSubjectName(subjectName.getPlainText());
-        return schoolSubjectRepository.save(schoolSubject);
+    public SchoolSubject createSchoolSubject(TextDto subjectName) {
+        return schoolSubjectRepository.save(buildSchoolSubject(subjectName));
+    }
+
+    private SchoolSubject buildSchoolSubject(TextDto subjectName) {
+        return SchoolSubject.builder()
+                .subjectName(subjectName.getPlainText())
+                .build();
     }
 }

@@ -1,6 +1,5 @@
 package pl.schoolmanagementsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,10 +19,8 @@ public class SchoolClass {
     private String schoolClassName;
 
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
     @ManyToMany(mappedBy = "taughtClasses", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<TeacherInClass> teachersInClass = new HashSet<>();
 }

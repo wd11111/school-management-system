@@ -1,6 +1,5 @@
 package pl.schoolmanagementsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,11 +20,9 @@ public class Mark {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
-    @JsonIgnore
     private Student student;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "subject")
-    @JsonIgnore
     private SchoolSubject subject;
 }

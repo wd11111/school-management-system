@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.schoolmanagementsystem.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.mapper.StudentMapper;
@@ -13,6 +14,7 @@ import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
+import pl.schoolmanagementsystem.repository.EmailRepository;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
 
@@ -29,18 +31,23 @@ public class StudentService {
 
     private final SchoolClassRepository schoolClassRepository;
 
+    private final EmailRepository emailRepository;
+
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
+        checkIfStudentExists(studentId);
         List<MarkDtoWithTwoFields> studentsMarks = findAllMarksForStudent(studentId);
         Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
         return transformListOfMarksToListOfIntegers(groupedMarks);
     }
 
     public List<MarkAvgDto> getAverageMarksForStudent(int studentId) {
+        checkIfStudentExists(studentId);
         return studentRepository.findAllAverageMarksForStudentById(studentId);
     }
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
-        SchoolClass schoolClass = findSchoolClass(studentInputDto.getSchoolClassName());
+        checkIfEmailIsAvailable(studentInputDto);
+        SchoolClass schoolClass = findSchoolClass(studentInputDto);
         Student student = studentRepository.save(buildStudent(studentInputDto, schoolClass));
         return StudentMapper.mapStudentToOutputDto(student);
     }
@@ -51,18 +58,24 @@ public class StudentService {
         studentRepository.deleteById(studentId);
     }
 
+    public boolean isEmailAvailable(String email) {
+        return emailRepository.existsById(email);
+    }
+
+    public void checkIfEmailIsAvailable(StudentInputDto studentInputDto) {
+        if (isEmailAvailable(studentInputDto.getEmail())) {
+            throw new EmailAlreadyInUseException(studentInputDto.getEmail());
+        }
+    }
+
     private void checkIfStudentExists(int studentId) {
-        if (doesStudentExist(studentId)) {
+        if (!doesStudentExist(studentId)) {
             throw new NoSuchStudentException(studentId);
         }
     }
 
     private boolean doesStudentExist(int studentId) {
         return studentRepository.existsById(studentId);
-    }
-
-    private List<MarkDtoWithTwoFields> findAllMarksForStudent(int id) {
-        return studentRepository.findAllMarksForStudentById(id);
     }
 
     private Student buildStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {
@@ -74,9 +87,13 @@ public class StudentService {
                 .build();
     }
 
-    private SchoolClass findSchoolClass(String name) {
-        return schoolClassRepository.findBySchoolClassName(name)
-                .orElseThrow(() -> new NoSuchSchoolClassException(name));
+    private SchoolClass findSchoolClass(StudentInputDto studentInputDto) {
+        return schoolClassRepository.findBySchoolClassName(studentInputDto.getSchoolClassName())
+                .orElseThrow(() -> new NoSuchSchoolClassException(studentInputDto.getSchoolClassName()));
+    }
+
+    private List<MarkDtoWithTwoFields> findAllMarksForStudent(int id) {
+        return studentRepository.findAllMarksForStudentById(id);
     }
 
     private Map<String, List<MarkDtoWithTwoFields>> groupMarksBySubject(List<MarkDtoWithTwoFields> studentsMarks) {

@@ -27,8 +27,8 @@ public class SchoolSubjectController {
     }
 
     @DeleteMapping("/{subjectName}")
-    public ResponseEntity<Void> deleteSchoolSubject(@PathVariable String subjectName) {
-        schoolSubjectService.deleteSchoolSubjectByName(subjectName);
+    public ResponseEntity<Void> deleteSchoolSubject(@PathVariable SchoolSubjectDto schoolSubjectDto) {
+        schoolSubjectService.deleteSchoolSubjectByName(schoolSubjectDto);
         return ResponseEntity.noContent().build();
     }
 }

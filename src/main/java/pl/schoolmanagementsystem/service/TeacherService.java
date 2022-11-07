@@ -15,7 +15,10 @@ import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.repository.*;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,10 +144,21 @@ public class TeacherService {
     }
 
     private void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
-                .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass))
-                .getTaughtClasses()
-                .contains(schoolClass);
+        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
+        if (doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
+            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
+        }
+    }
+
+    private boolean doesTeacherTeachThisClass(TeacherInClass teacherInClass, SchoolClass schoolClass) {
+        return teacherInClass.getTaughtClasses().contains(schoolClass);
+    }
+
+    private TeacherInClass getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
+                                                                             SchoolSubject schoolSubject,
+                                                                             SchoolClass schoolClass) {
+        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject)
+                .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass));
     }
 
     private Set<SchoolSubject> mapStringsToSetOfSubjects(Set<String> subjects) {
@@ -153,10 +167,4 @@ public class TeacherService {
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
     }
-
-    private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
-                                                                                       SchoolSubject schoolSubject) {
-        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
-    }
-
 }

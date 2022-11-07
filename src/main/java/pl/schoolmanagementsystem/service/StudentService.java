@@ -37,9 +37,9 @@ public class StudentService {
     }
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
-        SchoolClass schoolClass = findSchoolClassOrThrow(studentInputDto.getSchoolClassName());
+        SchoolClass schoolClass = findSchoolClass(studentInputDto.getSchoolClassName());
         Student student = studentRepository.save(buildStudent(studentInputDto, schoolClass));
-        return StudentMapper.mapStudentToDtoOutput(student);
+        return StudentMapper.mapStudentToOutputDto(student);
     }
 
     private List<MarkDtoWithTwoFields> findAllMarksForStudent(int id) {
@@ -54,7 +54,7 @@ public class StudentService {
                 .build();
     }
 
-    private SchoolClass findSchoolClassOrThrow(String name) {
+    private SchoolClass findSchoolClass(String name) {
         return schoolClassRepository.findBySchoolClassName(name)
                 .orElseThrow(() -> new NoSuchSchoolClassException(name));
     }

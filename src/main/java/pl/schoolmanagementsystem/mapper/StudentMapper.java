@@ -5,7 +5,7 @@ import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
 
 public class StudentMapper {
 
-    public static StudentOutputDto mapStudentToDtoOutput(Student student) {
+    public static StudentOutputDto mapStudentToOutputDto(Student student) {
         return new StudentOutputDto(student.getStudentId(), student.getName(),
                 student.getSurname(), student.getSchoolClass().getSchoolClassName());
     }

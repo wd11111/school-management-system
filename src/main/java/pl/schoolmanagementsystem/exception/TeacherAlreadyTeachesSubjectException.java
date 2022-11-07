@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception.handler;
+package pl.schoolmanagementsystem.exception;
 
 import pl.schoolmanagementsystem.model.SchoolSubject;
 import pl.schoolmanagementsystem.model.Teacher;

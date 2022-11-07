@@ -5,7 +5,7 @@ import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
 
 public class MarkMapper {
 
-    public static MarkOutputDto mapMarkToOutput(Mark mark) {
+    public static MarkOutputDto mapMarkToOutputDto(Mark mark) {
         return new MarkOutputDto(mark.getMarkId(), mark.getMark(), mark.getStudent().getStudentId());
     }
 }

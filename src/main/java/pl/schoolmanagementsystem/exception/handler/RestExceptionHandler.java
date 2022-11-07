@@ -11,14 +11,16 @@ import pl.schoolmanagementsystem.exception.*;
 @Slf4j
 public class RestExceptionHandler {
 
-    @ExceptionHandler(value = ClassAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleClassAlreadyExists(ClassAlreadyExistsException exception) {
+    @ExceptionHandler(value = {
+            ClassAlreadyExistsException.class,
+            ClassAlreadyHasTeacherException.class,})
+    public ResponseEntity<ErrorResponse> handleClassExceptions(ClassAlreadyExistsException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = {
-            ClassAlreadyHasTeacherException.class,
-            TeacherDoesNotTeachClassException.class})
+            TeacherDoesNotTeachClassException.class,
+            TeacherAlreadyTeachesSubjectException.class})
     public ResponseEntity<ErrorResponse> handleTeacherExceptions(RuntimeException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
     }

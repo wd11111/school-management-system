@@ -30,26 +30,26 @@ public class TeacherInClassService {
     private final TeacherInClassRepository teacherInClassRepository;
 
     public TeacherInClassOutputDto addTeacherInClassToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
-        Teacher teacherObject = findTeacherOrThrow(teacherInClassInputDto.getTeacherId());
-        SchoolClass schoolClass = findSchoolClassOrThrow(schoolClassName);
-        SchoolSubject schoolSubject = findSchoolSubjectOrThrow(teacherInClassInputDto.getTaughtSubject());
+        Teacher teacherObject = findTeacher(teacherInClassInputDto.getTeacherId());
+        SchoolClass schoolClass = findSchoolClass(schoolClassName);
+        SchoolSubject schoolSubject = findSchoolSubject(teacherInClassInputDto.getTaughtSubject());
         makeSureIfTeacherTeachThisSubject(teacherObject, schoolSubject);
         checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
         teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
         return TeacherMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
     }
 
-    private Teacher findTeacherOrThrow(int id) {
+    private Teacher findTeacher(int id) {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> new NoSuchTeacherException(id));
     }
 
-    private SchoolClass findSchoolClassOrThrow(String name) {
+    private SchoolClass findSchoolClass(String name) {
         return schoolClassRepository.findBySchoolClassName(name)
                 .orElseThrow(() -> new NoSuchSchoolClassException(name));
     }
 
-    private SchoolSubject findSchoolSubjectOrThrow(String name) {
+    private SchoolSubject findSchoolSubject(String name) {
         return schoolSubjectRepository.findBySubjectName(name)
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
     }

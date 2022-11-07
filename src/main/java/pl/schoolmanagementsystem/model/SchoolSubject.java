@@ -20,7 +20,7 @@ public class SchoolSubject {
     @Column(nullable = false, unique = true)
     private String subjectName;
 
-    @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Teacher> teachers = new HashSet<>();
 
     @OneToMany(mappedBy = "taughtSubject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

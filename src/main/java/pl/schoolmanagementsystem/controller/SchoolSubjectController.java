@@ -3,22 +3,31 @@ package pl.schoolmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.model.SchoolSubject;
+import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.model.dto.input.TextDto;
 import pl.schoolmanagementsystem.service.SchoolSubjectService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/subjects")
 public class SchoolSubjectController {
 
     private final SchoolSubjectService schoolSubjectService;
 
-    @PostMapping("/subjects")
+    @GetMapping
+    public ResponseEntity<List<SchoolSubjectDto>> getAllSchoolSubjects() {
+        return ResponseEntity.ok(schoolSubjectService.getAllSchoolSubjects());
+    }
+
+    @PostMapping
     public ResponseEntity<SchoolSubjectDto> createSchoolSubject(@RequestBody SchoolSubjectDto schoolSubjectDto) {
         return new ResponseEntity<>(schoolSubjectService.createSchoolSubject(schoolSubjectDto), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{subjectName}")
+    public ResponseEntity<SchoolSubjectDto> deleteSchoolSubject(@PathVariable String subjectName) {
+        return ResponseEntity.ok(schoolSubjectService.deleteSchoolSubjectByName(subjectName));
     }
 }

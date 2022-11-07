@@ -18,4 +18,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
     @Override
     @Query("select distinct t from Teacher t join fetch t.taughtSubjects")
     List<Teacher> findAll();
+
 }

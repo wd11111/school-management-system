@@ -27,5 +27,4 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, String
             "from SchoolClass c join c.teachersInClass t where c.schoolClassName=?1 " +
             "order by t.taughtSubject.subjectName")
     List<SubjectAndTeacherOutputDto> findAllSubjectsForSchoolClass(String className);
-
 }

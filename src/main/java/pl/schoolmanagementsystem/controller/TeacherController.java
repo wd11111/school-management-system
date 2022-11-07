@@ -34,7 +34,7 @@ public class TeacherController {
         return new ResponseEntity<>(teacherService.createTeacher(teacherInputDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/classes")
     public ResponseEntity<TeacherOutputDto> addTaughtSubjectToTeacher(@PathVariable int id,
                                                                       @RequestBody SchoolSubjectDto schoolSubjectDto) {
         return ResponseEntity.ok(teacherService.addTaughtSubjectToTeacher(id, schoolSubjectDto));

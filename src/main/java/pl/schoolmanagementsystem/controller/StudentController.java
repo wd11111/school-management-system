@@ -45,4 +45,5 @@ public class StudentController {
     public ResponseEntity<StudentOutputDto> createStudent(@RequestBody StudentInputDto studentInputDto) {
         return new ResponseEntity<>(studentService.createStudent(studentInputDto), HttpStatus.CREATED);
     }
+
 }

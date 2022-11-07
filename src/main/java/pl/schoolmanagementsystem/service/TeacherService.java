@@ -3,11 +3,7 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
-import pl.schoolmanagementsystem.exception.NoSuchStudentException;
-import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
-import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachClassException;
-import pl.schoolmanagementsystem.exception.TeacherAlreadyTeachesSubjectException;
+import pl.schoolmanagementsystem.exception.*;
 import pl.schoolmanagementsystem.mapper.MarkMapper;
 import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.model.*;
@@ -95,6 +91,7 @@ public class TeacherService {
                 .name(teacherInputDto.getName())
                 .surname(teacherInputDto.getSurname())
                 .teacherInClasses(new HashSet<>())
+                .taughtSubjects(mapStringsToSetOfSubjects(teacherInputDto.getTaughtSubjects()))
                 .build();
     }
 
@@ -113,11 +110,18 @@ public class TeacherService {
                 .orElseThrow(() -> new NoSuchTeacherException(id));
     }
 
-    private boolean checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        return getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
+    private void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+        getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass))
                 .getTaughtClasses()
                 .contains(schoolClass);
+    }
+
+    public Set<SchoolSubject> mapStringsToSetOfSubjects(Set<String> subjects) {
+        return subjects.stream()
+                .map(subject -> schoolSubjectRepository.findBySubjectName(subject)
+                        .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
+                .collect(Collectors.toSet());
     }
 
     private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,

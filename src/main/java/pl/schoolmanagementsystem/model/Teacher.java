@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,7 +27,7 @@ public class Teacher {
                     @JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
             inverseJoinColumns = {
                     @JoinColumn(name = "subject_name", referencedColumnName = "subjectName")})
-    private Set<SchoolSubject> taughtSubjects = new HashSet<>();
+    private Set<SchoolSubject> taughtSubjects;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<TeacherInClass> teacherInClasses;

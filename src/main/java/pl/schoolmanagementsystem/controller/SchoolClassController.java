@@ -34,7 +34,7 @@ public class SchoolClassController {
     }
 
     @GetMapping("/{className}/subjects")
-    public ResponseEntity<List<SubjectAndTeacherOutputDto>> getAllSubjectsForSchoolClass(@PathVariable String className) {
+    public ResponseEntity<List<SubjectAndTeacherOutputDto>> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
         return ResponseEntity.ok(schoolClassService.getAllSubjectsForSchoolClass(className));
     }
 

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class TeacherMapper {
 
-    public static TeacherOutputDto mapTeacherToTeacherOutputDto(Teacher teacher) {
+    public static TeacherOutputDto mapTeacherToOutputDto(Teacher teacher) {
         return TeacherOutputDto.builder()
                 .id(teacher.getTeacherId())
                 .name(teacher.getName())
@@ -26,7 +26,7 @@ public class TeacherMapper {
                 .collect(Collectors.toSet());
     }
 
-    public static TeacherInClassOutputDto mapTeacherInClassInputDtoToOutput(
+    public static TeacherInClassOutputDto mapTeacherInClassInputToOutputDto(
             TeacherInClassInputDto teacherInput, String subjectName) {
         return new TeacherInClassOutputDto(
                 teacherInput.getTeacherId(), teacherInput.getTaughtSubject(), subjectName);

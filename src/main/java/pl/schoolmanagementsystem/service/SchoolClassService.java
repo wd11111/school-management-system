@@ -7,6 +7,7 @@ import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto2;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
 
@@ -31,6 +32,15 @@ public class SchoolClassService {
         return studentRepository.findAllStudentsInClass(schoolClassName);
     }
 
+    public List<SchoolClassDto> getListOfClasses() {
+        return schoolClassRepository.findAllSchoolClasses();
+    }
+
+    public List<SubjectAndTeacherOutputDto> getAllSubjectsForSchoolClass(String schoolClassName) {
+        checkIfClassExists(schoolClassName);
+        return schoolClassRepository.findAllSubjectsForSchoolClass(schoolClassName);
+    }
+
     private SchoolClass buildSchoolClass(SchoolClassDto schoolClassDto) {
         return SchoolClass.builder()
                 .schoolClassName(schoolClassDto.getSchoolClassName())
@@ -38,18 +48,18 @@ public class SchoolClassService {
     }
 
     private void checkIfClassExists(String schoolClassName) {
-        if (!schoolClassExistsByName(schoolClassName)) {
-         throw new NoSuchSchoolClassException(schoolClassName);
+        if (!doesSchoolClassExistsByName(schoolClassName)) {
+            throw new NoSuchSchoolClassException(schoolClassName);
         }
     }
 
     private void checkIfClassAlreadyExists(SchoolClassDto schoolClassDto) {
-        if (schoolClassExistsByName(schoolClassDto.getSchoolClassName())) {
+        if (doesSchoolClassExistsByName(schoolClassDto.getSchoolClassName())) {
             throw new ClassAlreadyExistsException(schoolClassDto);
         }
     }
 
-    private boolean schoolClassExistsByName(String schoolClassName) {
+    private boolean doesSchoolClassExistsByName(String schoolClassName) {
         return schoolClassRepository.existsBySchoolClassName(schoolClassName);
     }
 }

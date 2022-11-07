@@ -36,7 +36,7 @@ public class TeacherInClassService {
         makeSureIfTeacherTeachThisSubject(teacherObject, schoolSubject);
         checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
         teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
-        return TeacherMapper.mapTeacherInClassInputDtoToOutput(teacherInClassInputDto, schoolClassName);
+        return TeacherMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
     }
 
     private Teacher findTeacher(int id) {

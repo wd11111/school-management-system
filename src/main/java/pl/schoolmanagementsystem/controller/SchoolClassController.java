@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.model.dto.input.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto2;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.model.dto.output.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.service.SchoolClassService;
 import pl.schoolmanagementsystem.service.TeacherInClassService;
@@ -22,6 +23,21 @@ public class SchoolClassController {
 
     private final TeacherInClassService teacherInClassService;
 
+    @GetMapping
+    public ResponseEntity<List<SchoolClassDto>> getListOfClasses() {
+        return ResponseEntity.ok(schoolClassService.getListOfClasses());
+    }
+
+    @GetMapping("/{className}")
+    public ResponseEntity<List<StudentOutputDto2>> getAllStudentsInClass(@PathVariable String className) {
+        return ResponseEntity.ok(schoolClassService.getAllStudentsInClass(className));
+    }
+
+    @GetMapping("/{className}/subjects")
+    public ResponseEntity<List<SubjectAndTeacherOutputDto>> getAllSubjectsForSchoolClass(@PathVariable String className) {
+        return ResponseEntity.ok(schoolClassService.getAllSubjectsForSchoolClass(className));
+    }
+
     @PostMapping
     public ResponseEntity<SchoolClassDto> createSchoolClass(@RequestBody SchoolClassDto schoolClassDto) {
         return new ResponseEntity<>(schoolClassService.createSchoolClass(schoolClassDto), HttpStatus.CREATED);
@@ -34,8 +50,4 @@ public class SchoolClassController {
                 teacherInClassInputDto, className), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{className}")
-    public ResponseEntity<List<StudentOutputDto2>> getAllStudentsInClass(@PathVariable String className) {
-        return ResponseEntity.ok(schoolClassService.getAllStudentsInClass(className));
-    }
 }

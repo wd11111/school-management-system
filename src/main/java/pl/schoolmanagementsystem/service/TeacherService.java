@@ -54,7 +54,7 @@ public class TeacherService {
     public List<TeacherOutputDto> getAllTeachersInSchool() {
         return teacherRepository.findAll()
                 .stream()
-                .map(TeacherMapper::mapTeacherToTeacherOutputDto)
+                .map(TeacherMapper::mapTeacherToOutputDto)
                 .sorted(Comparator.comparing(TeacherOutputDto::getSurname))
                 .collect(Collectors.toList());
     }

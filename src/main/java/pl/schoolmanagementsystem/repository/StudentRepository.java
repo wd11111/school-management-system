@@ -22,6 +22,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             "from Student s left join Mark m on m.student=s where s.studentId=?1")
     List<MarkDtoWithTwoFields> findAllMarksForStudentById(int id);
 
-    @Query("select new pl.schoolmanagementsystem.model.dto.output.StudentOutputDto2(s.studentId, s.name, s.surname) from Student s where s.schoolClass.schoolClassName=?1 order by s.surname")
+    @Query("select new pl.schoolmanagementsystem.model.dto.output.StudentOutputDto2(s.studentId, s.name, s.surname) " +
+            "from Student s where s.schoolClass.schoolClassName=?1 order by s.surname")
     List<StudentOutputDto2> findAllStudentsInClass(String schoolClassName);
+
 }

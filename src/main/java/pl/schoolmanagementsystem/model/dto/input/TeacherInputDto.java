@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class TeacherInputDto {
 
+    private String email;
     private String name;
     private String surname;
     private Set<String> taughtSubjects;

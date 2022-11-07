@@ -33,7 +33,7 @@ public class TeacherInClassService {
         Teacher teacherObject = findTeacher(teacherInClassInputDto.getTeacherId());
         SchoolClass schoolClass = findSchoolClass(schoolClassName);
         SchoolSubject schoolSubject = findSchoolSubject(teacherInClassInputDto.getTaughtSubject());
-        makeSureIfTeacherTeachThisSubject(teacherObject, schoolSubject);
+        makeSureIfTeacherTeachesThisSubject(teacherObject, schoolSubject);
         checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
         teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
         return TeacherMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
@@ -54,18 +54,21 @@ public class TeacherInClassService {
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
     }
 
-    private void makeSureIfTeacherTeachThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        boolean doesTeacherTeachTheSubject = teacher.getTaughtSubjects().contains(schoolSubject);
-        if (!doesTeacherTeachTheSubject) {
+    private void makeSureIfTeacherTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        if (!doesTeacherTeachTheSubject(teacher, schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }
+    }
+
+    private boolean doesTeacherTeachTheSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        return teacher.getTaughtSubjects().contains(schoolSubject);
     }
 
     private TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());
         teacherInClass.getTaughtClasses().add(schoolClass);
-        if (!doesTeacherAlreadyHaveEquivalent(teacher, schoolSubject)) {
+        if (hasTeacherInClassBeenJustCreated(teacherInClass)) {
             teacherInClass.setTeacher(teacher);
             teacherInClass.setTaughtSubject(schoolSubject);
         }
@@ -77,8 +80,8 @@ public class TeacherInClassService {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
-    private boolean doesTeacherAlreadyHaveEquivalent(Teacher teacher, SchoolSubject schoolSubject) {
-        return teacherInClassRepository.existsByTeacherAndTaughtSubject(teacher, schoolSubject);
+    private boolean hasTeacherInClassBeenJustCreated(TeacherInClass teacherInClass) {
+        return teacherInClass.getTeacher() == null;
     }
 
     private void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass,

@@ -49,6 +49,7 @@ public class TeacherService {
     }
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
+        checkIfEmailIsAvailable(teacherInputDto.getEmail());
         Teacher teacher = teacherRepository.save(buildTeacher(teacherInputDto));
         return TeacherMapper.mapTeacherToOutputDto(teacher);
     }
@@ -100,14 +101,18 @@ public class TeacherService {
         }
     }
 
+    private boolean doesTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        return teacher.getTaughtSubjects().contains(schoolSubject);
+    }
+
     private void checkIfTeacherExists(int teacherId) {
         if (doesTeacherExist(teacherId)) {
             throw new NoSuchTeacherException(teacherId);
         }
     }
 
-    private boolean doesTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        return teacher.getTaughtSubjects().contains(schoolSubject);
+    private boolean doesTeacherExist(int teacherId) {
+        return teacherRepository.existsById(teacherId);
     }
 
     private Teacher buildTeacher(TeacherInputDto teacherInputDto) {
@@ -116,11 +121,8 @@ public class TeacherService {
                 .surname(teacherInputDto.getSurname())
                 .teacherInClasses(new HashSet<>())
                 .taughtSubjects(mapStringsToSetOfSubjects(teacherInputDto.getTaughtSubjects()))
+                .email(new Email(teacherInputDto.getEmail()))
                 .build();
-    }
-
-    private boolean doesTeacherExist(int teacherId) {
-        return teacherRepository.existsById(teacherId);
     }
 
     private SchoolSubject findSubject(String subjectName) {
@@ -155,18 +157,6 @@ public class TeacherService {
     private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
                                                                                        SchoolSubject schoolSubject) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
-    }
-
-    private boolean doesSubjectAlreadyExistInDatabase(String subjectName) {
-        return schoolSubjectRepository.existsBySubjectName(subjectName);
-    }
-
-    private Set<SchoolSubject> transformSetOfStringsToSetOfSchoolClassObjects(Set<String> subjects) {
-        return subjects.stream()
-                .filter(subject -> doesSubjectAlreadyExistInDatabase(subject))
-                .map(subject -> schoolSubjectRepository.findBySubjectName(subject)
-                        .orElse(null))
-                .collect(Collectors.toSet());
     }
 
 }

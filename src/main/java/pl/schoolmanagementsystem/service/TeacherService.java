@@ -48,11 +48,12 @@ public class TeacherService {
     }
 
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
+        checkIfTeacherExists(teacherId);
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
-        checkIfEmailIsAvailable(teacherInputDto.getEmail());
+        checkIfEmailIsAvailable(teacherInputDto);
         Teacher teacher = teacherRepository.save(buildTeacher(teacherInputDto));
         return TeacherMapper.mapTeacherToOutputDto(teacher);
     }
@@ -92,9 +93,9 @@ public class TeacherService {
         return emailRepository.existsById(email);
     }
 
-    public void checkIfEmailIsAvailable(String email) {
-        if (isEmailAvailable(email)) {
-            throw new EmailAlreadyInUseException(email);
+    public void checkIfEmailIsAvailable(TeacherInputDto teacherInputDto) {
+        if (isEmailAvailable(teacherInputDto.getEmail())) {
+            throw new EmailAlreadyInUseException(teacherInputDto.getEmail());
         }
     }
 
@@ -109,7 +110,7 @@ public class TeacherService {
     }
 
     private void checkIfTeacherExists(int teacherId) {
-        if (doesTeacherExist(teacherId)) {
+        if (!doesTeacherExist(teacherId)) {
             throw new NoSuchTeacherException(teacherId);
         }
     }
@@ -145,7 +146,7 @@ public class TeacherService {
 
     private void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
-        if (doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
+        if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
             throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
         }
     }

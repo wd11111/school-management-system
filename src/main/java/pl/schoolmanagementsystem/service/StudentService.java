@@ -58,11 +58,11 @@ public class StudentService {
         studentRepository.deleteById(studentId);
     }
 
-    public boolean isEmailAvailable(String email) {
+    private boolean isEmailAvailable(String email) {
         return emailRepository.existsById(email);
     }
 
-    public void checkIfEmailIsAvailable(StudentInputDto studentInputDto) {
+    private void checkIfEmailIsAvailable(StudentInputDto studentInputDto) {
         if (isEmailAvailable(studentInputDto.getEmail())) {
             throw new EmailAlreadyInUseException(studentInputDto.getEmail());
         }

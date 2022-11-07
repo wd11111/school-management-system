@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.mapper.StudentMapper;
+import pl.schoolmanagementsystem.model.Email;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
@@ -69,6 +70,7 @@ public class StudentService {
                 .name(studentInputDto.getName())
                 .surname(studentInputDto.getSurname())
                 .schoolClass(schoolClass)
+                .email(new Email(studentInputDto.getEmail()))
                 .build();
     }
 

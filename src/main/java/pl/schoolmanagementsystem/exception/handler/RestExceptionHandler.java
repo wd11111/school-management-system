@@ -18,6 +18,11 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(value = EmailAlreadyInUseException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyInUse(EmailAlreadyInUseException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(value = {
             TeacherDoesNotTeachClassException.class,
             TeacherAlreadyTeachesSubjectException.class})

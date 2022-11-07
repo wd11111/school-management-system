@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.schoolmanagementsystem.model.Teacher;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +22,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
     Optional<Teacher> findByName(String name);
 
+    Teacher findByEmail_Email(String email);
+
+    boolean existsByEmail_Email(String email);
 }

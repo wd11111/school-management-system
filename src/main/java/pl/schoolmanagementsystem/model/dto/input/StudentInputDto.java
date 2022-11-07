@@ -11,4 +11,5 @@ public class StudentInputDto {
     private String name;
     private String surname;
     private String schoolClassName;
+    private String email;
 }

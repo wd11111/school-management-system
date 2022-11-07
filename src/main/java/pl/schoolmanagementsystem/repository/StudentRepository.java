@@ -9,6 +9,7 @@ import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto2;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
@@ -25,5 +26,9 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     @Query("select new pl.schoolmanagementsystem.model.dto.output.StudentOutputDto2(s.studentId, s.name, s.surname) " +
             "from Student s where s.schoolClass.schoolClassName=?1 order by s.surname")
     List<StudentOutputDto2> findAllStudentsInClass(String schoolClassName);
+
+    Student findByEmail_Email(String email);
+
+    boolean existsByEmail_Email(String email);
 
 }

@@ -23,6 +23,10 @@ public class Teacher {
 
     private String password;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
+    private Email email;
+
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "teacher_subjects",
             joinColumns = {

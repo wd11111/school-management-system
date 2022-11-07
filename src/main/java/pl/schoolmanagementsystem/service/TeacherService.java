@@ -24,6 +24,8 @@ public class TeacherService {
 
     private final StudentRepository studentRepository;
 
+    private final EmailRepository emailRepository;
+
     private final MarkRepository markRepository;
 
     private final TeacherInClassRepository teacherInClassRepository;
@@ -80,6 +82,16 @@ public class TeacherService {
                 .student(student)
                 .subject(schoolSubject)
                 .build();
+    }
+
+    public boolean isEmailAvailable(String email) {
+        return emailRepository.existsById(email);
+    }
+
+    public void checkIfEmailIsAvailable(String email) {
+        if (isEmailAvailable(email)) {
+            throw new EmailAlreadyInUseException(email);
+        }
     }
 
     private void checkIfTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {

@@ -39,4 +39,10 @@ public class TeacherController {
                                                                       @RequestBody SchoolSubjectDto schoolSubjectDto) {
         return ResponseEntity.ok(teacherService.addTaughtSubjectToTeacher(id, schoolSubjectDto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTeacher(@PathVariable int id) {
+        teacherService.deleteTeacher(id);
+        return ResponseEntity.noContent().build();
+    }
 }

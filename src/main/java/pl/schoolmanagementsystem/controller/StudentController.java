@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.model.Mark;
-import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
 import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
@@ -46,4 +44,9 @@ public class StudentController {
         return new ResponseEntity<>(studentService.createStudent(studentInputDto), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStudent(@PathVariable int id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.noContent().build();
+    }
 }

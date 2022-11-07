@@ -31,11 +31,10 @@ public class SchoolSubjectService {
     }
 
     @Transactional
-    public SchoolSubjectDto deleteSchoolSubjectByName(String schoolSubjectName) {
+    public void deleteSchoolSubjectByName(String schoolSubjectName) {
         checkIfSubjectExists(schoolSubjectName);
         schoolSubjectRepository.deleteTaughtSubjects(schoolSubjectName);
         schoolSubjectRepository.deleteById(schoolSubjectName);
-        return buildSchoolSubjectDto(schoolSubjectName);
     }
 
     private SchoolSubjectDto buildSchoolSubjectDto(String schoolSubjectName) {

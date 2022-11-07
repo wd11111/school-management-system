@@ -68,6 +68,12 @@ public class TeacherService {
         return TeacherMapper.mapTeacherToOutputDto(teacher);
     }
 
+    @Transactional
+    public void deleteTeacher(int teacherId) {
+        checkIfTeacherExists(teacherId);
+        teacherRepository.deleteById(teacherId);
+    }
+
     private Mark buildMark(int mark, Student student, SchoolSubject schoolSubject) {
         return Mark.builder()
                 .mark(mark)
@@ -82,6 +88,12 @@ public class TeacherService {
         }
     }
 
+    private void checkIfTeacherExists(int teacherId) {
+        if (doesTeacherExist(teacherId)) {
+            throw new NoSuchTeacherException(teacherId);
+        }
+    }
+
     private boolean doesTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
         return teacher.getTaughtSubjects().contains(schoolSubject);
     }
@@ -93,6 +105,10 @@ public class TeacherService {
                 .teacherInClasses(new HashSet<>())
                 .taughtSubjects(mapStringsToSetOfSubjects(teacherInputDto.getTaughtSubjects()))
                 .build();
+    }
+
+    private boolean doesTeacherExist(int teacherId) {
+        return teacherRepository.existsById(teacherId);
     }
 
     private SchoolSubject findSubject(String subjectName) {

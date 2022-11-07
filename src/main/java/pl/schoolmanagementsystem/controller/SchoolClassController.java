@@ -49,5 +49,4 @@ public class SchoolClassController {
         return new ResponseEntity<>(teacherInClassService.addTeacherInClassToSchoolClass(
                 teacherInClassInputDto, className), HttpStatus.CREATED);
     }
-
 }

@@ -2,7 +2,9 @@ package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
+import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.mapper.StudentMapper;
 import pl.schoolmanagementsystem.model.SchoolClass;
 import pl.schoolmanagementsystem.model.Student;
@@ -40,6 +42,22 @@ public class StudentService {
         SchoolClass schoolClass = findSchoolClass(studentInputDto.getSchoolClassName());
         Student student = studentRepository.save(buildStudent(studentInputDto, schoolClass));
         return StudentMapper.mapStudentToOutputDto(student);
+    }
+
+    @Transactional
+    public void deleteStudent(int studentId) {
+        checkIfStudentExists(studentId);
+        studentRepository.deleteById(studentId);
+    }
+
+    private void checkIfStudentExists(int studentId) {
+        if (doesStudentExist(studentId)) {
+            throw new NoSuchStudentException(studentId);
+        }
+    }
+
+    private boolean doesStudentExist(int studentId) {
+        return studentRepository.existsById(studentId);
     }
 
     private List<MarkDtoWithTwoFields> findAllMarksForStudent(int id) {

@@ -21,6 +21,8 @@ public class Teacher {
 
     private String surname;
 
+    private String password;
+
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "teacher_subjects",
             joinColumns = {

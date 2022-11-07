@@ -3,12 +3,9 @@ package pl.schoolmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.exception.ClassAlreadyExistsException;
-import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.exception.SubjectAlreadyExistsException;
 import pl.schoolmanagementsystem.model.SchoolSubject;
-import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
 
@@ -35,10 +32,6 @@ public class SchoolSubjectService {
         checkIfSubjectExists(schoolSubjectName);
         schoolSubjectRepository.deleteTaughtSubjects(schoolSubjectName);
         schoolSubjectRepository.deleteById(schoolSubjectName);
-    }
-
-    private SchoolSubjectDto buildSchoolSubjectDto(String schoolSubjectName) {
-        return new SchoolSubjectDto(schoolSubjectName);
     }
 
     private void checkIfSubjectAlreadyExists(SchoolSubjectDto schoolSubjectDto) {

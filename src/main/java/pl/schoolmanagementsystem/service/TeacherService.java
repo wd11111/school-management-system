@@ -133,7 +133,7 @@ public class TeacherService {
                 .contains(schoolClass);
     }
 
-    public Set<SchoolSubject> mapStringsToSetOfSubjects(Set<String> subjects) {
+    private Set<SchoolSubject> mapStringsToSetOfSubjects(Set<String> subjects) {
         return subjects.stream()
                 .map(subject -> schoolSubjectRepository.findBySubjectName(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))

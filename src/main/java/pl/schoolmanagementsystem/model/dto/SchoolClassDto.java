@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class SchoolClassDto {
 
     private String schoolClassName;

@@ -25,6 +25,8 @@ public class Student {
 
     private String surname;
 
+    private String password;
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Mark> marks = new ArrayList<>();
 

@@ -37,7 +37,7 @@ public class StudentService {
     }
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
-        SchoolClass schoolClass = findSchoolClass(studentInputDto.getSchoolClassName());
+        SchoolClass schoolClass = findSchoolClassOrThrow(studentInputDto.getSchoolClassName());
         Student student = studentRepository.save(buildStudent(studentInputDto, schoolClass));
         return StudentMapper.mapStudentToDtoOutput(student);
     }
@@ -54,7 +54,7 @@ public class StudentService {
                 .build();
     }
 
-    private SchoolClass findSchoolClass(String name) {
+    private SchoolClass findSchoolClassOrThrow(String name) {
         return schoolClassRepository.findBySchoolClassName(name)
                 .orElseThrow(() -> new NoSuchSchoolClassException(name));
     }

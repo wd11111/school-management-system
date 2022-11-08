@@ -13,7 +13,6 @@ import pl.schoolmanagementsystem.model.dto.output.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.service.SchoolClassService;
 import pl.schoolmanagementsystem.service.TeacherInClassService;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -31,21 +30,25 @@ public class SchoolClassController {
         return ResponseEntity.ok(schoolClassService.getListOfClasses());
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{className}")
     public ResponseEntity<List<StudentOutputDto2>> getAllStudentsInClass(@PathVariable String className) {
         return ResponseEntity.ok(schoolClassService.getAllStudentsInClass(className));
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{className}/subjects")
     public ResponseEntity<List<SubjectAndTeacherOutputDto>> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
         return ResponseEntity.ok(schoolClassService.getAllSubjectsForSchoolClass(className));
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<SchoolClassDto> createSchoolClass(@RequestBody SchoolClassDto schoolClassDto) {
         return new ResponseEntity<>(schoolClassService.createSchoolClass(schoolClassDto), HttpStatus.CREATED);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/{className}/teachers")
     public ResponseEntity<TeacherInClassOutputDto> addTeacherToSchoolClass(
             @PathVariable String className, @RequestBody TeacherInClassInputDto teacherInClassInputDto) {

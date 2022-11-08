@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.mapper.StudentMapper;
@@ -15,7 +14,6 @@ import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
-import pl.schoolmanagementsystem.repository.EmailRepository;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
 
@@ -32,7 +30,7 @@ public class StudentService {
 
     private final SchoolClassRepository schoolClassRepository;
 
-    private final EmailRepository emailRepository;
+    private final EmailService emailService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -73,7 +71,7 @@ public class StudentService {
         return studentRepository.findAllAverageMarksForStudentById(id);
     }
 
-    public Map<String, List<Integer>> groupMarksBySubjectForStudent(int studentId){
+    public Map<String, List<Integer>> groupMarksBySubjectForStudent(int studentId) {
         List<MarkDtoWithTwoFields> studentsMarks = findAllMarksForStudent(studentId);
         Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
         return transformListOfMarksToListOfIntegers(groupedMarks);
@@ -84,14 +82,8 @@ public class StudentService {
                 .orElseThrow(() -> new NoSuchStudentException(1337));
     }
 
-    private boolean isEmailAvailable(String email) {
-        return emailRepository.existsById(email);
-    }
-
     private void checkIfEmailIsAvailable(StudentInputDto studentInputDto) {
-        if (isEmailAvailable(studentInputDto.getEmail())) {
-            throw new EmailAlreadyInUseException(studentInputDto.getEmail());
-        }
+        emailService.checkIfEmailIsAvailable(studentInputDto.getEmail());
     }
 
     private void checkIfStudentExists(int studentId) {

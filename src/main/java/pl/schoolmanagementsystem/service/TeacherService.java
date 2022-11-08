@@ -11,7 +11,9 @@ import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
 import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
-import pl.schoolmanagementsystem.model.dto.output.*;
+import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
+import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
+import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
 import pl.schoolmanagementsystem.repository.*;
 
 import java.util.Comparator;
@@ -28,7 +30,7 @@ public class TeacherService {
 
     private final StudentRepository studentRepository;
 
-    private final EmailRepository emailRepository;
+    private final EmailService emailService;
 
     private final MarkRepository markRepository;
 
@@ -40,7 +42,7 @@ public class TeacherService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public MarkOutputDto addMark(String teacherEmail,MarkInputDto markInputDto, int studentId) {
+    public MarkOutputDto addMark(String teacherEmail, MarkInputDto markInputDto, int studentId) {
         Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
         Teacher teacher = findTeacherByEmail(teacherEmail);
@@ -89,29 +91,23 @@ public class TeacherService {
         teacherRepository.deleteById(teacherId);
     }
 
+    protected void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
+        if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
+            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
+        }
+    }
+
+    private void checkIfEmailIsAvailable(TeacherInputDto teacherInputDto) {
+        emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
+    }
+
     private Mark buildMark(int mark, Student student, SchoolSubject schoolSubject) {
         return Mark.builder()
                 .mark(mark)
                 .student(student)
                 .subject(schoolSubject)
                 .build();
-    }
-
-    public boolean isEmailAvailable(String email) {
-        return emailRepository.existsById(email);
-    }
-
-    public void checkIfEmailIsAvailable(TeacherInputDto teacherInputDto) {
-        if (isEmailAvailable(teacherInputDto.getEmail())) {
-            throw new EmailAlreadyInUseException(teacherInputDto.getEmail());
-        }
-    }
-
-    protected void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
-        if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
-            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
-        }
     }
 
     private void checkIfTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {

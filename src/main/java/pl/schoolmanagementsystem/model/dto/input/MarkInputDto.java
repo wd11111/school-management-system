@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MarkInputDto {
 
-    private int teacherId;
     private int mark;
     private String subject;
 

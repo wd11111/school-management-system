@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.EmailAlreadyInUseException;
@@ -33,6 +34,8 @@ public class StudentService {
 
     private final EmailRepository emailRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
         checkIfStudentExists(studentId);
         List<MarkDtoWithTwoFields> studentsMarks = findAllMarksForStudent(studentId);
@@ -43,6 +46,12 @@ public class StudentService {
     public List<MarkAvgDto> getAverageMarksForStudent(int studentId) {
         checkIfStudentExists(studentId);
         return studentRepository.findAllAverageMarksForStudentById(studentId);
+    }
+
+    public List<MarkAvgDto> getAveragesForProfile(String email) {
+        Student student = findStudent(email);
+      //  checkIfStudentExists(studentId);
+        return studentRepository.findAllAverageMarksForStudentById(student.getStudentId());
     }
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
@@ -56,6 +65,11 @@ public class StudentService {
     public void deleteStudent(int studentId) {
         checkIfStudentExists(studentId);
         studentRepository.deleteById(studentId);
+    }
+
+    private Student findStudent(String email) {
+        return studentRepository.findByEmail_Email(email)
+                .orElseThrow(() -> new NoSuchStudentException(1337));
     }
 
     private boolean isEmailAvailable(String email) {
@@ -82,8 +96,9 @@ public class StudentService {
         return Student.builder()
                 .name(studentInputDto.getName())
                 .surname(studentInputDto.getSurname())
-                .schoolClass(schoolClass)
                 .email(new Email(studentInputDto.getEmail()))
+                .password(passwordEncoder.encode(studentInputDto.getPassword()))
+                .schoolClass(schoolClass)
                 .build();
     }
 

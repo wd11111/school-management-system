@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.*;
@@ -37,10 +38,12 @@ public class TeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public MarkOutputDto addMark(MarkInputDto markInputDto, int studentId) {
+    private final PasswordEncoder passwordEncoder;
+
+    public MarkOutputDto addMark(String teacherEmail,MarkInputDto markInputDto, int studentId) {
         Student student = findStudent(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
-        Teacher teacher = findTeacher(markInputDto.getTeacherId());
+        Teacher teacher = findTeacherByEmail(teacherEmail);
         SchoolSubject schoolSubject = findSubject(markInputDto.getSubject());
         checkIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
         Mark mark = markRepository.save(buildMark(markInputDto.getMark(), student, schoolSubject));
@@ -68,7 +71,7 @@ public class TeacherService {
 
     @Transactional
     public TeacherOutputDto addTaughtSubjectToTeacher(int teacherId, SchoolSubjectDto schoolSubjectDto) {
-        Teacher teacher = findTeacher(teacherId);
+        Teacher teacher = findTeacherById(teacherId);
         SchoolSubject schoolSubject = findSubject(schoolSubjectDto.getSubject());
         checkIfTeacherAlreadyTeachesThisSubject(teacher, schoolSubject);
         teacher.getTaughtSubjects().add(schoolSubject);
@@ -123,9 +126,11 @@ public class TeacherService {
         return Teacher.builder()
                 .name(teacherInputDto.getName())
                 .surname(teacherInputDto.getSurname())
-                .teacherInClasses(new HashSet<>())
-                .taughtSubjects(mapStringsToSetOfSubjects(teacherInputDto.getTaughtSubjects()))
                 .email(new Email(teacherInputDto.getEmail()))
+                .isAdmin(teacherInputDto.isAdmin())
+                .password(passwordEncoder.encode(teacherInputDto.getPassword()))
+                .taughtSubjects(mapStringsToSetOfSubjects(teacherInputDto.getTaughtSubjects()))
+                .teacherInClasses(new HashSet<>())
                 .build();
     }
 
@@ -139,9 +144,13 @@ public class TeacherService {
                 .orElseThrow(() -> new NoSuchStudentException(id));
     }
 
-    private Teacher findTeacher(int id) {
+    private Teacher findTeacherById(int id) {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> new NoSuchTeacherException(id));
+    }
+
+    private Teacher findTeacherByEmail(String email) {
+        return teacherRepository.findByEmail_Email(email).get();
     }
 
     private void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {

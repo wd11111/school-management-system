@@ -23,6 +23,8 @@ public class Teacher {
 
     private String password;
 
+    private boolean isAdmin;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
     private Email email;

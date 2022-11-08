@@ -14,7 +14,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = {
             ClassAlreadyExistsException.class,
             ClassAlreadyHasTeacherException.class,})
-    public ResponseEntity<ErrorResponse> handleClassExceptions(ClassAlreadyExistsException exception) {
+    public ResponseEntity<ErrorResponse> handleClassExceptions(RuntimeException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
     }
 
@@ -23,9 +23,15 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(value = SubjectAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleSubjectExceptions(SubjectAlreadyExistsException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(value = {
             TeacherDoesNotTeachClassException.class,
-            TeacherAlreadyTeachesSubjectException.class})
+            TeacherAlreadyTeachesSubjectException.class,
+            TeacherDoesNotTeachSubjectException.class})
     public ResponseEntity<ErrorResponse> handleTeacherExceptions(RuntimeException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
     }

@@ -20,9 +20,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
     @Query("select distinct t from Teacher t join fetch t.taughtSubjects")
     List<Teacher> findAll();
 
-    Optional<Teacher> findByName(String name);
-
-    Teacher findByEmail_Email(String email);
-
-    boolean existsByEmail_Email(String email);
+    Optional<Teacher> findByEmail_Email(String email);
 }

@@ -27,8 +27,5 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             "from Student s where s.schoolClass.schoolClassName=?1 order by s.surname")
     List<StudentOutputDto2> findAllStudentsInClass(String schoolClassName);
 
-    Student findByEmail_Email(String email);
-
-    boolean existsByEmail_Email(String email);
-
+    Optional<Student> findByEmail_Email(String email);
 }

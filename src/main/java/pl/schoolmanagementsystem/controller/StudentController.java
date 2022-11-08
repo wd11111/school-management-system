@@ -3,6 +3,8 @@ package pl.schoolmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
@@ -35,8 +37,9 @@ public class StudentController {
     }
 
     @PostMapping("/{id}/marks")
-    public ResponseEntity<MarkOutputDto> addMark(@PathVariable int id, @RequestBody MarkInputDto markInputDto) {
-        return new ResponseEntity<>(teacherService.addMark(markInputDto, id), HttpStatus.CREATED);
+    public ResponseEntity<MarkOutputDto> addMark(@PathVariable int id, @RequestBody MarkInputDto markInputDto,
+                                                 @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
+        return new ResponseEntity<>(teacherService.addMark(authentication.getName(), markInputDto, id), HttpStatus.CREATED);
     }
 
     @PostMapping
@@ -48,5 +51,10 @@ public class StudentController {
     public ResponseEntity<Void> deleteStudent(@PathVariable int id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/profile/averages")
+    public ResponseEntity<List<MarkAvgDto>> getAverageMarksProfile(@CurrentSecurityContext(expression = "authentication") Authentication authentication) {
+        return ResponseEntity.ok(studentService.getAveragesForProfile(authentication.getName()));
     }
 }

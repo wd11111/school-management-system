@@ -1,57 +1,61 @@
 package pl.schoolmanagementsystem.security.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.exception.UserNotFoundException;
 import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.Teacher;
 import pl.schoolmanagementsystem.repository.StudentRepository;
 import pl.schoolmanagementsystem.repository.TeacherRepository;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-
-    private static final String UNAUTHORIZED = "UNAUTHORIZED ";
-
-    private final PasswordEncoder passwordEncoder;
 
     private final TeacherRepository teacherRepository;
 
     private final StudentRepository studentRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Student> student = Optional.ofNullable(findStudent(email));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Student> student = findStudent(username);
         if (student.isPresent()) {
             return new User(student.get().getEmail().getEmail(),
-                    passwordEncoder.encode(student.get().getPassword()),
-                    Collections.emptyList());
+                    student.get().getPassword(),
+                    getStudentRole());
         }
-        Optional<Teacher> teacher = Optional.ofNullable(findTeacher(email));
+        Optional<Teacher> teacher = findTeacher(username);
         if (teacher.isPresent()) {
             return new User(teacher.get().getEmail().getEmail(),
-                    passwordEncoder.encode(teacher.get().getPassword()),
-                    Collections.emptyList());
+                    teacher.get().getPassword(),
+                    getTeacherRoles(teacher.get()));
         }
-        throw new UserNotFoundException();
+        throw new UsernameNotFoundException("UNAUTHENTICATED");
     }
 
-    private Student findStudent(String email) {
+    private Optional<Student> findStudent(String email) {
         return studentRepository.findByEmail_Email(email);
     }
 
-    private Teacher findTeacher(String email) {
+    private Optional<Teacher> findTeacher(String email) {
         return teacherRepository.findByEmail_Email(email);
+    }
+
+    private Collection<SimpleGrantedAuthority> getStudentRole() {
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_STUDENT"));
+    }
+
+    private Collection<SimpleGrantedAuthority> getTeacherRoles(Teacher teacher) {
+        List<SimpleGrantedAuthority> roles = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_TEACHER")));
+        if (teacher.isAdmin()) {
+            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        return roles;
     }
 }

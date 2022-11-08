@@ -28,10 +28,10 @@ public class SchoolSubjectService {
     }
 
     @Transactional
-    public void deleteSchoolSubjectByName(SchoolSubjectDto schoolSubjectDto) {
-        checkIfSubjectExists(schoolSubjectDto);
-        schoolSubjectRepository.deleteTaughtSubjects(schoolSubjectDto.getSubject());
-        schoolSubjectRepository.deleteById(schoolSubjectDto.getSubject());
+    public void deleteSchoolSubjectByName(String subjectName) {
+        checkIfSubjectExists(subjectName);
+        schoolSubjectRepository.deleteTaughtSubjects(subjectName);
+        schoolSubjectRepository.deleteById(subjectName);
     }
 
     private void checkIfSubjectAlreadyExists(SchoolSubjectDto schoolSubjectDto) {
@@ -40,9 +40,9 @@ public class SchoolSubjectService {
         }
     }
 
-    private void checkIfSubjectExists(SchoolSubjectDto schoolSubjectDto) {
-        if (!doesSchoolSubjectExistsByName(schoolSubjectDto.getSubject())) {
-            throw new NoSuchSchoolSubjectException(schoolSubjectDto.getSubject());
+    private void checkIfSubjectExists(String subjectName) {
+        if (!doesSchoolSubjectExistsByName(subjectName)) {
+            throw new NoSuchSchoolSubjectException(subjectName);
         }
     }
 

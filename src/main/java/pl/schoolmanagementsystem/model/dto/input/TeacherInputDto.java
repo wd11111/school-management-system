@@ -16,5 +16,7 @@ public class TeacherInputDto {
     private String email;
     private String name;
     private String surname;
+    private String password;
+    private boolean isAdmin;
     private Set<String> taughtSubjects;
 }

@@ -1,6 +1,5 @@
 package pl.schoolmanagementsystem.security.exception;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -16,8 +15,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-
-    private final ObjectMapper objectMapper;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {

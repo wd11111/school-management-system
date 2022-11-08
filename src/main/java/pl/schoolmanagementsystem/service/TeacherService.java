@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TeacherService {
 
+    private final TeacherInClassService teacherInClassService;
+
     private final StudentRepository studentRepository;
 
     private final EmailRepository emailRepository;
@@ -51,6 +53,11 @@ public class TeacherService {
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
         checkIfTeacherExists(teacherId);
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
+    }
+
+    public List<SubjectAndClassOutputDto> getTaughtClassesForTeacher(String teacherEmail) {
+        Teacher teacher = findTeacherByEmail(teacherEmail);
+        return teacherInClassRepository.findTaughtClassesByTeacher(teacher.getTeacherId());
     }
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
@@ -97,6 +104,13 @@ public class TeacherService {
     public void checkIfEmailIsAvailable(TeacherInputDto teacherInputDto) {
         if (isEmailAvailable(teacherInputDto.getEmail())) {
             throw new EmailAlreadyInUseException(teacherInputDto.getEmail());
+        }
+    }
+
+    protected void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
+        if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
+            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
         }
     }
 
@@ -151,13 +165,6 @@ public class TeacherService {
         return teacherRepository.findByEmail_Email(email).get();
     }
 
-    protected void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
-        if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
-            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
-        }
-    }
-
     private boolean doesTeacherTeachThisClass(TeacherInClass teacherInClass, SchoolClass schoolClass) {
         return teacherInClass.getTaughtClasses().contains(schoolClass);
     }
@@ -165,7 +172,7 @@ public class TeacherService {
     private TeacherInClass getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
                                                                              SchoolSubject schoolSubject,
                                                                              SchoolClass schoolClass) {
-        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject)
+        return teacherInClassService.getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass));
     }
 

@@ -39,7 +39,7 @@ public class SchoolClassController {
         return ResponseEntity.ok(schoolClassService.getAllStudentsInClass(className));
     }
 
-    @Secured("ROLE_TEACHER")
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{className}/marks/{subjectName}")
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
             @PathVariable String className, @PathVariable String subjectName,

@@ -15,7 +15,6 @@ import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
-import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto3;
 import pl.schoolmanagementsystem.repository.EmailRepository;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;
@@ -39,20 +38,22 @@ public class StudentService {
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
         checkIfStudentExists(studentId);
-        List<MarkDtoWithTwoFields> studentsMarks = findAllMarksForStudent(studentId);
-        Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
-        return transformListOfMarksToListOfIntegers(groupedMarks);
+        return groupMarksBySubjectForStudent(studentId);
+    }
+
+    public Map<String, List<Integer>> getGroupedMarksBySubjectForStudentAccount(String studentEmail) {
+        Student student = findStudent(studentEmail);
+        return groupMarksBySubjectForStudent(student.getStudentId());
     }
 
     public List<MarkAvgDto> getAverageMarksForStudent(int studentId) {
         checkIfStudentExists(studentId);
-        return studentRepository.findAllAverageMarksForStudentById(studentId);
+        return findAllAverageMarksForStudentById(studentId);
     }
 
-    public List<MarkAvgDto> getAveragesForProfile(String email) {
+    public List<MarkAvgDto> getAveragesForStudentAccount(String email) {
         Student student = findStudent(email);
-      //  checkIfStudentExists(studentId);
-        return studentRepository.findAllAverageMarksForStudentById(student.getStudentId());
+        return findAllAverageMarksForStudentById(student.getStudentId());
     }
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
@@ -66,6 +67,16 @@ public class StudentService {
     public void deleteStudent(int studentId) {
         checkIfStudentExists(studentId);
         studentRepository.deleteById(studentId);
+    }
+
+    private List<MarkAvgDto> findAllAverageMarksForStudentById(int id) {
+        return studentRepository.findAllAverageMarksForStudentById(id);
+    }
+
+    public Map<String, List<Integer>> groupMarksBySubjectForStudent(int studentId){
+        List<MarkDtoWithTwoFields> studentsMarks = findAllMarksForStudent(studentId);
+        Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
+        return transformListOfMarksToListOfIntegers(groupedMarks);
     }
 
     private Student findStudent(String email) {

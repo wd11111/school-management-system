@@ -39,6 +39,11 @@ public class TeacherInClassService {
         return TeacherMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
     }
 
+    protected Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
+                                                                                         SchoolSubject schoolSubject) {
+        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
+    }
+
     private Teacher findTeacher(int id) {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> new NoSuchTeacherException(id));
@@ -73,11 +78,6 @@ public class TeacherInClassService {
             teacherInClass.setTaughtSubject(schoolSubject);
         }
         return teacherInClass;
-    }
-
-    private Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
-                                                                                       SchoolSubject schoolSubject) {
-        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
     private boolean hasTeacherInClassBeenJustCreated(TeacherInClass teacherInClass) {

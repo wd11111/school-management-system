@@ -7,14 +7,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.model.Student;
 import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
 import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
 import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
-import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto3;
-import pl.schoolmanagementsystem.repository.StudentRepository;
 import pl.schoolmanagementsystem.service.StudentService;
 import pl.schoolmanagementsystem.service.TeacherService;
 
@@ -60,19 +57,5 @@ public class StudentController {
     public ResponseEntity<Void> deleteStudent(@PathVariable int id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @Secured("ROLE_STUDENT")
-    @GetMapping("/profile/averages")
-    public ResponseEntity<List<MarkAvgDto>> getAverageMarksProfile(
-            @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
-        return ResponseEntity.ok(studentService.getAveragesForProfile(authentication.getName()));
-    }
-
-    private final StudentRepository studentRepository;
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/xd")
-    public ResponseEntity<List<Student>> da() {
-        return ResponseEntity.ok(studentRepository.findAllStudentsInClassWithMarksOfTheSubject("1a", "polski"));
     }
 }

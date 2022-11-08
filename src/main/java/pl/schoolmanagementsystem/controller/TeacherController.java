@@ -39,9 +39,9 @@ public class TeacherController {
     }
 
     @Secured("ROLE_ADMIN")
-    @PatchMapping("/{id}/classes")
-    public ResponseEntity<TeacherOutputDto> addTaughtSubjectToTeacher(@PathVariable int id,
-                                                                      @RequestBody SchoolSubjectDto schoolSubjectDto) {
+    @PatchMapping("/{id}/subjects")
+    public ResponseEntity<TeacherOutputDto> addTaughtSubjectToTeacher(
+            @PathVariable int id, @RequestBody SchoolSubjectDto schoolSubjectDto) {
         return ResponseEntity.ok(teacherService.addTaughtSubjectToTeacher(id, schoolSubjectDto));
     }
 

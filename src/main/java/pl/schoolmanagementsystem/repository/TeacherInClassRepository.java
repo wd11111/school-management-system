@@ -19,8 +19,8 @@ public interface TeacherInClassRepository extends JpaRepository<TeacherInClass, 
             "where t.teacher=?1 and t.taughtSubject=?2")
     Optional<TeacherInClass> findByTeacherAndTaughtSubject(Teacher teacher, SchoolSubject schoolSubject);
 
-    @Query("select new pl.schoolmanagementsystem.model.dto.output." +
-            "SubjectAndClassOutputDto(tc.taughtSubject.subjectName, tics.schoolClassName) " +
+    @Query("select new pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto(" +
+            "tc.taughtSubject.subjectName, tics.schoolClassName) " +
             "from TeacherInClass tc " +
             "left join tc.taughtClasses tics " +
             "where tc.teacher.teacherId=?1")

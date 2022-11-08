@@ -15,6 +15,7 @@ import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.model.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.model.dto.input.StudentInputDto;
 import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
+import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto3;
 import pl.schoolmanagementsystem.repository.EmailRepository;
 import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.repository.StudentRepository;

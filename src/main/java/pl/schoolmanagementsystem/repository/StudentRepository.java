@@ -28,4 +28,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<StudentOutputDto2> findAllStudentsInClass(String schoolClassName);
 
     Optional<Student> findByEmail_Email(String email);
+
+    @Query("select distinct s from Student s join fetch s.marks m where s.schoolClass.schoolClassName=?1 and m.subject.subjectName=?2")
+    List<Student> findAllStudentsInClassWithMarksOfTheSubject(String schoolClass, String subject);
 }

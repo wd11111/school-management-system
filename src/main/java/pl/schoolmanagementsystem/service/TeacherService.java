@@ -11,9 +11,7 @@ import pl.schoolmanagementsystem.model.*;
 import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.model.dto.input.MarkInputDto;
 import pl.schoolmanagementsystem.model.dto.input.TeacherInputDto;
-import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
-import pl.schoolmanagementsystem.model.dto.output.SubjectAndClassOutputDto;
-import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
+import pl.schoolmanagementsystem.model.dto.output.*;
 import pl.schoolmanagementsystem.repository.*;
 
 import java.util.Comparator;
@@ -153,7 +151,7 @@ public class TeacherService {
         return teacherRepository.findByEmail_Email(email).get();
     }
 
-    private void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+    protected void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
         if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
             throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);

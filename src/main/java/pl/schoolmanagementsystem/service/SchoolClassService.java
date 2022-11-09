@@ -91,7 +91,7 @@ public class SchoolClassService {
 
     private SchoolClass buildSchoolClass(SchoolClassDto schoolClassDto) {
         return SchoolClass.builder()
-                .schoolClassName(schoolClassDto.getSchoolClassName())
+                .name(schoolClassDto.getSchoolClassName())
                 .build();
     }
 
@@ -108,6 +108,6 @@ public class SchoolClassService {
     }
 
     private boolean doesSchoolClassExistsByName(String schoolClassName) {
-        return schoolClassRepository.existsBySchoolClassName(schoolClassName);
+        return schoolClassRepository.existsByName(schoolClassName);
     }
 }

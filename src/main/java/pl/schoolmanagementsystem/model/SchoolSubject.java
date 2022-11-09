@@ -18,7 +18,7 @@ public class SchoolSubject {
 
     @Id
     @Column(nullable = false, unique = true)
-    private String subjectName;
+    private String name;
 
     @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Teacher> teachers = new HashSet<>();

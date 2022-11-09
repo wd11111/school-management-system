@@ -17,7 +17,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int studentId;
+    private int id;
 
     private String name;
 
@@ -26,14 +26,13 @@ public class Student {
     private String password;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
+    @JoinColumn(name = "email")
     private Email email;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Mark> marks = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "school_class_name")
     private SchoolClass schoolClass;
 
 }

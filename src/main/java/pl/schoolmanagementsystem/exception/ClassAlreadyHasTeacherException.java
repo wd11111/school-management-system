@@ -9,6 +9,6 @@ public class ClassAlreadyHasTeacherException extends RuntimeException {
     public ClassAlreadyHasTeacherException(TeacherInClass teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         super(String.format("%s %s already teaches %s in %s",
                 teacher.getTeacher().getName(), teacher.getTeacher().getSurname(),
-                schoolSubject.getSubjectName(), schoolClass.getSchoolClassName()));
+                schoolSubject.getName(), schoolClass.getName()));
     }
 }

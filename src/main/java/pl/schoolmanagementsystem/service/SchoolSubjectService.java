@@ -47,12 +47,12 @@ public class SchoolSubjectService {
     }
 
     private boolean doesSchoolSubjectExistsByName(String schoolSubjectName) {
-        return schoolSubjectRepository.existsBySubjectName(schoolSubjectName);
+        return schoolSubjectRepository.existsByName(schoolSubjectName);
     }
 
     private SchoolSubject buildSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         return SchoolSubject.builder()
-                .subjectName(schoolSubjectDto.getSubject())
+                .name(schoolSubjectDto.getSubject())
                 .build();
     }
 }

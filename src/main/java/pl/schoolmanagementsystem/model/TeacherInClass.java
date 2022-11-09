@@ -16,21 +16,14 @@ public class TeacherInClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int teacherInClassId;
+    private int id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_name")
     private SchoolSubject taughtSubject;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "teacherInClass_schoolClasses",
-            joinColumns = {
-                    @JoinColumn(name = "teacher_in_class_id", referencedColumnName = "teacherInClassId")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "school_class_name", referencedColumnName = "schoolClassName")})
     private Set<SchoolClass> taughtClasses = new HashSet<>();
 }

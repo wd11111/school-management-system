@@ -14,17 +14,17 @@ import java.util.Optional;
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, String> {
 
     @Query("select c from SchoolClass c left join fetch c.teachersInClass " +
-            "left join fetch c.students where c.schoolClassName=?1")
+            "left join fetch c.students where c.name=?1")
     Optional<SchoolClass> findBySchoolClassName(String schoolClassName);
 
-    boolean existsBySchoolClassName(String schoolClassName);
+    boolean existsByName(String schoolClassName);
 
-    @Query("select new pl.schoolmanagementsystem.model.dto.SchoolClassDto(c.schoolClassName) from SchoolClass c")
+    @Query("select new pl.schoolmanagementsystem.model.dto.SchoolClassDto(c.name) from SchoolClass c")
     List<SchoolClassDto> findAllSchoolClasses();
 
     @Query("select new pl.schoolmanagementsystem.model.dto.output.SubjectAndTeacherOutputDto(" +
-            "t.taughtSubject.subjectName, t.teacher.name, t.teacher.surname) " +
-            "from SchoolClass c join c.teachersInClass t where c.schoolClassName=?1 " +
-            "order by t.taughtSubject.subjectName")
+            "t.taughtSubject.name, t.teacher.name, t.teacher.surname) " +
+            "from SchoolClass c join c.teachersInClass t where c.name=?1 " +
+            "order by t.taughtSubject.name")
     List<SubjectAndTeacherOutputDto> findAllSubjectsForSchoolClass(String className);
 }

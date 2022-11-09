@@ -15,7 +15,7 @@ public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int teacherId;
+    private int id;
 
     private String name;
 
@@ -26,15 +26,10 @@ public class Teacher {
     private boolean isAdmin;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
+    @JoinColumn(name = "email")
     private Email email;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "teacher_subjects",
-            joinColumns = {
-                    @JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "subject_name", referencedColumnName = "subjectName")})
     private Set<SchoolSubject> taughtSubjects;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -7,6 +7,6 @@ public class TeacherDoesNotTeachClassException extends RuntimeException {
 
     public TeacherDoesNotTeachClassException(SchoolSubject schoolSubject, SchoolClass schoolClass) {
         super(String.format("You do not teach %s in %s",
-                schoolSubject.getSubjectName(), schoolClass.getSchoolClassName()));
+                schoolSubject.getName(), schoolClass.getName()));
     }
 }

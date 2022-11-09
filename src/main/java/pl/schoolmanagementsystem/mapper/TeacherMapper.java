@@ -14,7 +14,7 @@ public class TeacherMapper {
 
     public static TeacherOutputDto mapTeacherToOutputDto(Teacher teacher) {
         return TeacherOutputDto.builder()
-                .id(teacher.getTeacherId())
+                .id(teacher.getId())
                 .name(teacher.getName())
                 .surname(teacher.getSurname())
                 .taughtSubjects(mapListOfSubjectsToListOfSubjectDto(teacher.getTaughtSubjects()))
@@ -22,7 +22,7 @@ public class TeacherMapper {
     }
 
     public static Set<SchoolSubjectDto> mapListOfSubjectsToListOfSubjectDto(Set<SchoolSubject> subjects) {
-        return subjects.stream().map(subject -> new SchoolSubjectDto(subject.getSubjectName()))
+        return subjects.stream().map(subject -> new SchoolSubjectDto(subject.getName()))
                 .collect(Collectors.toSet());
     }
 

@@ -13,16 +13,16 @@ import java.util.Optional;
 @Repository
 public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, String> {
 
-    @Query("select s from SchoolSubject s left join fetch s.teachersInClasses where s.subjectName=?1")
+    @Query("select s from SchoolSubject s left join fetch s.teachersInClasses where s.name=?1")
     Optional<SchoolSubject> findBySubjectName(String subjectName);
 
-    boolean existsBySubjectName(String name);
+    boolean existsByName(String name);
 
-    @Query("select new pl.schoolmanagementsystem.model.dto.SchoolSubjectDto(s.subjectName) from SchoolSubject s")
+    @Query("select new pl.schoolmanagementsystem.model.dto.SchoolSubjectDto(s.name) from SchoolSubject s")
     List<SchoolSubjectDto> findAllSchoolSubjects();
 
     @Modifying
-    @Query(nativeQuery = true, value = "delete from teacher_subjects where subject_name=?1")
+    @Query(nativeQuery = true, value = "delete from teacher_taught_subjects where taught_subjects_name=?1")
     void deleteTaughtSubjects(String subjectName);
 
 }

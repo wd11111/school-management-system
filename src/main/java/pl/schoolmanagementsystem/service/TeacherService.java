@@ -59,7 +59,7 @@ public class TeacherService {
 
     public List<SubjectAndClassOutputDto> getTaughtClassesForTeacher(String teacherEmail) {
         Teacher teacher = findTeacherByEmail(teacherEmail);
-        return teacherInClassRepository.findTaughtClassesByTeacher(teacher.getTeacherId());
+        return teacherInClassRepository.findTaughtClassesByTeacher(teacher.getId());
     }
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {

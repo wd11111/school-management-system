@@ -16,7 +16,7 @@ public class SchoolClass {
 
     @Id
     @Column(nullable = false, unique = true)
-    private String schoolClassName;
+    private String name;
 
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Student> students = new HashSet<>();

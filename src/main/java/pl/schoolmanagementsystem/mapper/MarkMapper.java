@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class MarkMapper {
 
     public static MarkOutputDto mapMarkToOutputDto(Mark mark) {
-        return new MarkOutputDto(mark.getMarkId(), mark.getMark(), mark.getStudent().getStudentId());
+        return new MarkOutputDto(mark.getId(), mark.getMark(), mark.getStudent().getId());
     }
 
     public static List<Integer> mapListOfMarksToIntegers(List<Mark> marks) {

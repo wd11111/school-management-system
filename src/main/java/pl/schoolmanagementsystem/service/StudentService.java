@@ -41,7 +41,7 @@ public class StudentService {
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudentAccount(String studentEmail) {
         Student student = findStudent(studentEmail);
-        return groupMarksBySubjectForStudent(student.getStudentId());
+        return groupMarksBySubjectForStudent(student.getId());
     }
 
     public List<MarkAvgDto> getAverageMarksForStudent(int studentId) {
@@ -51,7 +51,7 @@ public class StudentService {
 
     public List<MarkAvgDto> getAveragesForStudentAccount(String email) {
         Student student = findStudent(email);
-        return findAllAverageMarksForStudentById(student.getStudentId());
+        return findAllAverageMarksForStudentById(student.getId());
     }
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {

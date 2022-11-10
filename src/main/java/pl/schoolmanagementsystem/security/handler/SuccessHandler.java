@@ -17,7 +17,7 @@ import java.util.Date;
 @Component
 public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${jwt.expirationTime:36000000}")
+    @Value("${jwt.expirationTime}")
     private long expirationTime;
     @Value("${jwt.secret:secretkey123}")
     private String secret;

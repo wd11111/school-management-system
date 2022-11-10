@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.mark.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.mapper.MarkMapper;
+import pl.schoolmanagementsystem.mark.uitls.MarkMapper;
 import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
 import pl.schoolmanagementsystem.mark.model.Mark;

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.mapper;
+package pl.schoolmanagementsystem.mark.uitls;
 
 import pl.schoolmanagementsystem.mark.model.Mark;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;

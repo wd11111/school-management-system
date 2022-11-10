@@ -6,7 +6,7 @@ import pl.schoolmanagementsystem.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
-import pl.schoolmanagementsystem.mapper.StudentMapper;
+import pl.schoolmanagementsystem.student.utils.StudentMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.student.model.Student;

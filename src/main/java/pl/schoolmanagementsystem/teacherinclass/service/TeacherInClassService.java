@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.teacherinclass.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.mapper.TeacherMapper;
+import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
@@ -28,15 +28,13 @@ public class TeacherInClassService {
 
     private final TeacherInClassRepository teacherInClassRepository;
 
-    private final TeacherInClassBuilder teacherInClassBuilder;
-
     public TeacherInClassOutputDto addTeacherInClassToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
-        Teacher teacherObject = teacherService.findById(teacherInClassInputDto.getTeacherId());
+        Teacher teacher = teacherService.findById(teacherInClassInputDto.getTeacherId());
         SchoolClass schoolClass = schoolClassService.findSchoolClass(schoolClassName);
         SchoolSubject schoolSubject = schoolSubjectService.findByName(teacherInClassInputDto.getTaughtSubject());
-        makeSureIfTeacherTeachesThisSubject(teacherObject, schoolSubject);
-        checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
-        teacherInClassRepository.save(buildTeacherInClass(teacherObject, schoolSubject, schoolClass));
+        teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject);
+        schoolClassService.checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
+        teacherInClassRepository.save(buildTeacherInClass(teacher, schoolSubject, schoolClass));
         return TeacherMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
     }
 
@@ -45,15 +43,7 @@ public class TeacherInClassService {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
-    private void makeSureIfTeacherTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject);
-    }
-
     private TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        return teacherInClassBuilder.buildTeacherInClass(teacher, schoolSubject, schoolClass, this);
-    }
-
-    private void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
-        schoolClassService.checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
+        return TeacherInClassBuilder.buildTeacherInClass(teacher, schoolSubject, schoolClass, this);
     }
 }

@@ -1,5 +1,6 @@
-package pl.schoolmanagementsystem.mapper;
+package pl.schoolmanagementsystem.student.utils;
 
+import pl.schoolmanagementsystem.mark.uitls.MarkMapper;
 import pl.schoolmanagementsystem.student.model.Student;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;

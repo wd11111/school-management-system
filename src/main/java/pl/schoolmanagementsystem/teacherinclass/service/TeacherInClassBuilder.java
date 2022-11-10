@@ -1,14 +1,11 @@
 package pl.schoolmanagementsystem.teacherinclass.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
-@RequiredArgsConstructor
-public class TeacherInClassBuilder {
 
+public class TeacherInClassBuilder {
 
     static TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass,
                                               TeacherInClassService teacherInClassService) {

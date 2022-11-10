@@ -7,8 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
-import pl.schoolmanagementsystem.mapper.StudentMapper;
-import pl.schoolmanagementsystem.email.model.Email;
+import pl.schoolmanagementsystem.student.utils.StudentMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.email.service.EmailService;
 import pl.schoolmanagementsystem.student.model.Student;
@@ -18,6 +17,7 @@ import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.student.repository.StudentRepository;
+import pl.schoolmanagementsystem.student.utils.StudentBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,23 +93,14 @@ public class StudentService {
     }
 
     private void checkIfStudentExists(int studentId) {
-        if (!doesStudentExist(studentId)) {
+        boolean doesStudentExist = studentRepository.existsById(studentId);
+        if (!doesStudentExist) {
             throw new NoSuchStudentException(studentId);
         }
     }
 
-    private boolean doesStudentExist(int studentId) {
-        return studentRepository.existsById(studentId);
-    }
-
     private Student buildStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {
-        return Student.builder()
-                .name(studentInputDto.getName())
-                .surname(studentInputDto.getSurname())
-                .email(new Email(studentInputDto.getEmail()))
-                .password(passwordEncoder.encode(studentInputDto.getPassword()))
-                .schoolClass(schoolClass)
-                .build();
+        return StudentBuilder.buildStudent(studentInputDto, schoolClass, passwordEncoder);
     }
 
     private SchoolClass findSchoolClass(StudentInputDto studentInputDto) {

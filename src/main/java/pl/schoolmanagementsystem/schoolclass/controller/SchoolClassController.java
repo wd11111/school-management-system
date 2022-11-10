@@ -10,6 +10,7 @@ import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
+import pl.schoolmanagementsystem.student.service.StudentService;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
@@ -26,6 +27,8 @@ public class SchoolClassController {
 
     private final TeacherInClassService teacherInClassService;
 
+    private final StudentService studentService;
+
     @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<SchoolClassDto>> getListOfClasses() {
@@ -39,11 +42,11 @@ public class SchoolClassController {
     }
 
     @Secured("ROLE_ADMIN")
-    @GetMapping("/{className}/marks/{subjectName}")
+    @GetMapping("/{className}/marks")
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
-            @PathVariable String className, @PathVariable String subjectName, Principal principal) {
-        return ResponseEntity.ok(schoolClassService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subjectName, principal.getName()));
+            @PathVariable String className, @PathVariable String subject, Principal principal) {
+        return ResponseEntity.ok(studentService.getAllStudentsInClassWithMarksOfTheSubject(
+                className, subject, principal.getName()));
     }
 
     @Secured("ROLE_ADMIN")

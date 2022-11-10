@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
+import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
+import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
+import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
+import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.student.utils.StudentMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.email.service.EmailService;
@@ -18,6 +22,8 @@ import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.student.repository.StudentRepository;
 import pl.schoolmanagementsystem.student.utils.StudentBuilder;
+import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.teacher.service.TeacherService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +41,12 @@ public class StudentService {
     private final EmailService emailService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final SchoolSubjectService schoolSubjectService;
+
+    private final TeacherService teacherService;
+
+    private final SchoolClassService schoolClassService;
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
         checkIfStudentExists(studentId);
@@ -62,6 +74,22 @@ public class StudentService {
         Student student = studentRepository.save(buildStudent(studentInputDto, schoolClass));
         return StudentMapper.mapStudentToOutputDto(student);
     }
+
+    public List<StudentOutputDto3> getAllStudentsInClassWithMarksOfTheSubject(String schoolClassName, String subjectName, String teacherEmail) {
+        SchoolSubject schoolSubject = schoolSubjectService.findByName(subjectName);
+        SchoolClass schoolClass = schoolClassService.find(schoolClassName);
+        Teacher teacher = teacherService.findByEmail(teacherEmail);
+        teacherService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
+        return getStudentsWithIntegerMarks(schoolClassName, subjectName);
+    }
+
+    private List<StudentOutputDto3> getStudentsWithIntegerMarks(String schoolClassName, String subjectName) {
+        List<Student> students = studentRepository.findAllStudentsInClassWithMarksOfTheSubject(schoolClassName, subjectName);
+        return students.stream()
+                .map(StudentMapper::mapStudentToOutputDto3)
+                .collect(Collectors.toList());
+    }
+
 
     @Transactional
     public void deleteStudent(int studentId) {

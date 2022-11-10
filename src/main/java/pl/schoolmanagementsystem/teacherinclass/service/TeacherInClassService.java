@@ -12,6 +12,7 @@ import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
 import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
+import pl.schoolmanagementsystem.teacherinclass.utils.TeacherInClassBuilder;
 import pl.schoolmanagementsystem.teacherinclass.utils.TeacherInClassMapper;
 
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class TeacherInClassService {
 
     public TeacherInClassOutputDto addTeacherInClassToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
         Teacher teacher = teacherService.findById(teacherInClassInputDto.getTeacherId());
-        SchoolClass schoolClass = schoolClassService.findSchoolClass(schoolClassName);
+        SchoolClass schoolClass = schoolClassService.find(schoolClassName);
         SchoolSubject schoolSubject = schoolSubjectService.findByName(teacherInClassInputDto.getTaughtSubject());
         teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject);
         schoolClassService.checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
@@ -44,6 +45,6 @@ public class TeacherInClassService {
     }
 
     private TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        return TeacherInClassBuilder.buildTeacherInClass(teacher, schoolSubject, schoolClass, this);
+        return TeacherInClassBuilder.build(teacher, schoolSubject, schoolClass, this);
     }
 }

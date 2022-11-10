@@ -1,13 +1,14 @@
-package pl.schoolmanagementsystem.teacherinclass.service;
+package pl.schoolmanagementsystem.teacherinclass.utils;
 
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
+import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
 
 public class TeacherInClassBuilder {
 
-    static TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass,
+    public static TeacherInClass build(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass,
                                               TeacherInClassService teacherInClassService) {
         TeacherInClass teacherInClass = teacherInClassService.getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());

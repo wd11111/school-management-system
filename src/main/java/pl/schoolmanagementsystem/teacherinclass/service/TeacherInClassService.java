@@ -2,18 +2,22 @@ package pl.schoolmanagementsystem.teacherinclass.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.exception.*;
+import pl.schoolmanagementsystem.exception.ClassAlreadyHasTeacherException;
+import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
+import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
+import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
+import pl.schoolmanagementsystem.schoolsubject.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
-import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
+import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
+import pl.schoolmanagementsystem.teacher.service.TeacherService;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
-import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
-import pl.schoolmanagementsystem.schoolsubject.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
 import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
-import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
 
 import java.util.Optional;
 
@@ -21,13 +25,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeacherInClassService {
 
-    private final TeacherRepository teacherRepository;
+    private final SchoolClassService schoolClassService;
 
-    private final SchoolSubjectRepository schoolSubjectRepository;
+    private final SchoolSubjectService schoolSubjectService;
 
-    private final SchoolClassRepository schoolClassRepository;
+    private final TeacherService teacherService;
 
     private final TeacherInClassRepository teacherInClassRepository;
+
+    private final TeacherInClassBuilder teacherInClassBuilder;
 
     public TeacherInClassOutputDto addTeacherInClassToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
         Teacher teacherObject = findTeacher(teacherInClassInputDto.getTeacherId());
@@ -40,23 +46,20 @@ public class TeacherInClassService {
     }
 
     public Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
-                                                                                         SchoolSubject schoolSubject) {
+                                                                                      SchoolSubject schoolSubject) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject);
     }
 
     private Teacher findTeacher(int id) {
-        return teacherRepository.findById(id)
-                .orElseThrow(() -> new NoSuchTeacherException(id));
+        return teacherService.findTeacherById(id);
     }
 
     private SchoolClass findSchoolClass(String name) {
-        return schoolClassRepository.findBySchoolClassName(name)
-                .orElseThrow(() -> new NoSuchSchoolClassException(name));
+        return schoolClassService.findSchoolClass(name);
     }
 
     private SchoolSubject findSchoolSubject(String name) {
-        return schoolSubjectRepository.findBySubjectName(name)
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
+        return schoolSubjectService.findSchoolSubject(name);
     }
 
     private void makeSureIfTeacherTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
@@ -70,18 +73,7 @@ public class TeacherInClassService {
     }
 
     private TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
-                .orElse(new TeacherInClass());
-        teacherInClass.getTaughtClasses().add(schoolClass);
-        if (hasTeacherInClassBeenJustCreated(teacherInClass)) {
-            teacherInClass.setTeacher(teacher);
-            teacherInClass.setTaughtSubject(schoolSubject);
-        }
-        return teacherInClass;
-    }
-
-    private boolean hasTeacherInClassBeenJustCreated(TeacherInClass teacherInClass) {
-        return teacherInClass.getTeacher() == null;
+        return teacherInClassBuilder.buildTeacherInClass(teacher, schoolSubject, schoolClass);
     }
 
     private void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass,

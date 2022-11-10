@@ -34,6 +34,11 @@ public class SchoolSubjectService {
         schoolSubjectRepository.deleteById(subjectName);
     }
 
+    public SchoolSubject findSchoolSubject(String name) {
+        return schoolSubjectRepository.findBySubjectName(name)
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
+    }
+
     private void checkIfSubjectAlreadyExists(SchoolSubjectDto schoolSubjectDto) {
         if (doesSchoolSubjectExistsByName(schoolSubjectDto.getSubject())) {
             throw new SubjectAlreadyExistsException(schoolSubjectDto);

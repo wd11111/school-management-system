@@ -164,7 +164,7 @@ public class TeacherService {
                 .orElseThrow(() -> new NoSuchStudentException(id));
     }
 
-    private Teacher findTeacherById(int id) {
+    public Teacher findTeacherById(int id) {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> new NoSuchTeacherException(id));
     }

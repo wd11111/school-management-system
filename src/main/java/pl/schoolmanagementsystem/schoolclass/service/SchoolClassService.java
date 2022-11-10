@@ -81,7 +81,7 @@ public class SchoolClassService {
         return teacherRepository.findByEmail_Email(email).get();
     }
 
-    private SchoolClass findSchoolClass(String schoolClassName) {
+    public SchoolClass findSchoolClass(String schoolClassName) {
         return schoolClassRepository.findBySchoolClassName(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
     }

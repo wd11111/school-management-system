@@ -6,13 +6,12 @@ import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
-@Component
 @RequiredArgsConstructor
 public class TeacherInClassBuilder {
 
-    private final TeacherInClassService teacherInClassService;
 
-    TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+    static TeacherInClass buildTeacherInClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass,
+                                              TeacherInClassService teacherInClassService) {
         TeacherInClass teacherInClass = teacherInClassService.getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
                 .orElse(new TeacherInClass());
         teacherInClass.getTaughtClasses().add(schoolClass);
@@ -23,7 +22,7 @@ public class TeacherInClassBuilder {
         return teacherInClass;
     }
 
-    private boolean hasTeacherInClassBeenJustCreated(TeacherInClass teacherInClass) {
+    private static boolean hasTeacherInClassBeenJustCreated(TeacherInClass teacherInClass) {
         return teacherInClass.getTeacher() == null;
     }
 }

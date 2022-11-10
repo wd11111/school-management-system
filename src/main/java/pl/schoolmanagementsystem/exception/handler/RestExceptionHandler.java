@@ -40,7 +40,8 @@ public class RestExceptionHandler {
             NoSuchSchoolClassException.class,
             NoSuchSchoolSubjectException.class,
             NoSuchStudentException.class,
-            NoSuchTeacherException.class})
+            NoSuchTeacherException.class,
+            NoSuchStudentEmailException.class})
     public ResponseEntity<ErrorResponse> handleNoSuchExceptions(RuntimeException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }

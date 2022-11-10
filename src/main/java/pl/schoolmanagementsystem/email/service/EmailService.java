@@ -11,12 +11,9 @@ public class EmailService {
 
     private final EmailRepository emailRepository;
 
-    public boolean isEmailAvailable(String email) {
-        return emailRepository.existsById(email);
-    }
-
     public void checkIfEmailIsAvailable(String email) {
-        if (isEmailAvailable(email)) {
+        boolean isEmailAvailable = emailRepository.existsById(email);
+        if (isEmailAvailable) {
             throw new EmailAlreadyInUseException(email);
         }
     }

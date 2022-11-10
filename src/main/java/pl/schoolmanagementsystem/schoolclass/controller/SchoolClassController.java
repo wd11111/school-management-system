@@ -4,18 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
+import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
-import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
-import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -42,10 +41,9 @@ public class SchoolClassController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/{className}/marks/{subjectName}")
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
-            @PathVariable String className, @PathVariable String subjectName,
-            @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
+            @PathVariable String className, @PathVariable String subjectName, Principal principal) {
         return ResponseEntity.ok(schoolClassService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subjectName, authentication.getName()));
+                className, subjectName, principal.getName()));
     }
 
     @Secured("ROLE_ADMIN")

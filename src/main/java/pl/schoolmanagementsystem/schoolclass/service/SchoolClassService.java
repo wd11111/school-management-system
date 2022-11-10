@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.schoolclass.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.exception.ClassAlreadyExistsException;
+import pl.schoolmanagementsystem.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.mapper.StudentMapper;
@@ -65,6 +66,15 @@ public class SchoolClassService {
         return getStudentsWithIntegerMarks(schoolClassName, subjectName);
     }
 
+    public void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
+        schoolClass.getTeachersInClass().stream()
+                .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject))
+                .findFirst()
+                .ifPresent(teacher -> {
+                    throw new ClassAlreadyHasTeacherException(teacher, schoolSubject, schoolClass);
+                });
+    }
+
     private List<StudentOutputDto3> getStudentsWithIntegerMarks(String schoolClassName, String subjectName) {
         List<Student> students = studentRepository.findAllStudentsInClassWithMarksOfTheSubject(schoolClassName, subjectName);
         return students.stream()
@@ -87,7 +97,7 @@ public class SchoolClassService {
     }
 
     private void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        teacherService.checkIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
+        teacherService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
     }
 
     private SchoolClass buildSchoolClass(SchoolClassDto schoolClassDto) {

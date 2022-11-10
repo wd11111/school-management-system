@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
+import pl.schoolmanagementsystem.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.mapper.StudentMapper;
 import pl.schoolmanagementsystem.email.model.Email;
@@ -41,7 +42,7 @@ public class StudentService {
     }
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudentAccount(String studentEmail) {
-        Student student = findStudent(studentEmail);
+        Student student = findStudentByEmail(studentEmail);
         return groupMarksBySubjectForStudent(student.getId());
     }
 
@@ -51,7 +52,7 @@ public class StudentService {
     }
 
     public List<MarkAvgDto> getAveragesForStudentAccount(String email) {
-        Student student = findStudent(email);
+        Student student = findStudentByEmail(email);
         return findAllAverageMarksForStudentById(student.getId());
     }
 
@@ -78,9 +79,13 @@ public class StudentService {
         return transformListOfMarksToListOfIntegers(groupedMarks);
     }
 
-    private Student findStudent(String email) {
+    public Student findById(int id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new NoSuchStudentException(id));
+    }
+    public Student findStudentByEmail(String email) {
         return studentRepository.findByEmail_Email(email)
-                .orElseThrow(() -> new NoSuchStudentException(1337));
+                .orElseThrow(() -> new NoSuchStudentEmailException(email));
     }
 
     private void checkIfEmailIsAvailable(StudentInputDto studentInputDto) {

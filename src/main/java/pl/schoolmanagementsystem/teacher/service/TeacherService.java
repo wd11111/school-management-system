@@ -6,18 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.email.model.Email;
 import pl.schoolmanagementsystem.exception.*;
-import pl.schoolmanagementsystem.mapper.MarkMapper;
 import pl.schoolmanagementsystem.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.mark.repository.MarkRepository;
 import pl.schoolmanagementsystem.mark.model.Mark;
 import pl.schoolmanagementsystem.schoolsubject.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
 import pl.schoolmanagementsystem.email.service.EmailService;
-import pl.schoolmanagementsystem.student.repository.StudentRepository;
+import pl.schoolmanagementsystem.student.service.StudentService;
 import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
-import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
@@ -40,7 +37,7 @@ public class TeacherService {
 
     private final TeacherInClassService teacherInClassService;
 
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
     private final EmailService emailService;
 
@@ -54,23 +51,13 @@ public class TeacherService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public MarkOutputDto addMark(String teacherEmail, MarkInputDto markInputDto, int studentId) {
-        Student student = findStudent(studentId);
-        SchoolClass studentsClass = student.getSchoolClass();
-        Teacher teacher = findTeacherByEmail(teacherEmail);
-        SchoolSubject schoolSubject = findSubject(markInputDto.getSubject());
-        checkIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
-        Mark mark = markRepository.save(buildMark(markInputDto.getMark(), student, schoolSubject));
-        return MarkMapper.mapMarkToOutputDto(mark);
-    }
-
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
         checkIfTeacherExists(teacherId);
         return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
     }
 
     public List<SubjectAndClassOutputDto> getTaughtClassesForTeacher(String teacherEmail) {
-        Teacher teacher = findTeacherByEmail(teacherEmail);
+        Teacher teacher = findByEmail(teacherEmail);
         return teacherInClassRepository.findTaughtClassesByTeacher(teacher.getId());
     }
 
@@ -90,7 +77,7 @@ public class TeacherService {
 
     @Transactional
     public TeacherOutputDto addTaughtSubjectToTeacher(int teacherId, SchoolSubjectDto schoolSubjectDto) {
-        Teacher teacher = findTeacherById(teacherId);
+        Teacher teacher = findById(teacherId);
         SchoolSubject schoolSubject = findSubject(schoolSubjectDto.getSubject());
         checkIfTeacherAlreadyTeachesThisSubject(teacher, schoolSubject);
         teacher.getTaughtSubjects().add(schoolSubject);
@@ -103,23 +90,31 @@ public class TeacherService {
         teacherRepository.deleteById(teacherId);
     }
 
-    public void checkIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+    public void makeSureIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
         if (!doesTeacherTeachThisClass(teacherInClass, schoolClass)) {
             throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
         }
     }
 
-    private void checkIfEmailIsAvailable(TeacherInputDto teacherInputDto) {
-        emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
+    public Teacher findById(int id) {
+        return teacherRepository.findById(id)
+                .orElseThrow(() -> new NoSuchTeacherException(id));
     }
 
-    private Mark buildMark(int mark, Student student, SchoolSubject schoolSubject) {
-        return Mark.builder()
-                .mark(mark)
-                .student(student)
-                .subject(schoolSubject)
-                .build();
+    public void makeSureIfTeacherTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        boolean doesTeacherTeachTheSubject = teacher.getTaughtSubjects().contains(schoolSubject);
+        if (!doesTeacherTeachTheSubject) {
+            throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
+        }
+    }
+
+    public Teacher findByEmail(String email) {
+        return teacherRepository.findByEmail_Email(email).get();
+    }
+
+    private void checkIfEmailIsAvailable(TeacherInputDto teacherInputDto) {
+        emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
     }
 
     private void checkIfTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
@@ -160,17 +155,7 @@ public class TeacherService {
     }
 
     private Student findStudent(int id) {
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new NoSuchStudentException(id));
-    }
-
-    public Teacher findTeacherById(int id) {
-        return teacherRepository.findById(id)
-                .orElseThrow(() -> new NoSuchTeacherException(id));
-    }
-
-    private Teacher findTeacherByEmail(String email) {
-        return teacherRepository.findByEmail_Email(email).get();
+        return studentService.findById(id);
     }
 
     private boolean doesTeacherTeachThisClass(TeacherInClass teacherInClass, SchoolClass schoolClass) {

@@ -34,7 +34,7 @@ public class SchoolSubjectService {
         schoolSubjectRepository.deleteById(subjectName);
     }
 
-    public SchoolSubject findSchoolSubject(String name) {
+    public SchoolSubject findByName(String name) {
         return schoolSubjectRepository.findBySubjectName(name)
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
     }

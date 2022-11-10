@@ -4,17 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
-import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
+import pl.schoolmanagementsystem.mark.service.MarkService;
+import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.service.StudentService;
-import pl.schoolmanagementsystem.teacher.service.TeacherService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    private final TeacherService teacherService;
+    private final MarkService markService;
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/marks")
@@ -42,8 +41,8 @@ public class StudentController {
     @Secured("ROLE_TEACHER")
     @PostMapping("/{id}/marks")
     public ResponseEntity<MarkOutputDto> addMark(@PathVariable int id, @RequestBody MarkInputDto markInputDto,
-                                                 @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
-        return new ResponseEntity<>(teacherService.addMark(authentication.getName(), markInputDto, id), HttpStatus.CREATED);
+                                                 Principal principal) {
+        return new ResponseEntity<>(markService.addMarkForStudent(principal.getName(), markInputDto, id), HttpStatus.CREATED);
     }
 
     @Secured("ROLE_ADMIN")

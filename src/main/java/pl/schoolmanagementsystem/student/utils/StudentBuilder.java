@@ -8,7 +8,7 @@ import pl.schoolmanagementsystem.student.model.Student;
 
 public class StudentBuilder {
 
-    public static Student buildStudent(StudentInputDto studentInputDto, SchoolClass schoolClass, PasswordEncoder passwordEncoder) {
+    public static Student build(StudentInputDto studentInputDto, SchoolClass schoolClass, PasswordEncoder passwordEncoder) {
         return Student.builder()
                 .name(studentInputDto.getName())
                 .surname(studentInputDto.getSurname())

@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
+import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.schoolsubject.utils.SchoolSubjectBuilder;
 
 import java.util.List;
 
@@ -17,14 +20,21 @@ public class SchoolSubjectService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
+    private final SchoolClassService schoolClassService;
+
     public SchoolSubjectDto createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         checkIfSubjectAlreadyExists(schoolSubjectDto);
-        schoolSubjectRepository.save(buildSchoolSubject(schoolSubjectDto));
+        schoolSubjectRepository.save(SchoolSubjectBuilder.build(schoolSubjectDto));
         return schoolSubjectDto;
     }
 
     public List<SchoolSubjectDto> getAllSchoolSubjects() {
         return schoolSubjectRepository.findAllSchoolSubjects();
+    }
+
+    public List<SubjectAndTeacherOutputDto> getAllSubjectsForSchoolClass(String schoolClassName) {
+        schoolClassService.checkIfClassExists(schoolClassName);
+        return schoolSubjectRepository.findAllSubjectsForSchoolClass(schoolClassName);
     }
 
     @Transactional
@@ -53,11 +63,5 @@ public class SchoolSubjectService {
 
     private boolean doesSchoolSubjectExistsByName(String schoolSubjectName) {
         return schoolSubjectRepository.existsByName(schoolSubjectName);
-    }
-
-    private SchoolSubject buildSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
-        return SchoolSubject.builder()
-                .name(schoolSubjectDto.getSubject())
-                .build();
     }
 }

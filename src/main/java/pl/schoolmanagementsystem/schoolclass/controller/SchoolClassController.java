@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.student.service.StudentService;
+import pl.schoolmanagementsystem.teacher.service.TeacherService;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
@@ -29,6 +31,10 @@ public class SchoolClassController {
 
     private final StudentService studentService;
 
+    private final SchoolSubjectService schoolSubjectService;
+
+    private final TeacherService teacherService;
+
     @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<SchoolClassDto>> getListOfClasses() {
@@ -38,7 +44,7 @@ public class SchoolClassController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/{className}")
     public ResponseEntity<List<StudentOutputDto2>> getAllStudentsInClass(@PathVariable String className) {
-        return ResponseEntity.ok(schoolClassService.getAllStudentsInClass(className));
+        return ResponseEntity.ok(studentService.getAllStudentsInClass(className));
     }
 
     @Secured("ROLE_ADMIN")
@@ -46,13 +52,13 @@ public class SchoolClassController {
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
             @PathVariable String className, @PathVariable String subject, Principal principal) {
         return ResponseEntity.ok(studentService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subject, principal.getName()));
+                className, subject, teacherService.getIdFromPrincipals(principal)));
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{className}/subjects")
     public ResponseEntity<List<SubjectAndTeacherOutputDto>> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
-        return ResponseEntity.ok(schoolClassService.getAllSubjectsForSchoolClass(className));
+        return ResponseEntity.ok(schoolSubjectService.getAllSubjectsForSchoolClass(className));
     }
 
     @Secured("ROLE_ADMIN")

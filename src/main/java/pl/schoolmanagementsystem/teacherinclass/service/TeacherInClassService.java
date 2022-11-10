@@ -31,7 +31,7 @@ public class TeacherInClassService {
 
     public TeacherInClassOutputDto addTeacherInClassToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
         Teacher teacher = teacherService.findById(teacherInClassInputDto.getTeacherId());
-        SchoolClass schoolClass = schoolClassService.find(schoolClassName);
+        SchoolClass schoolClass = schoolClassService.findById(schoolClassName);
         SchoolSubject schoolSubject = schoolSubjectService.findByName(teacherInClassInputDto.getTaughtSubject());
         teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject);
         schoolClassService.checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);

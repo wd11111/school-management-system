@@ -8,12 +8,8 @@ import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
-import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.schoolclass.utils.SchoolClassBuilder;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
-import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
-import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
-import pl.schoolmanagementsystem.student.repository.StudentRepository;
-import pl.schoolmanagementsystem.teacher.service.TeacherService;
 
 import java.util.List;
 
@@ -23,30 +19,14 @@ public class SchoolClassService {
 
     private final SchoolClassRepository schoolClassRepository;
 
-    private final SchoolSubjectService schoolSubjectService;
-
-    private final StudentRepository studentRepository;
-
-    private final TeacherService teacherService;
-
     public SchoolClassDto createSchoolClass(SchoolClassDto schoolClassDto) {
         checkIfClassAlreadyExists(schoolClassDto);
-        schoolClassRepository.save(buildSchoolClass(schoolClassDto));
+        schoolClassRepository.save(SchoolClassBuilder.build(schoolClassDto));
         return schoolClassDto;
-    }
-
-    public List<StudentOutputDto2> getAllStudentsInClass(String schoolClassName) {
-        checkIfClassExists(schoolClassName);
-        return studentRepository.findAllStudentsInClass(schoolClassName);
     }
 
     public List<SchoolClassDto> getListOfClasses() {
         return schoolClassRepository.findAllSchoolClasses();
-    }
-
-    public List<SubjectAndTeacherOutputDto> getAllSubjectsForSchoolClass(String schoolClassName) {
-        checkIfClassExists(schoolClassName);
-        return schoolClassRepository.findAllSubjectsForSchoolClass(schoolClassName);
     }
 
     public void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
@@ -58,18 +38,12 @@ public class SchoolClassService {
                 });
     }
 
-    public SchoolClass find(String schoolClassName) {
+    public SchoolClass findById(String schoolClassName) {
         return schoolClassRepository.findBySchoolClassName(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
     }
 
-    private SchoolClass buildSchoolClass(SchoolClassDto schoolClassDto) {
-        return SchoolClass.builder()
-                .name(schoolClassDto.getSchoolClassName())
-                .build();
-    }
-
-    private void checkIfClassExists(String schoolClassName) {
+    public void checkIfClassExists(String schoolClassName) {
         if (!doesSchoolClassExistsByName(schoolClassName)) {
             throw new NoSuchSchoolClassException(schoolClassName);
         }

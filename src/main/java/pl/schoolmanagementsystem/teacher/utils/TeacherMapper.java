@@ -1,6 +1,6 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
-import pl.schoolmanagementsystem.schoolsubject.utils.SubjectMapper;
+import pl.schoolmanagementsystem.schoolsubject.utils.SchoolSubjectMapper;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 
@@ -14,7 +14,7 @@ public class TeacherMapper {
                 .name(teacher.getName())
                 .surname(teacher.getSurname())
                 .taughtSubjects(teacher.getTaughtSubjects().stream()
-                        .map(SubjectMapper::mapSubjectToSubjectDto)
+                        .map(SchoolSubjectMapper::mapSubjectToSubjectDto)
                         .collect(Collectors.toSet()))
                 .build();
     }

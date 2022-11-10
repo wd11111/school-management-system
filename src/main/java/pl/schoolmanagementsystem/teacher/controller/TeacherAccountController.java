@@ -34,7 +34,7 @@ public class TeacherAccountController {
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
             @PathVariable String className, @RequestParam String subject, Principal principal) {
         return ResponseEntity.ok(studentService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subject, principal.getName()));
+                className, subject, teacherService.getIdFromPrincipals(principal)));
     }
 
 

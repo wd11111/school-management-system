@@ -5,10 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.email.service.EmailService;
-import pl.schoolmanagementsystem.exception.NoSuchTeacherException;
-import pl.schoolmanagementsystem.exception.TeacherAlreadyTeachesSubjectException;
-import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachClassException;
-import pl.schoolmanagementsystem.exception.TeacherDoesNotTeachSubjectException;
+import pl.schoolmanagementsystem.exception.*;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
@@ -49,7 +46,7 @@ public class TeacherService {
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
         emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
-        Teacher teacher = teacherRepository.save(buildTeacher(teacherInputDto));
+        Teacher teacher = teacherRepository.save(TeacherBuilder.build(teacherInputDto, passwordEncoder, schoolSubjectService));
         return TeacherMapper.mapTeacherToOutputDto(teacher);
     }
 
@@ -93,7 +90,8 @@ public class TeacherService {
     }
 
     public Teacher findByEmail(String email) {
-        return teacherRepository.findByEmail_Email(email).get();
+        return teacherRepository.findByEmail_Email(email)
+                .orElseThrow(() -> new NoSuchTeacherEmailException(email));
     }
 
     public void makeSureIfTeacherTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
@@ -128,9 +126,5 @@ public class TeacherService {
                                                                              SchoolClass schoolClass) {
         return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject)
                 .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass));
-    }
-
-    private Teacher buildTeacher(TeacherInputDto teacherInputDto) {
-        return TeacherBuilder.build(teacherInputDto, passwordEncoder, schoolSubjectService);
     }
 }

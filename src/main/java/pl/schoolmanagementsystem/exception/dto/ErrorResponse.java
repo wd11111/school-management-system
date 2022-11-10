@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception.handler;
+package pl.schoolmanagementsystem.exception.dto;
 
 import lombok.Data;
 

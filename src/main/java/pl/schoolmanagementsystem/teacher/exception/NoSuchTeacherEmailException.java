@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception;
+package pl.schoolmanagementsystem.teacher.exception;
 
 public class NoSuchTeacherEmailException extends RuntimeException{
 

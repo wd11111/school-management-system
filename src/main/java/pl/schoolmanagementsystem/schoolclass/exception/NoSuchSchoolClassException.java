@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception;
+package pl.schoolmanagementsystem.schoolclass.exception;
 
 public class NoSuchSchoolClassException extends RuntimeException {
     public NoSuchSchoolClassException(String incorrectSchoolClassName) {

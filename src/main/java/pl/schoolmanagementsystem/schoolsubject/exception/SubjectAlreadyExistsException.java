@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception;
+package pl.schoolmanagementsystem.schoolsubject.exception;
 
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 

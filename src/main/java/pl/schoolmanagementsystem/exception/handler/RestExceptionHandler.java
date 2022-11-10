@@ -5,7 +5,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.schoolmanagementsystem.exception.*;
+import pl.schoolmanagementsystem.email.exception.EmailAlreadyInUseException;
+import pl.schoolmanagementsystem.exception.dto.ErrorResponse;
+import pl.schoolmanagementsystem.schoolclass.exception.ClassAlreadyExistsException;
+import pl.schoolmanagementsystem.schoolclass.exception.ClassAlreadyHasTeacherException;
+import pl.schoolmanagementsystem.schoolclass.exception.NoSuchSchoolClassException;
+import pl.schoolmanagementsystem.schoolsubject.exception.NoSuchSchoolSubjectException;
+import pl.schoolmanagementsystem.schoolsubject.exception.SubjectAlreadyExistsException;
+import pl.schoolmanagementsystem.student.exception.NoSuchStudentEmailException;
+import pl.schoolmanagementsystem.student.exception.NoSuchStudentException;
+import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherAlreadyTeachesSubjectException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachSubjectException;
 
 @RestControllerAdvice
 @Slf4j

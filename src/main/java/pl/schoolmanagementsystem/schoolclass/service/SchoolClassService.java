@@ -2,9 +2,9 @@ package pl.schoolmanagementsystem.schoolclass.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.exception.ClassAlreadyExistsException;
-import pl.schoolmanagementsystem.exception.ClassAlreadyHasTeacherException;
-import pl.schoolmanagementsystem.exception.NoSuchSchoolClassException;
+import pl.schoolmanagementsystem.schoolclass.exception.ClassAlreadyExistsException;
+import pl.schoolmanagementsystem.schoolclass.exception.ClassAlreadyHasTeacherException;
+import pl.schoolmanagementsystem.schoolclass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception;
+package pl.schoolmanagementsystem.schoolsubject.exception;
 
 public class NoSuchSchoolSubjectException extends RuntimeException {
 

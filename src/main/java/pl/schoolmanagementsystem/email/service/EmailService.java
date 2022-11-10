@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.email.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.exception.EmailAlreadyInUseException;
+import pl.schoolmanagementsystem.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.email.repository.EmailRepository;
 
 @Service

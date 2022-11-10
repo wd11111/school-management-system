@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.teacher.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 
 import java.util.List;
@@ -21,4 +22,11 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
     List<Teacher> findAll();
 
     Optional<Teacher> findByEmail_Email(String email);
+
+    @Query("select new pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto(" +
+            "tc.taughtSubject.name, tics.name) " +
+            "from TeacherInClass tc " +
+            "left join tc.taughtClasses tics " +
+            "where tc.teacher.id=?1")
+    List<SubjectAndClassOutputDto> findTaughtClassesByTeacher(int teacherId);
 }

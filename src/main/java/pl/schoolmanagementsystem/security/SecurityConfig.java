@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import liquibase.Liquibase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

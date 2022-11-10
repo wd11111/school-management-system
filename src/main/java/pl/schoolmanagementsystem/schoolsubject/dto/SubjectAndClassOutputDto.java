@@ -1,14 +1,12 @@
 package pl.schoolmanagementsystem.schoolsubject.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class SubjectAndClassOutputDto {
 
     private String schoolSubject;

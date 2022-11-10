@@ -41,7 +41,7 @@ public class TeacherService {
 
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
         checkIfTeacherExists(teacherId);
-        return teacherInClassRepository.findTaughtClassesByTeacher(teacherId);
+        return teacherRepository.findTaughtClassesByTeacher(teacherId);
     }
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {

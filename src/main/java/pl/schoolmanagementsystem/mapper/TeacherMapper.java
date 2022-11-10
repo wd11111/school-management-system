@@ -1,11 +1,11 @@
 package pl.schoolmanagementsystem.mapper;
 
-import pl.schoolmanagementsystem.model.SchoolSubject;
-import pl.schoolmanagementsystem.model.Teacher;
-import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.model.dto.input.TeacherInClassInputDto;
-import pl.schoolmanagementsystem.model.dto.output.TeacherInClassOutputDto;
-import pl.schoolmanagementsystem.model.dto.output.TeacherOutputDto;
+import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
+import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
+import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
 
 import java.util.Set;
 import java.util.stream.Collectors;

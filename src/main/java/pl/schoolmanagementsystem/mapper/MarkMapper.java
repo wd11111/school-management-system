@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.mapper;
 
-import pl.schoolmanagementsystem.model.Mark;
-import pl.schoolmanagementsystem.model.dto.output.MarkOutputDto;
+import pl.schoolmanagementsystem.mark.model.Mark;
+import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
 
 import java.util.List;
 import java.util.stream.Collectors;

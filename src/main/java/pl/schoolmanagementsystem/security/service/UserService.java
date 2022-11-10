@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.model.Student;
-import pl.schoolmanagementsystem.model.Teacher;
-import pl.schoolmanagementsystem.repository.StudentRepository;
-import pl.schoolmanagementsystem.repository.TeacherRepository;
+import pl.schoolmanagementsystem.student.model.Student;
+import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.student.repository.StudentRepository;
+import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
 
 import java.util.*;
 

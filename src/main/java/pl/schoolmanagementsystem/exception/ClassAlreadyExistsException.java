@@ -1,6 +1,6 @@
 package pl.schoolmanagementsystem.exception;
 
-import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
 
 public class ClassAlreadyExistsException extends RuntimeException {
     public ClassAlreadyExistsException(SchoolClassDto schoolClassDto) {

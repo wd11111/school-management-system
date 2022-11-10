@@ -1,8 +1,8 @@
 package pl.schoolmanagementsystem.mapper;
 
-import pl.schoolmanagementsystem.model.Student;
-import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto;
-import pl.schoolmanagementsystem.model.dto.output.StudentOutputDto3;
+import pl.schoolmanagementsystem.student.model.Student;
+import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
+import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
 
 public class StudentMapper {
 

@@ -29,13 +29,13 @@ public class StudentController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/marks")
     public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(@PathVariable int id) {
-        return ResponseEntity.ok(studentService.getGroupedMarksBySubjectForStudent(id));
+        return ResponseEntity.ok(markService.getGroupedMarksBySubjectForStudent(id));
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/averages")
     public ResponseEntity<List<MarkAvgDto>> getAverageMarksForStudent(@PathVariable int id) {
-        return ResponseEntity.ok(studentService.getAverageMarksForStudent(id));
+        return ResponseEntity.ok(markService.getAverageMarksForStudent(id));
     }
 
     @Secured("ROLE_TEACHER")

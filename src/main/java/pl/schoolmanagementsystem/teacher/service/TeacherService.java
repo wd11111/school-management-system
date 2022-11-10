@@ -23,6 +23,7 @@ import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
 import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
 
+import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,6 +100,10 @@ public class TeacherService {
         if (!doesTeacherAlreadyTeachesThisSubject(teacher, schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }
+    }
+
+    public int getIdFromPrincipals(Principal principal) {
+        return findByEmail(principal.getName()).getId();
     }
 
     private void checkIfTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {

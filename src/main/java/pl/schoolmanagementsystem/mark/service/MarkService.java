@@ -2,14 +2,14 @@ package pl.schoolmanagementsystem.mark.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.mark.dto.MarkDtoWithTwoFields;
-import pl.schoolmanagementsystem.mark.uitls.MarkBuilder;
-import pl.schoolmanagementsystem.mark.uitls.MarkMapper;
-import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
-import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
 import pl.schoolmanagementsystem.mark.model.Mark;
 import pl.schoolmanagementsystem.mark.repository.MarkRepository;
+import pl.schoolmanagementsystem.mark.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.mark.dto.MarkDtoWithTwoFields;
+import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
+import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
+import pl.schoolmanagementsystem.mark.uitls.MarkBuilder;
+import pl.schoolmanagementsystem.mark.uitls.MarkMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
@@ -20,7 +20,6 @@ import pl.schoolmanagementsystem.teacher.service.TeacherService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class MarkService {
 
     public Map<String, List<Integer>> getGroupedMarksBySubjectForStudent(int studentId) {
         studentService.checkIfStudentExists(studentId);
-        return groupStudentsMarks(studentId);
+        return groupMarksForStudent(studentId);
     }
 
     public List<MarkAvgDto> getAverageMarksForStudent(int studentId) {
@@ -54,14 +53,9 @@ public class MarkService {
         return markRepository.findAllAverageMarksForStudentById(studentId);
     }
 
-    private Map<String, List<Integer>> groupStudentsMarks(int studentId) {
+    private Map<String, List<Integer>> groupMarksForStudent(int studentId) {
         List<MarkDtoWithTwoFields> studentsMarks = markRepository.findAllMarksForStudentById(studentId);
-        Map<String, List<MarkDtoWithTwoFields>> groupedMarks = groupMarksBySubject(studentsMarks);
+        Map<String, List<MarkDtoWithTwoFields>> groupedMarks = MarkMapper.groupMarksBySubject(studentsMarks);
         return MarkMapper.mapListOfMarksToIntegersInMapStructure(groupedMarks);
-    }
-
-    private Map<String, List<MarkDtoWithTwoFields>> groupMarksBySubject(List<MarkDtoWithTwoFields> studentsMarks) {
-        return studentsMarks.stream()
-                .collect(Collectors.groupingBy(MarkDtoWithTwoFields::getSubject));
     }
 }

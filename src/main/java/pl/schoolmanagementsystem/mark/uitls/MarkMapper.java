@@ -1,8 +1,8 @@
 package pl.schoolmanagementsystem.mark.uitls;
 
 import pl.schoolmanagementsystem.mark.dto.MarkDtoWithTwoFields;
-import pl.schoolmanagementsystem.mark.model.Mark;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
+import pl.schoolmanagementsystem.mark.model.Mark;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,5 +28,10 @@ public class MarkMapper {
                 .map(MarkDtoWithTwoFields::getMark)
                 .collect(Collectors.toList())));
         return resultMap;
+    }
+
+    public static Map<String, List<MarkDtoWithTwoFields>> groupMarksBySubject(List<MarkDtoWithTwoFields> studentsMarks) {
+        return studentsMarks.stream()
+                .collect(Collectors.groupingBy(MarkDtoWithTwoFields::getSubject));
     }
 }

@@ -2,7 +2,6 @@ package pl.schoolmanagementsystem.teacherinclass.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
@@ -13,6 +12,7 @@ import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
 import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
+import pl.schoolmanagementsystem.teacherinclass.utils.TeacherInClassMapper;
 
 import java.util.Optional;
 
@@ -35,7 +35,7 @@ public class TeacherInClassService {
         teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject);
         schoolClassService.checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
         teacherInClassRepository.save(buildTeacherInClass(teacher, schoolSubject, schoolClass));
-        return TeacherMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
+        return TeacherInClassMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
     }
 
     public Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,

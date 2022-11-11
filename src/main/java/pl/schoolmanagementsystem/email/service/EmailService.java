@@ -12,8 +12,8 @@ public class EmailService {
     private final EmailRepository emailRepository;
 
     public void checkIfEmailIsAvailable(String email) {
-        boolean isEmailAvailable = emailRepository.existsById(email);
-        if (isEmailAvailable) {
+        boolean isEmailAlreadyTaken = emailRepository.existsById(email);
+        if (isEmailAlreadyTaken) {
             throw new EmailAlreadyInUseException(email);
         }
     }

@@ -39,6 +39,8 @@ public class TeacherService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final TeacherMapper teacherMapper;
+
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
         checkIfTeacherExists(teacherId);
         return teacherRepository.findTaughtClassesByTeacher(teacherId);
@@ -47,13 +49,13 @@ public class TeacherService {
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
         emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
         Teacher teacher = teacherRepository.save(TeacherBuilder.build(teacherInputDto, passwordEncoder, schoolSubjectService));
-        return TeacherMapper.mapTeacherToOutputDto(teacher);
+        return teacherMapper.mapTeacherToOutputDto(teacher);
     }
 
     public List<TeacherOutputDto> getAllTeachersInSchool() {
         return teacherRepository.findAll()
                 .stream()
-                .map(TeacherMapper::mapTeacherToOutputDto)
+                .map(teacherMapper::mapTeacherToOutputDto)
                 .sorted(Comparator.comparing(TeacherOutputDto::getSurname))
                 .collect(Collectors.toList());
     }
@@ -64,7 +66,7 @@ public class TeacherService {
         SchoolSubject schoolSubject = schoolSubjectService.findByName(schoolSubjectDto.getSubject());
         checkIfTeacherAlreadyTeachesThisSubject(teacher, schoolSubject);
         teacher.getTaughtSubjects().add(schoolSubject);
-        return TeacherMapper.mapTeacherToOutputDto(teacher);
+        return teacherMapper.mapTeacherToOutputDto(teacher);
     }
 
     @Transactional

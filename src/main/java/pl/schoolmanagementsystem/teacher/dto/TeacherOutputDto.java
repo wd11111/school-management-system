@@ -1,12 +1,14 @@
 package pl.schoolmanagementsystem.teacher.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

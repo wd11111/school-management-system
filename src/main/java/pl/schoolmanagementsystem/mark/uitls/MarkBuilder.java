@@ -1,8 +1,8 @@
 package pl.schoolmanagementsystem.mark.uitls;
 
-import pl.schoolmanagementsystem.mark.model.Mark;
-import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
-import pl.schoolmanagementsystem.student.model.Student;
+import pl.schoolmanagementsystem.mark.Mark;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
+import pl.schoolmanagementsystem.student.Student;
 
 public class MarkBuilder {
 

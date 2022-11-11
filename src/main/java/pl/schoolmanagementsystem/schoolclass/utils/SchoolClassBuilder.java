@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.schoolclass.utils;
 
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
+import pl.schoolmanagementsystem.schoolclass.SchoolClass;
 
 public class SchoolClassBuilder {
 

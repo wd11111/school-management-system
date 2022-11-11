@@ -3,13 +3,13 @@ package pl.schoolmanagementsystem.student.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.schoolmanagementsystem.email.model.Email;
+import pl.schoolmanagementsystem.email.Email;
 import pl.schoolmanagementsystem.mark.uitls.MarkMapper;
-import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
+import pl.schoolmanagementsystem.schoolclass.SchoolClass;
 import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
-import pl.schoolmanagementsystem.student.model.Student;
+import pl.schoolmanagementsystem.student.Student;
 
 @Component
 @RequiredArgsConstructor

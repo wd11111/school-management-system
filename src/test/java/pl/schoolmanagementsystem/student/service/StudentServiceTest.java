@@ -1,12 +1,14 @@
 package pl.schoolmanagementsystem.student.service;
 
 import org.junit.jupiter.api.Test;
-import pl.schoolmanagementsystem.email.service.EmailService;
-import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
-import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
-import pl.schoolmanagementsystem.student.repository.StudentRepository;
+import pl.schoolmanagementsystem.email.EmailService;
+import pl.schoolmanagementsystem.schoolclass.SchoolClassService;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectService;
+import pl.schoolmanagementsystem.student.StudentRepository;
+import pl.schoolmanagementsystem.student.StudentService;
 import pl.schoolmanagementsystem.student.utils.StudentMapper;
-import pl.schoolmanagementsystem.teacher.service.TeacherService;
+import pl.schoolmanagementsystem.teacher.TeacherService;
+import pl.schoolmanagementsystem.teacherinclass.TeacherInClassService;
 
 import static org.mockito.Mockito.mock;
 
@@ -24,7 +26,10 @@ class StudentServiceTest {
 
     private SchoolClassService schoolClassService = mock(SchoolClassService.class);
 
-    private StudentService studentService = new StudentService(studentRepository, emailService, studentMapper, schoolSubjectService, teacherService, schoolClassService);
+    private TeacherInClassService teacherInClassService = mock(TeacherInClassService.class);
+
+    private StudentService studentService = new StudentService(studentRepository, emailService, studentMapper,
+            schoolSubjectService, teacherService, schoolClassService,teacherInClassService);
 
     @Test
     void should_save_student_when_email_is_available() {

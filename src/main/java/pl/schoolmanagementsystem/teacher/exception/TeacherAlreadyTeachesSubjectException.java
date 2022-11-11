@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.teacher.exception;
 
-import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
-import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
+import pl.schoolmanagementsystem.teacher.Teacher;
 
 public class TeacherAlreadyTeachesSubjectException extends RuntimeException {
 

@@ -1,11 +1,11 @@
 package pl.schoolmanagementsystem.teacher.service;
 
-import pl.schoolmanagementsystem.email.model.Email;
+import pl.schoolmanagementsystem.email.Email;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
-import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
-import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.teacher.Teacher;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -3,11 +3,12 @@ package pl.schoolmanagementsystem.teacher.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.schoolmanagementsystem.email.model.Email;
-import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
+import pl.schoolmanagementsystem.email.Email;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectService;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
-import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.teacher.Teacher;
 
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class TeacherMapper {
                 .name(teacher.getName())
                 .surname(teacher.getSurname())
                 .taughtSubjects(teacher.getTaughtSubjects().stream()
-                        .map(schoolSubject -> schoolSubject.getName())
+                        .map(SchoolSubject::getName)
                         .collect(Collectors.toSet()))
                 .build();
     }
@@ -39,7 +40,7 @@ public class TeacherMapper {
                 .isAdmin(teacherInputDto.isAdmin())
                 .password(passwordEncoder.encode(teacherInputDto.getPassword()))
                 .taughtSubjects(teacherInputDto.getTaughtSubjects().stream()
-                        .map(subject -> schoolSubjectService.findByName(subject)).collect(Collectors.toSet())
+                        .map(schoolSubjectService::findByName).collect(Collectors.toSet())
                 )
                 .teacherInClasses(new HashSet<>())
                 .build();

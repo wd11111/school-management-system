@@ -2,18 +2,19 @@ package pl.schoolmanagementsystem.teacher.service;
 
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.email.exception.EmailAlreadyInUseException;
-import pl.schoolmanagementsystem.email.service.EmailService;
+import pl.schoolmanagementsystem.email.EmailService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
-import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
-import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectService;
+import pl.schoolmanagementsystem.teacher.TeacherService;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.teacher.exception.TeacherAlreadyTeachesSubjectException;
 import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachSubjectException;
-import pl.schoolmanagementsystem.teacher.model.Teacher;
-import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
+import pl.schoolmanagementsystem.teacher.Teacher;
+import pl.schoolmanagementsystem.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 
 import java.util.List;

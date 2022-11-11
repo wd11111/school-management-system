@@ -1,13 +1,10 @@
 package pl.schoolmanagementsystem.student.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.email.service.EmailService;
 import pl.schoolmanagementsystem.schoolclass.exception.NoSuchSchoolClassException;
-import pl.schoolmanagementsystem.student.exception.NoSuchStudentEmailException;
-import pl.schoolmanagementsystem.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
@@ -17,9 +14,10 @@ import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
+import pl.schoolmanagementsystem.student.exception.NoSuchStudentEmailException;
+import pl.schoolmanagementsystem.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.student.model.Student;
 import pl.schoolmanagementsystem.student.repository.StudentRepository;
-import pl.schoolmanagementsystem.student.utils.StudentBuilder;
 import pl.schoolmanagementsystem.student.utils.StudentMapper;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.service.TeacherService;
@@ -39,7 +37,7 @@ public class StudentService {
 
     private final EmailService emailService;
 
-    private final PasswordEncoder passwordEncoder;
+    private final StudentMapper studentMapper;
 
     private final SchoolSubjectService schoolSubjectService;
 
@@ -52,8 +50,8 @@ public class StudentService {
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
         emailService.checkIfEmailIsAvailable(studentInputDto.getEmail());
         SchoolClass schoolClass = findSchoolClass(studentInputDto);
-        Student student = studentRepository.save(StudentBuilder.build(studentInputDto, schoolClass, passwordEncoder));
-        return StudentMapper.mapStudentToOutputDto(student);
+        Student student = studentRepository.save(studentMapper.mapInputDtoToStudent(studentInputDto, schoolClass));
+        return studentMapper.mapStudentToOutputDto(student);
     }
 
     public List<StudentOutputDto3> getAllStudentsInClassWithMarksOfTheSubject(String schoolClassName, String subjectName, int teacherId) {
@@ -61,7 +59,10 @@ public class StudentService {
         SchoolClass schoolClass = schoolClassService.findById(schoolClassName);
         Teacher teacher = teacherService.findById(teacherId);
         teacherInClassService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
-        return getStudentsWithIntegerMarks(schoolClassName, subjectName);
+        return studentRepository.findAllStudentsInClassWithMarksOfTheSubject(schoolClassName, subjectName)
+                .stream()
+                .map(studentMapper::mapStudentToOutputDto3)
+                .collect(Collectors.toList());
     }
 
     public List<StudentOutputDto2> getAllStudentsInClass(String schoolClassName) {
@@ -99,12 +100,5 @@ public class StudentService {
     private SchoolClass findSchoolClass(StudentInputDto studentInputDto) {
         return schoolClassRepository.findBySchoolClassName(studentInputDto.getSchoolClassName())
                 .orElseThrow(() -> new NoSuchSchoolClassException(studentInputDto.getSchoolClassName()));
-    }
-
-    private List<StudentOutputDto3> getStudentsWithIntegerMarks(String schoolClassName, String subjectName) {
-        List<Student> students = studentRepository.findAllStudentsInClassWithMarksOfTheSubject(schoolClassName, subjectName);
-        return students.stream()
-                .map(StudentMapper::mapStudentToOutputDto3)
-                .collect(Collectors.toList());
     }
 }

@@ -151,5 +151,4 @@ class TeacherServiceTest implements TeacherSamples {
                 .hasMessageContaining(String.format("%s %s does not teach %s",
                         teacher.getName(), teacher.getSurname(), schoolSubject.getName()));
     }
-
 }

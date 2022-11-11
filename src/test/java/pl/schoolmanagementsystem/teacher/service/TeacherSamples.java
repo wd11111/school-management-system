@@ -56,16 +56,8 @@ public interface TeacherSamples {
 
     }
 
-    default TeacherOutputDto mappedCreatedTeacher() {
-        return new TeacherOutputDto(1, ADAM, NOWAK, Collections.emptySet());
-    }
-
     default TeacherInputDto TeacherInputDto() {
         return new TeacherInputDto(ADAM, ADAM, NOWAK, ADAM_PASSWORD, true, Collections.emptySet());
-    }
-
-    default List<TeacherOutputDto> listOfTeacherDto() {
-        return List.of(mappedCreatedTeacher(), teacherOutputDto());
     }
 
     default TeacherOutputDto teacherOutputDto() {

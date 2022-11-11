@@ -1,10 +1,10 @@
 package pl.schoolmanagementsystem.teacherinclass.utils;
 
-import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
-import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
-import pl.schoolmanagementsystem.teacher.model.Teacher;
-import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
-import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
+import pl.schoolmanagementsystem.schoolclass.SchoolClass;
+import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
+import pl.schoolmanagementsystem.teacher.Teacher;
+import pl.schoolmanagementsystem.teacherinclass.TeacherInClass;
+import pl.schoolmanagementsystem.teacherinclass.TeacherInClassService;
 
 public class TeacherInClassBuilder {
 

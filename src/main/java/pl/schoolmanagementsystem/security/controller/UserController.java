@@ -1,5 +1,7 @@
 package pl.schoolmanagementsystem.security.controller;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,7 @@ import pl.schoolmanagementsystem.security.service.UserService;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -20,5 +23,4 @@ public class UserController {
         userService.loadUserByUsername(loginCredentials.getEmail());
         return ResponseEntity.ok().build();
     }
-
 }

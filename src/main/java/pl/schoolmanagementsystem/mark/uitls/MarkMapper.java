@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.mark.uitls;
 
 import pl.schoolmanagementsystem.mark.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
-import pl.schoolmanagementsystem.mark.model.Mark;
+import pl.schoolmanagementsystem.mark.Mark;
 
 import java.util.HashMap;
 import java.util.List;

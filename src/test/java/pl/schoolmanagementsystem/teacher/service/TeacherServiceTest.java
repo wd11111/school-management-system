@@ -5,13 +5,16 @@ import pl.schoolmanagementsystem.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.email.service.EmailService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
+import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
+import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherAlreadyTeachesSubjectException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
 import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
-import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,14 +31,12 @@ class TeacherServiceTest implements TeacherSamples {
 
     private SchoolSubjectService schoolSubjectService = mock(SchoolSubjectService.class);
 
-    private TeacherInClassRepository teacherInClassRepository = mock(TeacherInClassRepository.class);
-
     private TeacherRepository teacherRepository = mock(TeacherRepository.class);
 
     private TeacherMapper teacherMapper = mock(TeacherMapper.class);
 
     private TeacherService teacherService = new TeacherService(
-            emailService, schoolSubjectService, teacherInClassRepository, teacherRepository, teacherMapper);
+            emailService, schoolSubjectService, teacherRepository, teacherMapper);
 
     @Test
     void should_return_taught_classes_by_teacher_when_teacher_exists() {
@@ -59,23 +60,26 @@ class TeacherServiceTest implements TeacherSamples {
     }
 
     @Test
-    void should_correctly_create_teacher_when_email_is_available() {
-        when(teacherRepository.save(any(Teacher.class))).thenReturn(createdTeacher());
-        when(teacherMapper.mapTeacherToOutputDto(any(Teacher.class))).thenReturn(mappedCreatedTeacher());
+    void should_save_teacher_when_email_is_available() {
+        TeacherInputDto teacherInputDto = TeacherInputDto();
+        Teacher teacher = adminTeacher();
+        when(teacherMapper.mapInputDtoToTeacher(teacherInputDto)).thenReturn(teacher);
+        when(teacherRepository.save(teacher)).thenReturn(teacher);
 
-        TeacherOutputDto result = teacherService.createTeacher(TeacherInputDto());
+        teacherService.createTeacher(teacherInputDto);
 
-        assertThat(result).isEqualTo(mappedCreatedTeacher());
         verify(teacherRepository, times(1)).save(any(Teacher.class));
+        verify(emailService, times(1)).checkIfEmailIsAvailable(anyString());
     }
 
     @Test
     void should_throw_email_already_in_use_then_trying_to_create_teacher() {
+        TeacherInputDto teacherInputDto = TeacherInputDto();
         doThrow(new EmailAlreadyInUseException(TeacherInputDto().getEmail())).when(emailService).checkIfEmailIsAvailable(anyString());
 
-        assertThatThrownBy(() -> teacherService.createTeacher(TeacherInputDto()))
+        assertThatThrownBy(() -> teacherService.createTeacher(teacherInputDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
-                .hasMessageContaining(String.format("Email already in use: %s", TeacherInputDto().getEmail()));
+                .hasMessageContaining(String.format("Email already in use: %s", teacherInputDto.getEmail()));
         verify(teacherRepository, never()).save(any(Teacher.class));
         verify(teacherMapper, never()).mapTeacherToOutputDto(any(Teacher.class));
     }
@@ -94,15 +98,58 @@ class TeacherServiceTest implements TeacherSamples {
 
     @Test
     void should_add_taught_subject_to_teacher_when_teacher_doesnt_teach_the_subject_yet() {
-        Teacher teacher = createdTeacher();
+        Teacher teacher = adminTeacher();
         when(teacherRepository.findById(anyInt())).thenReturn(Optional.ofNullable(teacher));
         when(schoolSubjectService.findByName(anyString())).thenReturn(schoolSubject());
         then(teacher.getTaughtSubjects().size()).isZero();
 
-        teacherService.addTaughtSubjectToTeacher(1, new SchoolSubjectDto("Biology"));
+        teacherService.addTaughtSubjectToTeacher(1, new SchoolSubjectDto(BIOLOGY));
 
         assertThat(teacher.getTaughtSubjects().size()).isEqualTo(1);
     }
 
+    @Test
+    void should_throw_exception_when_adding_subject_to_teacher() {
+        Teacher teacher = teacherOfBiology();
+        when(teacherRepository.findById(anyInt())).thenReturn(Optional.ofNullable(teacher));
+        when(schoolSubjectService.findByName(anyString())).thenReturn(schoolSubject());
+        then(teacher.getTaughtSubjects().size()).isOne();
+
+        assertThatThrownBy(() -> teacherService.addTaughtSubjectToTeacher(2, new SchoolSubjectDto(BIOLOGY)))
+                .isInstanceOf(TeacherAlreadyTeachesSubjectException.class)
+                .hasMessageContaining(String.format("%s %s already teaches %s",
+                        teacher.getName(), teacher.getSurname(), BIOLOGY));
+        then(teacher.getTaughtSubjects().size()).isOne();
+    }
+
+    @Test
+    void should_delete_teacher_when_teacher_exists() {
+        when(teacherRepository.existsById(anyInt())).thenReturn(true);
+
+        teacherService.deleteTeacher(1);
+
+        verify(teacherRepository, times(1)).deleteById(anyInt());
+    }
+
+    @Test
+    void should_throw_exception_while_trying_to_delete_teacher() {
+        when(teacherRepository.existsById(anyInt())).thenReturn(false);
+
+        assertThatThrownBy(() -> teacherService.deleteTeacher(1))
+                .isInstanceOf(NoSuchTeacherException.class)
+                .hasMessageContaining(String.format("Teacher with such an id does not exist: %d", 1));
+        verify(teacherRepository, times(0)).deleteById(anyInt());
+    }
+
+    @Test
+    void should_throw_exception_when_teacher_doesnt_teach_the_subject() {
+        Teacher teacher = adminTeacher();
+        SchoolSubject schoolSubject = schoolSubject();
+
+        assertThatThrownBy(() -> teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject))
+                .isInstanceOf(TeacherDoesNotTeachSubjectException.class)
+                .hasMessageContaining(String.format("%s %s does not teach %s",
+                        teacher.getName(), teacher.getSurname(), schoolSubject.getName()));
+    }
 
 }

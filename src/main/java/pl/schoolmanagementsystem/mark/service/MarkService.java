@@ -17,6 +17,7 @@ import pl.schoolmanagementsystem.student.model.Student;
 import pl.schoolmanagementsystem.student.service.StudentService;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.service.TeacherService;
+import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class MarkService {
 
     private final TeacherService teacherService;
 
+    private final TeacherInClassService teacherInClassService;
+
     private final SchoolSubjectService schoolSubjectService;
 
     public MarkOutputDto addMarkForStudent(String teacherEmail, MarkInputDto markInputDto, int studentId) {
@@ -38,7 +41,7 @@ public class MarkService {
         SchoolClass studentsClass = student.getSchoolClass();
         Teacher teacher = teacherService.findByEmail(teacherEmail);
         SchoolSubject schoolSubject = schoolSubjectService.findByName(markInputDto.getSubject());
-        teacherService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
+        teacherInClassService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
         Mark mark = markRepository.save(MarkBuilder.build(markInputDto.getMark(), student, schoolSubject));
         return MarkMapper.mapMarkToOutputDto(mark);
     }

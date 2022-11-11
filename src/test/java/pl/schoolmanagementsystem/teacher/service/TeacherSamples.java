@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.teacher.service;
 
 import pl.schoolmanagementsystem.email.model.Email;
+import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
@@ -21,14 +22,15 @@ public interface TeacherSamples {
     String HISTORY = "History";
     String KOWALCZYK = "Kowalczyk";
     String ALICJA = "Alicja";
+    String A = "1a";
 
     default List<SubjectAndClassOutputDto> listOfTaughtClassesByTeacher() {
-        return List.of(new SubjectAndClassOutputDto(BIOLOGY, "1a"),
-                new SubjectAndClassOutputDto(HISTORY, "1a"),
+        return List.of(new SubjectAndClassOutputDto(BIOLOGY, A),
+                new SubjectAndClassOutputDto(HISTORY, A),
                 new SubjectAndClassOutputDto(HISTORY, "3b"));
     }
 
-    default Teacher createdTeacher() {
+    default Teacher adminTeacher() {
         return Teacher.builder()
                 .id(1)
                 .name(ADAM)
@@ -41,7 +43,7 @@ public interface TeacherSamples {
 
     }
 
-    default Teacher createdTeacher2() {
+    default Teacher teacherOfBiology() {
         return Teacher.builder()
                 .id(2)
                 .name(ALICJA)
@@ -49,7 +51,7 @@ public interface TeacherSamples {
                 .password(ADAM_PASSWORD)
                 .isAdmin(false)
                 .email(new Email(ALICJA))
-                .taughtSubjects(new HashSet<>())
+                .taughtSubjects(new HashSet<>(Set.of(schoolSubject())))
                 .build();
 
     }
@@ -76,7 +78,7 @@ public interface TeacherSamples {
     }
 
     default List<Teacher> listOfTeachers() {
-        return List.of(createdTeacher(), createdTeacher2());
+        return List.of(adminTeacher(), teacherOfBiology());
     }
 
     default SchoolSubject schoolSubject() {

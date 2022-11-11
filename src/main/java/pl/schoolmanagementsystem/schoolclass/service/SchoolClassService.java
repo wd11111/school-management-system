@@ -10,6 +10,9 @@ import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.schoolclass.utils.SchoolClassBuilder;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
+import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.teacher.model.Teacher;
+import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
 
 import java.util.List;
 

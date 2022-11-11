@@ -6,6 +6,7 @@ import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
+import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachClassException;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.service.TeacherService;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
@@ -37,6 +38,18 @@ public class TeacherInClassService {
         schoolClassService.checkIfThisClassAlreadyHasTeacherOfThisSubject(schoolClass, schoolSubject);
         teacherInClassRepository.save(buildTeacherInClass(teacher, schoolSubject, schoolClass));
         return TeacherInClassMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
+    }
+
+    public void makeSureIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
+        if (teacher.isAdmin()) {
+            return;
+        }
+        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject)
+                .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass));
+        boolean doesTeacherTeachThisClass = teacherInClass.getTaughtClasses().contains(schoolClass);
+        if (!doesTeacherTeachThisClass) {
+            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
+        }
     }
 
     public Optional<TeacherInClass> getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,

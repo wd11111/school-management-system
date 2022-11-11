@@ -4,19 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.email.service.EmailService;
-import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
-import pl.schoolmanagementsystem.teacher.exception.*;
+import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherEmailException;
+import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherAlreadyTeachesSubjectException;
+import pl.schoolmanagementsystem.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
 import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
-import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
-import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
 
 import java.security.Principal;
 import java.util.Comparator;
@@ -31,7 +31,6 @@ public class TeacherService {
 
     private final SchoolSubjectService schoolSubjectService;
 
-    private final TeacherInClassRepository teacherInClassRepository;
 
     private final TeacherRepository teacherRepository;
 
@@ -44,7 +43,8 @@ public class TeacherService {
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
         emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
-        Teacher teacher = teacherRepository.save(teacherMapper.mapInputDtoToTeacher(teacherInputDto));
+        Teacher mappedTeacher = teacherMapper.mapInputDtoToTeacher(teacherInputDto);
+        Teacher teacher = teacherRepository.save(mappedTeacher);
         return teacherMapper.mapTeacherToOutputDto(teacher);
     }
 
@@ -69,17 +69,6 @@ public class TeacherService {
     public void deleteTeacher(int teacherId) {
         checkIfTeacherExists(teacherId);
         teacherRepository.deleteById(teacherId);
-    }
-
-    public void makeSureIfTeacherTeachesThisClass(Teacher teacher, SchoolSubject schoolSubject, SchoolClass schoolClass) {
-        if (teacher.isAdmin()) {
-            return;
-        }
-        TeacherInClass teacherInClass = getTeacherInClassIfTheTeacherAlreadyHasEquivalent(teacher, schoolSubject, schoolClass);
-        boolean doesTeacherTeachThisClass = teacherInClass.getTaughtClasses().contains(schoolClass);
-        if (!doesTeacherTeachThisClass) {
-            throw new TeacherDoesNotTeachClassException(schoolSubject, schoolClass);
-        }
     }
 
     public Teacher findById(int id) {
@@ -117,12 +106,5 @@ public class TeacherService {
         if (!doesTeacherExist) {
             throw new NoSuchTeacherException(teacherId);
         }
-    }
-
-    private TeacherInClass getTeacherInClassIfTheTeacherAlreadyHasEquivalent(Teacher teacher,
-                                                                             SchoolSubject schoolSubject,
-                                                                             SchoolClass schoolClass) {
-        return teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject)
-                .orElseThrow(() -> new TeacherDoesNotTeachClassException(schoolSubject, schoolClass));
     }
 }

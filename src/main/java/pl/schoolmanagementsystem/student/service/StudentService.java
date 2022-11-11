@@ -23,6 +23,7 @@ import pl.schoolmanagementsystem.student.utils.StudentBuilder;
 import pl.schoolmanagementsystem.student.utils.StudentMapper;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.service.TeacherService;
+import pl.schoolmanagementsystem.teacherinclass.service.TeacherInClassService;
 
 import java.security.Principal;
 import java.util.List;
@@ -46,6 +47,8 @@ public class StudentService {
 
     private final SchoolClassService schoolClassService;
 
+    private TeacherInClassService teacherInClassService;
+
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
         emailService.checkIfEmailIsAvailable(studentInputDto.getEmail());
         SchoolClass schoolClass = findSchoolClass(studentInputDto);
@@ -57,7 +60,7 @@ public class StudentService {
         SchoolSubject schoolSubject = schoolSubjectService.findByName(subjectName);
         SchoolClass schoolClass = schoolClassService.findById(schoolClassName);
         Teacher teacher = teacherService.findById(teacherId);
-        teacherService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
+        teacherInClassService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
         return getStudentsWithIntegerMarks(schoolClassName, subjectName);
     }
 

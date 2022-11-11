@@ -1,7 +1,6 @@
 package pl.schoolmanagementsystem.teacher.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.email.service.EmailService;
@@ -15,7 +14,6 @@ import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.teacher.exception.*;
 import pl.schoolmanagementsystem.teacher.model.Teacher;
 import pl.schoolmanagementsystem.teacher.repository.TeacherRepository;
-import pl.schoolmanagementsystem.teacher.utils.TeacherBuilder;
 import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 import pl.schoolmanagementsystem.teacherinclass.model.TeacherInClass;
 import pl.schoolmanagementsystem.teacherinclass.repository.TeacherInClassRepository;
@@ -37,8 +35,6 @@ public class TeacherService {
 
     private final TeacherRepository teacherRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final TeacherMapper teacherMapper;
 
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
@@ -48,7 +44,7 @@ public class TeacherService {
 
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
         emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
-        Teacher teacher = teacherRepository.save(TeacherBuilder.build(teacherInputDto, passwordEncoder, schoolSubjectService));
+        Teacher teacher = teacherRepository.save(teacherMapper.mapInputDtoToTeacher(teacherInputDto));
         return teacherMapper.mapTeacherToOutputDto(teacher);
     }
 
@@ -97,7 +93,7 @@ public class TeacherService {
     }
 
     public void makeSureIfTeacherTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        if (!doesTeacherAlreadyTeachesThisSubject(teacher, schoolSubject)) {
+        if (!doesTeacherAlreadyTeachThisSubject(teacher, schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }
     }
@@ -107,12 +103,12 @@ public class TeacherService {
     }
 
     private void checkIfTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        if (doesTeacherAlreadyTeachesThisSubject(teacher, schoolSubject)) {
+        if (doesTeacherAlreadyTeachThisSubject(teacher, schoolSubject)) {
             throw new TeacherAlreadyTeachesSubjectException(teacher, schoolSubject);
         }
     }
 
-    private boolean doesTeacherAlreadyTeachesThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
+    private boolean doesTeacherAlreadyTeachThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
         return teacher.getTaughtSubjects().contains(schoolSubject);
     }
 

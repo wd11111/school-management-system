@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 
 import java.util.Set;
 
@@ -17,6 +16,6 @@ public class TeacherOutputDto {
     private int id;
     private String name;
     private String surname;
-    private Set<SchoolSubjectDto> taughtSubjects;
+    private Set<String> taughtSubjects;
 
 }

@@ -25,16 +25,17 @@ public class TeacherAccountController {
     @Secured("ROLE_TEACHER")
     @GetMapping("/account/classes")
     public ResponseEntity<List<SubjectAndClassOutputDto>> getTaughtClassesByTeacher(Principal principal) {
-        Teacher teacher = teacherService.findByEmail(principal.getName());
-        return ResponseEntity.ok(teacherService.getTaughtClassesByTeacher(teacher.getId()));
+        int idFromPrincipals = teacherService.getIdFromPrincipals(principal);
+        return ResponseEntity.ok(teacherService.getTaughtClassesByTeacher(idFromPrincipals));
     }
 
     @Secured("ROLE_TEACHER")
     @GetMapping("/{className}/marks")
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
             @PathVariable String className, @RequestParam String subject, Principal principal) {
+        int idFromPrincipals = teacherService.getIdFromPrincipals(principal);
         return ResponseEntity.ok(studentService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subject, teacherService.getIdFromPrincipals(principal)));
+                className, subject, idFromPrincipals));
     }
 
 

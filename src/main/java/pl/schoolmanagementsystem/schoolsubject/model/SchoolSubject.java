@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +22,7 @@ public class SchoolSubject {
 
     @Id
     @Column(nullable = false, unique = true)
+    @EqualsAndHashCode.Include
     private String name;
 
     @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

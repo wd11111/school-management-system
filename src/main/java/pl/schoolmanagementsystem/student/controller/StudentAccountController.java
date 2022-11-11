@@ -26,15 +26,15 @@ public class StudentAccountController {
     @Secured("ROLE_STUDENT")
     @GetMapping("/account/averages")
     public ResponseEntity<List<MarkAvgDto>> getAverageMarksForStudent(Principal principal) {
-        return ResponseEntity.ok(markService.getAverageMarksForStudent(
-                studentService.getIdFromPrincipals(principal)));
+        int idFromPrincipals = studentService.getIdFromPrincipals(principal);
+        return ResponseEntity.ok(markService.getAverageMarksForStudent(idFromPrincipals));
     }
 
     @Secured("ROLE_STUDENT")
     @GetMapping("/account/marks")
     public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(Principal principal) {
-        return ResponseEntity.ok(markService.getGroupedMarksBySubjectForStudent(
-                studentService.getIdFromPrincipals(principal)));
+        int idFromPrincipals = studentService.getIdFromPrincipals(principal);
+        return ResponseEntity.ok(markService.getGroupedMarksBySubjectForStudent(idFromPrincipals));
     }
 }
 

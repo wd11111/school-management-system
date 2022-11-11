@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.email.service.EmailService;
-import pl.schoolmanagementsystem.schoolclass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
-import pl.schoolmanagementsystem.schoolclass.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.schoolclass.service.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.service.SchoolSubjectService;
@@ -33,8 +31,6 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    private final SchoolClassRepository schoolClassRepository;
-
     private final EmailService emailService;
 
     private final StudentMapper studentMapper;
@@ -49,7 +45,7 @@ public class StudentService {
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
         emailService.checkIfEmailIsAvailable(studentInputDto.getEmail());
-        SchoolClass schoolClass = findSchoolClass(studentInputDto);
+        SchoolClass schoolClass = schoolClassService.findById(studentInputDto.getName());
         Student student = studentRepository.save(studentMapper.mapInputDtoToStudent(studentInputDto, schoolClass));
         return studentMapper.mapStudentToOutputDto(student);
     }
@@ -95,10 +91,5 @@ public class StudentService {
         if (!doesStudentExist) {
             throw new NoSuchStudentException(studentId);
         }
-    }
-
-    private SchoolClass findSchoolClass(StudentInputDto studentInputDto) {
-        return schoolClassRepository.findBySchoolClassName(studentInputDto.getSchoolClassName())
-                .orElseThrow(() -> new NoSuchSchoolClassException(studentInputDto.getSchoolClassName()));
     }
 }

@@ -62,7 +62,7 @@ class TeacherServiceTest implements TeacherSamples {
     @Test
     void should_save_teacher_when_email_is_available() {
         TeacherInputDto teacherInputDto = TeacherInputDto();
-        Teacher teacher = adminTeacher();
+        Teacher teacher = teacher();
         when(teacherMapper.mapInputDtoToTeacher(teacherInputDto)).thenReturn(teacher);
         when(teacherRepository.save(teacher)).thenReturn(teacher);
 
@@ -98,7 +98,7 @@ class TeacherServiceTest implements TeacherSamples {
 
     @Test
     void should_add_taught_subject_to_teacher_when_teacher_doesnt_teach_the_subject_yet() {
-        Teacher teacher = adminTeacher();
+        Teacher teacher = teacher();
         when(teacherRepository.findById(anyInt())).thenReturn(Optional.ofNullable(teacher));
         when(schoolSubjectService.findByName(anyString())).thenReturn(schoolSubject());
         then(teacher.getTaughtSubjects().size()).isZero();
@@ -143,7 +143,7 @@ class TeacherServiceTest implements TeacherSamples {
 
     @Test
     void should_throw_exception_when_teacher_doesnt_teach_the_subject() {
-        Teacher teacher = adminTeacher();
+        Teacher teacher = teacher();
         SchoolSubject schoolSubject = schoolSubject();
 
         assertThatThrownBy(() -> teacherService.makeSureIfTeacherTeachesThisSubject(teacher, schoolSubject))

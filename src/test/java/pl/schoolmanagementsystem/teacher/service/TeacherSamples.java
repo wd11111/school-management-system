@@ -1,7 +1,6 @@
 package pl.schoolmanagementsystem.teacher.service;
 
 import pl.schoolmanagementsystem.email.model.Email;
-import pl.schoolmanagementsystem.schoolclass.model.SchoolClass;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.model.SchoolSubject;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
@@ -30,7 +29,7 @@ public interface TeacherSamples {
                 new SubjectAndClassOutputDto(HISTORY, "3b"));
     }
 
-    default Teacher adminTeacher() {
+    default Teacher teacher() {
         return Teacher.builder()
                 .id(1)
                 .name(ADAM)
@@ -70,7 +69,7 @@ public interface TeacherSamples {
     }
 
     default List<Teacher> listOfTeachers() {
-        return List.of(adminTeacher(), teacherOfBiology());
+        return List.of(teacher(), teacherOfBiology());
     }
 
     default SchoolSubject schoolSubject() {

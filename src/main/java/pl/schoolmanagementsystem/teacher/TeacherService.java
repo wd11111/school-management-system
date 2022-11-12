@@ -65,7 +65,7 @@ class TeacherService {
         }
     }
 
-    public void checkIfTeacherExists(int teacherId) {
+    public void makeSureTeacherExists(int teacherId) {
         boolean doesTeacherExist = teacherRepository.existsById(teacherId);
         if (!doesTeacherExist) {
             throw new NoSuchTeacherException(teacherId);

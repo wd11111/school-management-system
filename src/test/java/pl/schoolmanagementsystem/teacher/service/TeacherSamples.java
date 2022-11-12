@@ -1,13 +1,10 @@
 package pl.schoolmanagementsystem.teacher.service;
 
 import pl.schoolmanagementsystem.email.Email;
-import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
-import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
-import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
 import pl.schoolmanagementsystem.teacher.Teacher;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,13 +18,11 @@ public interface TeacherSamples {
     String HISTORY = "History";
     String KOWALCZYK = "Kowalczyk";
     String ALICJA = "Alicja";
-    String A = "1a";
-
-    default List<SubjectAndClassOutputDto> listOfTaughtClassesByTeacher() {
-        return List.of(new SubjectAndClassOutputDto(BIOLOGY, A),
-                new SubjectAndClassOutputDto(HISTORY, A),
-                new SubjectAndClassOutputDto(HISTORY, "3b"));
-    }
+    String CLASS1 = "1a";
+    String CLASS2 = "3b";
+    String ENGLISH = "english";
+    int ID_1 = 1;
+    int ID_2 = 2;
 
     default Teacher teacher1() {
         return Teacher.builder()
@@ -78,19 +73,6 @@ public interface TeacherSamples {
                 .build();
     }
 
-    default TeacherInputDto TeacherInputDto() {
-        return new TeacherInputDto(ADAM, ADAM, NOWAK, ADAM_PASSWORD, true, Collections.emptySet());
-    }
-
-    default TeacherOutputDto teacherOutputDto() {
-        return TeacherOutputDto.builder()
-                .id(2)
-                .name(ALICJA)
-                .surname(KOWALCZYK)
-                .taughtSubjects(Set.of(HISTORY, BIOLOGY))
-                .build();
-    }
-
     default List<Teacher> listOfTeachers() {
         return List.of(teacher1(), teacher2());
     }
@@ -99,5 +81,11 @@ public interface TeacherSamples {
         SchoolSubject schoolSubject = new SchoolSubject();
         schoolSubject.setName(BIOLOGY);
         return schoolSubject;
+    }
+
+    default List<SubjectAndClassOutputDto> listOfTaughtClasses() {
+        return List.of(new SubjectAndClassOutputDto(BIOLOGY, CLASS1),
+                new SubjectAndClassOutputDto(ENGLISH, CLASS1),
+                new SubjectAndClassOutputDto(HISTORY, CLASS2));
     }
 }

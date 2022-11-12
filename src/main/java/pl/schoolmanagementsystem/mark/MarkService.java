@@ -37,9 +37,9 @@ public class MarkService {
     public MarkOutputDto addMarkForStudent(String teacherEmail, MarkInputDto markInputDto, int studentId) {
         Student student = studentService.findById(studentId);
         SchoolClass studentsClass = student.getSchoolClass();
-        Teacher teacher = teacherService.findByEmail(teacherEmail);
-        SchoolSubject schoolSubject = schoolSubjectService.findByName(markInputDto.getSubject());
-        teacherInClassService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, studentsClass);
+        Teacher teacher = teacherService.findByEmailOrThrow(teacherEmail);
+        SchoolSubject schoolSubject = schoolSubjectService.findByNameOrThrow(markInputDto.getSubject());
+        teacherInClassService.makeSureTeacherTeachesThisSubjectInClass(teacher, schoolSubject, studentsClass);
         Mark mark = markRepository.save(MarkBuilder.build(markInputDto.getMark(), student, schoolSubject));
         return MarkMapper.mapMarkToOutputDto(mark);
     }

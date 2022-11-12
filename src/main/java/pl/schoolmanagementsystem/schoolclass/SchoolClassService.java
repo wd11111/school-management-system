@@ -27,7 +27,7 @@ public class SchoolClassService {
         return schoolClassRepository.findAllSchoolClasses();
     }
 
-    public void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
+    public void makeSureThisClassDoesntHaveTeacherForThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
         schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject))
                 .findFirst()
@@ -36,7 +36,7 @@ public class SchoolClassService {
                 });
     }
 
-    public SchoolClass findById(String schoolClassName) {
+    public SchoolClass findByNameOrThrow(String schoolClassName) {
         return schoolClassRepository.findBySchoolClassName(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
     }

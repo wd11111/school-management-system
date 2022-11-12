@@ -43,17 +43,17 @@ public class StudentService {
 
     public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
         emailService.checkIfEmailIsAvailable(studentInputDto.getEmail());
-        SchoolClass schoolClass = schoolClassService.findById(studentInputDto.getName());
+        SchoolClass schoolClass = schoolClassService.findByNameOrThrow(studentInputDto.getName());
         Student student = studentRepository.save(studentMapper.mapInputDtoToStudent(studentInputDto, schoolClass));
         return studentMapper.mapStudentToOutputDto(student);
     }
 
     public List<StudentOutputDto3> getAllStudentsInClassWithMarksOfTheSubject(String schoolClassName, String subjectName, int teacherId) {
-        SchoolSubject schoolSubject = schoolSubjectService.findByName(subjectName);
-        SchoolClass schoolClass = schoolClassService.findById(schoolClassName);
-        Teacher teacher = teacherService.findById(teacherId);
-        teacherInClassService.makeSureIfTeacherTeachesThisClass(teacher, schoolSubject, schoolClass);
-        return studentRepository.findAllStudentsInClassWithMarksOfTheSubject(schoolClassName, subjectName)
+        SchoolSubject schoolSubject = schoolSubjectService.findByNameOrThrow(subjectName);
+        SchoolClass schoolClass = schoolClassService.findByNameOrThrow(schoolClassName);
+        Teacher teacher = teacherService.findByIdOrThrow(teacherId);
+        teacherInClassService.makeSureTeacherTeachesThisSubjectInClass(teacher, schoolSubject, schoolClass);
+        return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName)
                 .stream()
                 .map(studentMapper::mapStudentToOutputDto3)
                 .collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class StudentService {
 
     public List<StudentOutputDto2> getAllStudentsInClass(String schoolClassName) {
         schoolClassService.checkIfClassExists(schoolClassName);
-        return studentRepository.findAllStudentsInClass(schoolClassName);
+        return studentRepository.findAllInClass(schoolClassName);
     }
 
     @Transactional
@@ -81,7 +81,7 @@ public class StudentService {
     }
 
     public int getIdFromPrincipals(Principal principal) {
-        return findByEmail(principal.getName()).getId();
+        return studentRepository.findIdByEmail(principal.getName());
     }
 
     public void checkIfStudentExists(int studentId) {

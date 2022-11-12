@@ -7,7 +7,7 @@ public class SchoolSubjectBuilder {
 
     public static SchoolSubject build(SchoolSubjectDto schoolSubjectDto) {
         return SchoolSubject.builder()
-                .name(schoolSubjectDto.getSubject())
+                .name(schoolSubjectDto.getSubjectName())
                 .build();
     }
 }

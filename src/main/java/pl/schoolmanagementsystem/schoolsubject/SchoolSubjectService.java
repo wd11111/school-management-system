@@ -42,13 +42,13 @@ public class SchoolSubjectService {
         schoolSubjectRepository.deleteById(subjectName);
     }
 
-    public SchoolSubject findByName(String name) {
+    public SchoolSubject findByNameOrThrow(String name) {
         return schoolSubjectRepository.findBySubjectName(name)
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(name));
     }
 
     private void checkIfSubjectAlreadyExists(SchoolSubjectDto schoolSubjectDto) {
-        if (doesSchoolSubjectExistsByName(schoolSubjectDto.getSubject())) {
+        if (doesSchoolSubjectExistsByName(schoolSubjectDto.getSubjectName())) {
             throw new SubjectAlreadyExistsException(schoolSubjectDto);
         }
     }

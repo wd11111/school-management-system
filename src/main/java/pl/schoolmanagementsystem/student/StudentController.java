@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import pl.schoolmanagementsystem.mark.MarkService;
 import pl.schoolmanagementsystem.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
-import pl.schoolmanagementsystem.mark.MarkService;
 import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 

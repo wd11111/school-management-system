@@ -44,7 +44,7 @@ public class TeacherFacade {
     }
 
     public List<SubjectAndClassOutputDto> getTaughtClassesByTeacher(int teacherId) {
-        teacherService.checkIfTeacherExists(teacherId);
+        teacherService.makeSureTeacherExists(teacherId);
         return teacherService.findTaughtClassesByTeacher(teacherId);
     }
 
@@ -74,7 +74,7 @@ public class TeacherFacade {
     }
 
     public void deleteTeacher(int teacherId) {
-        teacherService.checkIfTeacherExists(teacherId);
+        teacherService.makeSureTeacherExists(teacherId);
         teacherService.deleteById(teacherId);
     }
 

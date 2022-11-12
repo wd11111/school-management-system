@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SchoolSubjectDto {
 
-    private String subject;
+    private String subjectName;
 }

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.student.utils;
+package pl.schoolmanagementsystem.student;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,13 +9,14 @@ import pl.schoolmanagementsystem.schoolclass.SchoolClass;
 import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
-import pl.schoolmanagementsystem.student.Student;
 
 @Component
 @RequiredArgsConstructor
 public class StudentMapper {
 
     private final PasswordEncoder passwordEncoder;
+
+    private final MarkMapper markMapper;
 
     public StudentOutputDto mapStudentToOutputDto(Student student) {
         return new StudentOutputDto(student.getId(), student.getName(),
@@ -24,7 +25,7 @@ public class StudentMapper {
 
     public StudentOutputDto3 mapStudentToOutputDto3(Student student) {
         return new StudentOutputDto3(student.getId(), student.getName(),
-                student.getSurname(), MarkMapper.mapListOfMarksToIntegers(student.getMarks()));
+                student.getSurname(), markMapper.mapListOfMarksToIntegers(student.getMarks()));
     }
 
     public Student mapInputDtoToStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {

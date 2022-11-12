@@ -25,7 +25,7 @@ public class SchoolSubject {
     @EqualsAndHashCode.Include
     private String name;
 
-    @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "taughtSubjects", fetch = FetchType.LAZY)
     private Set<Teacher> teachers = new HashSet<>();
 
     @OneToMany(mappedBy = "taughtSubject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

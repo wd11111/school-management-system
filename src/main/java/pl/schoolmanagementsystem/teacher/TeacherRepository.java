@@ -17,10 +17,13 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
     Optional<Teacher> findById(Integer id);
 
     @Override
-    @Query("select distinct t from Teacher t join fetch t.taughtSubjects")
+    @Query("select distinct t from Teacher t join fetch t.taughtSubjects order by t.surname")
     List<Teacher> findAll();
 
     Optional<Teacher> findByEmail_Email(String email);
+
+    @Query("select t.id from Teacher t where t.email.email=?1")
+    int findIdByEmail(String email);
 
     @Query("select new pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto(" +
             "tc.taughtSubject.name, tics.name) " +

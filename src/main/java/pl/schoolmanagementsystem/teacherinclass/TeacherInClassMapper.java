@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.teacherinclass.utils;
+package pl.schoolmanagementsystem.teacherinclass;
 
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;

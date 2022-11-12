@@ -1,9 +1,8 @@
-package pl.schoolmanagementsystem.schoolclass.utils;
+package pl.schoolmanagementsystem.schoolclass;
 
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.schoolclass.SchoolClass;
 
-public class SchoolClassBuilder {
+public class SchoolClassCreator {
 
     public static SchoolClass build(SchoolClassDto schoolClassDto) {
         return SchoolClass.builder()

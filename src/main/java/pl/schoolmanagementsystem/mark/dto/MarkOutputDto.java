@@ -13,5 +13,6 @@ public class MarkOutputDto {
 
     private int markId;
     private int mark;
-    private int StudentId;
+    private int studentId;
+    private String subjectName;
 }

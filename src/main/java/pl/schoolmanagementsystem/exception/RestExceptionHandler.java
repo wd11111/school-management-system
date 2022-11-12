@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.exception.handler;
+package pl.schoolmanagementsystem.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -41,11 +41,15 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            TeacherDoesNotTeachClassException.class,
             TeacherAlreadyTeachesSubjectException.class,
             TeacherDoesNotTeachSubjectException.class})
     public ResponseEntity<ErrorResponse> handleTeacherExceptions(RuntimeException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(TeacherDoesNotTeachClassException.class)
+    public ResponseEntity<ErrorResponse> handleTeacherDoesNotTeachClassException(TeacherDoesNotTeachClassException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(value = {

@@ -17,37 +17,37 @@ import java.util.List;
 @RequestMapping("/teachers")
 public class TeacherController {
 
-    private final TeacherService teacherService;
+    private final TeacherFacade teacherFacade;
 
     @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<TeacherOutputDto>> getAllTeachersInSchool() {
-        return ResponseEntity.ok(teacherService.getAllTeachersInSchool());
+        return ResponseEntity.ok(teacherFacade.getAllTeachersInSchool());
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/classes")
     public ResponseEntity<List<SubjectAndClassOutputDto>> getTaughtClassesByTeacher(@PathVariable int id) {
-        return ResponseEntity.ok(teacherService.getTaughtClassesByTeacher(id));
+        return ResponseEntity.ok(teacherFacade.getTaughtClassesByTeacher(id));
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<TeacherOutputDto> createTeacher(@RequestBody TeacherInputDto teacherInputDto) {
-        return new ResponseEntity<>(teacherService.createTeacher(teacherInputDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(teacherFacade.createTeacher(teacherInputDto), HttpStatus.CREATED);
     }
 
     @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}/subjects")
     public ResponseEntity<TeacherOutputDto> addTaughtSubjectToTeacher(
             @PathVariable int id, @RequestBody SchoolSubjectDto schoolSubjectDto) {
-        return ResponseEntity.ok(teacherService.addTaughtSubjectToTeacher(id, schoolSubjectDto));
+        return ResponseEntity.ok(teacherFacade.addTaughtSubjectToTeacher(id, schoolSubjectDto));
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable int id) {
-        teacherService.deleteTeacher(id);
+        teacherFacade.deleteTeacher(id);
         return ResponseEntity.noContent().build();
     }
 }

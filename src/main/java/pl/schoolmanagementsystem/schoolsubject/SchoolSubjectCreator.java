@@ -1,13 +1,12 @@
-package pl.schoolmanagementsystem.schoolsubject.utils;
+package pl.schoolmanagementsystem.schoolsubject;
 
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
 
-public class SchoolSubjectBuilder {
+public class SchoolSubjectCreator {
 
     public static SchoolSubject build(SchoolSubjectDto schoolSubjectDto) {
         return SchoolSubject.builder()
-                .name(schoolSubjectDto.getSubject())
+                .name(schoolSubjectDto.getSubjectName())
                 .build();
     }
 }

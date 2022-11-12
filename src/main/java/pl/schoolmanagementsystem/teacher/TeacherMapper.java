@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.teacher.utils;
+package pl.schoolmanagementsystem.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,7 +8,6 @@ import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectService;
 import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
-import pl.schoolmanagementsystem.teacher.Teacher;
 
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class TeacherMapper {
                 .isAdmin(teacherInputDto.isAdmin())
                 .password(passwordEncoder.encode(teacherInputDto.getPassword()))
                 .taughtSubjects(teacherInputDto.getTaughtSubjects().stream()
-                        .map(schoolSubjectService::findByName).collect(Collectors.toSet())
+                        .map(schoolSubjectService::findByNameOrThrow).collect(Collectors.toSet())
                 )
                 .teacherInClasses(new HashSet<>())
                 .build();

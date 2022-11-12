@@ -6,7 +6,6 @@ import pl.schoolmanagementsystem.schoolclass.exception.ClassAlreadyExistsExcepti
 import pl.schoolmanagementsystem.schoolclass.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.schoolclass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.schoolclass.utils.SchoolClassBuilder;
 import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class SchoolClassService {
 
     public SchoolClassDto createSchoolClass(SchoolClassDto schoolClassDto) {
         checkIfClassAlreadyExists(schoolClassDto);
-        schoolClassRepository.save(SchoolClassBuilder.build(schoolClassDto));
+        schoolClassRepository.save(SchoolClassCreator.build(schoolClassDto));
         return schoolClassDto;
     }
 
@@ -27,7 +26,7 @@ public class SchoolClassService {
         return schoolClassRepository.findAllSchoolClasses();
     }
 
-    public void checkIfThisClassAlreadyHasTeacherOfThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
+    public void makeSureThisClassDoesntHaveTeacherForThisSubject(SchoolClass schoolClass, SchoolSubject schoolSubject) {
         schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject))
                 .findFirst()
@@ -36,7 +35,7 @@ public class SchoolClassService {
                 });
     }
 
-    public SchoolClass findById(String schoolClassName) {
+    public SchoolClass findByNameOrThrow(String schoolClassName) {
         return schoolClassRepository.findBySchoolClassName(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
     }

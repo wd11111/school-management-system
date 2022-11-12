@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
+import pl.schoolmanagementsystem.student.StudentFacade;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
-import pl.schoolmanagementsystem.student.StudentService;
 
 import java.security.Principal;
 import java.util.List;
@@ -16,25 +16,22 @@ import java.util.List;
 @RequestMapping("/teachers")
 public class TeacherAccountController {
 
-    private final TeacherService teacherService;
+    private final TeacherFacade teacherFacade;
 
-    private final StudentService studentService;
+    private final StudentFacade studentFacade;
 
     @Secured("ROLE_TEACHER")
     @GetMapping("/account/classes")
     public ResponseEntity<List<SubjectAndClassOutputDto>> getTaughtClassesByTeacher(Principal principal) {
-        int idFromPrincipals = teacherService.getIdFromPrincipals(principal);
-        return ResponseEntity.ok(teacherService.getTaughtClassesByTeacher(idFromPrincipals));
+        int teacherId = teacherFacade.getTeacherIdFromPrincipals(principal);
+        return ResponseEntity.ok(teacherFacade.getTaughtClassesByTeacher(teacherId));
     }
 
     @Secured("ROLE_TEACHER")
     @GetMapping("/{className}/marks")
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
             @PathVariable String className, @RequestParam String subject, Principal principal) {
-        int idFromPrincipals = teacherService.getIdFromPrincipals(principal);
-        return ResponseEntity.ok(studentService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subject, idFromPrincipals));
+        int teacherId = teacherFacade.getTeacherIdFromPrincipals(principal);
+        return ResponseEntity.ok(studentFacade.getAllStudentsInClassWithMarksOfTheSubject(className, subject, teacherId));
     }
-
-
 }

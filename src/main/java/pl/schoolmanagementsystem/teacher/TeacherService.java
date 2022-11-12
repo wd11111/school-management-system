@@ -29,7 +29,7 @@ public class TeacherService {
     }
 
     @Transactional
-    public void deleteTeacherById(int teacherId) {
+    public void deleteById(int teacherId) {
         teacherRepository.deleteById(teacherId);
     }
 

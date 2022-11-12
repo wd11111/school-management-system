@@ -75,7 +75,7 @@ public class TeacherFacade {
 
     public void deleteTeacher(int teacherId) {
         teacherService.checkIfTeacherExists(teacherId);
-        teacherService.deleteTeacherById(teacherId);
+        teacherService.deleteById(teacherId);
     }
 
     public int getTeacherIdFromPrincipals(Principal principal) {

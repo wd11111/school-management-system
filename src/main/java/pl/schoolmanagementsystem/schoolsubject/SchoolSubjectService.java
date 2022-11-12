@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem.schoolsubject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.schoolclass.SchoolClassService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.exception.NoSuchSchoolSubjectException;
@@ -18,8 +17,6 @@ public class SchoolSubjectService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    private final SchoolClassService schoolClassService;
-
     public SchoolSubjectDto createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         checkIfSubjectAlreadyExists(schoolSubjectDto);
         schoolSubjectRepository.save(SchoolSubjectBuilder.build(schoolSubjectDto));
@@ -31,7 +28,6 @@ public class SchoolSubjectService {
     }
 
     public List<SubjectAndTeacherOutputDto> getAllSubjectsForSchoolClass(String schoolClassName) {
-        schoolClassService.checkIfClassExists(schoolClassName);
         return schoolSubjectRepository.findAllSubjectsForSchoolClass(schoolClassName);
     }
 

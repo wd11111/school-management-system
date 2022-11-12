@@ -65,10 +65,6 @@ class TeacherService {
         }
     }
 
-    private boolean doesTeacherAlreadyTeachThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        return teacher.getTaughtSubjects().contains(schoolSubject);
-    }
-
     public void checkIfTeacherExists(int teacherId) {
         boolean doesTeacherExist = teacherRepository.existsById(teacherId);
         if (!doesTeacherExist) {
@@ -78,5 +74,9 @@ class TeacherService {
 
     public int getIdFromPrincipals(Principal principal) {
         return teacherRepository.findIdByEmail(principal.getName());
+    }
+
+    private boolean doesTeacherAlreadyTeachThisSubject(Teacher teacher, SchoolSubject schoolSubject) {
+        return teacher.getTaughtSubjects().contains(schoolSubject);
     }
 }

@@ -29,7 +29,7 @@ public interface TeacherSamples {
                 new SubjectAndClassOutputDto(HISTORY, "3b"));
     }
 
-    default Teacher teacher() {
+    default Teacher teacher1() {
         return Teacher.builder()
                 .id(1)
                 .name(ADAM)
@@ -42,7 +42,31 @@ public interface TeacherSamples {
 
     }
 
-    default Teacher teacherOfBiology() {
+    default Teacher savedTeacher1() {
+        return Teacher.builder()
+                .id(1)
+                .name(ADAM)
+                .surname(NOWAK)
+                .password(ADAM_PASSWORD)
+                .isAdmin(true)
+                .email(new Email(ADAM))
+                .taughtSubjects(new HashSet<>())
+                .build();
+
+    }
+
+    default Teacher teacher2() {
+        return Teacher.builder()
+                .name(ALICJA)
+                .surname(KOWALCZYK)
+                .password(ADAM_PASSWORD)
+                .isAdmin(false)
+                .email(new Email(ALICJA))
+                .taughtSubjects(new HashSet<>(Set.of(schoolSubject())))
+                .build();
+    }
+
+    default Teacher savedTeacher2() {
         return Teacher.builder()
                 .id(2)
                 .name(ALICJA)
@@ -52,7 +76,6 @@ public interface TeacherSamples {
                 .email(new Email(ALICJA))
                 .taughtSubjects(new HashSet<>(Set.of(schoolSubject())))
                 .build();
-
     }
 
     default TeacherInputDto TeacherInputDto() {
@@ -69,7 +92,7 @@ public interface TeacherSamples {
     }
 
     default List<Teacher> listOfTeachers() {
-        return List.of(teacher(), teacherOfBiology());
+        return List.of(teacher1(), teacher2());
     }
 
     default SchoolSubject schoolSubject() {

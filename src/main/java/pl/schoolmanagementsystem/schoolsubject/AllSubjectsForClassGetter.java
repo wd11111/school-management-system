@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SchoolSubjectFacade {
+public class AllSubjectsForClassGetter {
 
     private final SchoolSubjectService schoolSubjectService;
 

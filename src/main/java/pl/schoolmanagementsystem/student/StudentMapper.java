@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import pl.schoolmanagementsystem.email.Email;
 import pl.schoolmanagementsystem.mark.uitls.MarkMapper;
 import pl.schoolmanagementsystem.schoolclass.SchoolClass;
-import pl.schoolmanagementsystem.student.Student;
 import pl.schoolmanagementsystem.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
@@ -17,6 +16,8 @@ public class StudentMapper {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final MarkMapper markMapper;
+
     public StudentOutputDto mapStudentToOutputDto(Student student) {
         return new StudentOutputDto(student.getId(), student.getName(),
                 student.getSurname(), student.getSchoolClass().getName());
@@ -24,7 +25,7 @@ public class StudentMapper {
 
     public StudentOutputDto3 mapStudentToOutputDto3(Student student) {
         return new StudentOutputDto3(student.getId(), student.getName(),
-                student.getSurname(), MarkMapper.mapListOfMarksToIntegers(student.getMarks()));
+                student.getSurname(), markMapper.mapListOfMarksToIntegers(student.getMarks()));
     }
 
     public Student mapInputDtoToStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {

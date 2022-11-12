@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectFacade;
+import pl.schoolmanagementsystem.schoolsubject.AllSubjectsForClassGetter;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.student.StudentFacade;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
@@ -27,7 +27,7 @@ public class SchoolClassController {
 
     private final StudentFacade studentFacade;
 
-    private final SchoolSubjectFacade schoolSubjectFacade;
+    private final AllSubjectsForClassGetter allSubjectsForClassGetter;
     private final TeacherFacade teacherFacade;
 
     @Secured("ROLE_ADMIN")
@@ -53,7 +53,7 @@ public class SchoolClassController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/{className}/subjects")
     public ResponseEntity<List<SubjectAndTeacherOutputDto>> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
-        return ResponseEntity.ok(schoolSubjectFacade.getAllSubjectsForSchoolClass(className));
+        return ResponseEntity.ok(allSubjectsForClassGetter.getAllSubjectsForSchoolClass(className));
     }
 
     @Secured("ROLE_ADMIN")

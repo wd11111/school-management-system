@@ -7,7 +7,6 @@ import pl.schoolmanagementsystem.schoolsubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.schoolsubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.schoolsubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.schoolsubject.utils.SchoolSubjectBuilder;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class SchoolSubjectService {
 
     public SchoolSubjectDto createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         checkIfSubjectAlreadyExists(schoolSubjectDto);
-        schoolSubjectRepository.save(SchoolSubjectBuilder.build(schoolSubjectDto));
+        schoolSubjectRepository.save(SchoolSubjectCreator.build(schoolSubjectDto));
         return schoolSubjectDto;
     }
 

@@ -4,9 +4,9 @@ import pl.schoolmanagementsystem.mark.Mark;
 import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
 import pl.schoolmanagementsystem.student.Student;
 
-public class MarkBuilder {
+public class MarkCreator {
 
-    public static Mark build(int mark, Student student, SchoolSubject schoolSubject) {
+    public static Mark create(int mark, Student student, SchoolSubject schoolSubject) {
         return Mark.builder()
                 .mark(mark)
                 .student(student)

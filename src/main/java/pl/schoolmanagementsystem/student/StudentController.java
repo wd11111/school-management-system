@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.mark.MarkService;
+import pl.schoolmanagementsystem.mark.MarkFacade;
 import pl.schoolmanagementsystem.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.mark.dto.MarkInputDto;
 import pl.schoolmanagementsystem.mark.dto.MarkOutputDto;
@@ -23,25 +23,25 @@ public class StudentController {
 
     private final StudentFacade studentFacade;
 
-    private final MarkService markService;
+    private final MarkFacade markFacade;
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/marks")
     public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(@PathVariable int id) {
-        return ResponseEntity.ok(markService.getGroupedMarksBySubjectForStudent(id));
+        return ResponseEntity.ok(markFacade.getGroupedMarksBySubjectForStudent(id));
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}/averages")
     public ResponseEntity<List<MarkAvgDto>> getAverageMarksForStudent(@PathVariable int id) {
-        return ResponseEntity.ok(markService.getAverageMarksForStudent(id));
+        return ResponseEntity.ok(markFacade.getAverageMarksForStudent(id));
     }
 
     @Secured("ROLE_TEACHER")
     @PostMapping("/{id}/marks")
     public ResponseEntity<MarkOutputDto> addMark(@PathVariable int id, @RequestBody MarkInputDto markInputDto,
                                                  Principal principal) {
-        return new ResponseEntity<>(markService.addMarkForStudent(principal.getName(), markInputDto, id), HttpStatus.CREATED);
+        return new ResponseEntity<>(markFacade.addMarkForStudent(principal.getName(), markInputDto, id), HttpStatus.CREATED);
     }
 
     @Secured("ROLE_ADMIN")

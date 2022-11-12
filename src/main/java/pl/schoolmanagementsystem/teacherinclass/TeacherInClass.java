@@ -27,6 +27,6 @@ public class TeacherInClass {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private SchoolSubject taughtSubject;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<SchoolClass> taughtClasses = new HashSet<>();
 }

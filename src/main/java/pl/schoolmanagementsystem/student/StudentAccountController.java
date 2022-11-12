@@ -18,22 +18,22 @@ import java.util.Map;
 @RequestMapping("/students")
 public class StudentAccountController {
 
-    private final StudentService studentService;
+    private final StudentFacade studentFacade;
 
     private final MarkService markService;
 
     @Secured("ROLE_STUDENT")
     @GetMapping("/account/averages")
     public ResponseEntity<List<MarkAvgDto>> getAverageMarksForStudent(Principal principal) {
-        int idFromPrincipals = studentService.getIdFromPrincipals(principal);
-        return ResponseEntity.ok(markService.getAverageMarksForStudent(idFromPrincipals));
+        int studentId = studentFacade.getIdFromPrincipals(principal);
+        return ResponseEntity.ok(markService.getAverageMarksForStudent(studentId));
     }
 
     @Secured("ROLE_STUDENT")
     @GetMapping("/account/marks")
     public ResponseEntity<Map<String, List<Integer>>> getGroupedMarksBySubjectForStudent(Principal principal) {
-        int idFromPrincipals = studentService.getIdFromPrincipals(principal);
-        return ResponseEntity.ok(markService.getGroupedMarksBySubjectForStudent(idFromPrincipals));
+        int studentId = studentFacade.getIdFromPrincipals(principal);
+        return ResponseEntity.ok(markService.getGroupedMarksBySubjectForStudent(studentId));
     }
 }
 

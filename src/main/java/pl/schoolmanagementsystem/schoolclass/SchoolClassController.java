@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.schoolclass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectService;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndTeacherOutputDto;
-import pl.schoolmanagementsystem.student.StudentService;
+import pl.schoolmanagementsystem.student.StudentFacade;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.teacher.TeacherFacade;
-import pl.schoolmanagementsystem.teacherinclass.TeacherInClassService;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.teacherinclass.dto.TeacherInClassOutputDto;
 
@@ -26,7 +25,7 @@ public class SchoolClassController {
 
     private final SchoolClassService schoolClassService;
 
-    private final StudentService studentService;
+    private final StudentFacade studentFacade;
 
     private final SchoolSubjectService schoolSubjectService;
 
@@ -41,15 +40,15 @@ public class SchoolClassController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/{className}")
     public ResponseEntity<List<StudentOutputDto2>> getAllStudentsInClass(@PathVariable String className) {
-        return ResponseEntity.ok(studentService.getAllStudentsInClass(className));
+        return ResponseEntity.ok(studentFacade.getAllStudentsInClass(className));
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{className}/marks")
     public ResponseEntity<List<StudentOutputDto3>> getAllStudentsInClassWithMarksOfTheSubject(
             @PathVariable String className, @RequestParam String subject, Principal principal) {
-        return ResponseEntity.ok(studentService.getAllStudentsInClassWithMarksOfTheSubject(
-                className, subject, teacherFacade.getTeacherIdFromPrincipals(principal)));
+        int teacherId = teacherFacade.getTeacherIdFromPrincipals(principal);
+        return ResponseEntity.ok(studentFacade.getAllStudentsInClassWithMarksOfTheSubject(className, subject, teacherId));
     }
 
     @Secured("ROLE_ADMIN")

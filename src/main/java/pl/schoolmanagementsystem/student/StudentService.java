@@ -3,21 +3,10 @@ package pl.schoolmanagementsystem.student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.email.EmailService;
-import pl.schoolmanagementsystem.schoolclass.SchoolClass;
-import pl.schoolmanagementsystem.schoolclass.SchoolClassService;
-import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
-import pl.schoolmanagementsystem.schoolsubject.SchoolSubjectService;
-import pl.schoolmanagementsystem.student.dto.StudentInputDto;
-import pl.schoolmanagementsystem.student.dto.StudentOutputDto;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.student.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.student.exception.NoSuchStudentException;
-import pl.schoolmanagementsystem.student.utils.StudentMapper;
-import pl.schoolmanagementsystem.teacher.Teacher;
-import pl.schoolmanagementsystem.teacher.TeacherService;
-import pl.schoolmanagementsystem.teacherinclass.TeacherInClassService;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,30 +18,13 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    private final EmailService emailService;
-
     private final StudentMapper studentMapper;
 
-    private final SchoolSubjectService schoolSubjectService;
-
-    private final TeacherService teacherService;
-
-    private final SchoolClassService schoolClassService;
-
-    private final TeacherInClassService teacherInClassService;
-
-    public StudentOutputDto createStudent(StudentInputDto studentInputDto) {
-        emailService.checkIfEmailIsAvailable(studentInputDto.getEmail());
-        SchoolClass schoolClass = schoolClassService.findByNameOrThrow(studentInputDto.getName());
-        Student student = studentRepository.save(studentMapper.mapInputDtoToStudent(studentInputDto, schoolClass));
-        return studentMapper.mapStudentToOutputDto(student);
+    public Student save(Student student) {
+        return studentRepository.save(student);
     }
 
-    public List<StudentOutputDto3> getAllStudentsInClassWithMarksOfTheSubject(String schoolClassName, String subjectName, int teacherId) {
-        SchoolSubject schoolSubject = schoolSubjectService.findByNameOrThrow(subjectName);
-        SchoolClass schoolClass = schoolClassService.findByNameOrThrow(schoolClassName);
-        Teacher teacher = teacherService.findByIdOrThrow(teacherId);
-        teacherInClassService.makeSureTeacherTeachesThisSubjectInClass(teacher, schoolSubject, schoolClass);
+    public List<StudentOutputDto3> getAllStudentsInClassWithMarksOfTheSubject(String schoolClassName, String subjectName) {
         return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName)
                 .stream()
                 .map(studentMapper::mapStudentToOutputDto3)
@@ -60,13 +32,11 @@ public class StudentService {
     }
 
     public List<StudentOutputDto2> getAllStudentsInClass(String schoolClassName) {
-        schoolClassService.checkIfClassExists(schoolClassName);
         return studentRepository.findAllInClass(schoolClassName);
     }
 
     @Transactional
     public void deleteStudent(int studentId) {
-        checkIfStudentExists(studentId);
         studentRepository.deleteById(studentId);
     }
 

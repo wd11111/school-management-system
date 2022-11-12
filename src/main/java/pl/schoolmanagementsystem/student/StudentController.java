@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StudentService studentService;
+    private final StudentFacade studentFacade;
 
     private final MarkService markService;
 
@@ -47,13 +47,13 @@ public class StudentController {
     @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<StudentOutputDto> createStudent(@RequestBody StudentInputDto studentInputDto) {
-        return new ResponseEntity<>(studentService.createStudent(studentInputDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(studentFacade.createStudent(studentInputDto), HttpStatus.CREATED);
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable int id) {
-        studentService.deleteStudent(id);
+        studentFacade.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }
 }

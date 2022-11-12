@@ -1,12 +1,9 @@
-package pl.schoolmanagementsystem.teacher.service;
+package pl.schoolmanagementsystem.teacher;
 
 import com.sun.security.auth.UserPrincipal;
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
 import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
-import pl.schoolmanagementsystem.teacher.Teacher;
-import pl.schoolmanagementsystem.teacher.TeacherRepository;
-import pl.schoolmanagementsystem.teacher.TeacherService;
 import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherEmailException;
 import pl.schoolmanagementsystem.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.teacher.exception.TeacherAlreadyTeachesSubjectException;

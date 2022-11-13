@@ -36,6 +36,8 @@ public class TeacherFacade {
 
     private final TeacherInClassService teacherInClassService;
 
+    private final TeacherInClassMapper teacherInClassMapper;
+
     public TeacherOutputDto createTeacher(TeacherInputDto teacherInputDto) {
         emailService.checkIfEmailIsAvailable(teacherInputDto.getEmail());
         Teacher mappedTeacher = teacherMapper.mapInputDtoToTeacher(teacherInputDto);
@@ -59,10 +61,10 @@ public class TeacherFacade {
         Teacher teacher = teacherService.findByIdOrThrow(teacherInClassInputDto.getTeacherId());
         SchoolClass schoolClass = schoolClassService.findByNameOrThrow(schoolClassName);
         SchoolSubject schoolSubject = schoolSubjectService.findByNameOrThrow(teacherInClassInputDto.getTaughtSubject());
-        teacherService.makeSureTeacherTeachesThisSubject(teacher, schoolSubject);
         schoolClassService.makeSureThisClassDoesntHaveTeacherForThisSubject(schoolClass, schoolSubject);
+        teacherService.makeSureTeacherTeachesThisSubject(teacher, schoolSubject);
         teacherInClassService.addTeacherToClass(teacher, schoolSubject, schoolClass);
-        return TeacherInClassMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
+        return teacherInClassMapper.mapTeacherInClassInputToOutputDto(teacherInClassInputDto, schoolClassName);
     }
 
     public TeacherOutputDto addTaughtSubjectToTeacher(int teacherId, SchoolSubjectDto schoolSubjectDto) {

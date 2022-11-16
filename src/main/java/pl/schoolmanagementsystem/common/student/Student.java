@@ -39,6 +39,8 @@ public class Student {
 
     private String password;
 
+    private String token;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "email")
     private Email email;

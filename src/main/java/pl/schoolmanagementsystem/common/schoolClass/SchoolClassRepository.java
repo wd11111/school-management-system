@@ -16,7 +16,7 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, String
             "left join fetch c.students where c.name=?1")
     Optional<SchoolClass> findBySchoolClassName(String schoolClassName);
 
-    @Query("select new pl.schoolmanagementsystem.admin.schoolClass.dto.SchoolClassDto(c.name) from SchoolClass c")
+    @Query("select new pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto(c.name) from SchoolClass c")
     List<SchoolClassDto> findAllClasses();
 
     @Modifying

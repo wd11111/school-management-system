@@ -12,6 +12,8 @@ import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassEx
 import pl.schoolmanagementsystem.common.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
+import pl.schoolmanagementsystem.common.security.CouldNotConfirmIUserException;
+import pl.schoolmanagementsystem.common.security.PasswordsDoNotMatchException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
@@ -34,11 +36,6 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = EmailAlreadyInUseException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyInUse(EmailAlreadyInUseException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(value = UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFound(UsernameNotFoundException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = SubjectAlreadyExistsException.class)
@@ -65,6 +62,18 @@ public class RestExceptionHandler {
             NoSuchTeacherException.class,
             NoSuchStudentEmailException.class})
     public ResponseEntity<ErrorResponse> handleNoSuchExceptions(RuntimeException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {
+            CouldNotConfirmIUserException.class,
+            PasswordsDoNotMatchException.class})
+    public ResponseEntity<ErrorResponse> handleSecurityConfirmationException(RuntimeException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNameNotFoundException(UsernameNotFoundException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

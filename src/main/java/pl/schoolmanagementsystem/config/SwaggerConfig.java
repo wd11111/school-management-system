@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,11 +24,8 @@ import static java.util.Collections.singletonList;
 @RequiredArgsConstructor
 public class SwaggerConfig {
 
-    private final PasswordEncoder passwordEncoder;
-
     @Bean
     public Docket get() {
-        System.out.println(passwordEncoder.encode("aaa"));
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))

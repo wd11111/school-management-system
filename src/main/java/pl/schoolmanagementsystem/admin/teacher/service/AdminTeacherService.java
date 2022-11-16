@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.email.EmailRepository;
+import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherMapper;
 import pl.schoolmanagementsystem.common.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -31,13 +32,17 @@ public class AdminTeacherService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
+    private final MailSenderService mailSenderService;
+
     public Teacher createTeacher(TeacherInputDto teacherInputDto) {
         checkIfEmailIsAvailable(teacherInputDto.getEmail());
         Set<SchoolSubject> taughtSubjects = teacherInputDto.getTaughtSubjects().stream()
                 .map(subject -> schoolSubjectRepository.findById(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
-        return teacherRepository.save(TeacherMapper.createTeacher(teacherInputDto, taughtSubjects));
+        Teacher teacher = teacherRepository.save(TeacherMapper.createTeacher(teacherInputDto, taughtSubjects));
+        mailSenderService.sendEmail(teacherInputDto.getEmail(), teacher.getToken());
+        return teacher;
     }
 
     public List<Teacher> getAllTeachers() {
@@ -84,9 +89,5 @@ public class AdminTeacherService {
 
     private boolean doesTeacherAlreadyTeachSubject(Teacher teacher, SchoolSubject schoolSubject) {
         return teacher.getTaughtSubjects().contains(schoolSubject);
-    }
-
-    private boolean doesTeacherExist(String email) {
-        return teacherRepository.existsByEmail_Email(email);
     }
 }

@@ -32,5 +32,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
             "where tc.teacher.email.email=?1")
     List<SubjectAndClassDto> findTaughtClassesByTeacher(String email);
 
-    boolean existsByEmail_Email(String email);
+    Optional<Teacher> findByToken(String token);
 }

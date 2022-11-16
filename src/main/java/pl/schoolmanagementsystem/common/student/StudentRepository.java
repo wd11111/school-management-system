@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
 
-    @Query("select new pl.schoolmanagementsystem.student.dto.StudentOutputDto2(s.id, s.name, s.surname) " +
+    @Query("select new pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2(s.id, s.name, s.surname) " +
             "from Student s where s.schoolClass=?1 order by s.surname")
     List<StudentOutputDto2> findAllInClass(String schoolClassName);
 
@@ -25,4 +25,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     int findIdByEmail(String email);
 
     boolean existsByEmail_Email(String email);
+
+    Optional<Student> findByToken(String token);
 }

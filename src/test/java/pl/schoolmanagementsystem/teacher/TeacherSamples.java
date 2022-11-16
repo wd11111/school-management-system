@@ -1,11 +1,12 @@
 package pl.schoolmanagementsystem.teacher;
 
-import pl.schoolmanagementsystem.email.Email;
-import pl.schoolmanagementsystem.schoolclass.SchoolClass;
-import pl.schoolmanagementsystem.schoolsubject.SchoolSubject;
-import pl.schoolmanagementsystem.schoolsubject.dto.SubjectAndClassOutputDto;
-import pl.schoolmanagementsystem.teacher.dto.TeacherInputDto;
-import pl.schoolmanagementsystem.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.common.email.Email;
+import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
+import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
+import pl.schoolmanagementsystem.common.teacher.Teacher;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -91,10 +92,10 @@ public interface TeacherSamples {
                 .build();
     }
 
-    default List<SubjectAndClassOutputDto> listOfTaughtClasses() {
-        return List.of(new SubjectAndClassOutputDto(BIOLOGY, CLASS1),
-                new SubjectAndClassOutputDto(ENGLISH, CLASS1),
-                new SubjectAndClassOutputDto(HISTORY, CLASS2));
+    default List<SubjectAndClassDto> listOfTaughtClasses() {
+        return List.of(new SubjectAndClassDto(BIOLOGY, CLASS1),
+                new SubjectAndClassDto(ENGLISH, CLASS1),
+                new SubjectAndClassDto(HISTORY, CLASS2));
     }
 
     default TeacherOutputDto teacherOutput1() {

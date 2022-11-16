@@ -3,8 +3,8 @@ package pl.schoolmanagementsystem.security.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.student.Student;
-import pl.schoolmanagementsystem.student.StudentRepository;
+import pl.schoolmanagementsystem.common.student.Student;
+import pl.schoolmanagementsystem.common.student.StudentRepository;
 
 import java.util.Collection;
 import java.util.Collections;

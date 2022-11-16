@@ -1,8 +1,12 @@
 package pl.schoolmanagementsystem.security.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginCredentials {
 
     private String email;

@@ -17,6 +17,6 @@ public interface MarkRepository extends JpaRepository<Mark, Integer> {
     List<MarkAvgDto> findAllAveragesForStudent(int studentId);
 
     @Query("select new pl.schoolmanagementsystem.common.mark.dto.MarkDtoWithTwoFields(m.mark, m.subject) " +
-            "from Student s left join s.marks m where s.email.email=?1")
+            "from Student s left join s.marks m where s.appUser.userEmail=?1")
     List<MarkDtoWithTwoFields> findAllMarksForStudent(String studentEmail);
 }

@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.schoolmanagementsystem.common.email.Email;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
+import pl.schoolmanagementsystem.common.user.AppUser;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,15 +36,9 @@ public class Teacher {
 
     private String surname;
 
-    private String password;
-
-    private boolean isAdmin;
-
-    private String token;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
-    private Email email;
+    @JoinColumn(name = "userEmail")
+    private AppUser appUser;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<SchoolSubject> taughtSubjects;

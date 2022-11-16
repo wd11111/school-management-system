@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.schoolmanagementsystem.common.email.Email;
 import pl.schoolmanagementsystem.common.mark.Mark;
+import pl.schoolmanagementsystem.common.user.AppUser;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -37,16 +37,11 @@ public class Student {
 
     private String surname;
 
-    private String password;
-
-    private String token;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
-    private Email email;
+    @JoinColumn(name = "userEmail")
+    private AppUser appUser;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "studentId")
-   // @JoinColumn(name = "studentId")
     private List<Mark> marks = new ArrayList<>();
 
     private String schoolClass;

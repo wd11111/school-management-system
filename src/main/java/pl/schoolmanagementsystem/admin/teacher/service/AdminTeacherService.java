@@ -3,9 +3,8 @@ package pl.schoolmanagementsystem.admin.teacher.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.admin.email.EmailRepository;
 import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
-import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherMapper;
+import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.common.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -17,6 +16,7 @@ import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
+import pl.schoolmanagementsystem.common.user.AppUserRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -26,22 +26,25 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminTeacherService {
 
-    private final EmailRepository emailRepository;
-
     private final TeacherRepository teacherRepository;
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
+    private final AppUserRepository userRepository;
+
     private final MailSenderService mailSenderService;
 
+    private final TeacherCreator teacherCreator;
+
+    @Transactional
     public Teacher createTeacher(TeacherInputDto teacherInputDto) {
         checkIfEmailIsAvailable(teacherInputDto.getEmail());
         Set<SchoolSubject> taughtSubjects = teacherInputDto.getTaughtSubjects().stream()
                 .map(subject -> schoolSubjectRepository.findById(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
-        Teacher teacher = teacherRepository.save(TeacherMapper.createTeacher(teacherInputDto, taughtSubjects));
-        mailSenderService.sendEmail(teacherInputDto.getEmail(), teacher.getToken());
+        Teacher teacher = teacherRepository.save(teacherCreator.createTeacher(teacherInputDto, taughtSubjects));
+       // mailSenderService.sendEmail(teacherInputDto.getEmail(), teacher.getAppUser().getToken());
         return teacher;
     }
 
@@ -76,7 +79,7 @@ public class AdminTeacherService {
     }
 
     private void checkIfEmailIsAvailable(String email) {
-        if (emailRepository.existsById(email)) {
+        if (userRepository.existsById(email)) {
             throw new EmailAlreadyInUseException(email);
         }
     }

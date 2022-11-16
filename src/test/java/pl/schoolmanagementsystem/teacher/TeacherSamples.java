@@ -1,3 +1,4 @@
+/*
 package pl.schoolmanagementsystem.teacher;
 
 import pl.schoolmanagementsystem.common.email.Email;
@@ -45,10 +46,8 @@ public interface TeacherSamples {
                 .id(1)
                 .name(ADAM)
                 .surname(NOWAK)
-                .password(ADAM_PASSWORD)
-                .isAdmin(true)
-                .email(new Email(ADAM))
-                .taughtSubjects(new HashSet<>())
+                .tau
+        ghtSubjects(new HashSet<>())
                 .build();
 
     }
@@ -127,3 +126,4 @@ public interface TeacherSamples {
                 .build();
     }
 }
+*/

@@ -1,7 +1,6 @@
-package pl.schoolmanagementsystem.common.email;
+package pl.schoolmanagementsystem.common.user;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,12 +12,11 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Email {
+public class Role {
 
     @Id
     @Column(nullable = false, unique = true)
-    private String email;
+    private String role;
 }

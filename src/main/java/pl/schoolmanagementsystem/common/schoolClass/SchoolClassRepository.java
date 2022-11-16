@@ -7,14 +7,9 @@ import org.springframework.stereotype.Repository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, String> {
-
-    @Query("select c from SchoolClass c left join fetch c.teachersInClass " +
-            "left join fetch c.students where c.name=?1")
-    Optional<SchoolClass> findBySchoolClassName(String schoolClassName);
 
     @Query("select new pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto(c.name) from SchoolClass c")
     List<SchoolClassDto> findAllClasses();

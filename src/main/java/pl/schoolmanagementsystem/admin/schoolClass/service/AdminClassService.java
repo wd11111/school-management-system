@@ -60,7 +60,7 @@ public class AdminClassService {
     public TeacherInClass addTeacherToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
         Teacher teacher = teacherRepository.findById(teacherInClassInputDto.getTeacherId())
                 .orElseThrow(() -> new NoSuchTeacherException(teacherInClassInputDto.getTeacherId()));
-        SchoolClass schoolClass = schoolClassRepository.findBySchoolClassName(schoolClassName)
+        SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(teacherInClassInputDto.getTaughtSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(teacherInClassInputDto.getTaughtSubject()));

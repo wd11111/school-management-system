@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.ClassAlreadyExistsException;
@@ -30,29 +29,30 @@ public class RestExceptionHandler {
             ClassAlreadyExistsException.class,
             ClassAlreadyHasTeacherException.class,})
     public ResponseEntity<ErrorResponse> handleClassExceptions(RuntimeException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(value = EmailAlreadyInUseException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyInUse(EmailAlreadyInUseException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(value = SubjectAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleSubjectExceptions(SubjectAlreadyExistsException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(value = {
             TeacherAlreadyTeachesSubjectException.class,
             TeacherDoesNotTeachSubjectException.class})
     public ResponseEntity<ErrorResponse> handleTeacherExceptions(RuntimeException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(TeacherDoesNotTeachClassException.class)
     public ResponseEntity<ErrorResponse> handleTeacherDoesNotTeachClassException(TeacherDoesNotTeachClassException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.FORBIDDEN);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(exception.getMessage()));
+
     }
 
     @ExceptionHandler(value = {
@@ -62,18 +62,13 @@ public class RestExceptionHandler {
             NoSuchTeacherException.class,
             NoSuchStudentEmailException.class})
     public ResponseEntity<ErrorResponse> handleNoSuchExceptions(RuntimeException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(value = {
             CouldNotConfirmIUserException.class,
             PasswordsDoNotMatchException.class})
     public ResponseEntity<ErrorResponse> handleSecurityConfirmationException(RuntimeException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNameNotFoundException(UsernameNotFoundException exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));
     }
 }

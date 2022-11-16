@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,19 +26,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Student> student = studentRepository.findByEmail_Email(username);
-        if (student.isPresent()) {
-            return new User(student.get().getEmail().getEmail(),
-                    student.get().getPassword(),
-                    getStudentRole());
-        }
-        Optional<Teacher> teacher = teacherRepository.findByEmail_Email(username);
-        if (teacher.isPresent()) {
-            return new User(teacher.get().getEmail().getEmail(),
-                    teacher.get().getPassword(),
-                    getTeacherRoles(teacher.get()));
-        }
-        throw new UsernameNotFoundException(username);
+        return studentRepository.findByEmail_Email(username)
+                .map(student -> new User(student.getName(), student.getPassword(), getStudentRole()))
+                .orElseGet(() -> teacherRepository.findByEmail_Email(username)
+                        .map(teacher -> new User(teacher.getName(), teacher.getPassword(), getTeacherRoles(teacher)))
+                        .orElse(null));
     }
 
     private Collection<SimpleGrantedAuthority> getTeacherRoles(Teacher teacher) {

@@ -29,6 +29,10 @@ public class StudentMapper {
                         new ArrayList<>()))
                 .schoolClass(schoolClass.getName())
                 .build();
+        return addRoles(student);
+    }
+
+    private Student addRoles(Student student) {
         Role role = roleRepository.findById("ROLE_STUDENT").get();
         student.getAppUser().getRoles().add(role);
         return student;

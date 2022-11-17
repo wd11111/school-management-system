@@ -32,9 +32,13 @@ public class TeacherCreator {
                 .taughtSubjects(taughtSubjects)
                 .teacherInClasses(new HashSet<>())
                 .build();
+        return addRoles(teacher, teacherInputDto.isAdmin());
+    }
+
+    private Teacher addRoles(Teacher teacher, boolean isAdmin) {
         Role roleTeacher = roleRepository.findById("ROLE_TEACHER").get();
         teacher.getAppUser().getRoles().add(roleTeacher);
-        if (teacherInputDto.isAdmin()) {
+        if (isAdmin) {
             Role roleAdmin = roleRepository.findById("ROLE_ADMIN").get();
             teacher.getAppUser().getRoles().add(roleAdmin);
         }

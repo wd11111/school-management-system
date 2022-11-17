@@ -18,13 +18,15 @@ public class ConfirmAccountService {
     private final AppUserRepository userRepository;
 
     @Transactional
-    public void confirm(PasswordDto passwordDto, String token) {
+    public void confirmAccount(PasswordDto passwordDto, String token) {
         if (!doPasswordsMatch(passwordDto)) {
             throw new PasswordsDoNotMatchException();
         }
         userRepository.findByToken(token)
                 .ifPresentOrElse(appUser -> appUser.setPassword(passwordEncoder.encode(passwordDto.getPassword())),
-                        CouldNotConfirmUserException::new);
+                        () -> {
+                            throw new CouldNotConfirmUserException();
+                        });
     }
 
     private boolean doPasswordsMatch(PasswordDto passwordDto) {

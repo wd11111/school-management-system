@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem.admin.schoolSubject.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.admin.schoolSubject.mapper.SchoolSubjectMapper;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
@@ -11,6 +10,8 @@ import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubj
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
 
 import java.util.List;
+
+import static pl.schoolmanagementsystem.admin.schoolSubject.mapper.SchoolSubjectMapper.createSubject;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class AdminSubjectService {
         if (doesSubjectExist(schoolSubjectDto.getSubjectName())) {
             throw new SubjectAlreadyExistsException(schoolSubjectDto);
         }
-        return schoolSubjectRepository.save(SchoolSubjectMapper.createSubject(schoolSubjectDto));
+        return schoolSubjectRepository.save(createSubject(schoolSubjectDto));
     }
 
     public List<SchoolSubjectDto> getAllSubjects() {

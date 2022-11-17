@@ -10,7 +10,7 @@ import pl.schoolmanagementsystem.admin.schoolClass.exception.ClassAlreadyHasTeac
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.common.security.CouldNotConfirmIUserException;
+import pl.schoolmanagementsystem.common.security.CouldNotConfirmUserException;
 import pl.schoolmanagementsystem.common.security.PasswordsDoNotMatchException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
@@ -66,7 +66,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            CouldNotConfirmIUserException.class,
+            CouldNotConfirmUserException.class,
             PasswordsDoNotMatchException.class})
     public ResponseEntity<ErrorResponse> handleSecurityConfirmationException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));

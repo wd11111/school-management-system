@@ -16,11 +16,11 @@ import java.util.Set;
 
 public interface Samples {
 
-    String TEACHER_NAME1 = "Hubert";
-    String TEACHER_NAME2 = "Adam";
-    String TEACHER_NAME3 = "Alicja";
-    String TEACHER_SURNAME = "Nowak";
-    String TEACHER_SURNAME2 = "Kowalczyk";
+    String NAME = "Hubert";
+    String NAME2 = "Adam";
+    String NAME3 = "Alicja";
+    String SURNAME = "Nowak";
+    String SURNAME2 = "Kowalczyk";
     String SUBJECT_BIOLOGY = "Biology";
     String SUBJECT_HISTORY = "History";
     String ENGLISH = "english";
@@ -30,11 +30,11 @@ public interface Samples {
     int ID_2 = 2;
 
     default SubjectAndTeacherOutputDto createSubjectAndTeacherOutput() {
-        return new SubjectAndTeacherOutputDto(SUBJECT_BIOLOGY, TEACHER_NAME2, TEACHER_SURNAME);
+        return new SubjectAndTeacherOutputDto(SUBJECT_BIOLOGY, NAME2, SURNAME);
     }
 
     default SubjectAndTeacherOutputDto createSubjectAndTeacherOutput2() {
-        return new SubjectAndTeacherOutputDto(SUBJECT_HISTORY, TEACHER_NAME2, TEACHER_SURNAME);
+        return new SubjectAndTeacherOutputDto(SUBJECT_HISTORY, NAME2, SURNAME);
     }
 
     default SchoolClass createSchoolClass() {
@@ -47,8 +47,8 @@ public interface Samples {
     default Teacher createTeacherNoSubjectsTaught() {
         return Teacher.builder()
                 .id(1)
-                .name(TEACHER_NAME2)
-                .surname(TEACHER_SURNAME)
+                .name(NAME2)
+                .surname(SURNAME)
                 .taughtSubjects(new HashSet<>())
                 .appUser(getAppUser())
                 .build();
@@ -57,8 +57,8 @@ public interface Samples {
     default Teacher createTeacherOfBiology() {
         return Teacher.builder()
                 .id(2)
-                .name(TEACHER_NAME3)
-                .surname(TEACHER_SURNAME2)
+                .name(NAME3)
+                .surname(SURNAME2)
                 .taughtSubjects(new HashSet<>(Set.of(createSchoolSubject())))
                 .build();
     }
@@ -78,7 +78,7 @@ public interface Samples {
     default Student createStudent() {
         return Student.builder()
                 .id(ID_1)
-                .name(TEACHER_NAME1)
+                .name(NAME)
                 .schoolClass(CLASS_1A)
                 .marks(new ArrayList<>())
                 .build();
@@ -87,8 +87,9 @@ public interface Samples {
     default Student createStudent2() {
         return Student.builder()
                 .id(ID_2)
-                .name(TEACHER_NAME1)
+                .name(NAME)
                 .schoolClass(CLASS_1A)
+                .appUser(getAppUser())
                 .marks(new ArrayList<>())
                 .build();
     }

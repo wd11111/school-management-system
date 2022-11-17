@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
-import pl.schoolmanagementsystem.admin.student.mapper.StudentMapper;
+import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.student.Student;
@@ -28,15 +28,15 @@ public class AdminStudentService {
 
     private final AppUserRepository userRepository;
 
-    private final StudentMapper studentMapper;
+    private final StudentCreator studentCreator;
 
     @Transactional
     public Student createStudent(StudentInputDto studentInputDto) {
         checkIfEmailIsAvailable(studentInputDto.getEmail());
         SchoolClass schoolClass = schoolClassRepository.findById(studentInputDto.getSchoolClassName())
                 .orElseThrow(() -> new NoSuchSchoolClassException(studentInputDto.getSchoolClassName()));
-        Student student = studentRepository.save(studentMapper.mapToStudent(studentInputDto, schoolClass));
-        //   mailSenderService.sendEmail(studentInputDto.getEmail(), student.getAppUser().getToken());
+        Student student = studentRepository.save(studentCreator.createStudent(studentInputDto, schoolClass));
+        mailSenderService.sendEmail(studentInputDto.getEmail(), student.getAppUser().getToken());
         return student;
     }
 

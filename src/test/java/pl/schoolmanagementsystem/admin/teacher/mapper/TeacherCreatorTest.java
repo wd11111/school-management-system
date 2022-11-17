@@ -30,7 +30,7 @@ class TeacherCreatorTest implements Samples {
 
     @Test
     void should_create_teacher_with_one_role() {
-        TeacherInputDto teacherInputDto = TeacherInputDto.builder().email(TEACHER_SURNAME).build();
+        TeacherInputDto teacherInputDto = TeacherInputDto.builder().email(SURNAME).build();
         Set<SchoolSubject> subjectSet = Set.of(createSchoolSubject());
         when(roleRepository.findById(anyString())).thenReturn(Optional.of(new Role()));
 
@@ -41,7 +41,7 @@ class TeacherCreatorTest implements Samples {
 
     @Test
     void should_create_teacher_with_two_roles() {
-        TeacherInputDto teacherInputDto = TeacherInputDto.builder().email(TEACHER_SURNAME).isAdmin(true).build();
+        TeacherInputDto teacherInputDto = TeacherInputDto.builder().email(SURNAME).isAdmin(true).build();
         Set<SchoolSubject> subjectSet = Set.of(createSchoolSubject());
         when(roleRepository.findById(anyString())).thenReturn(Optional.of(new Role()));
         when(roleRepository.findById(anyString())).thenReturn(Optional.of(new Role()));

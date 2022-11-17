@@ -15,11 +15,11 @@ import static pl.schoolmanagementsystem.admin.mailSender.TokenGenerator.generate
 
 @Component
 @RequiredArgsConstructor
-public class StudentMapper {
+public class StudentCreator {
 
     private final RoleRepository roleRepository;
 
-    public Student mapToStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {
+    public Student createStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {
         Student student = Student.builder()
                 .name(studentInputDto.getName())
                 .surname(studentInputDto.getSurname())

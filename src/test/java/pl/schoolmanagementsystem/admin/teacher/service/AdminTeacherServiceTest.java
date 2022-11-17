@@ -77,12 +77,12 @@ class AdminTeacherServiceTest implements Samples {
     @Test
     void should_throw_exception_when_email_is_not_available() {
         TeacherInputDto teacherInputDto = new TeacherInputDto();
-        teacherInputDto.setEmail(TEACHER_NAME1);
+        teacherInputDto.setEmail(NAME);
         when(userRepository.existsById(any())).thenReturn(true);
 
         assertThatThrownBy(() -> adminTeacherService.createTeacher(teacherInputDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
-                .hasMessage("Email already in use: " + TEACHER_NAME1);
+                .hasMessage("Email already in use: " + NAME);
         verify(teacherRepository, never()).save(any());
         verify(mailSenderService, never()).sendEmail(any(), any());
     }
@@ -124,7 +124,7 @@ class AdminTeacherServiceTest implements Samples {
     void should_return_taught_classes_by_teacher() {
         List<SubjectAndClassDto> listOfTaughtClasses = listOfTaughtClasses();
         when(teacherRepository.existsById(any())).thenReturn(true);
-        when(teacherRepository.findEmailById(anyInt())).thenReturn(TEACHER_NAME3);
+        when(teacherRepository.findEmailById(anyInt())).thenReturn(NAME3);
         when(teacherRepository.findTaughtClassesByTeacher(anyString())).thenReturn(listOfTaughtClasses);
 
         List<SubjectAndClassDto> result = adminTeacherService.getTaughtClassesByTeacher(ID_1);

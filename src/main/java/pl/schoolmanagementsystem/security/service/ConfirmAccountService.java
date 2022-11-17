@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.security.CouldNotConfirmIUserException;
+import pl.schoolmanagementsystem.common.security.CouldNotConfirmUserException;
 import pl.schoolmanagementsystem.common.security.PasswordsDoNotMatchException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.security.dto.PasswordDto;
@@ -24,7 +24,7 @@ public class ConfirmAccountService {
         }
         userRepository.findByToken(token)
                 .ifPresentOrElse(appUser -> appUser.setPassword(passwordEncoder.encode(passwordDto.getPassword())),
-                        CouldNotConfirmIUserException::new);
+                        CouldNotConfirmUserException::new);
     }
 
     private boolean doPasswordsMatch(PasswordDto passwordDto) {

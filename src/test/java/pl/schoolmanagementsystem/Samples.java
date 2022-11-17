@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.teacher.service;
+package pl.schoolmanagementsystem;
 
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -7,11 +7,9 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutpu
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.common.user.AppUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,34 +44,17 @@ public interface Samples {
                 .build();
     }
 
-    default Teacher teacherNoId1() {
-        return Teacher.builder()
-                .name(TEACHER_NAME2)
-                .surname(TEACHER_SURNAME)
-                .taughtSubjects(new HashSet<>())
-                .build();
-
-    }
-
-    default Teacher teacherWithId1() {
+    default Teacher createTeacherNoSubjectsTaught() {
         return Teacher.builder()
                 .id(1)
                 .name(TEACHER_NAME2)
                 .surname(TEACHER_SURNAME)
-                .taughtSubjects(Collections.emptySet())
-                .build();
-
-    }
-
-    default Teacher teacherNoId2() {
-        return Teacher.builder()
-                .name(TEACHER_NAME3)
-                .surname(TEACHER_SURNAME2)
-                .taughtSubjects(new HashSet<>(Set.of(createSchoolSubject())))
+                .taughtSubjects(new HashSet<>())
+                .appUser(getAppUser())
                 .build();
     }
 
-    default Teacher teacherWithId2() {
+    default Teacher createTeacherOfBiology() {
         return Teacher.builder()
                 .id(2)
                 .name(TEACHER_NAME3)
@@ -82,12 +63,8 @@ public interface Samples {
                 .build();
     }
 
-    default List<Teacher> listOfTeachers() {
-        return List.of(teacherNoId1(), teacherNoId2());
-    }
-
     default SchoolSubject createSchoolSubject() {
-        SchoolSubject schoolSubject = new SchoolSubject();
+        SchoolSubject schoolSubject = SchoolSubject.builder().build();
         schoolSubject.setName(SUBJECT_BIOLOGY);
         return schoolSubject;
     }
@@ -96,34 +73,6 @@ public interface Samples {
         return List.of(new SubjectAndClassDto(SUBJECT_BIOLOGY, CLASS_1A),
                 new SubjectAndClassDto(ENGLISH, CLASS_1A),
                 new SubjectAndClassDto(SUBJECT_HISTORY, CLASS_3B));
-    }
-
-    default TeacherOutputDto teacherOutput1() {
-        return TeacherOutputDto.builder()
-                .id(ID_1)
-                .name(TEACHER_NAME2)
-                .surname(TEACHER_SURNAME)
-                .taughtSubjects(Collections.emptySet())
-                .build();
-    }
-
-    default TeacherOutputDto teacherOutput2() {
-        return TeacherOutputDto.builder()
-                .id(ID_2)
-                .name(TEACHER_NAME3)
-                .surname(TEACHER_SURNAME2)
-                .taughtSubjects(Set.of(SUBJECT_BIOLOGY))
-                .build();
-    }
-
-    default TeacherInputDto teacherInput1() {
-        return TeacherInputDto.builder()
-                .email(TEACHER_NAME2)
-                .name(TEACHER_NAME2)
-                .surname(TEACHER_SURNAME)
-                .isAdmin(true)
-                .taughtSubjects(Collections.emptySet())
-                .build();
     }
 
     default Student createStudent() {
@@ -147,11 +96,17 @@ public interface Samples {
     default SchoolClass createSchoolClassWithTeacher() {
         SchoolClass schoolClass = createSchoolClass();
         TeacherInClass teacherInClass = TeacherInClass.builder()
-                .teacher(teacherWithId2())
+                .teacher(createTeacherOfBiology())
                 .taughtSubject(SUBJECT_BIOLOGY)
                 .taughtClasses(new HashSet<>(Set.of(schoolClass)))
                 .build();
         schoolClass.getTeachersInClass().add(teacherInClass);
         return schoolClass;
+    }
+
+    default AppUser getAppUser() {
+        AppUser appUser = new AppUser();
+        appUser.setToken("aaa");
+        return appUser;
     }
 }

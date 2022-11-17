@@ -40,11 +40,11 @@ public class AdminTeacherService {
     public Teacher createTeacher(TeacherInputDto teacherInputDto) {
         checkIfEmailIsAvailable(teacherInputDto.getEmail());
         Set<SchoolSubject> taughtSubjects = teacherInputDto.getTaughtSubjects().stream()
-                .map(subject -> schoolSubjectRepository.findById(subject)
+                .map(subject -> schoolSubjectRepository.findByNameIgnoreCase(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
         Teacher teacher = teacherRepository.save(teacherCreator.createTeacher(teacherInputDto, taughtSubjects));
-       // mailSenderService.sendEmail(teacherInputDto.getEmail(), teacher.getAppUser().getToken());
+        mailSenderService.sendEmail(teacherInputDto.getEmail(), teacher.getAppUser().getToken());
         return teacher;
     }
 
@@ -54,17 +54,13 @@ public class AdminTeacherService {
 
     @Transactional
     public void deleteTeacher(int teacherId) {
-        if (!teacherRepository.existsById(teacherId)) {
-            throw new NoSuchTeacherException(teacherId);
-        }
+        checkIfTeacherExists(teacherId);
         teacherRepository.deleteById(teacherId);
     }
 
-    public List<SubjectAndClassDto> getTaughtClassesByTeacher(int id) {
-        if (!teacherRepository.existsById(id)) {
-            throw new NoSuchTeacherException(id);
-        }
-        String teacherEmail = teacherRepository.findEmailById(id);
+    public List<SubjectAndClassDto> getTaughtClassesByTeacher(int teacherId) {
+        checkIfTeacherExists(teacherId);
+        String teacherEmail = teacherRepository.findEmailById(teacherId);
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail);
     }
 
@@ -76,6 +72,12 @@ public class AdminTeacherService {
         checkIfTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
         teacher.addSubject(schoolSubject);
         return teacher;
+    }
+
+    private void checkIfTeacherExists(int teacherId) {
+        if (!teacherRepository.existsById(teacherId)) {
+            throw new NoSuchTeacherException(teacherId);
+        }
     }
 
     private void checkIfEmailIsAvailable(String email) {

@@ -5,11 +5,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
-import pl.schoolmanagementsystem.teacher.service.Samples;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,7 +31,7 @@ class AdminTeacherInClassServiceTest implements Samples {
 
     @Test
     void should_add_teacher_to_class_when_teacher_in_class_already_exists() {
-        Teacher teacher = teacherWithId1();
+        Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolClass schoolClass = createSchoolClass();
         TeacherInClass teacherInClass = new TeacherInClass();
         teacherInClass.setTaughtClasses(new HashSet<>());

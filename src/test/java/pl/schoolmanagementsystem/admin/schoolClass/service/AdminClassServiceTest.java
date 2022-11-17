@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
@@ -21,7 +22,6 @@ import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
-import pl.schoolmanagementsystem.teacher.service.Samples;
 
 import java.util.Optional;
 
@@ -94,7 +94,7 @@ class AdminClassServiceTest implements Samples {
     void should_add_teacher_to_school_class() {
         TeacherInClass expected = new TeacherInClass();
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
-        Teacher teacher = teacherWithId2();
+        Teacher teacher = createTeacherOfBiology();
         SchoolClass schoolClass = createSchoolClass();
         SchoolSubject schoolSubject = createSchoolSubject();
         when(teacherRepository.findById(anyInt())).thenReturn(Optional.ofNullable(teacher));
@@ -145,7 +145,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_teacher_doesnt_teach_subject() {
-        Teacher teacherWithOutSubjects = teacherWithId1();
+        Teacher teacherWithOutSubjects = createTeacherNoSubjectsTaught();
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
@@ -159,7 +159,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_class_already_has_teacher_of_subject() {
-        Teacher teacherWithOutSubjects = teacherWithId2();
+        Teacher teacherWithOutSubjects = createTeacherOfBiology();
         SchoolClass schoolClassWithTeacher = createSchoolClassWithTeacher();
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacherWithOutSubjects));

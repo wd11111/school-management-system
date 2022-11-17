@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
@@ -30,7 +31,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClassServiceTest implements Samples {
+class TeacherClassServiceTest implements Samples {
 
     @Mock
     private TeacherRepository teacherRepository;

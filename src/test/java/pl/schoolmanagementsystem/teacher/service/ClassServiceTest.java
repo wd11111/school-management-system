@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
+class ClassServiceTest implements Samples {
 
     @Mock
     private TeacherRepository teacherRepository;
@@ -55,7 +55,7 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
         List<SubjectAndClassDto> expectedList = listOfTaughtClasses();
         when(teacherRepository.findTaughtClassesByTeacher(anyString())).thenReturn(expectedList);
 
-        List<SubjectAndClassDto> result = teacherClassService.getTaughtClassesByTeacher(ADAM);
+        List<SubjectAndClassDto> result = teacherClassService.getTaughtClassesByTeacher(TEACHER_NAME2);
 
         assertThat(result).isEqualTo(expectedList);
     }
@@ -64,36 +64,36 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
     void should_correctly_add_mark_to_student() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        MarkInputDto markInputDto = new MarkInputDto(2, BIOLOGY);
+        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyInt())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
 
-        teacherClassService.addMark(ADAM, markInputDto, student.getId());
+        teacherClassService.addMark(TEACHER_NAME2, markInputDto, student.getId());
 
         assertThat(student.getMarks()).hasSize(1);
     }
 
     @Test
     void should_throw_exception_when_student_not_found() {
-        MarkInputDto markInputDto = new MarkInputDto(2, BIOLOGY);
+        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> teacherClassService.addMark(ADAM, markInputDto, STUDENT_ID))
+        assertThatThrownBy(() -> teacherClassService.addMark(TEACHER_NAME2, markInputDto, ID_1))
                 .isInstanceOf(NoSuchStudentException.class)
-                .hasMessage("Student with such an id does not exist: " + STUDENT_ID);
+                .hasMessage("Student with such an id does not exist: " + ID_1);
     }
 
     @Test
     void should_throw_exception_when_school_subject_is_incorrect() {
         Student student = createStudent();
-        MarkInputDto markInputDto = new MarkInputDto(2, BIOLOGY);
+        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyInt())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> teacherClassService.addMark(ADAM, markInputDto, STUDENT_ID))
+        assertThatThrownBy(() -> teacherClassService.addMark(TEACHER_NAME2, markInputDto, ID_1))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
                 .hasMessage("Such a school subject does not exist: " + markInputDto.getSubject());
         assertThat(student.getMarks()).hasSize(0);
@@ -103,14 +103,14 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
     void should_throw_exception_when_teacher_does_not_teach_subject_in_class() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        MarkInputDto markInputDto = new MarkInputDto(2, BIOLOGY);
+        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyInt())).thenReturn(Optional.of(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);
 
-        assertThatThrownBy(() -> teacherClassService.addMark(ADAM, markInputDto, STUDENT_ID))
+        assertThatThrownBy(() -> teacherClassService.addMark(TEACHER_NAME2, markInputDto, ID_1))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
                 .hasMessage("You do not teach Biology in 1a");
         assertThat(student.getMarks()).hasSize(0);
@@ -126,7 +126,7 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
                 .thenReturn(true);
         when(studentRepository.findAllInClassWithMarksOfTheSubject(any(), any())).thenReturn(listOfStudents);
 
-        List<Student> result = teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_A, BIOLOGY, ADAM);
+        List<Student> result = teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, TEACHER_NAME2);
 
         assertThat(result).containsAll(listOfStudents);
     }
@@ -135,9 +135,9 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
     void should_throw_exception_when_school_class_doesnt_exist() {
         when(classRepository.existsById(anyString())).thenReturn(false);
 
-        assertThatThrownBy(() -> teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_A, BIOLOGY, ADAM))
+        assertThatThrownBy(() -> teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, TEACHER_NAME2))
                 .isInstanceOf(NoSuchSchoolClassException.class)
-                .hasMessage("Such a school class does not exist: " + CLASS_A);
+                .hasMessage("Such a school class does not exist: " + CLASS_1A);
     }
 
     @Test
@@ -145,9 +145,9 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
         when(classRepository.existsById(anyString())).thenReturn(true);
         when(subjectRepository.existsById(anyString())).thenReturn(false);
 
-        assertThatThrownBy(() -> teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_A, BIOLOGY, ADAM))
+        assertThatThrownBy(() -> teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, TEACHER_NAME2))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: " + BIOLOGY);
+                .hasMessage("Such a school subject does not exist: " + SUBJECT_BIOLOGY);
     }
 
     @Test
@@ -158,7 +158,7 @@ class TeacherClassServiceTest implements TeacherSamples, StudentSamples {
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);
 
-        assertThatThrownBy(() -> teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_A, BIOLOGY, ADAM))
+        assertThatThrownBy(() -> teacherClassService.getAllStudentsInClassWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, TEACHER_NAME2))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
                 .hasMessage("You do not teach Biology in 1a");
     }

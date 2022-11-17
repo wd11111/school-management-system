@@ -15,8 +15,6 @@ public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, St
 
     Optional<SchoolSubject> findByNameIgnoreCase(String subjectName);
 
-    boolean existsByName(String name);
-
     @Query("select new pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto(s.name) from SchoolSubject s")
     List<SchoolSubjectDto> findAllSchoolSubjects();
 

@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.teacher.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -50,15 +51,13 @@ public class TeacherClassService {
 
     public List<Student> getAllStudentsInClassWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
         if (!classRepository.existsById(schoolClassName)) {
-            throw new NoSuchSchoolSubjectException(subjectName);
+            throw new NoSuchSchoolClassException(schoolClassName);
         }
-        if (!subjectRepository.existsByName(subjectName)) {
+        if (!subjectRepository.existsById(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
         checkIfTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
         return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName);
-
-
     }
 
     private void checkIfTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentMapper;
-import pl.schoolmanagementsystem.common.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.student.Student;
@@ -14,6 +13,7 @@ import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
+import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 
 @Service
 @RequiredArgsConstructor

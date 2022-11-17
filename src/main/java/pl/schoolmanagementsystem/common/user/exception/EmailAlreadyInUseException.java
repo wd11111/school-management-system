@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.email.exception;
+package pl.schoolmanagementsystem.common.user.exception;
 
 public class EmailAlreadyInUseException extends RuntimeException{
 

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
-import pl.schoolmanagementsystem.common.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
@@ -17,6 +16,7 @@ import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
+import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 
 import java.util.List;
 import java.util.Set;

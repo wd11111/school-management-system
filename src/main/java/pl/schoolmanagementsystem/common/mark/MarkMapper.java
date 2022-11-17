@@ -1,12 +1,14 @@
 package pl.schoolmanagementsystem.common.mark;
 
-import pl.schoolmanagementsystem.common.mark.dto.MarkDtoWithTwoFields;
 import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
+import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class MarkMapper {
 
@@ -16,11 +18,11 @@ public class MarkMapper {
                 .collect(Collectors.toList());
     }
 
-    public static Map<String, List<Integer>> mapToListOfIntegersInMapStructure(Map<String, List<MarkDtoWithTwoFields>> mapToTransform) {
+    public static Map<String, List<Integer>> mapToListOfIntegersInMapStructure(Map<String, List<MarkWithTwoFields>> mapToTransform) {
         Map<String, List<Integer>> resultMap = new HashMap<>();
         mapToTransform.forEach((key, value) -> resultMap.put(key, value
                 .stream()
-                .map(MarkDtoWithTwoFields::getMark)
+                .map(MarkWithTwoFields::getMark)
                 .collect(Collectors.toList())));
         return resultMap;
     }
@@ -33,8 +35,8 @@ public class MarkMapper {
                 .build();
     }
 
-    public static Map<String, List<MarkDtoWithTwoFields>> groupMarksBySubject(List<MarkDtoWithTwoFields> studentsMarks) {
+    public static Map<String, List<MarkWithTwoFields>> groupMarksBySubject(List<MarkWithTwoFields> studentsMarks) {
         return studentsMarks.stream()
-                .collect(Collectors.groupingBy(MarkDtoWithTwoFields::getSubject));
+                .collect(groupingBy(MarkWithTwoFields::getSubject));
     }
 }

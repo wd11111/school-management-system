@@ -15,6 +15,7 @@ import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.teacher.mapper.StudentDtoMapper;
 import pl.schoolmanagementsystem.teacher.service.TeacherClassService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class TeacherClassController {
     }
 
     @PatchMapping("/students/{id}")
-    public ResponseEntity<Void> addMark(@PathVariable int id, @RequestBody MarkInputDto markInputDto, Principal principal) {
+    public ResponseEntity<Void> addMark(@PathVariable int id, @RequestBody @Valid MarkInputDto markInputDto, Principal principal) {
         teacherClassService.addMark(principal.getName(), markInputDto, id);
         return ResponseEntity.noContent().build();
     }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
-import pl.schoolmanagementsystem.common.email.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
 import pl.schoolmanagementsystem.common.security.CouldNotConfirmIUserException;
@@ -19,6 +18,7 @@ import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachClassException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
+import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.exception.dto.ErrorResponse;
 
 @RestControllerAdvice

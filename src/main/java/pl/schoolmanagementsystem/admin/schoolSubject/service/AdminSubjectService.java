@@ -39,6 +39,6 @@ public class AdminSubjectService {
     }
 
     private boolean doesSubjectExist(String schoolSubjectName) {
-        return schoolSubjectRepository.existsByName(schoolSubjectName);
+        return schoolSubjectRepository.existsById(schoolSubjectName);
     }
 }

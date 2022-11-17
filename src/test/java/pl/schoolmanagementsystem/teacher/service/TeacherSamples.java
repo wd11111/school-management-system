@@ -1,7 +1,5 @@
-/*
-package pl.schoolmanagementsystem.teacher;
+package pl.schoolmanagementsystem.teacher.service;
 
-import pl.schoolmanagementsystem.common.email.Email;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
@@ -14,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public interface TeacherSamples {
+public interface TeacherSamples extends StudentSamples{
 
     String ADAM = "Adam";
     String NOWAK = "Nowak";
@@ -23,7 +21,6 @@ public interface TeacherSamples {
     String HISTORY = "History";
     String KOWALCZYK = "Kowalczyk";
     String ALICJA = "Alicja";
-    String CLASS1 = "1a";
     String CLASS2 = "3b";
     String ENGLISH = "english";
     int ID_1 = 1;
@@ -33,9 +30,6 @@ public interface TeacherSamples {
         return Teacher.builder()
                 .name(ADAM)
                 .surname(NOWAK)
-                .password(ADAM_PASSWORD)
-                .isAdmin(true)
-                .email(new Email(ADAM))
                 .taughtSubjects(new HashSet<>())
                 .build();
 
@@ -46,8 +40,6 @@ public interface TeacherSamples {
                 .id(1)
                 .name(ADAM)
                 .surname(NOWAK)
-                .tau
-        ghtSubjects(new HashSet<>())
                 .build();
 
     }
@@ -56,10 +48,7 @@ public interface TeacherSamples {
         return Teacher.builder()
                 .name(ALICJA)
                 .surname(KOWALCZYK)
-                .password(ADAM_PASSWORD)
-                .isAdmin(false)
-                .email(new Email(ALICJA))
-                .taughtSubjects(new HashSet<>(Set.of(schoolSubject())))
+                .taughtSubjects(new HashSet<>(Set.of(createSchoolSubject())))
                 .build();
     }
 
@@ -68,10 +57,7 @@ public interface TeacherSamples {
                 .id(2)
                 .name(ALICJA)
                 .surname(KOWALCZYK)
-                .password(ADAM_PASSWORD)
-                .isAdmin(false)
-                .email(new Email(ALICJA))
-                .taughtSubjects(new HashSet<>(Set.of(schoolSubject())))
+                .taughtSubjects(new HashSet<>(Set.of(createSchoolSubject())))
                 .build();
     }
 
@@ -79,21 +65,21 @@ public interface TeacherSamples {
         return List.of(teacher1(), teacher2());
     }
 
-    default SchoolSubject schoolSubject() {
+    default SchoolSubject createSchoolSubject() {
         SchoolSubject schoolSubject = new SchoolSubject();
         schoolSubject.setName(BIOLOGY);
         return schoolSubject;
     }
 
-    default SchoolClass schoolClass() {
+    default SchoolClass createSchoolClass() {
         return SchoolClass.builder()
-                .name(CLASS1)
+                .name(CLASS_A)
                 .build();
     }
 
     default List<SubjectAndClassDto> listOfTaughtClasses() {
-        return List.of(new SubjectAndClassDto(BIOLOGY, CLASS1),
-                new SubjectAndClassDto(ENGLISH, CLASS1),
+        return List.of(new SubjectAndClassDto(BIOLOGY, CLASS_A),
+                new SubjectAndClassDto(ENGLISH, CLASS_A),
                 new SubjectAndClassDto(HISTORY, CLASS2));
     }
 
@@ -121,9 +107,7 @@ public interface TeacherSamples {
                 .name(ADAM)
                 .surname(NOWAK)
                 .isAdmin(true)
-                .password(ADAM_PASSWORD)
                 .taughtSubjects(Collections.emptySet())
                 .build();
     }
 }
-*/

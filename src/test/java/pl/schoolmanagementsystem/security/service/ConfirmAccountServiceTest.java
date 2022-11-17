@@ -24,7 +24,7 @@ class ConfirmAccountServiceTest {
 
     public static final String PASSWORD = "aaa";
     public static final String NOT_MATCHING_PASSWORD = "bbb";
-    public static final String TOKEN = "qwertyuiop";
+    public static final String TOKEN = "abc";
 
     @Mock
     private PasswordEncoder passwordEncoder;

@@ -16,17 +16,17 @@ public class MailSenderService {
     private String url;
 
     @Value("${spring.mail.username}}")
-    private String senderEmail;
+    private String sender;
 
     private final JavaMailSender mailSender;
 
-    public void sendEmail(String to, String token) {
+    public void sendEmail(String receiver, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(senderEmail);
-        message.setTo(to);
+        message.setFrom(sender);
+        message.setTo(receiver);
         message.setText(url + token);
         message.setSubject("Account confirmation");
         mailSender.send(message);
-        log.info("Mail send successfully to: {}", to);
+        log.info("Mail send successfully to: {}", receiver);
     }
 }

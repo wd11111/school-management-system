@@ -35,6 +35,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -118,13 +120,14 @@ class AdminClassControllerTest implements ControllerSamples {
     @Test
     void should_return_status_bad_request_when_body_doesnt_pass_validation() throws Exception {
         String body = objectMapper.writeValueAsString(new SchoolClassDto());
-        when(adminClassService.createSchoolClass(any())).thenReturn(new SchoolClass());
 
         mockMvc.perform(post("/admin/classes")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status()
                         .isBadRequest());
+
+        verify(adminClassService, never()).createSchoolClass(any());
     }
 
     @Test
@@ -152,6 +155,8 @@ class AdminClassControllerTest implements ControllerSamples {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status()
                         .isBadRequest());
+
+        verify(adminClassService, never()).addTeacherToSchoolClass(any(), anyString());
     }
 
     @Test

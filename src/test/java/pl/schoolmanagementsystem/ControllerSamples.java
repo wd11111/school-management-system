@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
@@ -37,5 +38,9 @@ public interface ControllerSamples extends Samples{
     }
     default TeacherInClass teacherInClass() {
         return new TeacherInClass(1, createTeacherNoSubjectsTaught(), SUBJECT, Set.of(createSchoolClass()));
+    }
+
+    default SchoolSubjectDto schoolSubjectDto() {
+        return new SchoolSubjectDto(CLASS_NAME);
     }
 }

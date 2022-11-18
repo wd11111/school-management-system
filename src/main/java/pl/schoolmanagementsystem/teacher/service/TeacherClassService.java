@@ -1,6 +1,10 @@
 package pl.schoolmanagementsystem.teacher.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
@@ -45,8 +49,9 @@ public class TeacherClassService {
         student.addMark(createMark(markInputDto, studentId));
     }
 
-    public List<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail) {
-        return teacherRepository.findTaughtClassesByTeacher(teacherEmail);
+    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {
+        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
+                pageable.getPageNumber(), pageable.getPageSize(), Sort.by("schoolClass").descending()));
     }
 
     public List<Student> getAllStudentsInClassWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {

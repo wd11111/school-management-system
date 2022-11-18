@@ -5,6 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
@@ -22,7 +26,6 @@ import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -122,21 +125,23 @@ class AdminTeacherServiceTest implements Samples {
 
     @Test
     void should_return_taught_classes_by_teacher() {
-        List<SubjectAndClassDto> listOfTaughtClasses = listOfTaughtClasses();
+        Page<SubjectAndClassDto> listOfTaughtClasses = new PageImpl<>(listOfTaughtClasses());
+        Pageable pageable = PageRequest.of(0,10);
         when(teacherRepository.existsById(any())).thenReturn(true);
         when(teacherRepository.findEmailById(anyInt())).thenReturn(NAME3);
-        when(teacherRepository.findTaughtClassesByTeacher(anyString())).thenReturn(listOfTaughtClasses);
+        when(teacherRepository.findTaughtClassesByTeacher(anyString(), any())).thenReturn(listOfTaughtClasses);
 
-        List<SubjectAndClassDto> result = adminTeacherService.getTaughtClassesByTeacher(ID_1);
+        Page<SubjectAndClassDto> result = adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable);
 
         assertThat(result).isSameAs(listOfTaughtClasses);
     }
 
     @Test
     void should_throw_exception_when_trying_to_get_taught_classes() {
+        Pageable pageable = PageRequest.of(0,10);
         when(teacherRepository.existsById(any())).thenReturn(false);
 
-        assertThatThrownBy(() -> adminTeacherService.getTaughtClassesByTeacher(ID_1))
+        assertThatThrownBy(() -> adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable))
                 .isInstanceOf(NoSuchTeacherException.class)
                 .hasMessage("Teacher with such an id does not exist: " + ID_1);
     }

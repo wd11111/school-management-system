@@ -1,5 +1,7 @@
 package pl.schoolmanagementsystem.common.teacher;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -28,5 +30,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
             "from TeacherInClass tc " +
             "left join tc.taughtClasses tics " +
             "where tc.teacher.appUser.userEmail=?1")
-    List<SubjectAndClassDto> findTaughtClassesByTeacher(String email);
+    Page<SubjectAndClassDto> findTaughtClassesByTeacher(String email, Pageable pageable);
 }

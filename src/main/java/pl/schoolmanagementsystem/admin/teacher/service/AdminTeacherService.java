@@ -1,6 +1,9 @@
 package pl.schoolmanagementsystem.admin.teacher.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
@@ -18,7 +21,6 @@ import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesS
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,8 +50,8 @@ public class AdminTeacherService {
         return teacher;
     }
 
-    public List<Teacher> getAllTeachers() {
-        return teacherRepository.findAll();
+    public Page<Teacher> getAllTeachers(Pageable pageable) {
+        return teacherRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
     }
 
     @Transactional
@@ -58,10 +60,11 @@ public class AdminTeacherService {
         teacherRepository.deleteById(teacherId);
     }
 
-    public List<SubjectAndClassDto> getTaughtClassesByTeacher(int teacherId) {
+    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(int teacherId, Pageable pageable) {
         checkIfTeacherExists(teacherId);
         String teacherEmail = teacherRepository.findEmailById(teacherId);
-        return teacherRepository.findTaughtClassesByTeacher(teacherEmail);
+        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
+                pageable.getPageNumber(), pageable.getPageSize()));
     }
 
     @Transactional

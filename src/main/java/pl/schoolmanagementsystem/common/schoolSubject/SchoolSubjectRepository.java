@@ -1,5 +1,7 @@
 package pl.schoolmanagementsystem.common.schoolSubject;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +18,7 @@ public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, St
     Optional<SchoolSubject> findByNameIgnoreCase(String subjectName);
 
     @Query("select new pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto(s.name) from SchoolSubject s")
-    List<SchoolSubjectDto> findAllSchoolSubjects();
+    Page<SchoolSubjectDto> findAllSchoolSubjects(Pageable pageable);
 
     @Modifying
     @Query(nativeQuery = true, value = "delete from teacher_taught_subjects where taught_subjects_name=?1")

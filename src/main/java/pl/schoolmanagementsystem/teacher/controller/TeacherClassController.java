@@ -1,6 +1,8 @@
 package pl.schoolmanagementsystem.teacher.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,8 +30,8 @@ public class TeacherClassController {
     private final TeacherClassService teacherClassService;
 
     @GetMapping("/classes")
-    public List<SubjectAndClassDto> getTaughtClasses(Principal principal) {
-        return teacherClassService.getTaughtClassesByTeacher(principal.getName());
+    public Page<SubjectAndClassDto> getTaughtClasses(Principal principal, Pageable pageable) {
+        return teacherClassService.getTaughtClassesByTeacher(principal.getName(), pageable);
     }
 
     @GetMapping("/classes/{className}")

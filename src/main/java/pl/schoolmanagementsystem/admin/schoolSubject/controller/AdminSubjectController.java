@@ -1,6 +1,8 @@
 package pl.schoolmanagementsystem.admin.schoolSubject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,6 @@ import pl.schoolmanagementsystem.admin.schoolSubject.service.AdminSubjectService
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,8 +25,8 @@ public class AdminSubjectController {
     private final AdminSubjectService adminSubjectService;
 
     @GetMapping
-    public List<SchoolSubjectDto> getSchoolSubjects() {
-        return adminSubjectService.getAllSubjects();
+    public Page<SchoolSubjectDto> getSchoolSubjects(Pageable pageable) {
+        return adminSubjectService.getAllSubjects(pageable);
     }
 
     @PostMapping

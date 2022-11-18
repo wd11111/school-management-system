@@ -1,6 +1,8 @@
 package pl.schoolmanagementsystem.admin.teacher.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +21,6 @@ import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.schoolmanagementsystem.admin.teacher.mapper.TeacherDtoMapper.mapToTeacherOutputDto;
 
@@ -32,15 +32,14 @@ public class AdminTeacherController {
     private final AdminTeacherService adminTeacherService;
 
     @GetMapping
-    public List<TeacherOutputDto> getAllTeachers() {
-        return adminTeacherService.getAllTeachers().stream()
-                .map(TeacherDtoMapper::mapToTeacherOutputDto)
-                .collect(Collectors.toList());
+    public Page<TeacherOutputDto> getAllTeachers(Pageable pageable) {
+        return adminTeacherService.getAllTeachers(pageable)
+                .map(TeacherDtoMapper::mapToTeacherOutputDto);
     }
 
     @GetMapping("/{id}/taught-classes")
-    public List<SubjectAndClassDto> getTaughtClasses(@PathVariable int id) {
-        return adminTeacherService.getTaughtClassesByTeacher(id);
+    public Page<SubjectAndClassDto> getTaughtClasses(@PathVariable int id, Pageable pageable) {
+        return adminTeacherService.getTaughtClassesByTeacher(id, pageable);
     }
 
     @PostMapping

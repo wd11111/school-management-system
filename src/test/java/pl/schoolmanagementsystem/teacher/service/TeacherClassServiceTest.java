@@ -5,6 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.admin.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
@@ -53,10 +57,11 @@ class TeacherClassServiceTest implements Samples {
 
     @Test
     void should_return_taught_classes_by_teacher() {
-        List<SubjectAndClassDto> expectedList = listOfTaughtClasses();
-        when(teacherRepository.findTaughtClassesByTeacher(anyString())).thenReturn(expectedList);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<SubjectAndClassDto> expectedList = new PageImpl<>(listOfTaughtClasses());
+        when(teacherRepository.findTaughtClassesByTeacher(anyString(), any())).thenReturn(expectedList);
 
-        List<SubjectAndClassDto> result = teacherClassService.getTaughtClassesByTeacher(NAME2);
+        Page<SubjectAndClassDto> result = teacherClassService.getTaughtClassesByTeacher(NAME2, pageable);
 
         assertThat(result).isEqualTo(expectedList);
     }

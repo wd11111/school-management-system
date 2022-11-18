@@ -1,6 +1,9 @@
 package pl.schoolmanagementsystem.admin.schoolSubject.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -8,8 +11,6 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-
-import java.util.List;
 
 import static pl.schoolmanagementsystem.admin.schoolSubject.mapper.SchoolSubjectMapper.createSubject;
 
@@ -26,8 +27,9 @@ public class AdminSubjectService {
         return schoolSubjectRepository.save(createSubject(schoolSubjectDto));
     }
 
-    public List<SchoolSubjectDto> getAllSubjects() {
-        return schoolSubjectRepository.findAllSchoolSubjects();
+    public Page<SchoolSubjectDto> getAllSubjects(Pageable pageable) {
+        return schoolSubjectRepository.findAllSchoolSubjects(PageRequest.of(
+                pageable.getPageNumber(), pageable.getPageSize()));
     }
 
     @Transactional

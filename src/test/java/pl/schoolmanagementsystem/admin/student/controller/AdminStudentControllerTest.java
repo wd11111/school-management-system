@@ -49,7 +49,7 @@ class AdminStudentControllerTest implements ControllerSamples {
     private ObjectMapper objectMapper;
 
     @Test
-    void should_return_status_ok_when_creating_student() throws Exception {
+    void should_return_status_created_when_creating_student() throws Exception {
         StudentInputDto studentInputDto = studentInputDto();
         String body = objectMapper.writeValueAsString(studentInputDto);
         Student student = student();
@@ -114,7 +114,7 @@ class MockMvcConfig3 {
     }
 
     @Bean
-    AdminStudentController adminStudentController(AdminStudentService adminSubjectService) {
-        return new AdminStudentController(adminSubjectService);
+    AdminStudentController adminStudentController(AdminStudentService adminStudentService) {
+        return new AdminStudentController(adminStudentService);
     }
 }

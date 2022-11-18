@@ -54,10 +54,9 @@ public class AdminClassController {
     }
 
     @PatchMapping("/{className}/teachers")
-    public ResponseEntity<TeacherInClassOutputDto> addTeacherToSchoolClass(
+    public TeacherInClassOutputDto addTeacherToSchoolClass(
             @PathVariable String className, @RequestBody @Valid TeacherInClassInputDto teacherInClassInputDto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapToTeacherInClassOutputDto(adminClassService.addTeacherToSchoolClass(teacherInClassInputDto, className)));
+        return mapToTeacherInClassOutputDto(adminClassService.addTeacherToSchoolClass(teacherInClassInputDto, className));
     }
 
     @DeleteMapping("/{className}")

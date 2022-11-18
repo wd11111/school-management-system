@@ -1,13 +1,18 @@
 package pl.schoolmanagementsystem;
 
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
+import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 
-public interface ControllerSamples {
+import java.util.Set;
+
+public interface ControllerSamples extends Samples{
 
     String CLASS_NAME = "1a";
-    int STUDENT_ID = 1;
+    int ID = 1;
     String NAME = "Adam";
     String SURNAME = "Nowak";
     String SUBJECT = "Biology";
@@ -17,10 +22,20 @@ public interface ControllerSamples {
     }
 
     default StudentOutputDto2 studentOutputDto2() {
-        return new StudentOutputDto2(STUDENT_ID, NAME, SURNAME);
+        return new StudentOutputDto2(ID, NAME, SURNAME);
     }
 
     default SubjectAndTeacherOutputDto subjectAndTeacherOutput() {
         return new SubjectAndTeacherOutputDto(SUBJECT, NAME, SURNAME);
+    }
+
+    default TeacherInClassInputDto teacherInClassInput() {
+        return new TeacherInClassInputDto(ID, SUBJECT);
+    }
+    default TeacherInClassOutputDto teacherInClassOutput() {
+        return new TeacherInClassOutputDto(ID, SUBJECT, Set.of(CLASS_NAME));
+    }
+    default TeacherInClass teacherInClass() {
+        return new TeacherInClass(1, createTeacherNoSubjectsTaught(), SUBJECT, Set.of(createSchoolClass()));
     }
 }

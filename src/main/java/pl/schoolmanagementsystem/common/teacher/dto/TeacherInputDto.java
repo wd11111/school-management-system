@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Getter
@@ -15,9 +17,20 @@ import java.util.Set;
 @Setter
 public class TeacherInputDto {
 
+    @NotNull(message = "{not.null.message}")
+    @NotBlank(message = "{not.blank.message}")
     private String email;
+
+    @NotNull(message = "{not.null.message}")
+    @NotBlank(message = "{not.blank.message}")
     private String name;
+
+    @NotNull(message = "{not.null.message}")
+    @NotBlank(message = "{not.blank.message}")
     private String surname;
+
     private boolean isAdmin;
+
+    @NotNull(message = "{not.null.message}")
     private Set<String> taughtSubjects;
 }

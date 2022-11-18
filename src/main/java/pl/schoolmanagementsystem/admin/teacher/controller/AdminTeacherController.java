@@ -18,6 +18,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,13 @@ public class AdminTeacherController {
     }
 
     @PostMapping
-    public ResponseEntity<TeacherOutputDto> createTeacher(@RequestBody TeacherInputDto teacherInputDto) {
+    public ResponseEntity<TeacherOutputDto> createTeacher(@RequestBody @Valid TeacherInputDto teacherInputDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapToTeacherOutputDto(adminTeacherService.createTeacher(teacherInputDto)));
     }
 
     @PatchMapping("/{id}/subjects")
-    public TeacherOutputDto addSubjectToTeacher(@PathVariable int id, @RequestBody SchoolSubjectDto schoolSubjectDto) {
+    public TeacherOutputDto addSubjectToTeacher(@PathVariable int id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
         return mapToTeacherOutputDto(adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto));
     }
 

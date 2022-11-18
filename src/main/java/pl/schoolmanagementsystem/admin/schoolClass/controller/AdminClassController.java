@@ -18,6 +18,7 @@ import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static pl.schoolmanagementsystem.admin.schoolClass.mapper.TeacherInClassMapper.mapToTeacherInClassOutputDto;
@@ -45,14 +46,14 @@ public class AdminClassController {
     }
 
     @PostMapping
-    public ResponseEntity<SchoolClassDto> createSchoolClass(@RequestBody SchoolClassDto schoolClassDto) {
+    public ResponseEntity<SchoolClassDto> createSchoolClass(@RequestBody @Valid SchoolClassDto schoolClassDto) {
         adminClassService.createSchoolClass(schoolClassDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(schoolClassDto);
     }
 
     @PatchMapping("/{className}/teachers")
     public ResponseEntity<TeacherInClassOutputDto> addTeacherToSchoolClass(
-            @PathVariable String className, @RequestBody TeacherInClassInputDto teacherInClassInputDto) {
+            @PathVariable String className, @RequestBody @Valid TeacherInClassInputDto teacherInClassInputDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapToTeacherInClassOutputDto(adminClassService.addTeacherToSchoolClass(teacherInClassInputDto, className)));
     }

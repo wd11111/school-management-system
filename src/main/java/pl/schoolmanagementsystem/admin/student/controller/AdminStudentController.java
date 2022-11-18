@@ -13,6 +13,8 @@ import pl.schoolmanagementsystem.admin.student.service.AdminStudentService;
 import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentResponse;
 
+import javax.validation.Valid;
+
 import static pl.schoolmanagementsystem.admin.student.mapper.StudentResponseMapper.mapToStudentResponse;
 
 @RestController
@@ -23,7 +25,7 @@ public class AdminStudentController {
     private final AdminStudentService adminStudentService;
 
     @PostMapping
-    public ResponseEntity<StudentResponse> createStudent(@RequestBody StudentInputDto studentInputDto) {
+    public ResponseEntity<StudentResponse> createStudent(@RequestBody @Valid StudentInputDto studentInputDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapToStudentResponse(adminStudentService.createStudent(studentInputDto)));
     }

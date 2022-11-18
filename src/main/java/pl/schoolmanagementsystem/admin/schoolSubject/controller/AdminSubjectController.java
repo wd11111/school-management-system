@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.admin.schoolSubject.service.AdminSubjectService;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class AdminSubjectController {
     }
 
     @PostMapping
-    public ResponseEntity<SchoolSubjectDto> createSchoolSubject(@RequestBody SchoolSubjectDto schoolSubjectDto) {
+    public ResponseEntity<SchoolSubjectDto> createSchoolSubject(@RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
         adminSubjectService.createSchoolSubject(schoolSubjectDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(schoolSubjectDto);
     }

@@ -69,6 +69,6 @@ public class RestExceptionHandler {
             CouldNotConfirmUserException.class,
             PasswordsDoNotMatchException.class})
     public ResponseEntity<ErrorResponse> handleSecurityConfirmationException(RuntimeException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
     }
 }

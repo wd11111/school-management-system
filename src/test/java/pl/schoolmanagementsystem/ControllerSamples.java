@@ -5,9 +5,12 @@ import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.common.student.Student;
+import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public interface ControllerSamples extends Samples{
@@ -42,5 +45,13 @@ public interface ControllerSamples extends Samples{
 
     default SchoolSubjectDto schoolSubjectDto() {
         return new SchoolSubjectDto(CLASS_NAME);
+    }
+
+    default StudentInputDto studentInputDto() {
+        return new StudentInputDto(NAME, SURNAME, CLASS_NAME, NAME);
+    }
+
+    default Student student() {
+        return new Student(ID, NAME, SURNAME,getAppUser(), new ArrayList<>(), CLASS_NAME);
     }
 }

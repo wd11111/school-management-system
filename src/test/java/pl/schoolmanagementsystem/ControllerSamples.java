@@ -1,6 +1,8 @@
 package pl.schoolmanagementsystem;
 
 import pl.schoolmanagementsystem.common.mark.Mark;
+import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
@@ -15,7 +17,9 @@ import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ControllerSamples extends Samples {
@@ -28,6 +32,7 @@ public interface ControllerSamples extends Samples {
     boolean IS_ADMIN = false;
     int OUT_OF_RANGE_MARK = 8;
     int MARK = 2;
+    double AVERAGE_MARK = 3.0;
 
     default SchoolClassDto schoolClassDto() {
         return new SchoolClassDto(CLASS_NAME);
@@ -79,6 +84,25 @@ public interface ControllerSamples extends Samples {
 
     default Mark getMark1() {
         return Mark.builder().mark(1).build();
+    }
+
+    default Map<String, List<MarkWithTwoFields>> getGroupedMarksBySubject() {
+        return new HashMap<>(Map.of(
+                SUBJECT_BIOLOGY, List.of(markWithTwoFields1(), markWithTwoFields1()),
+                SUBJECT_HISTORY, List.of(markWithTwoFields2(), markWithTwoFields2())
+        ));
+    }
+
+    default MarkWithTwoFields markWithTwoFields1() {
+        return new MarkWithTwoFields(MARK, SUBJECT_BIOLOGY);
+    }
+
+    default MarkWithTwoFields markWithTwoFields2() {
+        return new MarkWithTwoFields(MARK, SUBJECT_HISTORY);
+    }
+
+    default MarkAvgDto markAvgDto() {
+        return new MarkAvgDto(SUBJECT_BIOLOGY, AVERAGE_MARK);
     }
 
 }

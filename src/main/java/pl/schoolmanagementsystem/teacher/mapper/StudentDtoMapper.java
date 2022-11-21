@@ -7,7 +7,10 @@ import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
 public class StudentDtoMapper {
 
     public static StudentOutputDto3 mapToStudentOutputDto3(Student student) {
-        return new StudentOutputDto3(student.getId(), student.getName(),
-                student.getSurname(), MarkMapper.mapListOfMarksToIntegers(student.getMarks()));
+        return new StudentOutputDto3(
+                student.getId(),
+                student.getName(),
+                student.getSurname(),
+                MarkMapper.mapListOfMarksToIntegers(student.getMarks()));
     }
 }

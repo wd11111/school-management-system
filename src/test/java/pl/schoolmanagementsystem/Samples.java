@@ -7,6 +7,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutpu
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public interface Samples {
     int ID_1 = 1;
     int ID_2 = 2;
 
-    default SubjectAndTeacherOutputDto createSubjectAndTeacherOutput() {
-        return new SubjectAndTeacherOutputDto(SUBJECT_BIOLOGY, NAME2, SURNAME);
+    default TeacherOutputDto createTeacherOutputDto() {
+        return new TeacherOutputDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
     default SubjectAndTeacherOutputDto createSubjectAndTeacherOutput2() {
@@ -46,7 +47,7 @@ public interface Samples {
 
     default Teacher createTeacherNoSubjectsTaught() {
         return Teacher.builder()
-                .id(1)
+                .id(ID_1)
                 .name(NAME2)
                 .surname(SURNAME)
                 .taughtSubjects(new HashSet<>())
@@ -56,7 +57,7 @@ public interface Samples {
 
     default Teacher createTeacherOfBiology() {
         return Teacher.builder()
-                .id(2)
+                .id(ID_2)
                 .name(NAME3)
                 .surname(SURNAME2)
                 .taughtSubjects(new HashSet<>(Set.of(createSchoolSubject())))

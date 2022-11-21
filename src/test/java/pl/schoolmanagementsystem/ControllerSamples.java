@@ -1,5 +1,6 @@
 package pl.schoolmanagementsystem;
 
+import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
@@ -8,12 +9,13 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutpu
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
+import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public interface ControllerSamples extends Samples {
@@ -24,6 +26,8 @@ public interface ControllerSamples extends Samples {
     String SURNAME = "Nowak";
     String SUBJECT = "Biology";
     boolean IS_ADMIN = false;
+    int OUT_OF_RANGE_MARK = 8;
+    int MARK = 2;
 
     default SchoolClassDto schoolClassDto() {
         return new SchoolClassDto(CLASS_NAME);
@@ -58,7 +62,7 @@ public interface ControllerSamples extends Samples {
     }
 
     default Student student() {
-        return new Student(ID, NAME, SURNAME, getAppUser(), new ArrayList<>(), CLASS_NAME);
+        return new Student(ID, NAME, SURNAME, getAppUser(), List.of(getMark1(), getMark1(), getMark1()), CLASS_NAME);
     }
 
     default TeacherOutputDto teacherOutputDto() {
@@ -68,4 +72,13 @@ public interface ControllerSamples extends Samples {
     default TeacherInputDto teacherInputDto() {
         return new TeacherInputDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
     }
+
+    default StudentOutputDto3 studentOutputDto3() {
+        return new StudentOutputDto3(ID, NAME, SURNAME, List.of(1, 1, 1));
+    }
+
+    default Mark getMark1() {
+        return Mark.builder().mark(1).build();
+    }
+
 }

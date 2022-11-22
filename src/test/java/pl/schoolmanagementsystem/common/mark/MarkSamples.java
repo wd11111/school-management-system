@@ -17,7 +17,7 @@ public interface MarkSamples {
 
     default Mark createMark2() {
         return Mark.builder()
-                .id(1)
+                .id(2)
                 .mark(2)
                 .studentId(3)
                 .build();

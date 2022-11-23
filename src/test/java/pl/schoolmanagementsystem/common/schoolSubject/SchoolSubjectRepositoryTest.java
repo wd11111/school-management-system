@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.DataJpaTestBase;
-import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
 
@@ -15,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-class SchoolSubjectRepositoryTest extends DataJpaTestBase implements Samples {
+class SchoolSubjectRepositoryTest extends DataJpaTestBase {
 
     @Autowired
     private SchoolSubjectRepository schoolSubjectRepository;

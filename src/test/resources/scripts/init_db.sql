@@ -1,5 +1,5 @@
 INSERT INTO role
-VALUES ('ROLE'),
+VALUES ('ROLE_TEACHER'),
        ('ROLE_STUDENT');
 
 INSERT INTO app_user
@@ -10,9 +10,9 @@ VALUES ('email', 'password', 'token'),
 
 INSERT INTO app_user_roles
 VALUES ('email', 'ROLE_STUDENT'),
-       ('email2', 'ROLE'),
-       ('email3', 'ROLE'),
-       ('email4', 'ROLE');
+       ('email2', 'ROLE_TEACHER'),
+       ('email3', 'ROLE_STUDENT'),
+       ('email4', 'ROLE_TEACHER');
 
 INSERT INTO school_class
 VALUES ('1a'),

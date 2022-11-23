@@ -25,6 +25,7 @@ import java.util.Set;
 public interface ControllerSamples extends Samples {
 
     String CLASS_NAME = "1a";
+    String CLASS_NAME2 = "1b";
     int ID = 1;
     String NAME = "Adam";
     String SURNAME = "Nowak";
@@ -35,6 +36,10 @@ public interface ControllerSamples extends Samples {
     double AVERAGE_MARK = 3.0;
 
     default SchoolClassDto schoolClassDto() {
+        return new SchoolClassDto(CLASS_NAME);
+    }
+
+    default SchoolClassDto schoolClassDto2() {
         return new SchoolClassDto(CLASS_NAME);
     }
 

@@ -8,7 +8,8 @@ INSERT INTO app_user_roles
 VALUES ('email', 'ROLE');
 
 INSERT INTO school_class
-VALUES ('1a');
+VALUES ('1a'),
+       ('1b');
 
 INSERT INTO student
 VALUES (3, 'name', '1a', 'surname', 'email');

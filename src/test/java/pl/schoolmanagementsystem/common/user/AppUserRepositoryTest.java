@@ -1,5 +1,7 @@
-package pl.schoolmanagementsystem;
+package pl.schoolmanagementsystem.common.user;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -10,12 +12,14 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-public class DataJpaTestBase {
+class AppUserRepositoryTest {
 
     public static final String POSTGRES = "postgres";
 
@@ -32,4 +36,16 @@ public class DataJpaTestBase {
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
     }
+
+    @Autowired
+    private AppUserRepository appUserRepository;
+
+    @Test
+    void should_find_user_by_email() {
+        AppUser appUser = appUserRepository.findByUserEmail("email").get();
+
+        assertThat(appUser.getRoles()).hasSize(1);
+        assertThat(appUser.getRoles().get(0).getRole()).isEqualTo("ROLE_STUDENT");
+    }
+
 }

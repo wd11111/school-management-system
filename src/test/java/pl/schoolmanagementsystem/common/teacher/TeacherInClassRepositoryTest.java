@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.student;
+package pl.schoolmanagementsystem.common.teacher;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-class StudentRepositoryTest {
+class TeacherInClassRepositoryTest {
 
     public static final String POSTGRES = "postgres";
 
@@ -42,26 +40,18 @@ class StudentRepositoryTest {
     }
 
     @Autowired
-    private StudentRepository studentRepository;
+    private TeacherInClassRepository teacherInClassRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     @Test
     void should_return_all_students_in_school_class() {
-        List<StudentOutputDto2> result = studentRepository.findAllInClass("1a");
+        Teacher teacher = teacherRepository.findById(1).get();
+        TeacherInClass result = teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, "biology").get();
 
-        assertThat(result).extracting("studentId", "name", "surname")
-                .containsAll(List.of(tuple(1, "studentName1", "studentSurname1"),
-                        tuple(2, "studentName2", "studentSurname2")));
-    }
-
-    @Test
-    void should_return_all_students_in_school_class_with_marks_of_subject() {
-        List<Student> result = studentRepository
-                .findAllInClassWithMarksOfTheSubject("1a", "history");
-
-        assertThat(result).extracting("id", "name", "surname")
-                .containsAll(List.of(tuple(1, "studentName1", "studentSurname1"),
-                        tuple(2, "studentName2", "studentSurname2")));
-        assertThat(result.get(0).getMarks()).hasSize(1);
-        assertThat(result.get(1).getMarks()).hasSize(3);
+        assertThat(result).extracting("id", "taughtSubject")
+                .containsAll(List.of(1, "biology"));
+        assertThat(result.getTaughtClasses()).hasSize(1);
     }
 }

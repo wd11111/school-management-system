@@ -1,9 +1,12 @@
-package pl.schoolmanagementsystem.common.student;
+package pl.schoolmanagementsystem.common.teacher;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,7 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 
 import java.util.List;
 
@@ -23,7 +26,7 @@ import static org.assertj.core.api.Assertions.tuple;
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-class StudentRepositoryTest {
+class TeacherRepositoryTest {
 
     public static final String POSTGRES = "postgres";
 
@@ -42,26 +45,40 @@ class StudentRepositoryTest {
     }
 
     @Autowired
-    private StudentRepository studentRepository;
+    private TeacherRepository teacherRepository;
 
     @Test
-    void should_return_all_students_in_school_class() {
-        List<StudentOutputDto2> result = studentRepository.findAllInClass("1a");
+    void should_find_teacher_by_id() {
+        Teacher result = teacherRepository.findById(1).get();
 
-        assertThat(result).extracting("studentId", "name", "surname")
-                .containsAll(List.of(tuple(1, "studentName1", "studentSurname1"),
-                        tuple(2, "studentName2", "studentSurname2")));
+        assertThat(result).extracting("id", "name", "surname")
+                .containsAll(List.of(1, "teacherName1", "teacherSurname1"));
     }
 
     @Test
-    void should_return_all_students_in_school_class_with_marks_of_subject() {
-        List<Student> result = studentRepository
-                .findAllInClassWithMarksOfTheSubject("1a", "history");
+    void should_find_email_by_teacher_id() {
+        String emailById = teacherRepository.findEmailById(1);
 
-        assertThat(result).extracting("id", "name", "surname")
-                .containsAll(List.of(tuple(1, "studentName1", "studentSurname1"),
-                        tuple(2, "studentName2", "studentSurname2")));
-        assertThat(result.get(0).getMarks()).hasSize(1);
-        assertThat(result.get(1).getMarks()).hasSize(3);
+        assertThat(emailById).isEqualTo("email2");
+    }
+
+    @Test
+    void should_return_all_teachers() {
+        List<Teacher> result = teacherRepository.findAll();
+
+        assertThat(result).extracting("surname")
+                .containsExactly("teacherSurname1",
+                        "teacherSurname2");
+    }
+
+    @Test
+    void should_return_taught_classes_by_teacher() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        Page<SubjectAndClassDto> result = teacherRepository.findTaughtClassesByTeacher("email2", pageable);
+
+        assertThat(result).extracting("schoolSubject", "schoolClass")
+                .containsAll(List.of(tuple("biology", "1a"),
+                        tuple("history", "1a")));
     }
 }

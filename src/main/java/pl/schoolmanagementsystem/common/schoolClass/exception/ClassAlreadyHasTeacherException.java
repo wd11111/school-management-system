@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.schoolClass.exception;
+package pl.schoolmanagementsystem.common.schoolClass.exception;
 
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;

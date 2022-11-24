@@ -37,8 +37,10 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(Algorithm.HMAC256(secret));
         String jsonToken = objectMapper.writeValueAsString(new Token("Bearer " + token));
+        response.setContentType("application/json");
         response.getWriter().write(jsonToken);
     }
+
     @Getter
     @AllArgsConstructor
     public static class Token {

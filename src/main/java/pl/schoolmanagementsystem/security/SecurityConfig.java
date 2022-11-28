@@ -2,7 +2,6 @@ package pl.schoolmanagementsystem.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,8 +25,6 @@ import pl.schoolmanagementsystem.security.service.UserService;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
     private final UserService userService;
     private final SuccessHandler successHandler;
     private final ObjectMapper objectMapper;
@@ -59,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .addFilter(filter())
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService, secretKey));
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
     }
 
     public AuthenticationFilter filter() throws Exception {

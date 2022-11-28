@@ -7,7 +7,7 @@ import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassOutputDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
@@ -47,8 +47,8 @@ public interface ControllerSamples extends Samples {
         return new StudentOutputDto2(ID, NAME, SURNAME);
     }
 
-    default SubjectAndTeacherOutputDto subjectAndTeacherOutput() {
-        return new SubjectAndTeacherOutputDto(SUBJECT, NAME, SURNAME);
+    default SubjectAndTeacherResponseDto subjectAndTeacherOutput() {
+        return new SubjectAndTeacherResponseDto(SUBJECT, NAME, SURNAME);
     }
 
     default TeacherInClassInputDto teacherInClassInput() {

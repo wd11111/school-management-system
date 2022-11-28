@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SubjectAndTeacherOutputDto {
+public class SubjectAndTeacherResponseDto {
 
     private String subject;
     private String teacherName;

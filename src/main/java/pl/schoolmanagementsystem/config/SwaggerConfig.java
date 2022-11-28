@@ -1,6 +1,5 @@
 package pl.schoolmanagementsystem.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +20,6 @@ import static java.util.Collections.singletonList;
 
 @Configuration
 @EnableSwagger2
-@RequiredArgsConstructor
 public class SwaggerConfig {
 
     @Bean

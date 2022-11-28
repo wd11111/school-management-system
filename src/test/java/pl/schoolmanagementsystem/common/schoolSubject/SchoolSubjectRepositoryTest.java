@@ -15,7 +15,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 
 import java.util.List;
 
@@ -59,7 +59,7 @@ class SchoolSubjectRepositoryTest {
 
     @Test
     void should_return_all_taught_subjects_in_school_class() {
-        List<SubjectAndTeacherOutputDto> result = schoolSubjectRepository.findAllSubjectsInSchoolClass("1a");
+        List<SubjectAndTeacherResponseDto> result = schoolSubjectRepository.findAllSubjectsInSchoolClass("1a");
 
         assertThat(result).extracting("subject", "teacherName", "teacherSurname")
                 .containsAll(List.of(tuple("biology", "teacherName1", "teacherSurname1"),

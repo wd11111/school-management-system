@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +37,9 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String token = JWT.create()
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                .withClaim("roles", principal.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .sign(Algorithm.HMAC256(secret));
         String jsonToken = objectMapper.writeValueAsString(new Token("Bearer " + token));
         response.setContentType("application/json");

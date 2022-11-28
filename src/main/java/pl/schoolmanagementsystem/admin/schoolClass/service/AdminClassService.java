@@ -16,7 +16,7 @@ import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyHasTea
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
@@ -53,7 +53,7 @@ public class AdminClassService {
         return schoolClassRepository.save(SchoolClassMapper.build(schoolClassDto));
     }
 
-    public List<SubjectAndTeacherOutputDto> getAllSubjectsInSchoolClass(String schoolClassName) {
+    public List<SubjectAndTeacherResponseDto> getAllSubjectsInSchoolClass(String schoolClassName) {
         if (!doesSchoolClassExist((schoolClassName))) {
             throw new NoSuchSchoolClassException(schoolClassName);
         }

@@ -21,7 +21,7 @@ import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
@@ -89,7 +89,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_taught_subjects_in_class() throws Exception {
-        List<SubjectAndTeacherOutputDto> listOfSubjects = List.of(subjectAndTeacherOutput(), subjectAndTeacherOutput());
+        List<SubjectAndTeacherResponseDto> listOfSubjects = List.of(subjectAndTeacherOutput(), subjectAndTeacherOutput());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfSubjects);
         when(adminClassService.getAllSubjectsInSchoolClass("1a")).thenReturn(listOfSubjects);
 

@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherOutputDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
@@ -34,8 +34,8 @@ public interface Samples {
         return new TeacherOutputDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
-    default SubjectAndTeacherOutputDto createSubjectAndTeacherOutput2() {
-        return new SubjectAndTeacherOutputDto(SUBJECT_HISTORY, NAME2, SURNAME);
+    default SubjectAndTeacherResponseDto createSubjectAndTeacherOutput2() {
+        return new SubjectAndTeacherResponseDto(SUBJECT_HISTORY, NAME2, SURNAME);
     }
 
     default SchoolClass createSchoolClass() {

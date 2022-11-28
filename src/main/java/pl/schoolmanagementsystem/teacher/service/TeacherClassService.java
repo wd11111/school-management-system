@@ -54,7 +54,7 @@ public class TeacherClassService {
                 pageable.getPageNumber(), pageable.getPageSize(), Sort.by("schoolClass").descending()));
     }
 
-    public List<Student> getAllStudentsInClassWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
+    public List<Student> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
         if (!classRepository.existsById(schoolClassName)) {
             throw new NoSuchSchoolClassException(schoolClassName);
         }

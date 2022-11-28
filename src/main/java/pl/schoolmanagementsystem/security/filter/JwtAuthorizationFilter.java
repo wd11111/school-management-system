@@ -2,10 +2,11 @@ package pl.schoolmanagementsystem.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -14,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
@@ -44,14 +47,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(TOKEN_HEADER);
         if (token != null && token.startsWith(TOKEN_PREFIX)) {
-            String userName = JWT.require(Algorithm.HMAC256(secret))
+            DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secret))
                     .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""))
-                    .getSubject();
-            if (userName != null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-                return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
-            }
+                    .verify(token.replace(TOKEN_PREFIX, ""));
+            String username = jwt.getSubject();
+            String[] roles = jwt.getClaim("roles").asArray(String.class);
+            Collection<SimpleGrantedAuthority> authorities = Arrays.stream(roles)
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
+            return new UsernamePasswordAuthenticationToken(username, null, authorities);
         }
         return null;
     }

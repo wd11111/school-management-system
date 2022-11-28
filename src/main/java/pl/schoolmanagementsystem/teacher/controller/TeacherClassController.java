@@ -36,7 +36,7 @@ public class TeacherClassController {
 
     @GetMapping("/classes/{className}")
     public List<StudentOutputDto3> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
-        return teacherClassService.getAllStudentsInClassWithMarksOfSubject(className, subject, principal.getName())
+        return teacherClassService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName())
                 .stream()
                 .map(StudentDtoMapper::mapToStudentOutputDto3)
                 .collect(Collectors.toList());

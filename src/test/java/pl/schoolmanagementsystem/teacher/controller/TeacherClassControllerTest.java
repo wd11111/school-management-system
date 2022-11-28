@@ -86,7 +86,7 @@ class TeacherClassControllerTest implements ControllerSamples {
         List<StudentOutputDto3> listOfStudentsDto = List.of(studentOutputDto3(), studentOutputDto3());
         List<Student> listOfStudents = List.of(student(), student());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudentsDto);
-        when(teacherClassService.getAllStudentsInClassWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);
+        when(teacherClassService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);
 
         MvcResult mvcResult = mockMvc.perform(get("/teacher/classes/1a?subject=biology").principal(principal))
                 .andExpect(status()

@@ -33,10 +33,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -127,7 +126,7 @@ class AdminClassControllerTest implements ControllerSamples {
                 .andExpect(status()
                         .isBadRequest());
 
-        verify(adminClassService, never()).createSchoolClass(any());
+        then(adminClassService).shouldHaveNoInteractions();
     }
 
     @Test
@@ -156,7 +155,7 @@ class AdminClassControllerTest implements ControllerSamples {
                 .andExpect(status()
                         .isBadRequest());
 
-        verify(adminClassService, never()).addTeacherToSchoolClass(any(), anyString());
+        then(adminClassService).shouldHaveNoInteractions();
     }
 
     @Test

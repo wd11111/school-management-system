@@ -26,7 +26,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Value("${jwt.expirationTime}")
     private long expirationTime;
-    @Value("${jwt.secret:secretkey123}")
+    @Value("${jwt.secret}")
     private String secret;
 
     private final ObjectMapper objectMapper;

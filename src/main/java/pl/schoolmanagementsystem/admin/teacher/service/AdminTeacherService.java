@@ -40,7 +40,7 @@ public class AdminTeacherService {
 
     @Transactional
     public Teacher createTeacher(TeacherInputDto teacherInputDto) {
-        checkIfEmailIsAvailable(teacherInputDto.getEmail());
+        validateIfEmailIsAvailable(teacherInputDto.getEmail());
         Set<SchoolSubject> taughtSubjects = teacherInputDto.getTaughtSubjects().stream()
                 .map(subject -> schoolSubjectRepository.findByNameIgnoreCase(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
@@ -56,12 +56,12 @@ public class AdminTeacherService {
 
     @Transactional
     public void deleteTeacher(long teacherId) {
-        checkIfTeacherExists(teacherId);
+        validateIfTeacherExists(teacherId);
         teacherRepository.deleteById(teacherId);
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
-        checkIfTeacherExists(teacherId);
+        validateIfTeacherExists(teacherId);
         String teacherEmail = teacherRepository.findEmailById(teacherId);
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
                 pageable.getPageNumber(), pageable.getPageSize()));
@@ -72,24 +72,24 @@ public class AdminTeacherService {
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
-        checkIfTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
+        validateIfTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
         teacher.addSubject(schoolSubject);
         return teacher;
     }
 
-    private void checkIfTeacherExists(long teacherId) {
+    private void validateIfTeacherExists(long teacherId) {
         if (!teacherRepository.existsById(teacherId)) {
             throw new NoSuchTeacherException(teacherId);
         }
     }
 
-    private void checkIfEmailIsAvailable(String email) {
+    private void validateIfEmailIsAvailable(String email) {
         if (userRepository.existsById(email)) {
             throw new EmailAlreadyInUseException(email);
         }
     }
 
-    private void checkIfTeacherDoesntAlreadyTeachSubject(Teacher teacher, SchoolSubject schoolSubject) {
+    private void validateIfTeacherDoesntAlreadyTeachSubject(Teacher teacher, SchoolSubject schoolSubject) {
         if (doesTeacherAlreadyTeachSubject(teacher, schoolSubject)) {
             throw new TeacherAlreadyTeachesSubjectException(teacher, schoolSubject);
         }

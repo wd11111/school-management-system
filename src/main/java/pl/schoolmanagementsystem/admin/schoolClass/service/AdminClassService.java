@@ -67,8 +67,8 @@ public class AdminClassService {
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(teacherInClassInputDto.getTaughtSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(teacherInClassInputDto.getTaughtSubject()));
-        checkIfTeacherTeachesSubject(teacher, schoolSubject);
-        checkIfClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
+        validateIfTeacherTeachesSubject(teacher, schoolSubject);
+        validateIfClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
         return teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
     }
 
@@ -88,16 +88,16 @@ public class AdminClassService {
         schoolClassRepository.deleteById(schoolClassName);
     }
 
-    private void checkIfClassDoesntAlreadyHaveTeacher(SchoolClass schoolClass, SchoolSubject schoolSubject) {
+    private void validateIfClassDoesntAlreadyHaveTeacher(SchoolClass schoolClass, SchoolSubject schoolSubject) {
         schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject.getName()))
-                .findFirst()
+                .findAny()
                 .ifPresent(teacher -> {
                     throw new ClassAlreadyHasTeacherException(teacher, schoolSubject, schoolClass);
                 });
     }
 
-    private void checkIfTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
+    private void validateIfTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
         if (!doesTeacherTeachSubject(teacher, schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }

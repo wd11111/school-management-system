@@ -45,7 +45,7 @@ public class TeacherClassService {
         String schoolClass = student.getSchoolClass();
         SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markInputDto.getSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(markInputDto.getSubject()));
-        checkIfTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
+        validateIfTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
         student.addMark(createMark(markInputDto, studentId));
     }
 
@@ -61,11 +61,11 @@ public class TeacherClassService {
         if (!subjectRepository.existsById(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
-        checkIfTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
+        validateIfTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
         return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName);
     }
 
-    private void checkIfTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {
+    private void validateIfTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {
         if (!doesTeacherTeachSubjectInClass(teacherEmail, subject, schoolClass)) {
             throw new TeacherDoesNotTeachClassException(subject, schoolClass);
         }

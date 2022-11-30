@@ -32,7 +32,7 @@ public class AdminStudentService {
 
     @Transactional
     public Student createStudent(StudentInputDto studentInputDto) {
-        checkIfEmailIsAvailable(studentInputDto.getEmail());
+        validateIfEmailIsAvailable(studentInputDto.getEmail());
         SchoolClass schoolClass = schoolClassRepository.findById(studentInputDto.getSchoolClassName())
                 .orElseThrow(() -> new NoSuchSchoolClassException(studentInputDto.getSchoolClassName()));
         Student student = studentRepository.save(studentCreator.createStudent(studentInputDto, schoolClass));
@@ -47,7 +47,7 @@ public class AdminStudentService {
         studentRepository.deleteById(studentId);
     }
 
-    private void checkIfEmailIsAvailable(String email) {
+    private void validateIfEmailIsAvailable(String email) {
         if (userRepository.existsById(email)) {
             throw new EmailAlreadyInUseException(email);
         }

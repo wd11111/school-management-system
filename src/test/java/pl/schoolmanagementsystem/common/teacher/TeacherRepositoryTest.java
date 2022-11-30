@@ -49,10 +49,10 @@ class TeacherRepositoryTest {
 
     @Test
     void should_find_teacher_by_id() {
-        Teacher result = teacherRepository.findById(1).get();
+        Teacher result = teacherRepository.findById(1L).get();
 
         assertThat(result).extracting("id", "name", "surname")
-                .containsAll(List.of(1, "teacherName1", "teacherSurname1"));
+                .containsAll(List.of(1L, "teacherName1", "teacherSurname1"));
     }
 
     @Test

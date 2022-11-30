@@ -11,8 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentOutputDto3 {
 
-    private int studentId;
+    private long studentId;
     private String name;
     private String surname;
-    private List<Integer> marks;
+    private List<Byte> marks;
 }

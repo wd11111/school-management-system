@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MarkWithTwoFields {
 
-    private int mark;
+    private byte mark;
     private String subject;
 
 }

@@ -27,8 +27,8 @@ public interface Samples {
     String ENGLISH = "english";
     String CLASS_1A = "1a";
     String CLASS_3B = "3b";
-    int ID_1 = 1;
-    int ID_2 = 2;
+    long ID_1 = 1;
+    long ID_2 = 2;
 
     default TeacherOutputDto createTeacherOutputDto() {
         return new TeacherOutputDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));

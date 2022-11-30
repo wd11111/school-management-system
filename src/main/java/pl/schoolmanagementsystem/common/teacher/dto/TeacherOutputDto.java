@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class TeacherOutputDto {
 
-    private int id;
+    private long id;
     private String name;
     private String surname;
     private Set<String> taughtSubjects;

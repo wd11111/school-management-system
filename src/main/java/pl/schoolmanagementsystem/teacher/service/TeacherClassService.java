@@ -40,7 +40,7 @@ public class TeacherClassService {
     private final SchoolClassRepository classRepository;
 
     @Transactional
-    public void addMark(String teacherEmail, MarkInputDto markInputDto, int studentId) {
+    public void addMark(String teacherEmail, MarkInputDto markInputDto, long studentId) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();
         SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markInputDto.getSubject())

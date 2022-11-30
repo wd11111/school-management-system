@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.common.student.exception;
 
 public class NoSuchStudentException extends RuntimeException{
 
-    public NoSuchStudentException(int studentId) {
+    public NoSuchStudentException(long studentId) {
         super(String.format("Student with such an id does not exist: %d", studentId));
     }
 

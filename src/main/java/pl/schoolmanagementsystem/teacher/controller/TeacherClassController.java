@@ -43,7 +43,7 @@ public class TeacherClassController {
     }
 
     @PatchMapping("/students/{id}")
-    public ResponseEntity<Void> addMark(@PathVariable int id, @RequestBody @Valid MarkInputDto markInputDto, Principal principal) {
+    public ResponseEntity<Void> addMark(@PathVariable long id, @RequestBody @Valid MarkInputDto markInputDto, Principal principal) {
         teacherClassService.addMark(principal.getName(), markInputDto, id);
         return ResponseEntity.noContent().build();
     }

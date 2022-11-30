@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MarkOutputDto {
 
-    private int markId;
-    private int mark;
-    private int studentId;
+    private long markId;
+    private byte mark;
+    private long studentId;
     private String subjectName;
 }

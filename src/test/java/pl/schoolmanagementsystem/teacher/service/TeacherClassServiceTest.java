@@ -30,7 +30,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -70,8 +70,8 @@ class TeacherClassServiceTest implements Samples {
     void should_correctly_add_mark_to_student() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
-        when(studentRepository.findById(anyInt())).thenReturn(Optional.ofNullable(student));
+        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
@@ -84,8 +84,8 @@ class TeacherClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_student_not_found() {
-        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
-        when(studentRepository.findById(anyInt())).thenReturn(Optional.empty());
+        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markInputDto, ID_1))
                 .isInstanceOf(NoSuchStudentException.class)
@@ -95,8 +95,8 @@ class TeacherClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_subject_is_incorrect() {
         Student student = createStudent();
-        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
-        when(studentRepository.findById(anyInt())).thenReturn(Optional.ofNullable(student));
+        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markInputDto, ID_1))
@@ -109,8 +109,8 @@ class TeacherClassServiceTest implements Samples {
     void should_throw_exception_when_teacher_does_not_teach_subject_in_class() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        MarkInputDto markInputDto = new MarkInputDto(2, SUBJECT_BIOLOGY);
-        when(studentRepository.findById(anyInt())).thenReturn(Optional.of(student));
+        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))

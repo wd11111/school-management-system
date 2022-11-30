@@ -25,21 +25,16 @@ import java.util.Set;
 public interface ControllerSamples extends Samples {
 
     String CLASS_NAME = "1a";
-    String CLASS_NAME2 = "1b";
-    int ID = 1;
+    long ID = 1;
     String NAME = "Adam";
     String SURNAME = "Nowak";
     String SUBJECT = "Biology";
     boolean IS_ADMIN = false;
-    int OUT_OF_RANGE_MARK = 8;
-    int MARK = 2;
+    byte OUT_OF_RANGE_MARK = 8;
+    byte MARK = 2;
     double AVERAGE_MARK = 3.0;
 
     default SchoolClassDto schoolClassDto() {
-        return new SchoolClassDto(CLASS_NAME);
-    }
-
-    default SchoolClassDto schoolClassDto2() {
         return new SchoolClassDto(CLASS_NAME);
     }
 
@@ -84,11 +79,11 @@ public interface ControllerSamples extends Samples {
     }
 
     default StudentOutputDto3 studentOutputDto3() {
-        return new StudentOutputDto3(ID, NAME, SURNAME, List.of(1, 1, 1));
+        return new StudentOutputDto3(ID, NAME, SURNAME, List.of((byte) 1, (byte) 1, (byte) 1));
     }
 
     default Mark getMark1() {
-        return Mark.builder().mark(1).build();
+        return Mark.builder().mark((byte) 1).build();
     }
 
     default Map<String, List<MarkWithTwoFields>> getGroupedMarksBySubject() {

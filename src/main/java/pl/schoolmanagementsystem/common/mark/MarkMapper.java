@@ -12,14 +12,14 @@ import static java.util.stream.Collectors.groupingBy;
 
 public class MarkMapper {
 
-    public static List<Integer> mapListOfMarksToIntegers(List<Mark> marks) {
+    public static List<Byte> mapListOfMarksToBytes(List<Mark> marks) {
         return marks.stream()
                 .map(Mark::getMark)
                 .collect(Collectors.toList());
     }
 
-    public static Map<String, List<Integer>> mapToListOfIntegersInMapStructure(Map<String, List<MarkWithTwoFields>> mapToTransform) {
-        Map<String, List<Integer>> resultMap = new HashMap<>();
+    public static Map<String, List<Byte>> mapToListOfBytesInMapStructure(Map<String, List<MarkWithTwoFields>> mapToTransform) {
+        Map<String, List<Byte>> resultMap = new HashMap<>();
         mapToTransform.forEach((key, value) -> resultMap.put(key, value
                 .stream()
                 .map(MarkWithTwoFields::getMark)
@@ -27,7 +27,7 @@ public class MarkMapper {
         return resultMap;
     }
 
-    public static Mark createMark(MarkInputDto markInputDto, int studentId) {
+    public static Mark createMark(MarkInputDto markInputDto, long studentId) {
         return Mark.builder()
                 .mark(markInputDto.getMark())
                 .studentId(studentId)

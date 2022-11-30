@@ -11,6 +11,6 @@ public class StudentDtoMapper {
                 student.getId(),
                 student.getName(),
                 student.getSurname(),
-                MarkMapper.mapListOfMarksToIntegers(student.getMarks()));
+                MarkMapper.mapListOfMarksToBytes(student.getMarks()));
     }
 }

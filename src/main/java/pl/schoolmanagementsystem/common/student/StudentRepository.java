@@ -8,7 +8,7 @@ import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Integer> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query("select new pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2(s.id, s.name, s.surname) " +
             "from Student s where s.schoolClass=?1 order by s.surname")
@@ -19,6 +19,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findAllInClassWithMarksOfTheSubject(String schoolClass, String subject);
 
     @Query("select s.id from Student s where s.appUser.userEmail=?1")
-    int findIdByEmail(String email);
+    long findIdByEmail(String email);
 
 }

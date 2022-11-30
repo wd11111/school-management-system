@@ -9,12 +9,12 @@ import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
 import java.util.List;
 
 @Repository
-public interface MarkRepository extends JpaRepository<Mark, Integer> {
+public interface MarkRepository extends JpaRepository<Mark, Long> {
 
     @Query("select new pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto(m.subject, avg(m.mark)) " +
             "from Student s left join Mark m on s.id = m.studentId " +
             "where m.studentId=?1 group by m.subject")
-    List<MarkAvgDto> findAllAveragesForStudent(int studentId);
+    List<MarkAvgDto> findAllAveragesForStudent(long studentId);
 
     @Query("select new pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields(m.mark, m.subject) " +
             "from Student s left join s.marks m where s.appUser.userEmail=?1")

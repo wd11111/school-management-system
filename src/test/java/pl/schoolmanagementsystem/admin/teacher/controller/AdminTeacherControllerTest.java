@@ -32,7 +32,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -76,7 +76,7 @@ class AdminTeacherControllerTest implements ControllerSamples {
     void should_return_status_ok_when_get_for_taught_classes() throws Exception {
         Page<SubjectAndClassDto> listOfTaughtClasses = new PageImpl<>(listOfTaughtClasses());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfTaughtClasses);
-        when(adminTeacherService.getTaughtClassesByTeacher(anyInt(), any())).thenReturn(listOfTaughtClasses);
+        when(adminTeacherService.getTaughtClassesByTeacher(anyLong(), any())).thenReturn(listOfTaughtClasses);
 
         MvcResult mvcResult = mockMvc.perform(get("/admin/teachers/3/taught-classes"))
                 .andExpect(status()
@@ -126,7 +126,7 @@ class AdminTeacherControllerTest implements ControllerSamples {
         TeacherOutputDto teacherOutputDto = teacherOutputDto();
         String expectedResponse = objectMapper.writeValueAsString(teacherOutputDto);
         String body = objectMapper.writeValueAsString(schoolSubjectDto);
-        when(adminTeacherService.addSubjectToTeacher(anyInt(), any())).thenReturn(teacher);
+        when(adminTeacherService.addSubjectToTeacher(anyLong(), any())).thenReturn(teacher);
 
         MvcResult mvcResult = mockMvc.perform(patch("/admin/teachers/1/subjects")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +155,7 @@ class AdminTeacherControllerTest implements ControllerSamples {
 
     @Test
     void should_return_no_content_when_deleting_teacher() throws Exception {
-        doNothing().when(adminTeacherService).deleteTeacher(anyInt());
+        doNothing().when(adminTeacherService).deleteTeacher(anyLong());
 
         mockMvc.perform(delete("/admin/teachers/5"))
                 .andExpect(status()

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class TeacherInClassInputDto {
 
     @Min(value = 1, message = "{not.null.message}")
-    private int teacherId;
+    private long teacherId;
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")

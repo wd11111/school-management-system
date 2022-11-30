@@ -55,12 +55,12 @@ public class AdminTeacherService {
     }
 
     @Transactional
-    public void deleteTeacher(int teacherId) {
+    public void deleteTeacher(long teacherId) {
         checkIfTeacherExists(teacherId);
         teacherRepository.deleteById(teacherId);
     }
 
-    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(int teacherId, Pageable pageable) {
+    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
         checkIfTeacherExists(teacherId);
         String teacherEmail = teacherRepository.findEmailById(teacherId);
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
@@ -68,7 +68,7 @@ public class AdminTeacherService {
     }
 
     @Transactional
-    public Teacher addSubjectToTeacher(int teacherId, SchoolSubjectDto schoolSubjectDto) {
+    public Teacher addSubjectToTeacher(long teacherId, SchoolSubjectDto schoolSubjectDto) {
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
@@ -77,7 +77,7 @@ public class AdminTeacherService {
         return teacher;
     }
 
-    private void checkIfTeacherExists(int teacherId) {
+    private void checkIfTeacherExists(long teacherId) {
         if (!teacherRepository.existsById(teacherId)) {
             throw new NoSuchTeacherException(teacherId);
         }

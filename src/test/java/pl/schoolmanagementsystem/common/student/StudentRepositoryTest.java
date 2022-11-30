@@ -49,8 +49,8 @@ class StudentRepositoryTest {
         List<StudentOutputDto2> result = studentRepository.findAllInClass("1a");
 
         assertThat(result).extracting("studentId", "name", "surname")
-                .containsAll(List.of(tuple(1, "studentName1", "studentSurname1"),
-                        tuple(2, "studentName2", "studentSurname2")));
+                .containsAll(List.of(tuple(1L, "studentName1", "studentSurname1"),
+                        tuple(2L, "studentName2", "studentSurname2")));
     }
 
     @Test
@@ -59,8 +59,8 @@ class StudentRepositoryTest {
                 .findAllInClassWithMarksOfTheSubject("1a", "history");
 
         assertThat(result).extracting("id", "name", "surname")
-                .containsAll(List.of(tuple(1, "studentName1", "studentSurname1"),
-                        tuple(2, "studentName2", "studentSurname2")));
+                .containsAll(List.of(tuple(1L, "studentName1", "studentSurname1"),
+                        tuple(2L, "studentName2", "studentSurname2")));
         assertThat(result.get(0).getMarks()).hasSize(1);
         assertThat(result.get(1).getMarks()).hasSize(3);
     }

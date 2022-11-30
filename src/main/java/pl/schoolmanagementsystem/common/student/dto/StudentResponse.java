@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StudentResponse {
 
-    private int studentId;
+    private long studentId;
     private String name;
     private String surname;
     private String schoolClassName;

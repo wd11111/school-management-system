@@ -38,7 +38,7 @@ public class AdminTeacherController {
     }
 
     @GetMapping("/{id}/taught-classes")
-    public Page<SubjectAndClassDto> getTaughtClasses(@PathVariable int id, Pageable pageable) {
+    public Page<SubjectAndClassDto> getTaughtClasses(@PathVariable long id, Pageable pageable) {
         return adminTeacherService.getTaughtClassesByTeacher(id, pageable);
     }
 
@@ -49,12 +49,12 @@ public class AdminTeacherController {
     }
 
     @PatchMapping("/{id}/subjects")
-    public TeacherOutputDto addSubjectToTeacher(@PathVariable int id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
+    public TeacherOutputDto addSubjectToTeacher(@PathVariable long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
         return mapToTeacherOutputDto(adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable int id) {
+    public ResponseEntity<Void> deleteTeacher(@PathVariable long id) {
         adminTeacherService.deleteTeacher(id);
         return ResponseEntity.noContent().build();
     }

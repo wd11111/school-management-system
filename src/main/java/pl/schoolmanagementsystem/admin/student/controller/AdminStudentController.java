@@ -31,7 +31,7 @@ public class AdminStudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable int id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable long id) {
         adminStudentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }

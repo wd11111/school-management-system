@@ -40,7 +40,7 @@ public class AdminStudentService {
         return student;
     }
 
-    public void deleteStudent(int studentId) {
+    public void deleteStudent(long studentId) {
         if (!studentRepository.existsById(studentId)) {
             throw new NoSuchStudentException(studentId);
         }

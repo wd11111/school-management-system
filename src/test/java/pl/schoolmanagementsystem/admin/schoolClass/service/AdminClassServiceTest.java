@@ -28,7 +28,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
@@ -97,7 +97,7 @@ class AdminClassServiceTest implements Samples {
         Teacher teacher = createTeacherOfBiology();
         SchoolClass schoolClass = createSchoolClass();
         SchoolSubject schoolSubject = createSchoolSubject();
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.ofNullable(teacher));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.ofNullable(teacher));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.ofNullable(schoolClass));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassService.addTeacherToClass(any(), any(), any())).thenReturn(expected);
@@ -110,7 +110,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_teacher_doesnt_exist() {
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherInput, CLASS_1A))
                 .isInstanceOf(NoSuchTeacherException.class)
@@ -121,7 +121,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_class_doesnt_exist_while_adding_teacher() {
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.ofNullable(new Teacher()));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.ofNullable(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherInput, CLASS_1A))
@@ -133,7 +133,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_subject_doesnt_exist_while_adding_teacher() {
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(new Teacher()));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
@@ -147,7 +147,7 @@ class AdminClassServiceTest implements Samples {
     void should_throw_exception_when_teacher_doesnt_teach_subject() {
         Teacher teacherWithOutSubjects = createTeacherNoSubjectsTaught();
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacherWithOutSubjects));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));
 
@@ -162,7 +162,7 @@ class AdminClassServiceTest implements Samples {
         Teacher teacherWithOutSubjects = createTeacherOfBiology();
         SchoolClass schoolClassWithTeacher = createSchoolClassWithTeacher();
         TeacherInClassInputDto teacherInput = new TeacherInClassInputDto(ID_1, SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacherWithOutSubjects));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(schoolClassWithTeacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));
 

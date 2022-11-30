@@ -38,7 +38,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doNothing;
@@ -102,7 +102,7 @@ class TeacherClassControllerTest implements ControllerSamples {
         Principal principal = new UserPrincipal("Teacher");
         MarkInputDto markInputDto = new MarkInputDto(MARK, SUBJECT_BIOLOGY);
         String body = objectMapper.writeValueAsString(markInputDto);
-        doNothing().when(teacherClassService).addMark(anyString(), any(), anyInt());
+        doNothing().when(teacherClassService).addMark(anyString(), any(), anyLong());
 
         mockMvc.perform(patch("/teacher/students/1").principal(principal)
                         .content(body)
@@ -110,7 +110,7 @@ class TeacherClassControllerTest implements ControllerSamples {
                 .andExpect(status()
                         .isNoContent());
 
-        verify(teacherClassService, times(1)).addMark(anyString(), any(), anyInt());
+        verify(teacherClassService, times(1)).addMark(anyString(), any(), anyLong());
     }
 
     @Test

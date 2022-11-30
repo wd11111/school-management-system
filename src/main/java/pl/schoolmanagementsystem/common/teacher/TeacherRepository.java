@@ -11,19 +11,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     @Override
     @Query("select t from Teacher t left join fetch t.teacherInClasses left join fetch t.taughtSubjects " +
             "where t.id = ?1")
-    Optional<Teacher> findById(Integer id);
+    Optional<Teacher> findById(Long id);
 
     @Override
     @Query("select distinct t from Teacher t left join fetch t.taughtSubjects order by t.surname")
     List<Teacher> findAll();
 
     @Query("select t.appUser.userEmail from Teacher t where t.id=?1")
-    String findEmailById(int id);
+    String findEmailById(long id);
 
     @Query("select new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto(" +
             "tc.taughtSubject, tics.name) " +

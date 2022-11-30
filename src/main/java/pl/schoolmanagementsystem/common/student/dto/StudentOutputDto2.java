@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StudentOutputDto2 {
 
-    private int studentId;
+    private long studentId;
     private String name;
     private String surname;
 }

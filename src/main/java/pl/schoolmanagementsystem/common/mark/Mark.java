@@ -21,11 +21,11 @@ public class Mark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
-    private int mark;
+    private byte mark;
 
-    private int studentId;
+    private long studentId;
 
     private String subject;
 }

@@ -17,7 +17,7 @@ public class MarkInputDto {
     @Max(value = 6, message = "{mark.rank.message}")
     @Min(value = 1, message = "{mark.rank.message}")
     @NotNull(message = "{not.null.message}")
-    private int mark;
+    private byte mark;
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")

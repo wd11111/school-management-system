@@ -50,7 +50,7 @@ class MarkRepositoryTest implements MarkSamples {
     void should_return_all_marks_for_student() {
         List<MarkWithTwoFields> marks = markRepository.findAllMarksForStudent("email");
 
-        assertThat(marks).extracting("mark").containsAll(List.of(1, 2, 4));
+        assertThat(marks).extracting("mark").containsAll(List.of((byte) 1, (byte) 2, (byte) 4));
     }
 
     @Test

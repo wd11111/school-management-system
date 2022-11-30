@@ -10,7 +10,7 @@ public interface MarkSamples {
     default Mark createMark() {
         return Mark.builder()
                 .id(1)
-                .mark(4)
+                .mark((byte) 4)
                 .studentId(3)
                 .build();
     }
@@ -18,16 +18,16 @@ public interface MarkSamples {
     default Mark createMark2() {
         return Mark.builder()
                 .id(2)
-                .mark(2)
+                .mark((byte) 2)
                 .studentId(3)
                 .build();
     }
 
     default MarkWithTwoFields createMarkWithTwoFields() {
-        return new MarkWithTwoFields(4, SUBJECT);
+        return new MarkWithTwoFields((byte) 4, SUBJECT);
     }
 
     default MarkWithTwoFields createMarkWithTwoFields2() {
-        return new MarkWithTwoFields(2, SUBJECT_2);
+        return new MarkWithTwoFields((byte) 2, SUBJECT_2);
     }
 }

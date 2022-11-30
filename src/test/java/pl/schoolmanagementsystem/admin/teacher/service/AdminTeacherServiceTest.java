@@ -32,7 +32,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -128,7 +128,7 @@ class AdminTeacherServiceTest implements Samples {
         Page<SubjectAndClassDto> listOfTaughtClasses = new PageImpl<>(listOfTaughtClasses());
         Pageable pageable = PageRequest.of(0,10);
         when(teacherRepository.existsById(any())).thenReturn(true);
-        when(teacherRepository.findEmailById(anyInt())).thenReturn(NAME3);
+        when(teacherRepository.findEmailById(anyLong())).thenReturn(NAME3);
         when(teacherRepository.findTaughtClassesByTeacher(anyString(), any())).thenReturn(listOfTaughtClasses);
 
         Page<SubjectAndClassDto> result = adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable);
@@ -152,7 +152,7 @@ class AdminTeacherServiceTest implements Samples {
         SchoolSubject schoolSubject = createSchoolSubject();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         schoolSubjectDto.setSubjectName(SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacher));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
 
         Teacher result = adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto);
@@ -164,7 +164,7 @@ class AdminTeacherServiceTest implements Samples {
     @Test
     void should_throw_exception_when_teacher_not_found_while_adding_subject() {
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
                 .isInstanceOf(NoSuchTeacherException.class)
@@ -176,7 +176,7 @@ class AdminTeacherServiceTest implements Samples {
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         schoolSubjectDto.setSubjectName(SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacher));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
@@ -190,7 +190,7 @@ class AdminTeacherServiceTest implements Samples {
         SchoolSubject schoolSubject = createSchoolSubject();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         schoolSubjectDto.setSubjectName(SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyInt())).thenReturn(Optional.of(teacher));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
 
         assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))

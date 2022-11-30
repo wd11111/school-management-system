@@ -6,7 +6,7 @@ public class NoSuchTeacherException extends RuntimeException {
         super(String.format("Teacher with such an email does not exist: %s", email));
     }
 
-    public NoSuchTeacherException(int id) {
+    public NoSuchTeacherException(long id) {
         super(String.format("Teacher with such an id does not exist: %d", id));
     }
 }

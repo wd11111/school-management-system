@@ -29,7 +29,7 @@ public class StudentMarkService {
         return markRepository.findAllAveragesForStudent(getStudentId(studentEmail));
     }
 
-    private int getStudentId(String studentEmail) {
+    private long getStudentId(String studentEmail) {
         return studentRepository.findIdByEmail(studentEmail);
     }
 }

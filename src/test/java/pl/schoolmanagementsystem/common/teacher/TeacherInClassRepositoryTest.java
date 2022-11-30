@@ -46,12 +46,12 @@ class TeacherInClassRepositoryTest {
     private TeacherRepository teacherRepository;
 
     @Test
-    void should_return_all_students_in_school_class() {
-        Teacher teacher = teacherRepository.findById(1).get();
+    void should_return_teacher_in_class() {
+        Teacher teacher = teacherRepository.findById(1L).get();
         TeacherInClass result = teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, "biology").get();
 
         assertThat(result).extracting("id", "taughtSubject")
-                .containsAll(List.of(1, "biology"));
+                .containsAll(List.of(1L, "biology"));
         assertThat(result.getTaughtClasses()).hasSize(1);
     }
 }

@@ -6,13 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.schoolmanagementsystem.admin.schoolSubject.mapper.SchoolSubjectMapper;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-
-import static pl.schoolmanagementsystem.admin.schoolSubject.mapper.SchoolSubjectMapper.createSubject;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class AdminSubjectService {
         if (doesSubjectExist(schoolSubjectDto.getSubjectName())) {
             throw new SubjectAlreadyExistsException(schoolSubjectDto);
         }
-        return schoolSubjectRepository.save(createSubject(schoolSubjectDto));
+        return schoolSubjectRepository.save(SchoolSubjectMapper.createSchoolSubject(schoolSubjectDto));
     }
 
     public Page<SchoolSubjectDto> getAllSubjects(Pageable pageable) {

@@ -1,6 +1,6 @@
 package pl.schoolmanagementsystem.common.mark;
 
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
 public interface MarkSamples {
 
@@ -23,11 +23,11 @@ public interface MarkSamples {
                 .build();
     }
 
-    default MarkWithTwoFields createMarkWithTwoFields() {
-        return new MarkWithTwoFields((byte) 4, SUBJECT);
+    default MarkDto createMarkDto1() {
+        return new MarkDto((byte) 4, SUBJECT);
     }
 
-    default MarkWithTwoFields createMarkWithTwoFields2() {
-        return new MarkWithTwoFields((byte) 2, SUBJECT_2);
+    default MarkDto createMarkDto2() {
+        return new MarkDto((byte) 2, SUBJECT_2);
     }
 }

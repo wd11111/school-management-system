@@ -59,7 +59,7 @@ class SchoolSubjectRepositoryTest {
 
     @Test
     void should_return_all_taught_subjects_in_school_class() {
-        List<SubjectAndTeacherResponseDto> result = schoolSubjectRepository.findAllSubjectsInSchoolClass("1a");
+        List<SubjectAndTeacherResponseDto> result = schoolSubjectRepository.findTaughtSubjectsInClass("1a");
 
         assertThat(result).extracting("subject", "teacherName", "teacherSurname")
                 .containsAll(List.of(tuple("biology", "teacherName1", "teacherSurname1"),

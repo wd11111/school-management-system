@@ -9,7 +9,8 @@ import java.util.Optional;
 @Repository
 public interface TeacherInClassRepository extends JpaRepository<TeacherInClass, Long> {
 
-    @Query("select t from TeacherInClass t left join fetch t.taughtClasses where t.teacher=?1 and t.taughtSubject=?2")
+    @Query("SELECT t FROM TeacherInClass t LEFT JOIN FETCH t.taughtClasses " +
+            "WHERE t.teacher=?1 AND t.taughtSubject=?2")
     Optional<TeacherInClass> findByTeacherAndTaughtSubject(Teacher teacher, String schoolSubject);
 
     boolean existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(String email, String taughtSubject, String className);

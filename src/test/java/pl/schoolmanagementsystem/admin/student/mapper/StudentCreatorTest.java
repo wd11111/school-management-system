@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
 
@@ -29,11 +29,11 @@ class StudentCreatorTest implements Samples {
 
     @Test
     void should_create_student_with_one_role() {
-        StudentInputDto studentInputDto = new StudentInputDto();
+        StudentRequestDto studentRequestDto = new StudentRequestDto();
         SchoolClass schoolClass = createSchoolClass();
         when(roleRepository.findById(anyString())).thenReturn(Optional.of(new Role()));
 
-        Student student = studentCreator.createStudent(studentInputDto, schoolClass);
+        Student student = studentCreator.createStudent(studentRequestDto, schoolClass);
 
         assertThat(student.getAppUser().getRoles()).hasSize(1);
     }

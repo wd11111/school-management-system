@@ -17,16 +17,16 @@ public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, St
 
     Optional<SchoolSubject> findByNameIgnoreCase(String name);
 
-    @Query("select new pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto(s.name) from SchoolSubject s")
+    @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto(s.name) FROM SchoolSubject s")
     Page<SchoolSubjectDto> findAllSchoolSubjects(Pageable pageable);
 
     @Modifying
-    @Query(nativeQuery = true, value = "delete from teacher_taught_subjects where taught_subjects_name=?1")
+    @Query(nativeQuery = true, value = "DELETE FROM teacher_taught_subjects WHERE taught_subjects_name=?1")
     void deleteTaughtSubjects(String name);
 
-    @Query("select new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto(" +
+    @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto(" +
             "t.taughtSubject, t.teacher.name, t.teacher.surname) " +
-            "from SchoolClass c join c.teachersInClass t where c.name=?1 " +
-            "order by t.taughtSubject")
-    List<SubjectAndTeacherResponseDto> findAllSubjectsInSchoolClass(String name);
+            "FROM SchoolClass c JOIN c.teachersInClass t WHERE c.name=?1 " +
+            "ORDER BY t.taughtSubject")
+    List<SubjectAndTeacherResponseDto> findTaughtSubjectsInClass(String name);
 }

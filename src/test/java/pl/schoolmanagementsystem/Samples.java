@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
@@ -24,7 +23,7 @@ public interface Samples {
     String SURNAME2 = "Kowalczyk";
     String SUBJECT_BIOLOGY = "Biology";
     String SUBJECT_HISTORY = "History";
-    String ENGLISH = "english";
+    String SUBJECT_ENGLISH = "english";
     String CLASS_1A = "1a";
     String CLASS_3B = "3b";
     long ID_1 = 1;
@@ -32,10 +31,6 @@ public interface Samples {
 
     default TeacherOutputDto createTeacherOutputDto() {
         return new TeacherOutputDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
-    }
-
-    default SubjectAndTeacherResponseDto createSubjectAndTeacherOutput2() {
-        return new SubjectAndTeacherResponseDto(SUBJECT_HISTORY, NAME2, SURNAME);
     }
 
     default SchoolClass createSchoolClass() {
@@ -72,7 +67,7 @@ public interface Samples {
 
     default List<SubjectAndClassDto> listOfTaughtClasses() {
         return List.of(new SubjectAndClassDto(SUBJECT_BIOLOGY, CLASS_1A),
-                new SubjectAndClassDto(ENGLISH, CLASS_1A),
+                new SubjectAndClassDto(SUBJECT_ENGLISH, CLASS_1A),
                 new SubjectAndClassDto(SUBJECT_HISTORY, CLASS_3B));
     }
 

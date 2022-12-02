@@ -11,10 +11,10 @@ import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 @Repository
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, String> {
 
-    @Query("select new pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto(c.name) from SchoolClass c")
+    @Query("SELECT new pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto(c.name) FROM SchoolClass c")
     Page<SchoolClassDto> findAllClasses(Pageable pageable);
 
     @Modifying
-    @Query(nativeQuery = true, value = "delete from teacher_in_class_taught_classes where taught_classes_name=?1")
+    @Query(nativeQuery = true, value = "DELETE FROM teacher_in_class_taught_classes where taught_classes_name=?1")
     void deleteTaughtClasses(String schoolClassName);
 }

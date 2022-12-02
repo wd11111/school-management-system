@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
@@ -19,11 +19,11 @@ public class StudentCreator {
 
     private final RoleRepository roleRepository;
 
-    public Student createStudent(StudentInputDto studentInputDto, SchoolClass schoolClass) {
+    public Student createStudent(StudentRequestDto studentRequestDto, SchoolClass schoolClass) {
         Student student = Student.builder()
-                .name(studentInputDto.getName())
-                .surname(studentInputDto.getSurname())
-                .appUser(new AppUser(studentInputDto.getEmail(),
+                .name(studentRequestDto.getName())
+                .surname(studentRequestDto.getSurname())
+                .appUser(new AppUser(studentRequestDto.getEmail(),
                         null,
                         generateToken(),
                         new ArrayList<>()))

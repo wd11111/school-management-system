@@ -6,14 +6,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
+import pl.schoolmanagementsystem.admin.mailSender.EmailService;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
@@ -40,7 +40,7 @@ class AdminStudentServiceTest implements Samples {
     private SchoolClassRepository schoolClassRepository;
 
     @Mock
-    private MailSenderService mailSenderService;
+    private EmailService emailService;
 
     @Mock
     private AppUserRepository userRepository;
@@ -53,7 +53,7 @@ class AdminStudentServiceTest implements Samples {
 
     @Test
     void should_create_student() {
-        StudentInputDto studentInputDto = StudentInputDto.builder().schoolClassName(CLASS_1A).build();
+        StudentRequestDto studentRequestDto = StudentRequestDto.builder().schoolClassName(CLASS_1A).build();
         SchoolClass schoolClass = createSchoolClass();
         Student student = createStudent2();
         when(userRepository.existsById(any())).thenReturn(false);
@@ -61,34 +61,34 @@ class AdminStudentServiceTest implements Samples {
         when(studentCreator.createStudent(any(), any())).thenReturn(student);
         when(studentRepository.save(any())).thenReturn(student);
 
-        Student result = adminStudentService.createStudent(studentInputDto);
+        Student result = adminStudentService.createStudent(studentRequestDto);
 
         assertThat(result).isSameAs(student);
-        verify(mailSenderService, times(1)).sendEmail(any(), any());
+        verify(emailService, times(1)).sendEmail(any(), any());
     }
 
     @Test
     void should_throw_exception_when_email_is_not_available() {
-        StudentInputDto studentInputDto = StudentInputDto.builder().email(SURNAME).build();
+        StudentRequestDto studentRequestDto = StudentRequestDto.builder().email(SURNAME).build();
         when(userRepository.existsById(any())).thenReturn(true);
 
-        assertThatThrownBy(() -> adminStudentService.createStudent(studentInputDto))
+        assertThatThrownBy(() -> adminStudentService.createStudent(studentRequestDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
                 .hasMessage("Email already in use: " + SURNAME);
-        verify(mailSenderService, never()).sendEmail(any(), any());
+        verify(emailService, never()).sendEmail(any(), any());
         verify(studentRepository, never()).save(any());
     }
 
     @Test
     void should_throw_exception_when_school_class_not_found() {
-        StudentInputDto studentInputDto = StudentInputDto.builder().email(SURNAME).schoolClassName(CLASS_3B).build();
+        StudentRequestDto studentRequestDto = StudentRequestDto.builder().email(SURNAME).schoolClassName(CLASS_3B).build();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminStudentService.createStudent(studentInputDto))
+        assertThatThrownBy(() -> adminStudentService.createStudent(studentRequestDto))
                 .isInstanceOf(NoSuchSchoolClassException.class)
                 .hasMessage("Such a school class does not exist: " + CLASS_3B);
-        verify(mailSenderService, never()).sendEmail(any(), any());
+        verify(emailService, never()).sendEmail(any(), any());
         verify(studentRepository, never()).save(any());
     }
 

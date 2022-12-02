@@ -20,7 +20,7 @@ import javax.persistence.Id;
 public class Mark {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private byte mark;

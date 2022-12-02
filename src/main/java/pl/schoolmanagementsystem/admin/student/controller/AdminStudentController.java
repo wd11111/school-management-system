@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.admin.student.service.AdminStudentService;
-import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentResponse;
 
 import javax.validation.Valid;
@@ -25,9 +25,9 @@ public class AdminStudentController {
     private final AdminStudentService adminStudentService;
 
     @PostMapping
-    public ResponseEntity<StudentResponse> createStudent(@RequestBody @Valid StudentInputDto studentInputDto) {
+    public ResponseEntity<StudentResponse> createStudent(@RequestBody @Valid StudentRequestDto studentRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapToStudentResponse(adminStudentService.createStudent(studentInputDto)));
+                .body(mapToStudentResponse(adminStudentService.createStudent(studentRequestDto)));
     }
 
     @DeleteMapping("/{id}")

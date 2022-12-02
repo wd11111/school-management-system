@@ -4,19 +4,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
 import java.util.List;
 
 @Repository
 public interface MarkRepository extends JpaRepository<Mark, Long> {
 
-    @Query("select new pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto(m.subject, avg(m.mark)) " +
-            "from Student s left join Mark m on s.id = m.studentId " +
-            "where m.studentId=?1 group by m.subject")
+    @Query("SELECT new pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto(m.subject, AVG(m.mark)) " +
+            "FROM Student s LEFT JOIN Mark m ON s.id = m.studentId " +
+            "WHERE m.studentId=?1 GROUP BY m.subject")
     List<MarkAvgDto> findAllAveragesForStudent(long studentId);
 
-    @Query("select new pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields(m.mark, m.subject) " +
-            "from Student s left join s.marks m where s.appUser.userEmail=?1")
-    List<MarkWithTwoFields> findAllMarksForStudent(String studentEmail);
+    @Query("SELECT new pl.schoolmanagementsystem.common.mark.dto.MarkDto(m.mark, m.subject) " +
+            "FROM Student s LEFT JOIN s.marks m WHERE s.appUser.userEmail=?1")
+    List<MarkDto> findAllMarksForStudent(String studentEmail);
 }

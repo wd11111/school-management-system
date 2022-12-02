@@ -10,7 +10,7 @@ import pl.schoolmanagementsystem.admin.schoolClass.mapper.SchoolClassMapper;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassRequestDto;
 import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
@@ -19,7 +19,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
+import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
@@ -50,29 +50,29 @@ public class AdminClassService {
         if (doesSchoolClassExist(schoolClassDto.getSchoolClassName())) {
             throw new ClassAlreadyExistsException(schoolClassDto);
         }
-        return schoolClassRepository.save(SchoolClassMapper.build(schoolClassDto));
+        return schoolClassRepository.save(SchoolClassMapper.createSchoolClass(schoolClassDto));
     }
 
-    public List<SubjectAndTeacherResponseDto> getAllSubjectsInSchoolClass(String schoolClassName) {
+    public List<SubjectAndTeacherResponseDto> getTaughtSubjectsInClass(String schoolClassName) {
         if (!doesSchoolClassExist((schoolClassName))) {
             throw new NoSuchSchoolClassException(schoolClassName);
         }
-        return schoolSubjectRepository.findAllSubjectsInSchoolClass(schoolClassName);
+        return schoolSubjectRepository.findTaughtSubjectsInClass(schoolClassName);
     }
 
-    public TeacherInClass addTeacherToSchoolClass(TeacherInClassInputDto teacherInClassInputDto, String schoolClassName) {
-        Teacher teacher = teacherRepository.findById(teacherInClassInputDto.getTeacherId())
-                .orElseThrow(() -> new NoSuchTeacherException(teacherInClassInputDto.getTeacherId()));
+    public TeacherInClass addTeacherToSchoolClass(TeacherInClassRequestDto teacherInClassRequestDto, String schoolClassName) {
+        Teacher teacher = teacherRepository.findById(teacherInClassRequestDto.getTeacherId())
+                .orElseThrow(() -> new NoSuchTeacherException(teacherInClassRequestDto.getTeacherId()));
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
-        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(teacherInClassInputDto.getTaughtSubject())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(teacherInClassInputDto.getTaughtSubject()));
-        validateIfTeacherTeachesSubject(teacher, schoolSubject);
-        validateIfClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
+        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(teacherInClassRequestDto.getTaughtSubject())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(teacherInClassRequestDto.getTaughtSubject()));
+        validateTeacherTeachesSubject(teacher, schoolSubject);
+        validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
         return teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
     }
 
-    public List<StudentOutputDto2> getAllStudentsInClass(String className) {
+    public List<StudentResponseDto2> getAllStudentsInClass(String className) {
         if (!schoolClassRepository.existsById(className)) {
             throw new NoSuchSchoolClassException(className);
         }
@@ -88,7 +88,7 @@ public class AdminClassService {
         schoolClassRepository.deleteById(schoolClassName);
     }
 
-    private void validateIfClassDoesntAlreadyHaveTeacher(SchoolClass schoolClass, SchoolSubject schoolSubject) {
+    private void validateClassDoesntAlreadyHaveTeacher(SchoolClass schoolClass, SchoolSubject schoolSubject) {
         schoolClass.getTeachersInClass().stream()
                 .filter(teacher -> teacher.getTaughtSubject().equals(schoolSubject.getName()))
                 .findAny()
@@ -97,7 +97,7 @@ public class AdminClassService {
                 });
     }
 
-    private void validateIfTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
+    private void validateTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
         if (!doesTeacherTeachSubject(teacher, schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
         }

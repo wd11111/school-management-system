@@ -3,14 +3,14 @@ package pl.schoolmanagementsystem.admin.student.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
+import pl.schoolmanagementsystem.admin.mailSender.EmailService;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
@@ -24,19 +24,19 @@ public class AdminStudentService {
     private final SchoolClassRepository schoolClassRepository;
 
 
-    private final MailSenderService mailSenderService;
+    private final EmailService emailService;
 
     private final AppUserRepository userRepository;
 
     private final StudentCreator studentCreator;
 
     @Transactional
-    public Student createStudent(StudentInputDto studentInputDto) {
-        validateIfEmailIsAvailable(studentInputDto.getEmail());
-        SchoolClass schoolClass = schoolClassRepository.findById(studentInputDto.getSchoolClassName())
-                .orElseThrow(() -> new NoSuchSchoolClassException(studentInputDto.getSchoolClassName()));
-        Student student = studentRepository.save(studentCreator.createStudent(studentInputDto, schoolClass));
-        mailSenderService.sendEmail(studentInputDto.getEmail(), student.getAppUser().getToken());
+    public Student createStudent(StudentRequestDto studentRequestDto) {
+        validateIfEmailIsAvailable(studentRequestDto.getEmail());
+        SchoolClass schoolClass = schoolClassRepository.findById(studentRequestDto.getSchoolClassName())
+                .orElseThrow(() -> new NoSuchSchoolClassException(studentRequestDto.getSchoolClassName()));
+        Student student = studentRepository.save(studentCreator.createStudent(studentRequestDto, schoolClass));
+        emailService.sendEmail(studentRequestDto.getEmail(), student.getAppUser().getToken());
         return student;
     }
 

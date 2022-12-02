@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -70,24 +70,24 @@ class TeacherClassServiceTest implements Samples {
     void should_correctly_add_mark_to_student() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        MarkDto markDto = new MarkDto((byte) 2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
 
-        teacherClassService.addMark(NAME2, markInputDto, student.getId());
+        teacherClassService.addMark(NAME2, markDto, student.getId());
 
         assertThat(student.getMarks()).hasSize(1);
     }
 
     @Test
     void should_throw_exception_when_student_not_found() {
-        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        MarkDto markDto = new MarkDto((byte) 2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markInputDto, ID_1))
+        assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markDto, ID_1))
                 .isInstanceOf(NoSuchStudentException.class)
                 .hasMessage("Student with such an id does not exist: " + ID_1);
     }
@@ -95,13 +95,13 @@ class TeacherClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_subject_is_incorrect() {
         Student student = createStudent();
-        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        MarkDto markDto = new MarkDto((byte) 2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markInputDto, ID_1))
+        assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markDto, ID_1))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: " + markInputDto.getSubject());
+                .hasMessage("Such a school subject does not exist: " + markDto.getSubject());
         assertThat(student.getMarks()).hasSize(0);
     }
 
@@ -109,14 +109,14 @@ class TeacherClassServiceTest implements Samples {
     void should_throw_exception_when_teacher_does_not_teach_subject_in_class() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        MarkInputDto markInputDto = new MarkInputDto((byte) 2, SUBJECT_BIOLOGY);
+        MarkDto markDto = new MarkDto((byte) 2, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);
 
-        assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markInputDto, ID_1))
+        assertThatThrownBy(() -> teacherClassService.addMark(NAME2, markDto, ID_1))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
                 .hasMessage("You do not teach Biology in 1a");
         assertThat(student.getMarks()).hasSize(0);

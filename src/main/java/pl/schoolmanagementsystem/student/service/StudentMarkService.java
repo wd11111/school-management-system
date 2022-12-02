@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 
 import java.util.List;
@@ -20,8 +20,8 @@ public class StudentMarkService {
 
     private final MarkRepository markRepository;
 
-    public Map<String, List<MarkWithTwoFields>> getGroupedMarksBySubject(String studentEmail) {
-        List<MarkWithTwoFields> studentsMarks = markRepository.findAllMarksForStudent(studentEmail);
+    public Map<String, List<MarkDto>> getGroupedMarksBySubject(String studentEmail) {
+        List<MarkDto> studentsMarks = markRepository.findAllMarksForStudent(studentEmail);
         return groupMarksBySubject(studentsMarks);
     }
 

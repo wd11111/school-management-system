@@ -17,8 +17,8 @@ import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherDtoMapper;
 import pl.schoolmanagementsystem.admin.teacher.service.AdminTeacherService;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
 
 import javax.validation.Valid;
 
@@ -38,14 +38,14 @@ public class AdminTeacherController {
     }
 
     @GetMapping("/{id}/taught-classes")
-    public Page<SubjectAndClassDto> getTaughtClasses(@PathVariable long id, Pageable pageable) {
+    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(@PathVariable long id, Pageable pageable) {
         return adminTeacherService.getTaughtClassesByTeacher(id, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<TeacherOutputDto> createTeacher(@RequestBody @Valid TeacherInputDto teacherInputDto) {
+    public ResponseEntity<TeacherOutputDto> createTeacher(@RequestBody @Valid TeacherRequestDto teacherRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapToTeacherOutputDto(adminTeacherService.createTeacher(teacherInputDto)));
+                .body(mapToTeacherOutputDto(adminTeacherService.createTeacher(teacherRequestDto)));
     }
 
     @PatchMapping("/{id}/subjects")

@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.common.mark;
 
 import org.junit.jupiter.api.Test;
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +26,8 @@ class MarkMapperTest implements MarkSamples {
 
     @Test
     void should_map_list_of_bytes_to_map_structure() {
-        Map<String, List<MarkWithTwoFields>> mapToTransform = new HashMap<>(
-                Map.of(SUBJECT, List.of(createMarkWithTwoFields(), createMarkWithTwoFields2())));
+        Map<String, List<MarkDto>> mapToTransform = new HashMap<>(
+                Map.of(SUBJECT, List.of(createMarkDto1(), createMarkDto2())));
         Map<String, List<Byte>> expected = new HashMap<>(Map.of(SUBJECT, List.of((byte) 4, (byte) 2)));
 
         Map<String, List<Byte>> result = mapToListOfBytesInMapStructure(mapToTransform);
@@ -37,14 +37,14 @@ class MarkMapperTest implements MarkSamples {
 
     @Test
     void should_group_marks_by_subject() {
-        MarkWithTwoFields mark1 = createMarkWithTwoFields();
-        MarkWithTwoFields mark2 = createMarkWithTwoFields2();
-        List<MarkWithTwoFields> listOfMarksWithTwoFields = List.of(mark1, mark2);
-        Map<String, List<MarkWithTwoFields>> expected = new HashMap<>(
+        MarkDto mark1 = createMarkDto1();
+        MarkDto mark2 = createMarkDto2();
+        List<MarkDto> listOfMarksWithTwoFields = List.of(mark1, mark2);
+        Map<String, List<MarkDto>> expected = new HashMap<>(
                 Map.of(SUBJECT, List.of(mark1),
                         SUBJECT_2, List.of(mark2)));
 
-        Map<String, List<MarkWithTwoFields>> result = groupMarksBySubject(listOfMarksWithTwoFields);
+        Map<String, List<MarkDto>> result = groupMarksBySubject(listOfMarksWithTwoFields);
 
         assertThat(result).containsAllEntriesOf(expected);
     }

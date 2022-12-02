@@ -12,13 +12,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
+import pl.schoolmanagementsystem.admin.mailSender.EmailService;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.admin.student.service.AdminStudentService;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentInputDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -51,8 +51,8 @@ class AdminStudentControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_created_when_creating_student() throws Exception {
-        StudentInputDto studentInputDto = studentInputDto();
-        String body = objectMapper.writeValueAsString(studentInputDto);
+        StudentRequestDto studentRequestDto = studentInputDto();
+        String body = objectMapper.writeValueAsString(studentRequestDto);
         Student student = student();
         when(adminStudentService.createStudent(any())).thenReturn(student);
 
@@ -64,13 +64,13 @@ class AdminStudentControllerTest implements ControllerSamples {
                 .andReturn();
         Student actualResponseBody = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Student.class);
 
-        assertThat(actualResponseBody.getName()).isEqualTo(studentInputDto.getName());
+        assertThat(actualResponseBody.getName()).isEqualTo(studentRequestDto.getName());
     }
 
     @Test
     void should_return_status_bad_request_when_creating_student() throws Exception {
-        StudentInputDto studentInputDto = new StudentInputDto();
-        String body = objectMapper.writeValueAsString(studentInputDto);
+        StudentRequestDto studentRequestDto = new StudentRequestDto();
+        String body = objectMapper.writeValueAsString(studentRequestDto);
 
         mockMvc.perform(post("/admin/students")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -108,11 +108,11 @@ class MockMvcConfig3 {
     AdminStudentService adminStudentService() {
         StudentRepository studentRepository = mock(StudentRepository.class);
         SchoolClassRepository schoolClassRepository = mock(SchoolClassRepository.class);
-        MailSenderService mailSenderService = mock(MailSenderService.class);
+        EmailService emailService = mock(EmailService.class);
         AppUserRepository userRepository = mock(AppUserRepository.class);
         StudentCreator studentCreator = mock(StudentCreator.class);
         return new AdminStudentService(studentRepository, schoolClassRepository,
-                mailSenderService, userRepository, studentCreator);
+                emailService, userRepository, studentCreator);
     }
 
     @Bean

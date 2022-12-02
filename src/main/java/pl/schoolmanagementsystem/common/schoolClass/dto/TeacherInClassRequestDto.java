@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherInClassInputDto {
+public class TeacherInClassRequestDto {
 
     @Min(value = 1, message = "{not.null.message}")
     private long teacherId;

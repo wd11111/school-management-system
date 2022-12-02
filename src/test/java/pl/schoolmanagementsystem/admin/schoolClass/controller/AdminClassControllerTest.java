@@ -19,11 +19,11 @@ import pl.schoolmanagementsystem.admin.schoolClass.service.AdminTeacherInClassSe
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassInputDto;
+import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassRequestDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto2;
+import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -73,7 +73,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
-        List<StudentOutputDto2> listOfStudents = List.of(studentOutputDto2(), studentOutputDto2());
+        List<StudentResponseDto2> listOfStudents = List.of(studentOutputDto2(), studentOutputDto2());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudents);
         when(adminClassService.getAllStudentsInClass("1a")).thenReturn(listOfStudents);
 
@@ -90,7 +90,7 @@ class AdminClassControllerTest implements ControllerSamples {
     void should_return_status_ok_when_get_for_all_taught_subjects_in_class() throws Exception {
         List<SubjectAndTeacherResponseDto> listOfSubjects = List.of(subjectAndTeacherOutput(), subjectAndTeacherOutput());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfSubjects);
-        when(adminClassService.getAllSubjectsInSchoolClass("1a")).thenReturn(listOfSubjects);
+        when(adminClassService.getTaughtSubjectsInClass("1a")).thenReturn(listOfSubjects);
 
         MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1a/subjects"))
                 .andExpect(status()
@@ -147,7 +147,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_bad_request_when_adding_subject_to_class_doesnt_pass_validation() throws Exception {
-        String body = objectMapper.writeValueAsString(new TeacherInClassInputDto());
+        String body = objectMapper.writeValueAsString(new TeacherInClassRequestDto());
 
         mockMvc.perform(patch("/admin/classes/1a/teachers")
                         .content(body)

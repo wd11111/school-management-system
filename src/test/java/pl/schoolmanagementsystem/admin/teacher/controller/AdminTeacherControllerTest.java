@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.admin.mailSender.MailSenderService;
+import pl.schoolmanagementsystem.admin.mailSender.EmailService;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.admin.teacher.service.AdminTeacherService;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -22,8 +22,8 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherInputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -89,9 +89,9 @@ class AdminTeacherControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_created_when_creating_teacher() throws Exception {
-        TeacherInputDto teacherInputDto = teacherInputDto();
+        TeacherRequestDto teacherRequestDto = teacherInputDto();
         Teacher teacher = createTeacherNoSubjectsTaught();
-        String body = objectMapper.writeValueAsString(teacherInputDto);
+        String body = objectMapper.writeValueAsString(teacherRequestDto);
         when(adminTeacherService.createTeacher(any())).thenReturn(teacher);
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/teachers")
@@ -102,13 +102,13 @@ class AdminTeacherControllerTest implements ControllerSamples {
                 .andReturn();
         Teacher actualResponseBody = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Teacher.class);
 
-        assertThat(actualResponseBody.getName()).isEqualTo(teacherInputDto.getName());
+        assertThat(actualResponseBody.getName()).isEqualTo(teacherRequestDto.getName());
     }
 
     @Test
     void should_return_status_bad_request_when_creating_teacher() throws Exception {
-        TeacherInputDto teacherInputDto = new TeacherInputDto();
-        String body = objectMapper.writeValueAsString(teacherInputDto);
+        TeacherRequestDto teacherRequestDto = new TeacherRequestDto();
+        String body = objectMapper.writeValueAsString(teacherRequestDto);
 
         mockMvc.perform(post("/admin/teachers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -180,10 +180,10 @@ class MockMvcConfig4 {
         TeacherRepository teacherRepository = mock(TeacherRepository.class);
         SchoolSubjectRepository schoolSubjectRepository = mock(SchoolSubjectRepository.class);
         AppUserRepository userRepository = mock(AppUserRepository.class);
-        MailSenderService mailSenderService = mock(MailSenderService.class);
+        EmailService emailService = mock(EmailService.class);
         TeacherCreator teacherCreator = mock(TeacherCreator.class);
         return new AdminTeacherService(teacherRepository, schoolSubjectRepository, userRepository,
-                mailSenderService, teacherCreator);
+                emailService, teacherCreator);
     }
 
     @Bean

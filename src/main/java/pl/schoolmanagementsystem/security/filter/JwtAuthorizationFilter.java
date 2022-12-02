@@ -48,12 +48,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, ""));
             String username = jwt.getSubject();
-            String[] roles = jwt.getClaim("roles").asArray(String.class);
-            Collection<SimpleGrantedAuthority> authorities = Arrays.stream(roles)
-                    .map(SimpleGrantedAuthority::new)
-                    .toList();
+            Collection<SimpleGrantedAuthority> authorities = getAuthorities(jwt);
             return new UsernamePasswordAuthenticationToken(username, null, authorities);
         }
         return null;
+    }
+
+    private Collection<SimpleGrantedAuthority> getAuthorities(DecodedJWT jwt) {
+        String[] roles = jwt.getClaim("roles").asArray(String.class);
+        return Arrays.stream(roles)
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
@@ -100,8 +100,8 @@ class TeacherClassControllerTest implements ControllerSamples {
     @Test
     void should_return_status_no_content_when_adding_marks() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        MarkInputDto markInputDto = new MarkInputDto(MARK, SUBJECT_BIOLOGY);
-        String body = objectMapper.writeValueAsString(markInputDto);
+        MarkDto markDto = new MarkDto(MARK, SUBJECT_BIOLOGY);
+        String body = objectMapper.writeValueAsString(markDto);
         doNothing().when(teacherClassService).addMark(anyString(), any(), anyLong());
 
         mockMvc.perform(patch("/teacher/students/1").principal(principal)
@@ -116,8 +116,8 @@ class TeacherClassControllerTest implements ControllerSamples {
     @Test
     void should_return_status_bad_request_when_adding_marks() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        MarkInputDto markInputDto = new MarkInputDto(OUT_OF_RANGE_MARK, SUBJECT_BIOLOGY);
-        String body = objectMapper.writeValueAsString(markInputDto);
+        MarkDto markDto = new MarkDto(OUT_OF_RANGE_MARK, SUBJECT_BIOLOGY);
+        String body = objectMapper.writeValueAsString(markDto);
 
         mockMvc.perform(patch("/teacher/students/1").principal(principal)
                         .content(body)

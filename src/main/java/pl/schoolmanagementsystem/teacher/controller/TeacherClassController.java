@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.teacher.mapper.StudentDtoMapper;
@@ -43,8 +43,8 @@ public class TeacherClassController {
     }
 
     @PatchMapping("/students/{id}")
-    public ResponseEntity<Void> addMark(@PathVariable long id, @RequestBody @Valid MarkInputDto markInputDto, Principal principal) {
-        teacherClassService.addMark(principal.getName(), markInputDto, id);
+    public ResponseEntity<Void> addMark(@PathVariable long id, @RequestBody @Valid MarkDto markDto, Principal principal) {
+        teacherClassService.addMark(principal.getName(), markDto, id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -11,6 +11,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, String> {
 
     Optional<AppUser> findByToken(String token);
 
-    @Query("select ap from AppUser ap left join fetch ap.roles where ap.userEmail=?1")
+    @Query("SELECT ap FROM AppUser ap LEFT JOIN FETCH ap.roles WHERE ap.userEmail=?1")
     Optional<AppUser> findByUserEmail(String email);
 }

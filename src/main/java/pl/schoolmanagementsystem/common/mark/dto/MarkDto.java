@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MarkInputDto {
+public class MarkDto {
 
     @Max(value = 6, message = "{mark.rank.message}")
     @Min(value = 1, message = "{mark.rank.message}")

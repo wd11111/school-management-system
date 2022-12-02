@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.mark.dto.MarkInputDto;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -40,18 +39,18 @@ public class TeacherClassService {
     private final SchoolClassRepository classRepository;
 
     @Transactional
-    public void addMark(String teacherEmail, MarkInputDto markInputDto, long studentId) {
+    public void addMark(String teacherEmail, MarkDto markDto, long studentId) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();
-        SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markInputDto.getSubject())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(markInputDto.getSubject()));
+        SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markDto.getSubject())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(markDto.getSubject()));
         validateIfTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
-        student.addMark(createMark(markInputDto, studentId));
+        student.addMark(createMark(markDto, studentId));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
-                pageable.getPageNumber(), pageable.getPageSize(), Sort.by("schoolClass").descending()));
+                pageable.getPageNumber(), pageable.getPageSize()));
     }
 
     public List<Student> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {

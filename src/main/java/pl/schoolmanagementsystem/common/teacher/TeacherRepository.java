@@ -14,21 +14,22 @@ import java.util.Optional;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     @Override
-    @Query("select t from Teacher t left join fetch t.teacherInClasses left join fetch t.taughtSubjects " +
-            "where t.id = ?1")
+    @Query("SELECT t FROM Teacher t LEFT JOIN FETCH t.teacherInClasses LEFT JOIN FETCH t.taughtSubjects " +
+            "WHERE t.id = ?1")
     Optional<Teacher> findById(Long id);
 
     @Override
-    @Query("select distinct t from Teacher t left join fetch t.taughtSubjects order by t.surname")
+    @Query("SELECT DISTINCT t FROM Teacher t LEFT JOIN FETCH t.taughtSubjects ORDER BY t.surname")
     List<Teacher> findAll();
 
-    @Query("select t.appUser.userEmail from Teacher t where t.id=?1")
+    @Query("SELECT t.appUser.userEmail FROM Teacher t WHERE t.id=?1")
     String findEmailById(long id);
 
-    @Query("select new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto(" +
+    @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto(" +
             "tc.taughtSubject, tics.name) " +
-            "from TeacherInClass tc " +
-            "left join tc.taughtClasses tics " +
-            "where tc.teacher.appUser.userEmail=?1")
+            "FROM TeacherInClass tc " +
+            "LEFT JOIN tc.taughtClasses tics " +
+            "WHERE tc.teacher.appUser.userEmail=?1 " +
+            "ORDER BY tics.name")
     Page<SubjectAndClassDto> findTaughtClassesByTeacher(String email, Pageable pageable);
 }

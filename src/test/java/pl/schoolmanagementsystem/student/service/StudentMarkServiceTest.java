@@ -9,7 +9,7 @@ import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.MarkSamples;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 
 import java.util.HashMap;
@@ -34,13 +34,13 @@ class StudentMarkServiceTest implements ControllerSamples, MarkSamples {
 
     @Test
     void should_return_marks_grouped_by_subject() {
-        Map<String, List<MarkWithTwoFields>> expected = new HashMap<>(
-                Map.of(SUBJECT_BIOLOGY, List.of(createMarkWithTwoFields()),
-                        SUBJECT_HISTORY, List.of(createMarkWithTwoFields2())));
+        Map<String, List<MarkDto>> expected = new HashMap<>(
+                Map.of(SUBJECT_BIOLOGY, List.of(createMarkDto1()),
+                        SUBJECT_HISTORY, List.of(createMarkDto2())));
         when(markRepository.findAllMarksForStudent(anyString()))
-                .thenReturn(List.of(createMarkWithTwoFields(), markWithTwoFields2()));
+                .thenReturn(List.of(createMarkDto1(), markWithTwoFields2()));
 
-        Map<String, List<MarkWithTwoFields>> result = studentMarkService.getGroupedMarksBySubject(NAME);
+        Map<String, List<MarkDto>> result = studentMarkService.getGroupedMarksBySubject(NAME);
 
         assertThat(result).isEqualTo(expected);
     }

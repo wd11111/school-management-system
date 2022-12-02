@@ -16,7 +16,7 @@ import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.common.mark.MarkMapper;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -54,7 +54,7 @@ class StudentMarkControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_get_for_grouped_marks_by_subject() throws Exception {
         Principal principal = new UserPrincipal("Student");
-        Map<String, List<MarkWithTwoFields>> groupedMarksBySubject = getGroupedMarksBySubject();
+        Map<String, List<MarkDto>> groupedMarksBySubject = getGroupedMarksBySubject();
         Map<String, List<Byte>> expectedMap = MarkMapper.mapToListOfBytesInMapStructure(groupedMarksBySubject);
         String expectedResponseBody = objectMapper.writeValueAsString(expectedMap);
         when(studentMarkService.getGroupedMarksBySubject(anyString())).thenReturn(groupedMarksBySubject);

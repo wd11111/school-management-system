@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MailSenderService {
+public class EmailService {
 
     @Value("${application.url}")
-    private String url;
+    private String applicationUrl;
 
     @Value("${spring.mail.username}}")
     private String sender;
@@ -26,7 +26,7 @@ public class MailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
         message.setTo(receiver);
-        message.setText(url + token);
+        message.setText(applicationUrl + token);
         message.setSubject("Account confirmation");
         mailSender.send(message);
         log.info("Mail send successfully to: {}", receiver);

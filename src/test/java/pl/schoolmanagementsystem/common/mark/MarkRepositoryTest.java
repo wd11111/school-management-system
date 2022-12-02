@@ -12,7 +12,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkWithTwoFields;
+import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ class MarkRepositoryTest implements MarkSamples {
 
     @Test
     void should_return_all_marks_for_student() {
-        List<MarkWithTwoFields> marks = markRepository.findAllMarksForStudent("email");
+        List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
 
         assertThat(marks).extracting("mark").containsAll(List.of((byte) 1, (byte) 2, (byte) 4));
     }

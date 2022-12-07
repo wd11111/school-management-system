@@ -22,7 +22,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
+import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto3;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
@@ -83,7 +83,7 @@ class TeacherClassControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        List<StudentOutputDto3> listOfStudentsDto = List.of(studentOutputDto3(), studentOutputDto3());
+        List<StudentResponseDto3> listOfStudentsDto = List.of(studentResponseDto3(), studentResponseDto3());
         List<Student> listOfStudents = List.of(student(), student());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudentsDto);
         when(teacherClassService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);

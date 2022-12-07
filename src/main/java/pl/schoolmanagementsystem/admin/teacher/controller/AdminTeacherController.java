@@ -17,12 +17,12 @@ import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherDtoMapper;
 import pl.schoolmanagementsystem.admin.teacher.service.AdminTeacherService;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
 
 import javax.validation.Valid;
 
-import static pl.schoolmanagementsystem.admin.teacher.mapper.TeacherDtoMapper.mapToTeacherOutputDto;
+import static pl.schoolmanagementsystem.admin.teacher.mapper.TeacherDtoMapper.mapToTeacherResponseDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,9 +32,9 @@ public class AdminTeacherController {
     private final AdminTeacherService adminTeacherService;
 
     @GetMapping
-    public Page<TeacherOutputDto> getAllTeachers(Pageable pageable) {
+    public Page<TeacherResponseDto> getAllTeachers(Pageable pageable) {
         return adminTeacherService.getAllTeachers(pageable)
-                .map(TeacherDtoMapper::mapToTeacherOutputDto);
+                .map(TeacherDtoMapper::mapToTeacherResponseDto);
     }
 
     @GetMapping("/{id}/taught-classes")
@@ -43,14 +43,14 @@ public class AdminTeacherController {
     }
 
     @PostMapping
-    public ResponseEntity<TeacherOutputDto> createTeacher(@RequestBody @Valid TeacherRequestDto teacherRequestDto) {
+    public ResponseEntity<TeacherResponseDto> createTeacher(@RequestBody @Valid TeacherRequestDto teacherRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapToTeacherOutputDto(adminTeacherService.createTeacher(teacherRequestDto)));
+                .body(mapToTeacherResponseDto(adminTeacherService.createTeacher(teacherRequestDto)));
     }
 
     @PatchMapping("/{id}/subjects")
-    public TeacherOutputDto addSubjectToTeacher(@PathVariable long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
-        return mapToTeacherOutputDto(adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto));
+    public TeacherResponseDto addSubjectToTeacher(@PathVariable long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
+        return mapToTeacherResponseDto(adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto));
     }
 
     @DeleteMapping("/{id}")

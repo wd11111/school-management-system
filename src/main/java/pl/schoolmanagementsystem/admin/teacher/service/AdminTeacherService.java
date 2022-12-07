@@ -45,7 +45,8 @@ public class AdminTeacherService {
                 .map(subject -> schoolSubjectRepository.findByNameIgnoreCase(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
-        Teacher teacher = teacherRepository.save(teacherCreator.createTeacher(teacherRequestDto, taughtSubjects));
+        Teacher teacher = teacherCreator.createTeacher(teacherRequestDto, taughtSubjects);
+        teacherRepository.save(teacher);
         emailService.sendEmail(teacherRequestDto.getEmail(), teacher.getAppUser().getToken());
         return teacher;
     }

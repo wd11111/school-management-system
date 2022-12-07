@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
+import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto3;
 import pl.schoolmanagementsystem.teacher.mapper.StudentDtoMapper;
 import pl.schoolmanagementsystem.teacher.service.TeacherClassService;
 
@@ -35,10 +35,10 @@ public class TeacherClassController {
     }
 
     @GetMapping("/classes/{className}")
-    public List<StudentOutputDto3> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
+    public List<StudentResponseDto3> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
         return teacherClassService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName())
                 .stream()
-                .map(StudentDtoMapper::mapToStudentOutputDto3)
+                .map(StudentDtoMapper::mapToStudentResponseDto3)
                 .collect(Collectors.toList());
     }
 

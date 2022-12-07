@@ -73,7 +73,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
-        List<StudentResponseDto2> listOfStudents = List.of(studentOutputDto2(), studentOutputDto2());
+        List<StudentResponseDto2> listOfStudents = List.of(studentResponseDto2(), studentResponseDto2());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudents);
         when(adminClassService.getAllStudentsInClass("1a")).thenReturn(listOfStudents);
 
@@ -88,7 +88,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_taught_subjects_in_class() throws Exception {
-        List<SubjectAndTeacherResponseDto> listOfSubjects = List.of(subjectAndTeacherOutput(), subjectAndTeacherOutput());
+        List<SubjectAndTeacherResponseDto> listOfSubjects = List.of(subjectAndTeacherResponse(), subjectAndTeacherResponse());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfSubjects);
         when(adminClassService.getTaughtSubjectsInClass("1a")).thenReturn(listOfSubjects);
 
@@ -131,8 +131,8 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_adding_subject_to_class() throws Exception {
-        String body = objectMapper.writeValueAsString(teacherInClassInput());
-        String expectedResponse = objectMapper.writeValueAsString(teacherInClassOutput());
+        String body = objectMapper.writeValueAsString(teacherInClassRequest());
+        String expectedResponse = objectMapper.writeValueAsString(teacherInClassResponse());
         when(adminClassService.addTeacherToSchoolClass(any(), anyString())).thenReturn(teacherInClass());
 
         MvcResult mvcResult = mockMvc.perform(patch("/admin/classes/1a/teachers")

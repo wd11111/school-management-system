@@ -51,7 +51,7 @@ class AdminStudentControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_created_when_creating_student() throws Exception {
-        StudentRequestDto studentRequestDto = studentInputDto();
+        StudentRequestDto studentRequestDto = studentRequestDto();
         String body = objectMapper.writeValueAsString(studentRequestDto);
         Student student = student();
         when(adminStudentService.createStudent(any())).thenReturn(student);

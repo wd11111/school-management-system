@@ -9,12 +9,12 @@ import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassResponseDt
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
 import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
+import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto3;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,19 +37,19 @@ public interface ControllerSamples extends Samples {
         return new SchoolClassDto(CLASS_NAME);
     }
 
-    default StudentResponseDto2 studentOutputDto2() {
+    default StudentResponseDto2 studentResponseDto2() {
         return new StudentResponseDto2(ID_1, NAME, SURNAME);
     }
 
-    default SubjectAndTeacherResponseDto subjectAndTeacherOutput() {
+    default SubjectAndTeacherResponseDto subjectAndTeacherResponse() {
         return new SubjectAndTeacherResponseDto(SUBJECT, NAME, SURNAME);
     }
 
-    default TeacherInClassRequestDto teacherInClassInput() {
+    default TeacherInClassRequestDto teacherInClassRequest() {
         return new TeacherInClassRequestDto(ID_1, SUBJECT);
     }
 
-    default TeacherInClassResponseDto teacherInClassOutput() {
+    default TeacherInClassResponseDto teacherInClassResponse() {
         return new TeacherInClassResponseDto(ID_1, SUBJECT, Set.of(CLASS_NAME));
     }
 
@@ -61,7 +61,7 @@ public interface ControllerSamples extends Samples {
         return new SchoolSubjectDto(CLASS_NAME);
     }
 
-    default StudentRequestDto studentInputDto() {
+    default StudentRequestDto studentRequestDto() {
         return new StudentRequestDto(NAME, SURNAME, CLASS_NAME, NAME);
     }
 
@@ -69,16 +69,16 @@ public interface ControllerSamples extends Samples {
         return new Student(ID_1, NAME, SURNAME, getAppUser(), List.of(getMark1(), getMark1(), getMark1()), CLASS_NAME);
     }
 
-    default TeacherOutputDto teacherOutputDto() {
-        return new TeacherOutputDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
+    default TeacherResponseDto teacherResponseDto() {
+        return new TeacherResponseDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
-    default TeacherRequestDto teacherInputDto() {
+    default TeacherRequestDto teacherRequestDto() {
         return new TeacherRequestDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
     }
 
-    default StudentOutputDto3 studentOutputDto3() {
-        return new StudentOutputDto3(ID_1, NAME, SURNAME, List.of((byte) 1, (byte) 1, (byte) 1));
+    default StudentResponseDto3 studentResponseDto3() {
+        return new StudentResponseDto3(ID_1, NAME, SURNAME, List.of((byte) 1, (byte) 1, (byte) 1));
     }
 
     default Mark getMark1() {

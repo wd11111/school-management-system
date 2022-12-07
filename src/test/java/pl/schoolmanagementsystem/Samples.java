@@ -6,7 +6,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public interface Samples {
     long ID_1 = 1;
     long ID_2 = 2;
 
-    default TeacherOutputDto createTeacherOutputDto() {
-        return new TeacherOutputDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
+    default TeacherResponseDto createTeacherResponseDto() {
+        return new TeacherResponseDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
     default SchoolClass createSchoolClass() {

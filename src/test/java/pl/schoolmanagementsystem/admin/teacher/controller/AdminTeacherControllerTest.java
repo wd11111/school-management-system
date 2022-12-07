@@ -22,8 +22,8 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
 import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -59,8 +59,8 @@ class AdminTeacherControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_get_for_all_teachers() throws Exception {
         Page<Teacher> listOfTeachers = new PageImpl<>(List.of(createTeacherOfBiology(), createTeacherOfBiology()));
-        Page<TeacherOutputDto> listOfTeachersOutput = new PageImpl<>(List.of(teacherOutputDto(), teacherOutputDto()));
-        String expectedResponseBody = objectMapper.writeValueAsString(listOfTeachersOutput);
+        Page<TeacherResponseDto> listOfTeachersResponse = new PageImpl<>(List.of(teacherResponseDto(), teacherResponseDto()));
+        String expectedResponseBody = objectMapper.writeValueAsString(listOfTeachersResponse);
         when(adminTeacherService.getAllTeachers(any())).thenReturn(listOfTeachers);
 
         MvcResult mvcResult = mockMvc.perform(get("/admin/teachers"))
@@ -89,7 +89,7 @@ class AdminTeacherControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_created_when_creating_teacher() throws Exception {
-        TeacherRequestDto teacherRequestDto = teacherInputDto();
+        TeacherRequestDto teacherRequestDto = teacherRequestDto();
         Teacher teacher = createTeacherNoSubjectsTaught();
         String body = objectMapper.writeValueAsString(teacherRequestDto);
         when(adminTeacherService.createTeacher(any())).thenReturn(teacher);
@@ -123,8 +123,8 @@ class AdminTeacherControllerTest implements ControllerSamples {
     void should_return_status_ok_when_adding_subject_to_teacher() throws Exception {
         SchoolSubjectDto schoolSubjectDto = schoolSubjectDto();
         Teacher teacher = createTeacherOfBiology();
-        TeacherOutputDto teacherOutputDto = teacherOutputDto();
-        String expectedResponse = objectMapper.writeValueAsString(teacherOutputDto);
+        TeacherResponseDto teacherResponseDto = teacherResponseDto();
+        String expectedResponse = objectMapper.writeValueAsString(teacherResponseDto);
         String body = objectMapper.writeValueAsString(schoolSubjectDto);
         when(adminTeacherService.addSubjectToTeacher(anyLong(), any())).thenReturn(teacher);
 

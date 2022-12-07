@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MarkOutputDto {
+public class MarkResponseDto {
 
     private long markId;
     private byte mark;

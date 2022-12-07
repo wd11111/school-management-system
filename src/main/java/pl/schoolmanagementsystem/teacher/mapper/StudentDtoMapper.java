@@ -2,12 +2,12 @@ package pl.schoolmanagementsystem.teacher.mapper;
 
 import pl.schoolmanagementsystem.common.mark.MarkMapper;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentOutputDto3;
+import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto3;
 
 public class StudentDtoMapper {
 
-    public static StudentOutputDto3 mapToStudentOutputDto3(Student student) {
-        return new StudentOutputDto3(
+    public static StudentResponseDto3 mapToStudentResponseDto3(Student student) {
+        return new StudentResponseDto3(
                 student.getId(),
                 student.getName(),
                 student.getSurname(),

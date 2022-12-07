@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentOutputDto3 {
+public class StudentResponseDto3 {
 
     private long studentId;
     private String name;

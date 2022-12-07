@@ -3,18 +3,18 @@ package pl.schoolmanagementsystem.admin.teacher.mapper;
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherOutputDto;
+import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TeacherDtoMapperTest implements Samples {
 
     @Test
-    void should_map_teacher_to_teacher_output_dto() {
+    void should_map_teacher_to_teacher_response_dto() {
         Teacher teacher = createTeacherOfBiology();
-        TeacherOutputDto expected =  createTeacherOutputDto();
+        TeacherResponseDto expected =  createTeacherResponseDto();
 
-        TeacherOutputDto result = TeacherDtoMapper.mapToTeacherOutputDto(teacher);
+        TeacherResponseDto result = TeacherDtoMapper.mapToTeacherResponseDto(teacher);
 
         assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getTaughtSubjects()).isEqualTo(expected.getTaughtSubjects());

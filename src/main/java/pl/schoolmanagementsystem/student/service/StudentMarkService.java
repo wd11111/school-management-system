@@ -10,7 +10,7 @@ import pl.schoolmanagementsystem.common.student.StudentRepository;
 import java.util.List;
 import java.util.Map;
 
-import static pl.schoolmanagementsystem.common.mark.MarkMapper.groupMarksBySubject;
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +31,10 @@ public class StudentMarkService {
 
     private long getStudentId(String studentEmail) {
         return studentRepository.findIdByEmail(studentEmail);
+    }
+
+    private Map<String, List<MarkDto>> groupMarksBySubject(List<MarkDto> studentsMarks) {
+        return studentsMarks.stream()
+                .collect(groupingBy(MarkDto::getSubject));
     }
 }

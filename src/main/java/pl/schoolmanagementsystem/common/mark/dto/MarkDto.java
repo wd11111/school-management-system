@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.common.mark.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 @NoArgsConstructor
 public class MarkDto {
 

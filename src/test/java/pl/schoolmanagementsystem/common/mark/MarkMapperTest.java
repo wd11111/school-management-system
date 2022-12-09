@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.schoolmanagementsystem.common.mark.MarkMapper.groupMarksBySubject;
 import static pl.schoolmanagementsystem.common.mark.MarkMapper.mapListOfMarksToBytes;
 import static pl.schoolmanagementsystem.common.mark.MarkMapper.mapToListOfBytesInMapStructure;
 
@@ -35,17 +34,4 @@ class MarkMapperTest implements MarkSamples {
         assertThat(result).containsExactlyEntriesOf(expected);
     }
 
-    @Test
-    void should_group_marks_by_subject() {
-        MarkDto mark1 = createMarkDto1();
-        MarkDto mark2 = createMarkDto2();
-        List<MarkDto> listOfMarksWithTwoFields = List.of(mark1, mark2);
-        Map<String, List<MarkDto>> expected = new HashMap<>(
-                Map.of(SUBJECT, List.of(mark1),
-                        SUBJECT_2, List.of(mark2)));
-
-        Map<String, List<MarkDto>> result = groupMarksBySubject(listOfMarksWithTwoFields);
-
-        assertThat(result).containsAllEntriesOf(expected);
-    }
 }

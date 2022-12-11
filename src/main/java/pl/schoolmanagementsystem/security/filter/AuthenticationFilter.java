@@ -16,6 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    public static final int RESPONSE_STATUS = 401;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -33,7 +34,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
-            response.setStatus(401);
+            response.setStatus(RESPONSE_STATUS);
             return null;
         }
     }

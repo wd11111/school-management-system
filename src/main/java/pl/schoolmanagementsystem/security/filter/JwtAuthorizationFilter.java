@@ -21,6 +21,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private static final String TOKEN_HEADER = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
+    public static final String CLAIM = "roles";
+    public static final String REPLACEMENT = "";
 
     private String secret;
 
@@ -46,7 +48,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null && token.startsWith(TOKEN_PREFIX)) {
             DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secret))
                     .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""));
+                    .verify(token.replace(TOKEN_PREFIX, REPLACEMENT));
             String username = jwt.getSubject();
             Collection<SimpleGrantedAuthority> authorities = getAuthorities(jwt);
             return new UsernamePasswordAuthenticationToken(username, null, authorities);
@@ -55,7 +57,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private Collection<SimpleGrantedAuthority> getAuthorities(DecodedJWT jwt) {
-        String[] roles = jwt.getClaim("roles").asArray(String.class);
+        String[] roles = jwt.getClaim(CLAIM).asArray(String.class);
         return Arrays.stream(roles)
                 .map(SimpleGrantedAuthority::new)
                 .toList();

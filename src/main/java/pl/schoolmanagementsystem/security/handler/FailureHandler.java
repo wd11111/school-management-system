@@ -12,10 +12,12 @@ import java.io.IOException;
 @Component
 public class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    public static final int RESPONSE_STATUS = 401;
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
                                         throws IOException, ServletException {
         super.onAuthenticationFailure(request, response, exception);
-        response.setStatus(401);
+        response.setStatus(RESPONSE_STATUS);
     }
 }

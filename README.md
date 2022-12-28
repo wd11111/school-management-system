@@ -19,6 +19,10 @@ Other:
 - Docker <img width="30px" src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png"/> / Docker compose<img width="57px" src="https://miro.medium.com/max/453/1*_5tOkcXb7RaVvjYpSqZXpg.png"/>
 - Git <img width="23px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Git_icon.svg/1024px-Git_icon.svg.png"/>
 
+# Endpoints:
+![swagger](https://user-images.githubusercontent.com/112166269/209846352-1ff07d10-eb16-45e0-b4de-d34625053b1a.png)
+
+
 # Database diagram:
 ![db diagram](https://user-images.githubusercontent.com/112166269/209821722-515f4417-f95f-4a3b-ad62-58feeb44b5ca.JPG)
 

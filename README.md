@@ -12,7 +12,6 @@ Backend:
 Tests:
 - JUnit 5 <img width="54px" src="https://upload.wikimedia.org/wikipedia/commons/5/59/JUnit_5_Banner.png"/>
 - Mockito <img width="70px" src="https://raw.githubusercontent.com/mockito/mockito.github.io/master/img/logo%402x.png"/>
-- WireMock <img width="36px" src="https://wiremock.org/images/wiremock-concept-icon-01.png"/>
 - Testcontainers <img width="28px" src="https://avatars.githubusercontent.com/u/13393021?s=200&v=4"/>
 
 Other:

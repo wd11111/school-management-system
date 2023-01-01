@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.admin.schoolClass.service.AdminClassService;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassRequestDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassResponseDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassResponseDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
 

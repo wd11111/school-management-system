@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentRequestDto;
+import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
 
 import java.util.ArrayList;
 
-import static pl.schoolmanagementsystem.admin.mailSender.TokenGenerator.generateToken;
+import static pl.schoolmanagementsystem.admin.common.mail.TokenGenerator.generateToken;
 
 @Component
 @RequiredArgsConstructor

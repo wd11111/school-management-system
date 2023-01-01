@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto3;
-import pl.schoolmanagementsystem.teacher.mapper.StudentDtoMapper;
+import pl.schoolmanagementsystem.teacher.dto.StudentResponseDto3;
+import pl.schoolmanagementsystem.teacher.utils.StudentDtoMapper;
 import pl.schoolmanagementsystem.teacher.service.TeacherClassService;
 
 import javax.validation.Valid;

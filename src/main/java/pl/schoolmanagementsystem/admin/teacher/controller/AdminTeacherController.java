@@ -17,8 +17,8 @@ import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherDtoMapper;
 import pl.schoolmanagementsystem.admin.teacher.service.AdminTeacherService;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
 
 import javax.validation.Valid;
 

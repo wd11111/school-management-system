@@ -9,7 +9,7 @@ import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassRequestDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
 import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
@@ -121,7 +121,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_class_doesnt_exist_while_adding_teacher() {
         TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
-        when(teacherRepository.findById(anyLong())).thenReturn(Optional.ofNullable(new Teacher()));
+        when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))

@@ -11,7 +11,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import static pl.schoolmanagementsystem.common.mark.MarkMapper.mapToListOfBytesInMapStructure;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfBytesInMapStructure;
 
 @RestController
 @RequiredArgsConstructor

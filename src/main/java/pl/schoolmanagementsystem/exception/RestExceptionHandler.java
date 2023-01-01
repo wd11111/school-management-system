@@ -10,8 +10,8 @@ import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyHasTea
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.common.security.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.common.security.PasswordsDoNotMatchException;
+import pl.schoolmanagementsystem.admin.security.CouldNotConfirmUserException;
+import pl.schoolmanagementsystem.admin.security.PasswordsDoNotMatchException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;

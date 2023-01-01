@@ -19,10 +19,9 @@ import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
 
 import java.util.List;
-
-import static pl.schoolmanagementsystem.common.mark.MarkMapper.createMark;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +43,8 @@ public class TeacherClassService {
         String schoolClass = student.getSchoolClass();
         SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markDto.getSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(markDto.getSubject()));
-        validateIfTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
-        student.addMark(createMark(markDto, studentId));
+        validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
+        student.addMark(MarkMapper.createMarkEntity(markDto, studentId));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {
@@ -60,11 +59,11 @@ public class TeacherClassService {
         if (!subjectRepository.existsById(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
-        validateIfTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
+        validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
         return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName);
     }
 
-    private void validateIfTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {
+    private void validateTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {
         if (!doesTeacherTeachSubjectInClass(teacherEmail, subject, schoolClass)) {
             throw new TeacherDoesNotTeachClassException(subject, schoolClass);
         }

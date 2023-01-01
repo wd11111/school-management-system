@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.mailSender;
+package pl.schoolmanagementsystem.admin.common.mail;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

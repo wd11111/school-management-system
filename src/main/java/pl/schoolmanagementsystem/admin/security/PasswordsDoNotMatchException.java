@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.security;
+package pl.schoolmanagementsystem.admin.security;
 
 public class PasswordsDoNotMatchException extends RuntimeException{
 

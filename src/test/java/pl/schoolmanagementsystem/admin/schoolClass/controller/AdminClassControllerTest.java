@@ -19,7 +19,7 @@ import pl.schoolmanagementsystem.admin.schoolClass.service.AdminTeacherInClassSe
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.TeacherInClassRequestDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;

@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.admin.student.mapper;
 
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponse;
+import pl.schoolmanagementsystem.admin.student.dto.StudentResponse;
 
 public class StudentResponseMapper {
 

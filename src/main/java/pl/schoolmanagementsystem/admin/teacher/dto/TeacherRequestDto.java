@@ -1,18 +1,25 @@
-package pl.schoolmanagementsystem.common.student.dto;
+package pl.schoolmanagementsystem.admin.teacher.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class StudentRequestDto {
+@Builder
+@Setter
+public class TeacherRequestDto {
+
+    @NotNull(message = "{not.null.message}")
+    @NotBlank(message = "{not.blank.message}")
+    private String email;
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")
@@ -22,12 +29,8 @@ public class StudentRequestDto {
     @NotBlank(message = "{not.blank.message}")
     private String surname;
 
-    @NotNull(message = "{not.null.message}")
-    @NotBlank(message = "{not.blank.message}")
-    private String schoolClassName;
+    private boolean isAdmin;
 
     @NotNull(message = "{not.null.message}")
-    @NotBlank(message = "{not.blank.message}")
-    private String email;
-
+    private Set<String> taughtSubjects;
 }

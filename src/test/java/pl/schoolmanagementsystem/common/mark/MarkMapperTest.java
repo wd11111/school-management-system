@@ -8,20 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.schoolmanagementsystem.common.mark.MarkMapper.mapListOfMarksToBytes;
-import static pl.schoolmanagementsystem.common.mark.MarkMapper.mapToListOfBytesInMapStructure;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfBytesInMapStructure;
 
 class MarkMapperTest implements MarkSamples {
-
-    @Test
-    void should_map_list_of_marks_to_bytes() {
-        List<Mark> listOfMarks = List.of(createMark(), createMark2());
-        List<Byte> expected = List.of((byte) 2, (byte) 4);
-
-        List<Byte> result = mapListOfMarksToBytes(listOfMarks);
-
-        assertThat(result).containsAll(expected);
-    }
 
     @Test
     void should_map_list_of_bytes_to_map_structure() {

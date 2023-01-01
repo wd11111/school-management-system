@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.admin.teacher.mapper;
 
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
 
 import java.util.stream.Collectors;
 

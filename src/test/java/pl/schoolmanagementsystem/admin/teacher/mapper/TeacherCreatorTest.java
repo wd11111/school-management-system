@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
 

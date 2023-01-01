@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem.admin.teacher.mapper;
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

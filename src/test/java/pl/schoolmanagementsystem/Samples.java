@@ -6,7 +6,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.teacher.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 
 import java.util.ArrayList;

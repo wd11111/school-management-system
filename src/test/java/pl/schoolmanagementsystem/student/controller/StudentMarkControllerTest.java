@@ -8,12 +8,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.student.utils.MarkMapper;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
@@ -25,6 +25,7 @@ import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;
 import pl.schoolmanagementsystem.student.service.StudentMarkService;
+import pl.schoolmanagementsystem.student.utils.MarkMapper;
 
 import java.security.Principal;
 import java.util.List;
@@ -94,7 +95,8 @@ class MockMvcConfig6 {
         ObjectMapper objectMapper = mock(ObjectMapper.class);
         FailureHandler failureHandler = mock(FailureHandler.class);
         AuthenticationEntryPoint authenticationEntryPoint = mock(AuthenticationEntryPoint.class);
-        return new SecurityConfig(userService, successHandler, objectMapper, failureHandler, authenticationEntryPoint);
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+        return new SecurityConfig(userService, successHandler, objectMapper, failureHandler, authenticationEntryPoint, passwordEncoder);
     }
 
     @Bean

@@ -30,7 +30,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${jwt.expirationTime}")
     private long expirationTime;
     @Value("${jwt.secret}")
-    private String secret;
+    private String secretKey;
 
     private final ObjectMapper objectMapper;
 
@@ -48,7 +48,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .withClaim(CLAIM, principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
-                .sign(Algorithm.HMAC256(secret));
+                .sign(Algorithm.HMAC256(secretKey));
     }
 
     @Getter

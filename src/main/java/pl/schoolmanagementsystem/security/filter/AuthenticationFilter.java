@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,7 +17,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    public static final int RESPONSE_STATUS = 401;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -34,7 +34,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
-            response.setStatus(RESPONSE_STATUS);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return null;
         }
     }

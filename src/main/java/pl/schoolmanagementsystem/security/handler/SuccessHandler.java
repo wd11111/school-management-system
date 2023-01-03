@@ -17,16 +17,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.stream.Collectors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
 @RequiredArgsConstructor
 public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     public static final String PREFIX = "Bearer ";
-    public static final String CONTENT_TYPE = "application/json";
     public static final String CLAIM = "roles";
     @Value("${jwt.expirationTime}")
     private long expirationTime;
@@ -38,14 +37,18 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        String token = JWT.create()
+        String token = createToken(principal);
+        String jsonToken = objectMapper.writeValueAsString(new Token(PREFIX + token));
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.getWriter().write(jsonToken);
+    }
+
+    private String createToken(UserDetails principal) {
+        return JWT.create()
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .withClaim(CLAIM, principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .sign(Algorithm.HMAC256(secret));
-        String jsonToken = objectMapper.writeValueAsString(new Token(PREFIX + token));
-        response.setContentType(CONTENT_TYPE);
-        response.getWriter().write(jsonToken);
     }
 
     @Getter

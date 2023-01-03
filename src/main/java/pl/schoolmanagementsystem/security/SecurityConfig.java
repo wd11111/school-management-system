@@ -3,7 +3,6 @@ package pl.schoolmanagementsystem.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import pl.schoolmanagementsystem.security.filter.AuthenticationFilter;
@@ -31,13 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final ObjectMapper objectMapper;
     private final FailureHandler failureHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.secret}")
-    String secret;
+    String secretKey;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .addFilter(authenticationFilter())
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), secret));
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), secretKey));
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
@@ -71,8 +70,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset wd:1
+--changeset wd:2
 
 INSERT INTO role
 VALUES ('ROLE_STUDENT'),

@@ -1,24 +1,14 @@
 package pl.schoolmanagementsystem.common.student;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.user.AppUser;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 
 @Entity
@@ -37,11 +27,11 @@ public class Student {
 
     private String surname;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userEmail")
     private AppUser appUser;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "studentId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = LAZY, mappedBy = "studentId")
     private List<Mark> marks = new ArrayList<>();
 
     private String schoolClass;

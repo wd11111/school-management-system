@@ -27,7 +27,7 @@ import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
-import pl.schoolmanagementsystem.security.SecurityConfig;
+import pl.schoolmanagementsystem.security.config.SecurityConfig;
 import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;

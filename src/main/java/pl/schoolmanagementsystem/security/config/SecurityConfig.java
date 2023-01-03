@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.security;
+package pl.schoolmanagementsystem.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmailService {
+public class EmailService implements EmailSender{
 
     @Value("${application.url}")
     private String applicationUrl;

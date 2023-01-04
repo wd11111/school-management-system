@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem.admin.student.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.common.mail.EmailSender;
 import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
@@ -23,8 +23,7 @@ public class AdminStudentService {
 
     private final SchoolClassRepository schoolClassRepository;
 
-
-    private final EmailService emailService;
+    private final EmailSender emailSender;
 
     private final AppUserRepository userRepository;
 
@@ -36,7 +35,7 @@ public class AdminStudentService {
         SchoolClass schoolClass = schoolClassRepository.findById(studentRequestDto.getSchoolClassName())
                 .orElseThrow(() -> new NoSuchSchoolClassException(studentRequestDto.getSchoolClassName()));
         Student student = studentRepository.save(studentCreator.createStudent(studentRequestDto, schoolClass));
-        emailService.sendEmail(studentRequestDto.getEmail(), student.getAppUser().getToken());
+        emailSender.sendEmail(studentRequestDto.getEmail(), student.getAppUser().getToken());
         return student;
     }
 

@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.common.mail.EmailSender;
 import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -33,7 +33,7 @@ public class AdminTeacherService {
 
     private final AppUserRepository userRepository;
 
-    private final EmailService emailService;
+    private final EmailSender emailSender;
 
     private final TeacherCreator teacherCreator;
 
@@ -46,7 +46,7 @@ public class AdminTeacherService {
                 .collect(Collectors.toSet());
         Teacher teacher = teacherCreator.createTeacher(teacherRequestDto, taughtSubjects);
         teacherRepository.save(teacher);
-        emailService.sendEmail(teacherRequestDto.getEmail(), teacher.getAppUser().getToken());
+        emailSender.sendEmail(teacherRequestDto.getEmail(), teacher.getAppUser().getToken());
         return teacher;
     }
 
@@ -61,7 +61,7 @@ public class AdminTeacherService {
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
-       validateTeacherExists(teacherId);
+        validateTeacherExists(teacherId);
         String teacherEmail = teacherRepository.findEmailById(teacherId);
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail, pageable);
     }

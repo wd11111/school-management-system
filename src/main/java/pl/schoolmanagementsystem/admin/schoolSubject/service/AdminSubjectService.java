@@ -2,7 +2,6 @@ package pl.schoolmanagementsystem.admin.schoolSubject.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +26,7 @@ public class AdminSubjectService {
     }
 
     public Page<SchoolSubjectDto> getAllSubjects(Pageable pageable) {
-        return schoolSubjectRepository.findAllSchoolSubjects(PageRequest.of(
-                pageable.getPageNumber(), pageable.getPageSize()));
+        return schoolSubjectRepository.findAllSchoolSubjects(pageable);
     }
 
     @Transactional

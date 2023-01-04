@@ -2,7 +2,6 @@ package pl.schoolmanagementsystem.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +47,7 @@ public class TeacherClassService {
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {
-        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
-                pageable.getPageNumber(), pageable.getPageSize()));
+        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, pageable);
     }
 
     public List<Student> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {

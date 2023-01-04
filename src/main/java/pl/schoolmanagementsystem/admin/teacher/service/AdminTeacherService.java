@@ -2,11 +2,11 @@ package pl.schoolmanagementsystem.admin.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -15,7 +15,6 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
@@ -52,7 +51,7 @@ public class AdminTeacherService {
     }
 
     public Page<Teacher> getAllTeachers(Pageable pageable) {
-        return teacherRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+        return teacherRepository.findAll(pageable);
     }
 
     @Transactional
@@ -64,8 +63,7 @@ public class AdminTeacherService {
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
        validateTeacherExists(teacherId);
         String teacherEmail = teacherRepository.findEmailById(teacherId);
-        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, PageRequest.of(
-                pageable.getPageNumber(), pageable.getPageSize()));
+        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, pageable);
     }
 
     @Transactional

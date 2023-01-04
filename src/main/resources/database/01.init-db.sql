@@ -5,7 +5,7 @@ create table "app_user"
 (
     "user_email" varchar(255) not null,
     "password"   varchar(255),
-    "token"      varchar(255),
+    "token"      varchar(255) not null,
     primary key ("user_email")
 );
 create table "app_user_roles"
@@ -39,25 +39,25 @@ create table "school_subject"
 create table "student"
 (
     "id"           bigserial not null,
-    "name"         varchar(255),
-    "school_class" varchar(255),
-    "surname"      varchar(255),
-    "user_email"   varchar(255),
+    "name"         varchar(255) not null,
+    "school_class" varchar(255) not null,
+    "surname"      varchar(255) not null,
+    "user_email"   varchar(255) not null,
     primary key ("id")
 );
 create table "teacher"
 (
     "id"         bigserial not null,
-    "name"       varchar(255),
-    "surname"    varchar(255),
-    "user_email" varchar(255),
+    "name"       varchar(255) not null,
+    "surname"    varchar(255) not null,
+    "user_email" varchar(255) not null,
     primary key ("id")
 );
 create table "teacher_in_class"
 (
     "id"             bigserial not null,
-    "taught_subject" varchar(255),
-    "teacher_id"     int8,
+    "taught_subject" varchar(255) not null,
+    "teacher_id"     int8 not null,
     primary key ("id")
 );
 create table "teacher_in_class_taught_classes"

@@ -1,0 +1,20 @@
+package pl.schoolmanagementsystem.mapper;
+
+import pl.schoolmanagementsystem.model.SchoolClass;
+import pl.schoolmanagementsystem.model.dto.TeacherInClassResponseDto;
+import pl.schoolmanagementsystem.model.TeacherInClass;
+
+import static java.util.stream.Collectors.toSet;
+
+public class TeacherInClassMapper {
+
+    public static TeacherInClassResponseDto mapToTeacherInClassResponseDto(TeacherInClass teacherInClass) {
+        return TeacherInClassResponseDto.builder()
+                .teacherId(teacherInClass.getTeacher().getId())
+                .taughtSubject(teacherInClass.getTaughtSubject())
+                .schoolClassName(teacherInClass.getTaughtClasses().stream()
+                        .map(SchoolClass::getName)
+                        .collect(toSet()))
+                .build();
+    }
+}

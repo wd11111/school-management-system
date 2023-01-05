@@ -6,11 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
-import pl.schoolmanagementsystem.common.user.Role;
-import pl.schoolmanagementsystem.common.user.RoleRepository;
+import pl.schoolmanagementsystem.mapper.StudentCreator;
+import pl.schoolmanagementsystem.model.SchoolClass;
+import pl.schoolmanagementsystem.model.Student;
+import pl.schoolmanagementsystem.model.dto.StudentRequestDto;
+import pl.schoolmanagementsystem.model.Role;
+import pl.schoolmanagementsystem.repository.RoleRepository;
 
 import java.util.Optional;
 

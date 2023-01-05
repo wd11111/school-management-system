@@ -6,10 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
-import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
+import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.exception.NoSuchSchoolSubjectException;
+import pl.schoolmanagementsystem.exception.SubjectAlreadyExistsException;
+import pl.schoolmanagementsystem.service.AdminSubjectService;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

@@ -15,7 +15,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.repository.SchoolClassRepository;
 
 import java.util.List;
 

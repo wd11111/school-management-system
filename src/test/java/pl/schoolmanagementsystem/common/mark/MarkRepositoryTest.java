@@ -11,8 +11,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.model.dto.MarkDto;
+import pl.schoolmanagementsystem.repository.MarkRepository;
 
 import java.util.List;
 

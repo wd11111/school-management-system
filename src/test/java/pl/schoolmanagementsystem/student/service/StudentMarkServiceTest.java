@@ -6,11 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.common.mark.MarkRepository;
+import pl.schoolmanagementsystem.repository.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.MarkSamples;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
-import pl.schoolmanagementsystem.common.student.StudentRepository;
+import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.model.dto.MarkDto;
+import pl.schoolmanagementsystem.repository.StudentRepository;
+import pl.schoolmanagementsystem.service.StudentMarkService;
 
 import java.util.HashMap;
 import java.util.List;

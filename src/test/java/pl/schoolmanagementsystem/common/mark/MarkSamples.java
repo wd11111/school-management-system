@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.common.mark;
 
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.model.Mark;
+import pl.schoolmanagementsystem.model.dto.MarkDto;
 
 public interface MarkSamples {
 

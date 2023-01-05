@@ -1,20 +1,20 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.common.mark.Mark;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
-import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassResponseDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
-import pl.schoolmanagementsystem.teacher.dto.StudentResponseDto3;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.model.Mark;
+import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.model.dto.MarkDto;
+import pl.schoolmanagementsystem.model.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.model.dto.TeacherInClassRequestDto;
+import pl.schoolmanagementsystem.model.dto.TeacherInClassResponseDto;
+import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.model.dto.SubjectAndTeacherResponseDto;
+import pl.schoolmanagementsystem.model.Student;
+import pl.schoolmanagementsystem.model.dto.StudentRequestDto;
+import pl.schoolmanagementsystem.model.dto.StudentResponseDto2;
+import pl.schoolmanagementsystem.model.dto.StudentResponseDto3;
+import pl.schoolmanagementsystem.model.TeacherInClass;
+import pl.schoolmanagementsystem.model.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.model.dto.TeacherResponseDto;
 
 import java.util.Collections;
 import java.util.HashMap;

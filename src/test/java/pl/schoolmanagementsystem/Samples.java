@@ -1,13 +1,13 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
-import pl.schoolmanagementsystem.common.user.AppUser;
+import pl.schoolmanagementsystem.model.SchoolClass;
+import pl.schoolmanagementsystem.model.SchoolSubject;
+import pl.schoolmanagementsystem.model.dto.SubjectAndClassDto;
+import pl.schoolmanagementsystem.model.Student;
+import pl.schoolmanagementsystem.model.Teacher;
+import pl.schoolmanagementsystem.model.TeacherInClass;
+import pl.schoolmanagementsystem.model.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.model.AppUser;
 
 import java.util.ArrayList;
 import java.util.HashSet;

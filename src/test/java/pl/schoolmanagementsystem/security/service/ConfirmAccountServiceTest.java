@@ -6,11 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.schoolmanagementsystem.admin.security.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.admin.security.PasswordsDoNotMatchException;
-import pl.schoolmanagementsystem.common.user.AppUser;
-import pl.schoolmanagementsystem.common.user.AppUserRepository;
-import pl.schoolmanagementsystem.security.dto.PasswordDto;
+import pl.schoolmanagementsystem.exception.CouldNotConfirmUserException;
+import pl.schoolmanagementsystem.exception.PasswordsDoNotMatchException;
+import pl.schoolmanagementsystem.model.AppUser;
+import pl.schoolmanagementsystem.repository.AppUserRepository;
+import pl.schoolmanagementsystem.model.dto.PasswordDto;
+import pl.schoolmanagementsystem.service.ConfirmAccountService;
 
 import java.util.Optional;
 

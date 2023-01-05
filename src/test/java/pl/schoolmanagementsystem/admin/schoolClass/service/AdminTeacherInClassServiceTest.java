@@ -6,10 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
+import pl.schoolmanagementsystem.model.SchoolClass;
+import pl.schoolmanagementsystem.model.Teacher;
+import pl.schoolmanagementsystem.model.TeacherInClass;
+import pl.schoolmanagementsystem.repository.TeacherInClassRepository;
+import pl.schoolmanagementsystem.service.AdminTeacherInClassService;
 
 import java.util.HashSet;
 import java.util.Optional;

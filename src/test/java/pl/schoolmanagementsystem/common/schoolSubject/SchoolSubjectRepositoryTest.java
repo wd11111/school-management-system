@@ -14,8 +14,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
+import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.model.dto.SubjectAndTeacherResponseDto;
+import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
 
 import java.util.List;
 

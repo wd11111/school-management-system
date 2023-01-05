@@ -14,12 +14,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.admin.schoolSubject.service.AdminSubjectService;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.exception.RestExceptionHandler;
-import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
+import pl.schoolmanagementsystem.controller.AdminSubjectController;
+import pl.schoolmanagementsystem.service.AdminSubjectService;
+import pl.schoolmanagementsystem.model.SchoolSubject;
+import pl.schoolmanagementsystem.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.model.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.exception.handler.RestExceptionHandler;
+import pl.schoolmanagementsystem.exception.handler.ValidationErrorHandler;
 
 import java.util.List;
 

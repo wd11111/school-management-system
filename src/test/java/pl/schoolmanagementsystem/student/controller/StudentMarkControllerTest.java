@@ -13,18 +13,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.student.utils.MarkMapper;
-import pl.schoolmanagementsystem.common.mark.MarkRepository;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
-import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.exception.RestExceptionHandler;
-import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
-import pl.schoolmanagementsystem.security.SecurityConfig;
-import pl.schoolmanagementsystem.security.handler.FailureHandler;
-import pl.schoolmanagementsystem.security.handler.SuccessHandler;
-import pl.schoolmanagementsystem.security.service.UserService;
-import pl.schoolmanagementsystem.student.service.StudentMarkService;
+import pl.schoolmanagementsystem.controller.StudentMarkController;
+import pl.schoolmanagementsystem.mapper.MarkMapper2;
+import pl.schoolmanagementsystem.repository.MarkRepository;
+import pl.schoolmanagementsystem.model.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.model.dto.MarkDto;
+import pl.schoolmanagementsystem.repository.StudentRepository;
+import pl.schoolmanagementsystem.exception.handler.RestExceptionHandler;
+import pl.schoolmanagementsystem.exception.handler.ValidationErrorHandler;
+import pl.schoolmanagementsystem.config.SecurityConfig;
+import pl.schoolmanagementsystem.exception.handler.FailureHandler;
+import pl.schoolmanagementsystem.exception.handler.SuccessHandler;
+import pl.schoolmanagementsystem.service.UserService;
+import pl.schoolmanagementsystem.service.StudentMarkService;
 
 import java.security.Principal;
 import java.util.List;
@@ -55,7 +56,7 @@ class StudentMarkControllerTest implements ControllerSamples {
     void should_return_status_ok_when_get_for_grouped_marks_by_subject() throws Exception {
         Principal principal = new UserPrincipal("Student");
         Map<String, List<MarkDto>> groupedMarksBySubject = getGroupedMarksBySubject();
-        Map<String, List<Byte>> expectedMap = MarkMapper.mapToListOfBytesInMapStructure(groupedMarksBySubject);
+        Map<String, List<Byte>> expectedMap = MarkMapper2.mapToListOfBytesInMapStructure(groupedMarksBySubject);
         String expectedResponseBody = objectMapper.writeValueAsString(expectedMap);
         when(studentMarkService.getGroupedMarksBySubject(anyString())).thenReturn(groupedMarksBySubject);
 

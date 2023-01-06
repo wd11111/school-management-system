@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
-import pl.schoolmanagementsystem.teacher.service.TeacherClassService;
+import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
 import pl.schoolmanagementsystem.teacher.utils.StudentDtoMapper;
 
 import javax.validation.Valid;
@@ -19,18 +19,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/teacher")
-public class TeacherClassController {
+public class TeacherProfileController {
 
-    private final TeacherClassService teacherClassService;
+    private final TeacherProfileService teacherProfileService;
 
     @GetMapping("/classes")
     public Page<SubjectAndClassDto> getTaughtClasses(Principal principal, Pageable pageable) {
-        return teacherClassService.getTaughtClassesByTeacher(principal.getName(), pageable);
+        return teacherProfileService.getTaughtClassesByTeacher(principal.getName(), pageable);
     }
 
     @GetMapping("/classes/{className}")
     public List<StudentWithMarksDto> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
-        return teacherClassService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName())
+        return teacherProfileService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName())
                 .stream()
                 .map(StudentDtoMapper::mapToStudentResponseDto3)
                 .collect(Collectors.toList());
@@ -38,7 +38,7 @@ public class TeacherClassController {
 
     @PatchMapping("/students/{id}")
     public ResponseEntity<Void> addMark(@PathVariable long id, @RequestBody @Valid MarkDto markDto, Principal principal) {
-        teacherClassService.addMark(principal.getName(), markDto, id);
+        teacherProfileService.addMark(principal.getName(), markDto, id);
         return ResponseEntity.noContent().build();
     }
 }

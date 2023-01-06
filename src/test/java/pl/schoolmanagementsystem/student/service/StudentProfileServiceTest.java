@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class StudentMarkServiceTest implements ControllerSamples, MarkSamples {
+class StudentProfileServiceTest implements ControllerSamples, MarkSamples {
 
     @Mock
     private StudentRepository studentRepository;
@@ -30,7 +30,7 @@ class StudentMarkServiceTest implements ControllerSamples, MarkSamples {
     private MarkRepository markRepository;
 
     @InjectMocks
-    private StudentMarkService studentMarkService;
+    private StudentProfileService studentProfileService;
 
     @Test
     void should_return_marks_grouped_by_subject() {
@@ -40,7 +40,7 @@ class StudentMarkServiceTest implements ControllerSamples, MarkSamples {
         when(markRepository.findAllMarksForStudent(anyString()))
                 .thenReturn(List.of(createMarkDto1(), markWithTwoFields2()));
 
-        Map<String, List<MarkDto>> result = studentMarkService.getGroupedMarksBySubject(NAME);
+        Map<String, List<MarkDto>> result = studentProfileService.getGroupedMarksBySubject(NAME);
 
         assertThat(result).isEqualTo(expected);
     }
@@ -51,7 +51,7 @@ class StudentMarkServiceTest implements ControllerSamples, MarkSamples {
         when(studentRepository.findIdByEmail(anyString())).thenReturn(ID_1);
         when(markRepository.findAllAveragesForStudent(ID_1)).thenReturn(expectedResult);
 
-        List<MarkAvgDto> result = studentMarkService.getAverageMarks(NAME);
+        List<MarkAvgDto> result = studentProfileService.getAverageMarks(NAME);
 
         assertThat(result).isEqualTo(expectedResult);
     }

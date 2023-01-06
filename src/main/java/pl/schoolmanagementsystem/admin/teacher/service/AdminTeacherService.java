@@ -40,10 +40,12 @@ public class AdminTeacherService {
     @Transactional
     public Teacher createTeacher(CreateTeacherDto createTeacherDto) {
         validateEmailIsAvailable(createTeacherDto.getEmail());
+
         Set<SchoolSubject> taughtSubjects = createTeacherDto.getTaughtSubjects().stream()
                 .map(subject -> schoolSubjectRepository.findByNameIgnoreCase(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
+
         Teacher teacher = teacherCreator.createTeacher(createTeacherDto, taughtSubjects);
         teacherRepository.save(teacher);
         emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
@@ -71,6 +73,7 @@ public class AdminTeacherService {
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
+
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
         teacher.addSubject(schoolSubject);
         return teacher;

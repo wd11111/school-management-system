@@ -32,7 +32,7 @@ import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
-import pl.schoolmanagementsystem.teacher.service.TeacherClassService;
+import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
 
 import java.security.Principal;
 import java.util.List;
@@ -45,13 +45,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = TeacherClassController.class)
+@WebMvcTest(controllers = TeacherProfileController.class)
 @ContextConfiguration(classes = MockMvcConfig5.class)
 @AutoConfigureMockMvc(addFilters = false)
-class TeacherClassControllerTest implements ControllerSamples {
+class TeacherProfileControllerTest implements ControllerSamples {
 
     @MockBean
-    private TeacherClassService teacherClassService;
+    private TeacherProfileService teacherProfileService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -64,7 +64,7 @@ class TeacherClassControllerTest implements ControllerSamples {
         Principal principal = new UserPrincipal("Teacher");
         Page<SubjectAndClassDto> listOfTaughtClasses = new PageImpl<>(listOfTaughtClasses());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfTaughtClasses);
-        when(teacherClassService.getTaughtClassesByTeacher(anyString(), any())).thenReturn(listOfTaughtClasses);
+        when(teacherProfileService.getTaughtClassesByTeacher(anyString(), any())).thenReturn(listOfTaughtClasses);
 
         MvcResult mvcResult = mockMvc.perform(get("/teacher/classes").principal(principal))
                 .andExpect(status()
@@ -81,7 +81,7 @@ class TeacherClassControllerTest implements ControllerSamples {
         List<StudentWithMarksDto> listOfStudentsDto = List.of(studentResponseDto3(), studentResponseDto3());
         List<Student> listOfStudents = List.of(student(), student());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudentsDto);
-        when(teacherClassService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);
+        when(teacherProfileService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);
 
         MvcResult mvcResult = mockMvc.perform(get("/teacher/classes/1a?subject=biology").principal(principal))
                 .andExpect(status()
@@ -97,7 +97,7 @@ class TeacherClassControllerTest implements ControllerSamples {
         Principal principal = new UserPrincipal("Teacher");
         MarkDto markDto = new MarkDto(MARK, SUBJECT_BIOLOGY);
         String body = objectMapper.writeValueAsString(markDto);
-        doNothing().when(teacherClassService).addMark(anyString(), any(), anyLong());
+        doNothing().when(teacherProfileService).addMark(anyString(), any(), anyLong());
 
         mockMvc.perform(patch("/teacher/students/1").principal(principal)
                         .content(body)
@@ -105,7 +105,7 @@ class TeacherClassControllerTest implements ControllerSamples {
                 .andExpect(status()
                         .isNoContent());
 
-        verify(teacherClassService, times(1)).addMark(anyString(), any(), anyLong());
+        verify(teacherProfileService, times(1)).addMark(anyString(), any(), anyLong());
     }
 
     @Test
@@ -120,7 +120,7 @@ class TeacherClassControllerTest implements ControllerSamples {
                 .andExpect(status()
                         .isBadRequest());
 
-        then(teacherClassService).shouldHaveNoInteractions();
+        then(teacherProfileService).shouldHaveNoInteractions();
     }
 
 }
@@ -149,18 +149,18 @@ class MockMvcConfig5 {
     }
 
     @Bean
-    TeacherClassService teacherClassService() {
+    TeacherProfileService teacherClassService() {
         TeacherRepository teacherRepository = mock(TeacherRepository.class);
         StudentRepository studentRepository = mock(StudentRepository.class);
         TeacherInClassRepository teacherInClassRepository = mock(TeacherInClassRepository.class);
         SchoolSubjectRepository subjectRepository = mock(SchoolSubjectRepository.class);
         SchoolClassRepository classRepository = mock(SchoolClassRepository.class);
-        return new TeacherClassService(teacherRepository, studentRepository, teacherInClassRepository,
+        return new TeacherProfileService(teacherRepository, studentRepository, teacherInClassRepository,
                 subjectRepository, classRepository);
     }
 
     @Bean
-    TeacherClassController teacherClassController(TeacherClassService teacherClassService) {
-        return new TeacherClassController(teacherClassService);
+    TeacherProfileController teacherClassController(TeacherProfileService teacherProfileService) {
+        return new TeacherProfileController(teacherProfileService);
     }
 }

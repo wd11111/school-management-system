@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.security;
+package pl.schoolmanagementsystem.security.exception;
 
 public class CouldNotConfirmUserException extends RuntimeException{
 

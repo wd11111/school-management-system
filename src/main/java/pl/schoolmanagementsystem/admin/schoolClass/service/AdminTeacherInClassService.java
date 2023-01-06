@@ -16,6 +16,7 @@ public class AdminTeacherInClassService {
     public TeacherInClass addTeacherToClass(Teacher teacher, String schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, schoolSubject)
                 .orElseGet(TeacherInClass::new);
+
         teacherInClass.getTaughtClasses().add(schoolClass);
         if (hasTeacherInClassBeenJustCreated(teacherInClass)) {
             teacherInClass.setTeacher(teacher);

@@ -22,10 +22,12 @@ public class EmailService implements EmailSender{
     @Async
     public void sendEmail(String receiver, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setFrom(sender);
         message.setTo(receiver);
         message.setText(applicationUrl + token);
         message.setSubject("Account confirmation");
+
         mailSender.send(message);
         log.info("Mail send successfully to: {}", receiver);
     }

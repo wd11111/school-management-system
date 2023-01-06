@@ -24,7 +24,7 @@ import pl.schoolmanagementsystem.security.config.SecurityConfig;
 import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;
-import pl.schoolmanagementsystem.student.service.StudentMarkService;
+import pl.schoolmanagementsystem.student.service.StudentProfileService;
 import pl.schoolmanagementsystem.student.utils.MarkMapper;
 
 import java.security.Principal;
@@ -38,13 +38,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = StudentMarkController.class)
+@WebMvcTest(controllers = StudentProfileController.class)
 @ContextConfiguration(classes = MockMvcConfig6.class)
 @AutoConfigureMockMvc(addFilters = false)
-class StudentMarkControllerTest implements ControllerSamples {
+class StudentProfileControllerTest implements ControllerSamples {
 
     @MockBean
-    private StudentMarkService studentMarkService;
+    private StudentProfileService studentProfileService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -58,7 +58,7 @@ class StudentMarkControllerTest implements ControllerSamples {
         Map<String, List<MarkDto>> groupedMarksBySubject = getGroupedMarksBySubject();
         Map<String, List<Byte>> expectedMap = MarkMapper.mapToListOfBytesInMapStructure(groupedMarksBySubject);
         String expectedResponseBody = objectMapper.writeValueAsString(expectedMap);
-        when(studentMarkService.getGroupedMarksBySubject(anyString())).thenReturn(groupedMarksBySubject);
+        when(studentProfileService.getGroupedMarksBySubject(anyString())).thenReturn(groupedMarksBySubject);
 
         MvcResult mvcResult = mockMvc.perform(get("/student/marks").principal(principal))
                 .andExpect(status()
@@ -74,7 +74,7 @@ class StudentMarkControllerTest implements ControllerSamples {
         Principal principal = new UserPrincipal("Student");
         List<MarkAvgDto> listOfMarks = List.of(markAvgDto(), markAvgDto());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfMarks);
-        when(studentMarkService.getAverageMarks(anyString())).thenReturn(listOfMarks);
+        when(studentProfileService.getAverageMarks(anyString())).thenReturn(listOfMarks);
 
         MvcResult mvcResult = mockMvc.perform(get("/student/averages").principal(principal))
                 .andExpect(status()
@@ -110,14 +110,14 @@ class MockMvcConfig6 {
     }
 
     @Bean
-    StudentMarkService studentMarkService() {
+    StudentProfileService studentMarkService() {
         StudentRepository studentRepository = mock(StudentRepository.class);
         MarkRepository markRepository = mock(MarkRepository.class);
-        return new StudentMarkService(studentRepository, markRepository);
+        return new StudentProfileService(studentRepository, markRepository);
     }
 
     @Bean
-    StudentMarkController studentMarkController(StudentMarkService studentMarkService) {
-        return new StudentMarkController(studentMarkService);
+    StudentProfileController studentMarkController(StudentProfileService studentProfileService) {
+        return new StudentProfileController(studentProfileService);
     }
 }

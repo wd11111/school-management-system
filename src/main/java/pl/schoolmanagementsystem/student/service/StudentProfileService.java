@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @RequiredArgsConstructor
-public class StudentMarkService {
+public class StudentProfileService {
 
     private final StudentRepository studentRepository;
 

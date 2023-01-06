@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherClassService {
+public class TeacherProfileService {
 
     private final TeacherRepository teacherRepository;
 
@@ -39,9 +39,10 @@ public class TeacherClassService {
     @Transactional
     public void addMark(String teacherEmail, MarkDto markDto, long studentId) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
-        String schoolClass = student.getSchoolClass();
         SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markDto.getSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(markDto.getSubject()));
+        String schoolClass = student.getSchoolClass();
+
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
         student.addMark(MarkMapper.createMarkEntity(markDto, studentId));
     }

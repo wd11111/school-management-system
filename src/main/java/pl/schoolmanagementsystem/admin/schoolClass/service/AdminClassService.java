@@ -66,6 +66,7 @@ public class AdminClassService {
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(addTeacherToClassDto.getTaughtSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(addTeacherToClassDto.getTaughtSubject()));
+
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
         return teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);

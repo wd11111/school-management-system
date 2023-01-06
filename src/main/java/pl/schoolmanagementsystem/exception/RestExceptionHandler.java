@@ -10,8 +10,6 @@ import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyHasTea
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.admin.security.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.admin.security.PasswordsDoNotMatchException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentEmailException;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
@@ -20,6 +18,8 @@ import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachCla
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.exception.dto.ErrorResponse;
+import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
+import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
 @RestControllerAdvice
 @Slf4j

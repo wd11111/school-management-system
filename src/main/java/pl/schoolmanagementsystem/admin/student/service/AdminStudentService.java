@@ -32,8 +32,10 @@ public class AdminStudentService {
     @Transactional
     public Student createStudent(CreateStudentDto createStudentDto) {
         validateEmailIsAvailable(createStudentDto.getEmail());
+
         SchoolClass schoolClass = schoolClassRepository.findById(createStudentDto.getSchoolClassName())
                 .orElseThrow(() -> new NoSuchSchoolClassException(createStudentDto.getSchoolClassName()));
+
         Student student = studentRepository.save(studentCreator.createStudent(createStudentDto, schoolClass));
         emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
         return student;

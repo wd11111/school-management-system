@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.admin.security.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.admin.security.PasswordsDoNotMatchException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.security.dto.PasswordDto;
+import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
+import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
 @Service
 @RequiredArgsConstructor

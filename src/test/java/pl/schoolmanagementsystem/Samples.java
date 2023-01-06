@@ -1,6 +1,5 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
@@ -8,6 +7,7 @@ import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.user.AppUser;
+import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -6,11 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
+import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.teacher.utils.TeacherCreator;
 
 import java.util.Optional;
 import java.util.Set;

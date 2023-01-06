@@ -14,19 +14,20 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
-import pl.schoolmanagementsystem.admin.common.mail.EmailService;
-import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherDto;
-import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
-import pl.schoolmanagementsystem.admin.teacher.service.AdminTeacherService;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
+import pl.schoolmanagementsystem.email.service.EmailService;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
+import pl.schoolmanagementsystem.teacher.controller.AdminTeacherController;
+import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
+import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
+import pl.schoolmanagementsystem.teacher.utils.TeacherCreator;
 
 import java.util.List;
 

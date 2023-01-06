@@ -10,9 +10,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.admin.common.mail.EmailService;
-import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
-import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
@@ -24,6 +21,10 @@ import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
+import pl.schoolmanagementsystem.email.service.EmailService;
+import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
+import pl.schoolmanagementsystem.teacher.utils.TeacherCreator;
 
 import java.util.HashSet;
 import java.util.Optional;

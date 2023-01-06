@@ -1,10 +1,5 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.admin.schoolClass.dto.AddTeacherToClassDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassDto;
-import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
-import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
@@ -14,7 +9,12 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
+import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
+import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.util.*;
 

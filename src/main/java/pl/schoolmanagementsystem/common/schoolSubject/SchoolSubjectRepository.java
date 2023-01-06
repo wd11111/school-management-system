@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +24,9 @@ public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, St
     @Query(nativeQuery = true, value = "DELETE FROM teacher_taught_subjects WHERE taught_subjects_name=?1")
     void deleteTaughtSubjects(String name);
 
-    @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto(" +
+    @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto(" +
             "t.taughtSubject, t.teacher.name, t.teacher.surname) " +
             "FROM SchoolClass c JOIN c.teachersInClass t WHERE c.name=?1 " +
             "ORDER BY t.taughtSubject")
-    List<SubjectAndTeacherResponseDto> findTaughtSubjectsInClass(String className);
+    List<TaughtSubjectDto> findTaughtSubjectsInClass(String className);
 }

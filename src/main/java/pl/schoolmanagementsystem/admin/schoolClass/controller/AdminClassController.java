@@ -6,12 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassResponseDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.admin.schoolClass.service.AdminClassService;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
+import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -32,12 +32,12 @@ public class AdminClassController {
     }
 
     @GetMapping("/{className}")
-    public List<StudentResponseDto2> getAllStudentsInClass(@PathVariable String className) {
+    public List<StudentDto> getAllStudentsInClass(@PathVariable String className) {
         return adminClassService.getAllStudentsInClass(className);
     }
 
     @GetMapping("/{className}/subjects")
-    public List<SubjectAndTeacherResponseDto> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
+    public List<TaughtSubjectDto> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
         return adminClassService.getTaughtSubjectsInClass(className);
     }
 
@@ -48,9 +48,9 @@ public class AdminClassController {
     }
 
     @PatchMapping("/{className}/teachers")
-    public TeacherInClassResponseDto addTeacherToSchoolClass(
-            @PathVariable String className, @RequestBody @Valid TeacherInClassRequestDto teacherInClassRequestDto) {
-        return mapToTeacherInClassResponseDto(adminClassService.addTeacherToSchoolClass(teacherInClassRequestDto, className));
+    public TeacherInClassDto addTeacherToSchoolClass(
+            @PathVariable String className, @RequestBody @Valid AddTeacherToClassDto addTeacherToClassDto) {
+        return mapToTeacherInClassResponseDto(adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className));
     }
 
     @DeleteMapping("/{className}")

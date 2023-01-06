@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.common.mail.EmailSender;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
+import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
@@ -30,12 +30,12 @@ public class AdminStudentService {
     private final StudentCreator studentCreator;
 
     @Transactional
-    public Student createStudent(StudentRequestDto studentRequestDto) {
-        validateEmailIsAvailable(studentRequestDto.getEmail());
-        SchoolClass schoolClass = schoolClassRepository.findById(studentRequestDto.getSchoolClassName())
-                .orElseThrow(() -> new NoSuchSchoolClassException(studentRequestDto.getSchoolClassName()));
-        Student student = studentRepository.save(studentCreator.createStudent(studentRequestDto, schoolClass));
-        emailSender.sendEmail(studentRequestDto.getEmail(), student.getAppUser().getToken());
+    public Student createStudent(CreateStudentDto createStudentDto) {
+        validateEmailIsAvailable(createStudentDto.getEmail());
+        SchoolClass schoolClass = schoolClassRepository.findById(createStudentDto.getSchoolClassName())
+                .orElseThrow(() -> new NoSuchSchoolClassException(createStudentDto.getSchoolClassName()));
+        Student student = studentRepository.save(studentCreator.createStudent(createStudentDto, schoolClass));
+        emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
         return student;
     }
 

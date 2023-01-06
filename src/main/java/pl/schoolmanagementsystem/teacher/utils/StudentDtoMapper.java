@@ -2,15 +2,15 @@ package pl.schoolmanagementsystem.teacher.utils;
 
 import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.teacher.dto.StudentResponseDto3;
+import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StudentDtoMapper {
 
-    public static StudentResponseDto3 mapToStudentResponseDto3(Student student) {
-        return new StudentResponseDto3(
+    public static StudentWithMarksDto mapToStudentResponseDto3(Student student) {
+        return new StudentWithMarksDto(
                 student.getId(),
                 student.getName(),
                 student.getSurname(),

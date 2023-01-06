@@ -1,18 +1,21 @@
-package pl.schoolmanagementsystem.teacher.dto;
+package pl.schoolmanagementsystem.admin.teacher.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentResponseDto3 {
+public class TeacherDto {
 
-    private long studentId;
+    private long id;
     private String name;
     private String surname;
-    private List<Byte> marks;
+    private Set<String> taughtSubjects;
+
 }

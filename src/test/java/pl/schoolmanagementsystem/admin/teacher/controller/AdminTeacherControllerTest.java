@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.admin.teacher.service.AdminTeacherService;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -22,8 +24,6 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -34,13 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AdminTeacherController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
@@ -59,7 +54,7 @@ class AdminTeacherControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_get_for_all_teachers() throws Exception {
         Page<Teacher> listOfTeachers = new PageImpl<>(List.of(createTeacherOfBiology(), createTeacherOfBiology()));
-        Page<TeacherResponseDto> listOfTeachersResponse = new PageImpl<>(List.of(teacherResponseDto(), teacherResponseDto()));
+        Page<TeacherDto> listOfTeachersResponse = new PageImpl<>(List.of(teacherResponseDto(), teacherResponseDto()));
         String expectedResponseBody = objectMapper.writeValueAsString(listOfTeachersResponse);
         when(adminTeacherService.getAllTeachers(any())).thenReturn(listOfTeachers);
 
@@ -89,9 +84,9 @@ class AdminTeacherControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_created_when_creating_teacher() throws Exception {
-        TeacherRequestDto teacherRequestDto = teacherRequestDto();
+        CreateTeacherDto createTeacherDto = teacherRequestDto();
         Teacher teacher = createTeacherNoSubjectsTaught();
-        String body = objectMapper.writeValueAsString(teacherRequestDto);
+        String body = objectMapper.writeValueAsString(createTeacherDto);
         when(adminTeacherService.createTeacher(any())).thenReturn(teacher);
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/teachers")
@@ -102,13 +97,13 @@ class AdminTeacherControllerTest implements ControllerSamples {
                 .andReturn();
         Teacher actualResponseBody = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Teacher.class);
 
-        assertThat(actualResponseBody.getName()).isEqualTo(teacherRequestDto.getName());
+        assertThat(actualResponseBody.getName()).isEqualTo(createTeacherDto.getName());
     }
 
     @Test
     void should_return_status_bad_request_when_creating_teacher() throws Exception {
-        TeacherRequestDto teacherRequestDto = new TeacherRequestDto();
-        String body = objectMapper.writeValueAsString(teacherRequestDto);
+        CreateTeacherDto createTeacherDto = new CreateTeacherDto();
+        String body = objectMapper.writeValueAsString(createTeacherDto);
 
         mockMvc.perform(post("/admin/teachers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -123,8 +118,8 @@ class AdminTeacherControllerTest implements ControllerSamples {
     void should_return_status_ok_when_adding_subject_to_teacher() throws Exception {
         SchoolSubjectDto schoolSubjectDto = schoolSubjectDto();
         Teacher teacher = createTeacherOfBiology();
-        TeacherResponseDto teacherResponseDto = teacherResponseDto();
-        String expectedResponse = objectMapper.writeValueAsString(teacherResponseDto);
+        TeacherDto teacherDto = teacherResponseDto();
+        String expectedResponse = objectMapper.writeValueAsString(teacherDto);
         String body = objectMapper.writeValueAsString(schoolSubjectDto);
         when(adminTeacherService.addSubjectToTeacher(anyLong(), any())).thenReturn(teacher);
 

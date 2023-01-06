@@ -2,9 +2,9 @@ package pl.schoolmanagementsystem.admin.student.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
@@ -19,11 +19,11 @@ public class StudentCreator {
 
     private final RoleRepository roleRepository;
 
-    public Student createStudent(StudentRequestDto studentRequestDto, SchoolClass schoolClass) {
+    public Student createStudent(CreateStudentDto createStudentDto, SchoolClass schoolClass) {
         Student student = Student.builder()
-                .name(studentRequestDto.getName())
-                .surname(studentRequestDto.getSurname())
-                .appUser(new AppUser(studentRequestDto.getEmail(),
+                .name(createStudentDto.getName())
+                .surname(createStudentDto.getSurname())
+                .appUser(new AppUser(createStudentDto.getEmail(),
                         null,
                         generateToken(),
                         new ArrayList<>()))

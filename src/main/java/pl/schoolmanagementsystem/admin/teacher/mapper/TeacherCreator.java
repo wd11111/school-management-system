@@ -2,9 +2,9 @@ package pl.schoolmanagementsystem.admin.teacher.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUser;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
@@ -21,18 +21,18 @@ public class TeacherCreator {
 
     private final RoleRepository roleRepository;
 
-    public Teacher createTeacher(TeacherRequestDto teacherRequestDto, Set<SchoolSubject> taughtSubjects) {
+    public Teacher createTeacher(CreateTeacherDto createTeacherDto, Set<SchoolSubject> taughtSubjects) {
         Teacher teacher = Teacher.builder()
-                .name(teacherRequestDto.getName())
-                .surname(teacherRequestDto.getSurname())
-                .appUser(new AppUser(teacherRequestDto.getEmail(),
+                .name(createTeacherDto.getName())
+                .surname(createTeacherDto.getSurname())
+                .appUser(new AppUser(createTeacherDto.getEmail(),
                         null,
                         generateToken(),
                         new ArrayList<>()))
                 .taughtSubjects(taughtSubjects)
                 .teacherInClasses(new HashSet<>())
                 .build();
-        return addRoles(teacher, teacherRequestDto.isAdmin());
+        return addRoles(teacher, createTeacherDto.isAdmin());
     }
 
     private Teacher addRoles(Teacher teacher, boolean isAdmin) {

@@ -14,16 +14,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.admin.schoolClass.service.AdminClassService;
 import pl.schoolmanagementsystem.admin.schoolClass.service.AdminTeacherInClassService;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
+import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -34,13 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AdminClassController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
@@ -73,7 +68,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
-        List<StudentResponseDto2> listOfStudents = List.of(studentResponseDto2(), studentResponseDto2());
+        List<StudentDto> listOfStudents = List.of(studentResponseDto2(), studentResponseDto2());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudents);
         when(adminClassService.getAllStudentsInClass("1a")).thenReturn(listOfStudents);
 
@@ -88,7 +83,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_taught_subjects_in_class() throws Exception {
-        List<SubjectAndTeacherResponseDto> listOfSubjects = List.of(subjectAndTeacherResponse(), subjectAndTeacherResponse());
+        List<TaughtSubjectDto> listOfSubjects = List.of(subjectAndTeacherResponse(), subjectAndTeacherResponse());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfSubjects);
         when(adminClassService.getTaughtSubjectsInClass("1a")).thenReturn(listOfSubjects);
 
@@ -147,7 +142,7 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_bad_request_when_adding_subject_to_class_doesnt_pass_validation() throws Exception {
-        String body = objectMapper.writeValueAsString(new TeacherInClassRequestDto());
+        String body = objectMapper.writeValueAsString(new AddTeacherToClassDto());
 
         mockMvc.perform(patch("/admin/classes/1a/teachers")
                         .content(body)

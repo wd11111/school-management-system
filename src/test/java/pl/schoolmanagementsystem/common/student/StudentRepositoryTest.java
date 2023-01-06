@@ -11,7 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
+import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ class StudentRepositoryTest {
 
     @Test
     void should_return_all_students_in_school_class() {
-        List<StudentResponseDto2> result = studentRepository.findAllInClass("1a");
+        List<StudentDto> result = studentRepository.findAllInClass("1a");
 
         assertThat(result).extracting("studentId", "name", "surname")
                 .containsAll(List.of(tuple(1L, "studentName1", "studentSurname1"),

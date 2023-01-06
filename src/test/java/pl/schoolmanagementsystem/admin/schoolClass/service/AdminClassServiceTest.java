@@ -6,10 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
 import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyExistsException;
 import pl.schoolmanagementsystem.common.schoolClass.exception.ClassAlreadyHasTeacherException;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
@@ -27,13 +27,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminClassServiceTest implements Samples {
@@ -93,7 +88,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_add_teacher_to_school_class() {
         TeacherInClass expected = new TeacherInClass();
-        TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         Teacher teacher = createTeacherOfBiology();
         SchoolClass schoolClass = createSchoolClass();
         SchoolSubject schoolSubject = createSchoolSubject();
@@ -109,7 +104,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_teacher_doesnt_exist() {
-        TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
@@ -120,7 +115,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_class_doesnt_exist_while_adding_teacher() {
-        TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
@@ -132,7 +127,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_subject_doesnt_exist_while_adding_teacher() {
-        TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
@@ -146,7 +141,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_teacher_doesnt_teach_subject() {
         Teacher teacherWithOutSubjects = createTeacherNoSubjectsTaught();
-        TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));
@@ -161,7 +156,7 @@ class AdminClassServiceTest implements Samples {
     void should_throw_exception_when_school_class_already_has_teacher_of_subject() {
         Teacher teacherWithOutSubjects = createTeacherOfBiology();
         SchoolClass schoolClassWithTeacher = createSchoolClassWithTeacher();
-        TeacherInClassRequestDto teacherRequest = new TeacherInClassRequestDto(ID_1, SUBJECT_BIOLOGY);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(schoolClassWithTeacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -19,7 +20,6 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
@@ -31,13 +31,8 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminTeacherServiceTest implements Samples {
@@ -62,8 +57,8 @@ class AdminTeacherServiceTest implements Samples {
 
     @Test
     void should_create_teacher() {
-        TeacherRequestDto teacherRequestDto = new TeacherRequestDto();
-        teacherRequestDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
+        CreateTeacherDto createTeacherDto = new CreateTeacherDto();
+        createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolSubject schoolSubject = createSchoolSubject();
         when(userRepository.existsById(any())).thenReturn(false);
@@ -71,7 +66,7 @@ class AdminTeacherServiceTest implements Samples {
         when(teacherCreator.createTeacher(any(), any())).thenReturn(teacher);
         when(teacherRepository.save(any())).thenReturn(teacher);
 
-        Teacher result = adminTeacherService.createTeacher(teacherRequestDto);
+        Teacher result = adminTeacherService.createTeacher(createTeacherDto);
 
         assertThat(result).isSameAs(teacher);
         verify(emailService, times(1)).sendEmail(any(), any());
@@ -79,11 +74,11 @@ class AdminTeacherServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_email_is_not_available() {
-        TeacherRequestDto teacherRequestDto = new TeacherRequestDto();
-        teacherRequestDto.setEmail(NAME);
+        CreateTeacherDto createTeacherDto = new CreateTeacherDto();
+        createTeacherDto.setEmail(NAME);
         when(userRepository.existsById(any())).thenReturn(true);
 
-        assertThatThrownBy(() -> adminTeacherService.createTeacher(teacherRequestDto))
+        assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
                 .hasMessage("Email already in use: " + NAME);
         verify(teacherRepository, never()).save(any());
@@ -92,12 +87,12 @@ class AdminTeacherServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_subject_is_not_found() {
-        TeacherRequestDto teacherRequestDto = new TeacherRequestDto();
-        teacherRequestDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
+        CreateTeacherDto createTeacherDto = new CreateTeacherDto();
+        createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminTeacherService.createTeacher(teacherRequestDto))
+        assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
                 .hasMessage("Such a school subject does not exist: Biology");
         verify(teacherRepository, never()).save(any());

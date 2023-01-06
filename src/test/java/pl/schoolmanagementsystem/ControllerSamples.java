@@ -1,26 +1,22 @@
 package pl.schoolmanagementsystem;
 
+import pl.schoolmanagementsystem.admin.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassRequestDto;
-import pl.schoolmanagementsystem.admin.schoolClass.dto.TeacherInClassResponseDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndTeacherResponseDto;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
-import pl.schoolmanagementsystem.common.student.dto.StudentResponseDto2;
-import pl.schoolmanagementsystem.teacher.dto.StudentResponseDto3;
+import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherResponseDto;
+import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public interface ControllerSamples extends Samples {
 
@@ -37,20 +33,20 @@ public interface ControllerSamples extends Samples {
         return new SchoolClassDto(CLASS_NAME);
     }
 
-    default StudentResponseDto2 studentResponseDto2() {
-        return new StudentResponseDto2(ID_1, NAME, SURNAME);
+    default StudentDto studentResponseDto2() {
+        return new StudentDto(ID_1, NAME, SURNAME);
     }
 
-    default SubjectAndTeacherResponseDto subjectAndTeacherResponse() {
-        return new SubjectAndTeacherResponseDto(SUBJECT, NAME, SURNAME);
+    default TaughtSubjectDto subjectAndTeacherResponse() {
+        return new TaughtSubjectDto(SUBJECT, NAME, SURNAME);
     }
 
-    default TeacherInClassRequestDto teacherInClassRequest() {
-        return new TeacherInClassRequestDto(ID_1, SUBJECT);
+    default AddTeacherToClassDto teacherInClassRequest() {
+        return new AddTeacherToClassDto(ID_1, SUBJECT);
     }
 
-    default TeacherInClassResponseDto teacherInClassResponse() {
-        return new TeacherInClassResponseDto(ID_1, SUBJECT, Set.of(CLASS_NAME));
+    default TeacherInClassDto teacherInClassResponse() {
+        return new TeacherInClassDto(ID_1, SUBJECT, Set.of(CLASS_NAME));
     }
 
     default TeacherInClass teacherInClass() {
@@ -61,24 +57,24 @@ public interface ControllerSamples extends Samples {
         return new SchoolSubjectDto(CLASS_NAME);
     }
 
-    default StudentRequestDto studentRequestDto() {
-        return new StudentRequestDto(NAME, SURNAME, CLASS_NAME, NAME);
+    default CreateStudentDto studentRequestDto() {
+        return new CreateStudentDto(NAME, SURNAME, CLASS_NAME, NAME);
     }
 
     default Student student() {
         return new Student(ID_1, NAME, SURNAME, getAppUser(), List.of(getMark1(), getMark1(), getMark1()), CLASS_NAME);
     }
 
-    default TeacherResponseDto teacherResponseDto() {
-        return new TeacherResponseDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
+    default TeacherDto teacherResponseDto() {
+        return new TeacherDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
-    default TeacherRequestDto teacherRequestDto() {
-        return new TeacherRequestDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
+    default CreateTeacherDto teacherRequestDto() {
+        return new CreateTeacherDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
     }
 
-    default StudentResponseDto3 studentResponseDto3() {
-        return new StudentResponseDto3(ID_1, NAME, SURNAME, List.of((byte) 1, (byte) 1, (byte) 1));
+    default StudentWithMarksDto studentResponseDto3() {
+        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of((byte) 1, (byte) 1, (byte) 1));
     }
 
     default Mark getMark1() {

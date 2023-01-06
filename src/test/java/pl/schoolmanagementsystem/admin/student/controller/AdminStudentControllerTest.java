@@ -13,12 +13,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.admin.student.service.AdminStudentService;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -27,11 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,8 +47,8 @@ class AdminStudentControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_created_when_creating_student() throws Exception {
-        StudentRequestDto studentRequestDto = studentRequestDto();
-        String body = objectMapper.writeValueAsString(studentRequestDto);
+        CreateStudentDto createStudentDto = studentRequestDto();
+        String body = objectMapper.writeValueAsString(createStudentDto);
         Student student = student();
         when(adminStudentService.createStudent(any())).thenReturn(student);
 
@@ -64,13 +60,13 @@ class AdminStudentControllerTest implements ControllerSamples {
                 .andReturn();
         Student actualResponseBody = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Student.class);
 
-        assertThat(actualResponseBody.getName()).isEqualTo(studentRequestDto.getName());
+        assertThat(actualResponseBody.getName()).isEqualTo(createStudentDto.getName());
     }
 
     @Test
     void should_return_status_bad_request_when_creating_student() throws Exception {
-        StudentRequestDto studentRequestDto = new StudentRequestDto();
-        String body = objectMapper.writeValueAsString(studentRequestDto);
+        CreateStudentDto createStudentDto = new CreateStudentDto();
+        String body = objectMapper.writeValueAsString(createStudentDto);
 
         mockMvc.perform(post("/admin/students")
                         .contentType(MediaType.APPLICATION_JSON)

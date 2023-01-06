@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.admin.common.mail.EmailSender;
-import pl.schoolmanagementsystem.admin.teacher.dto.TeacherRequestDto;
+import pl.schoolmanagementsystem.admin.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.admin.teacher.mapper.TeacherCreator;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -38,15 +38,15 @@ public class AdminTeacherService {
     private final TeacherCreator teacherCreator;
 
     @Transactional
-    public Teacher createTeacher(TeacherRequestDto teacherRequestDto) {
-        validateEmailIsAvailable(teacherRequestDto.getEmail());
-        Set<SchoolSubject> taughtSubjects = teacherRequestDto.getTaughtSubjects().stream()
+    public Teacher createTeacher(CreateTeacherDto createTeacherDto) {
+        validateEmailIsAvailable(createTeacherDto.getEmail());
+        Set<SchoolSubject> taughtSubjects = createTeacherDto.getTaughtSubjects().stream()
                 .map(subject -> schoolSubjectRepository.findByNameIgnoreCase(subject)
                         .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
                 .collect(Collectors.toSet());
-        Teacher teacher = teacherCreator.createTeacher(teacherRequestDto, taughtSubjects);
+        Teacher teacher = teacherCreator.createTeacher(createTeacherDto, taughtSubjects);
         teacherRepository.save(teacher);
-        emailSender.sendEmail(teacherRequestDto.getEmail(), teacher.getAppUser().getToken());
+        emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
         return teacher;
     }
 

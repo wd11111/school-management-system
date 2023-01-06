@@ -6,9 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
+import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.user.Role;
 import pl.schoolmanagementsystem.common.user.RoleRepository;
 
@@ -29,11 +29,11 @@ class StudentCreatorTest implements Samples {
 
     @Test
     void should_create_student_with_one_role() {
-        StudentRequestDto studentRequestDto = new StudentRequestDto();
+        CreateStudentDto createStudentDto = new CreateStudentDto();
         SchoolClass schoolClass = createSchoolClass();
         when(roleRepository.findById(anyString())).thenReturn(Optional.of(new Role()));
 
-        Student student = studentCreator.createStudent(studentRequestDto, schoolClass);
+        Student student = studentCreator.createStudent(createStudentDto, schoolClass);
 
         assertThat(student.getAppUser().getRoles()).hasSize(1);
     }

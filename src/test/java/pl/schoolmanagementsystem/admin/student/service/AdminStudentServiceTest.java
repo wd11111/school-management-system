@@ -7,13 +7,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.admin.common.mail.EmailService;
+import pl.schoolmanagementsystem.admin.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.admin.student.mapper.StudentCreator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.admin.student.dto.StudentRequestDto;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
@@ -22,13 +22,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminStudentServiceTest implements Samples {
@@ -53,7 +48,7 @@ class AdminStudentServiceTest implements Samples {
 
     @Test
     void should_create_student() {
-        StudentRequestDto studentRequestDto = StudentRequestDto.builder().schoolClassName(CLASS_1A).build();
+        CreateStudentDto createStudentDto = CreateStudentDto.builder().schoolClassName(CLASS_1A).build();
         SchoolClass schoolClass = createSchoolClass();
         Student student = createStudent2();
         when(userRepository.existsById(any())).thenReturn(false);
@@ -61,7 +56,7 @@ class AdminStudentServiceTest implements Samples {
         when(studentCreator.createStudent(any(), any())).thenReturn(student);
         when(studentRepository.save(any())).thenReturn(student);
 
-        Student result = adminStudentService.createStudent(studentRequestDto);
+        Student result = adminStudentService.createStudent(createStudentDto);
 
         assertThat(result).isSameAs(student);
         verify(emailService, times(1)).sendEmail(any(), any());
@@ -69,10 +64,10 @@ class AdminStudentServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_email_is_not_available() {
-        StudentRequestDto studentRequestDto = StudentRequestDto.builder().email(SURNAME).build();
+        CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).build();
         when(userRepository.existsById(any())).thenReturn(true);
 
-        assertThatThrownBy(() -> adminStudentService.createStudent(studentRequestDto))
+        assertThatThrownBy(() -> adminStudentService.createStudent(createStudentDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
                 .hasMessage("Email already in use: " + SURNAME);
         verify(emailService, never()).sendEmail(any(), any());
@@ -81,11 +76,11 @@ class AdminStudentServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_class_not_found() {
-        StudentRequestDto studentRequestDto = StudentRequestDto.builder().email(SURNAME).schoolClassName(CLASS_3B).build();
+        CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).schoolClassName(CLASS_3B).build();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminStudentService.createStudent(studentRequestDto))
+        assertThatThrownBy(() -> adminStudentService.createStudent(createStudentDto))
                 .isInstanceOf(NoSuchSchoolClassException.class)
                 .hasMessage("Such a school class does not exist: " + CLASS_3B);
         verify(emailService, never()).sendEmail(any(), any());

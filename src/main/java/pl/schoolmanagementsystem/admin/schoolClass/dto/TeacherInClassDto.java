@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class TeacherInClassResponseDto {
+public class TeacherInClassDto {
 
     private long teacherId;
     private String taughtSubject;

@@ -23,7 +23,6 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
-import pl.schoolmanagementsystem.teacher.dto.StudentResponseDto3;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
@@ -32,21 +31,16 @@ import pl.schoolmanagementsystem.security.config.SecurityConfig;
 import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;
+import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherClassService;
 
 import java.security.Principal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -84,7 +78,7 @@ class TeacherClassControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        List<StudentResponseDto3> listOfStudentsDto = List.of(studentResponseDto3(), studentResponseDto3());
+        List<StudentWithMarksDto> listOfStudentsDto = List.of(studentResponseDto3(), studentResponseDto3());
         List<Student> listOfStudents = List.of(student(), student());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudentsDto);
         when(teacherClassService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);

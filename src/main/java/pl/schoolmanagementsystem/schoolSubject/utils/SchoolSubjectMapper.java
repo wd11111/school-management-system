@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.schoolSubject.mapper;
+package pl.schoolmanagementsystem.schoolSubject.utils;
 
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;

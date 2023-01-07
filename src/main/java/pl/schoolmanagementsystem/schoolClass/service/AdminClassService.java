@@ -23,7 +23,7 @@ import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
-import pl.schoolmanagementsystem.schoolClass.mapper.SchoolClassMapper;
+import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapper;
 
 import java.util.List;
 

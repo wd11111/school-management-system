@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.schoolClass.mapper;
+package pl.schoolmanagementsystem.schoolClass.utils;
 
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;

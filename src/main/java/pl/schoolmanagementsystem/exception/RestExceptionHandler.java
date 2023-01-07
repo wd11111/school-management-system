@@ -38,7 +38,6 @@ public class RestExceptionHandler {
     @ExceptionHandler(TeacherDoesNotTeachClassException.class)
     public ResponseEntity<ErrorResponse> handleForbiddenException(TeacherDoesNotTeachClassException exception) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(exception.getMessage()));
-
     }
 
     @ExceptionHandler(value = {

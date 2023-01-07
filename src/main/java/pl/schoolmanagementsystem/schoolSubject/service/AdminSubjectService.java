@@ -10,7 +10,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.schoolSubject.mapper.SchoolSubjectMapper;
+import pl.schoolmanagementsystem.schoolSubject.utils.SchoolSubjectMapper;
 
 @Service
 @RequiredArgsConstructor

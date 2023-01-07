@@ -19,6 +19,8 @@ import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.genera
 @RequiredArgsConstructor
 public class TeacherCreator {
 
+    public static final String TEACHER = "ROLE_TEACHER";
+    public static final String ADMIN = "ROLE_ADMIN";
     private final RoleRepository roleRepository;
 
     public Teacher createTeacher(CreateTeacherDto createTeacherDto, Set<SchoolSubject> taughtSubjects) {
@@ -36,10 +38,10 @@ public class TeacherCreator {
     }
 
     private Teacher addRoles(Teacher teacher, boolean isAdmin) {
-        Role roleTeacher = roleRepository.findById("ROLE_TEACHER").get();
+        Role roleTeacher = roleRepository.findById(TEACHER).get();
         teacher.getAppUser().getRoles().add(roleTeacher);
         if (isAdmin) {
-            Role roleAdmin = roleRepository.findById("ROLE_ADMIN").get();
+            Role roleAdmin = roleRepository.findById(ADMIN).get();
             teacher.getAppUser().getRoles().add(roleAdmin);
         }
         return teacher;

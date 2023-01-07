@@ -17,6 +17,7 @@ import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.genera
 @RequiredArgsConstructor
 public class StudentCreator {
 
+    public static final String STUDENT = "ROLE_STUDENT";
     private final RoleRepository roleRepository;
 
     public Student createStudent(CreateStudentDto createStudentDto, SchoolClass schoolClass) {
@@ -33,7 +34,7 @@ public class StudentCreator {
     }
 
     private Student addRoles(Student student) {
-        Role role = roleRepository.findById("ROLE_STUDENT").get();
+        Role role = roleRepository.findById(STUDENT).get();
         student.getAppUser().getRoles().add(role);
         return student;
     }

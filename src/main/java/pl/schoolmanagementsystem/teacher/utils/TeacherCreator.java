@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static pl.schoolmanagementsystem.email.token.TokenGenerator.generateToken;
+import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.generateToken;
 
 @Component
 @RequiredArgsConstructor

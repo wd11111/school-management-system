@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.email.service;
+package pl.schoolmanagementsystem.common.email.service;
 
 public interface EmailSender {
 

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.email.token;
+package pl.schoolmanagementsystem.common.email.token;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

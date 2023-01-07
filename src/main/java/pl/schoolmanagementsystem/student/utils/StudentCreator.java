@@ -11,7 +11,7 @@ import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 
 import java.util.ArrayList;
 
-import static pl.schoolmanagementsystem.email.token.TokenGenerator.generateToken;
+import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.generateToken;
 
 @Component
 @RequiredArgsConstructor

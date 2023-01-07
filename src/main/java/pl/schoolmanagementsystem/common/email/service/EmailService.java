@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.email.service;
+package pl.schoolmanagementsystem.common.email.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

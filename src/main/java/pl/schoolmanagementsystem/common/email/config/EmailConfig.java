@@ -1,11 +1,11 @@
-package pl.schoolmanagementsystem.email.config;
+package pl.schoolmanagementsystem.common.email.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
-import pl.schoolmanagementsystem.email.service.EmailService;
-import pl.schoolmanagementsystem.email.service.FakeEmailService;
+import pl.schoolmanagementsystem.common.email.service.EmailService;
+import pl.schoolmanagementsystem.common.email.service.FakeEmailService;
 
 @Configuration
 public class EmailConfig {

@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.student.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.schoolmanagementsystem.common.email.service.EmailSender;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
@@ -11,7 +12,6 @@ import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
-import pl.schoolmanagementsystem.email.service.EmailSender;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.utils.StudentCreator;
 

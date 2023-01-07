@@ -6,9 +6,9 @@ import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.util.stream.Collectors;
 
-public class TeacherDtoMapper {
+public class TeacherMapper {
 
-    public static TeacherDto mapToTeacherResponseDto(Teacher teacher) {
+    public static TeacherDto mapEntityToDto(Teacher teacher) {
         return TeacherDto.builder()
                 .id(teacher.getId())
                 .name(teacher.getName())

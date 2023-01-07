@@ -10,7 +10,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.schoolSubject.mapper.SchoolSubjectCreator;
+import pl.schoolmanagementsystem.schoolSubject.mapper.SchoolSubjectMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class AdminSubjectService {
         if (doesSubjectExist(schoolSubjectDto.getSubjectName())) {
             throw new SubjectAlreadyExistsException(schoolSubjectDto);
         }
-        return schoolSubjectRepository.save(SchoolSubjectCreator.createSchoolSubject(schoolSubjectDto));
+        return schoolSubjectRepository.save(SchoolSubjectMapper.mapDtoToEntity(schoolSubjectDto));
     }
 
     public Page<SchoolSubjectDto> getAllSubjects(Pageable pageable) {

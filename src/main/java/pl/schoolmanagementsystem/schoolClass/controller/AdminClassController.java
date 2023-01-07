@@ -49,7 +49,7 @@ public class AdminClassController {
     @PatchMapping("/{className}/teachers")
     public TeacherInClassDto addTeacherToSchoolClass(
             @PathVariable String className, @RequestBody @Valid AddTeacherToClassDto addTeacherToClassDto) {
-        return TeacherInClassMapper.mapToTeacherInClassResponseDto(adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className));
+        return TeacherInClassMapper.mapEntityToDto(adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className));
     }
 
     @DeleteMapping("/{className}")

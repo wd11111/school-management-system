@@ -8,7 +8,7 @@ import static java.util.stream.Collectors.toSet;
 
 public class TeacherInClassMapper {
 
-    public static TeacherInClassDto mapToTeacherInClassResponseDto(TeacherInClass teacherInClass) {
+    public static TeacherInClassDto mapEntityToDto(TeacherInClass teacherInClass) {
         return TeacherInClassDto.builder()
                 .teacherId(teacherInClass.getTeacher().getId())
                 .taughtSubject(teacherInClass.getTaughtSubject())

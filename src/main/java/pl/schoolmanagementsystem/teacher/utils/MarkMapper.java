@@ -5,7 +5,7 @@ import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
 public class MarkMapper {
 
-    public static Mark createMarkEntity(MarkDto markDto, long studentId) {
+    public static Mark mapDtoToEntity(MarkDto markDto, long studentId) {
         return Mark.builder()
                 .mark(markDto.getMark())
                 .studentId(studentId)

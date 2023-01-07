@@ -3,9 +3,9 @@ package pl.schoolmanagementsystem.schoolSubject.mapper;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 
-public class SchoolSubjectCreator {
+public class SchoolSubjectMapper {
 
-    public static SchoolSubject createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
+    public static SchoolSubject mapDtoToEntity(SchoolSubjectDto schoolSubjectDto) {
         return SchoolSubject.builder()
                 .name(schoolSubjectDto.getSubjectName())
                 .build();

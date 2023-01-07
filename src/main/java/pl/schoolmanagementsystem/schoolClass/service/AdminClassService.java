@@ -23,7 +23,7 @@ import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
-import pl.schoolmanagementsystem.schoolClass.mapper.SchoolClassCreator;
+import pl.schoolmanagementsystem.schoolClass.mapper.SchoolClassMapper;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class AdminClassService {
         if (doesSchoolClassExist(schoolClassDto.getSchoolClassName())) {
             throw new ClassAlreadyExistsException(schoolClassDto);
         }
-        return schoolClassRepository.save(SchoolClassCreator.createSchoolClass(schoolClassDto));
+        return schoolClassRepository.save(SchoolClassMapper.mapDtoToEntity(schoolClassDto));
     }
 
     public List<TaughtSubjectDto> getTaughtSubjectsInClass(String schoolClassName) {

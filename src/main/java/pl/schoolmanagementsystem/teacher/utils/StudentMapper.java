@@ -7,9 +7,9 @@ import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StudentDtoMapper {
+public class StudentMapper {
 
-    public static StudentWithMarksDto mapToStudentResponseDto3(Student student) {
+    public static StudentWithMarksDto mapEntityToDtoWithMarks(Student student) {
         return new StudentWithMarksDto(
                 student.getId(),
                 student.getName(),

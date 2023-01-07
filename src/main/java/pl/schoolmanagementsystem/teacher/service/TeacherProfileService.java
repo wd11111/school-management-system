@@ -44,7 +44,7 @@ public class TeacherProfileService {
         String schoolClass = student.getSchoolClass();
 
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
-        student.addMark(MarkMapper.createMarkEntity(markDto, studentId));
+        student.addMark(MarkMapper.mapDtoToEntity(markDto, studentId));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {

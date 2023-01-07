@@ -9,7 +9,7 @@ import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
-import pl.schoolmanagementsystem.teacher.utils.StudentDtoMapper;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -32,7 +32,7 @@ public class TeacherProfileController {
     public List<StudentWithMarksDto> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
         return teacherProfileService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName())
                 .stream()
-                .map(StudentDtoMapper::mapToStudentResponseDto3)
+                .map(StudentMapper::mapEntityToDtoWithMarks)
                 .collect(Collectors.toList());
     }
 

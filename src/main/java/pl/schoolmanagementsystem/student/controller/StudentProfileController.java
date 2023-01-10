@@ -11,7 +11,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfBytesInMapStructure;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDoublesinMapStructure;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +21,8 @@ public class StudentProfileController {
     private final StudentProfileService studentProfileService;
 
     @GetMapping("/marks")
-    public Map<String, List<Byte>> getMarksGroupedBySubject(Principal principal) {
-        return mapToListOfBytesInMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
+    public Map<String, List<Double>> getMarksGroupedBySubject(Principal principal) {
+        return mapToListOfDoublesinMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
     }
 
     @GetMapping("/averages")

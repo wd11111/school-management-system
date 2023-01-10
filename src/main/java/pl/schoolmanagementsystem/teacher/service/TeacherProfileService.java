@@ -5,7 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.common.mark.MarkEnum;
+import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -38,14 +39,16 @@ public class TeacherProfileService {
     private final SchoolClassRepository classRepository;
 
     @Transactional
-    public void addMark(String teacherEmail, MarkDto markDto, long studentId) {
+    public void addMark(String teacherEmail, AddMarkDto addMarkDto, long studentId) {
+        double mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow();
+
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();
-        SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markDto.getSubject())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(markDto.getSubject()));
+        SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(addMarkDto.getSubject())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(addMarkDto.getSubject()));
 
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
-        student.addMark(mapDtoToEntity(markDto, studentId));
+        student.addMark(mapDtoToEntity(mark, studentId, schoolSubject.getName()));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {

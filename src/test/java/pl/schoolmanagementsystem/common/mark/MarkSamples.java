@@ -24,10 +24,10 @@ public interface MarkSamples {
     }
 
     default MarkDto createMarkDto1() {
-        return new MarkDto((byte) 4, SUBJECT);
+        return new MarkDto(4.0, SUBJECT);
     }
 
     default MarkDto createMarkDto2() {
-        return new MarkDto((byte) 2, SUBJECT_2);
+        return new MarkDto(2.0, SUBJECT_2);
     }
 }

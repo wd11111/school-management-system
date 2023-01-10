@@ -1,15 +1,14 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
 import pl.schoolmanagementsystem.common.mark.Mark;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
 public class MarkMapper {
 
-    public static Mark mapDtoToEntity(MarkDto markDto, long studentId) {
+    public static Mark mapDtoToEntity(double mark, long studentId, String schoolSubject) {
         return Mark.builder()
-                .mark(markDto.getMark())
+                .mark(mark)
                 .studentId(studentId)
-                .subject(markDto.getSubject())
+                .subject(schoolSubject)
                 .build();
     }
 }

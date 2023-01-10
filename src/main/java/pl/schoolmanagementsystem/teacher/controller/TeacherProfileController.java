@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
@@ -37,8 +37,8 @@ public class TeacherProfileController {
     }
 
     @PatchMapping("/students/{id}")
-    public ResponseEntity<Void> addMark(@PathVariable long id, @RequestBody @Valid MarkDto markDto, Principal principal) {
-        teacherProfileService.addMark(principal.getName(), markDto, id);
+    public ResponseEntity<Void> addMark(@PathVariable long id, @RequestBody @Valid AddMarkDto addMarkDto, Principal principal) {
+        teacherProfileService.addMark(principal.getName(), addMarkDto, id);
         return ResponseEntity.noContent().build();
     }
 }

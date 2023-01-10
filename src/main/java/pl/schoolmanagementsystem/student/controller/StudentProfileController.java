@@ -21,7 +21,7 @@ public class StudentProfileController {
     private final StudentProfileService studentProfileService;
 
     @GetMapping("/marks")
-    public Map<String, List<Byte>> getGroupedMarksBySubject(Principal principal) {
+    public Map<String, List<Byte>> getMarksGroupedBySubject(Principal principal) {
         return mapToListOfBytesInMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
     }
 

@@ -69,8 +69,12 @@ public interface ControllerSamples extends Samples {
         return new TeacherDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
-    default CreateTeacherDto teacherRequestDto() {
+    default CreateTeacherDto createCreateTeacherDto() {
         return new CreateTeacherDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
+    }
+
+    default TeacherDto createTeacherDto() {
+        return new TeacherDto(ID_1, NAME, SURNAME, Collections.emptySet());
     }
 
     default StudentWithMarksDto studentResponseDto3() {

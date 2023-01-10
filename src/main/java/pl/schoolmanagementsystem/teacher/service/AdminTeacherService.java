@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
+import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
@@ -18,10 +19,12 @@ import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesS
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
-import pl.schoolmanagementsystem.teacher.utils.TeacherCreator;
+import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
+import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static pl.schoolmanagementsystem.teacher.utils.TeacherMapper.mapCreateDtoToEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -35,21 +38,26 @@ public class AdminTeacherService {
 
     private final EmailSender emailSender;
 
-    private final TeacherCreator teacherCreator;
+    private final RoleAdder roleAdder;
 
     @Transactional
-    public Teacher createTeacher(CreateTeacherDto createTeacherDto) {
+    public TeacherDto createTeacher(CreateTeacherDto createTeacherDto) {
         validateEmailIsAvailable(createTeacherDto.getEmail());
 
-        Set<SchoolSubject> taughtSubjects = createTeacherDto.getTaughtSubjects().stream()
-                .map(subject -> schoolSubjectRepository.findByNameIgnoreCase(subject)
-                        .orElseThrow(() -> new NoSuchSchoolSubjectException(subject)))
-                .collect(Collectors.toSet());
+        Set<SchoolSubject> taughtSubjects = schoolSubjectRepository.findAllByNameIn(createTeacherDto.getTaughtSubjects());
+        validateAllSubjectNamesAreCorrect(taughtSubjects, createTeacherDto.getTaughtSubjects());
 
-        Teacher teacher = teacherCreator.createTeacher(createTeacherDto, taughtSubjects);
-        teacherRepository.save(teacher);
+        Teacher teacher = mapCreateDtoToEntity(createTeacherDto, taughtSubjects);
+        roleAdder.addRoles(teacher, createTeacherDto.isAdmin());
+        Teacher savedTeacher = teacherRepository.save(teacher);
         emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
-        return teacher;
+        return TeacherMapper.mapEntityToDto(savedTeacher);
+    }
+
+    private void validateAllSubjectNamesAreCorrect(Set<SchoolSubject> taughtSubjects, Set<String> givenSubjects) {
+        if (taughtSubjects.size() != givenSubjects.size()) {
+            throw new NoSuchSchoolSubjectException();
+        }
     }
 
     public Page<Teacher> getAllTeachers(Pageable pageable) {

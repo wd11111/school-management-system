@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
+import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
@@ -13,7 +14,10 @@ import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
-import pl.schoolmanagementsystem.student.utils.StudentCreator;
+import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
+
+import static pl.schoolmanagementsystem.student.utils.StudentMapper.mapCreateDtoToEntity;
+import static pl.schoolmanagementsystem.student.utils.StudentMapper.mapEntityToDtoWithSchoolClass;
 
 @Service
 @RequiredArgsConstructor
@@ -27,18 +31,20 @@ public class AdminStudentService {
 
     private final AppUserRepository userRepository;
 
-    private final StudentCreator studentCreator;
+    private final RoleAdder roleAdder;
 
     @Transactional
-    public Student createStudent(CreateStudentDto createStudentDto) {
+    public StudentWithClassDto createStudent(CreateStudentDto createStudentDto) {
         validateEmailIsAvailable(createStudentDto.getEmail());
 
         SchoolClass schoolClass = schoolClassRepository.findById(createStudentDto.getSchoolClassName())
                 .orElseThrow(() -> new NoSuchSchoolClassException(createStudentDto.getSchoolClassName()));
 
-        Student student = studentRepository.save(studentCreator.createStudent(createStudentDto, schoolClass));
+        Student student = mapCreateDtoToEntity(createStudentDto, schoolClass);
+        roleAdder.addRoles(student);
+        Student savedStudent = studentRepository.save(student);
         emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
-        return student;
+        return mapEntityToDtoWithSchoolClass(savedStudent);
     }
 
     public void deleteStudent(long studentId) {

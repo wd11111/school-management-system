@@ -49,7 +49,8 @@ class StudentRepositoryTest {
         List<StudentDto> result = studentRepository.findAllInClass("1a");
 
         assertThat(result).extracting("studentId", "name", "surname")
-                .containsAll(List.of(tuple(1L, "studentName1", "studentSurname1"),
+                .containsAll(List.of(
+                        tuple(1L, "studentName1", "studentSurname1"),
                         tuple(2L, "studentName2", "studentSurname2")));
     }
 

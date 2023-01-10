@@ -7,17 +7,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
+import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
-import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
-import pl.schoolmanagementsystem.student.utils.StudentCreator;
 
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ class AdminStudentServiceTest implements Samples {
     private AppUserRepository userRepository;
 
     @Mock
-    private StudentCreator studentCreator;
+    private RoleAdder roleAdder;
 
     @InjectMocks
     private AdminStudentService adminStudentService;
@@ -51,15 +51,14 @@ class AdminStudentServiceTest implements Samples {
     void should_create_student() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().schoolClassName(CLASS_1A).build();
         SchoolClass schoolClass = createSchoolClass();
-        Student student = createStudent2();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(schoolClass));
-        when(studentCreator.createStudent(any(), any())).thenReturn(student);
-        when(studentRepository.save(any())).thenReturn(student);
+        doNothing().when(roleAdder).addRoles(any());
+        when(studentRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
 
-        Student result = adminStudentService.createStudent(createStudentDto);
+        StudentWithClassDto result = adminStudentService.createStudent(createStudentDto);
 
-        assertThat(result).isSameAs(student);
+        assertThat(result.getSchoolClassName()).isEqualTo(createStudentDto.getSchoolClassName());
         verify(emailService, times(1)).sendEmail(any(), any());
     }
 

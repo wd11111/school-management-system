@@ -13,16 +13,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
+import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
-import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.student.controller.AdminStudentController;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
-import pl.schoolmanagementsystem.student.utils.StudentCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +50,7 @@ class AdminStudentControllerTest implements ControllerSamples {
     void should_return_status_created_when_creating_student() throws Exception {
         CreateStudentDto createStudentDto = studentRequestDto();
         String body = objectMapper.writeValueAsString(createStudentDto);
-        Student student = student();
+        StudentWithClassDto student = new StudentWithClassDto(ID_1, NAME, SURNAME, CLASS_NAME);
         when(adminStudentService.createStudent(any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/students")
@@ -59,9 +59,11 @@ class AdminStudentControllerTest implements ControllerSamples {
                 .andExpect(status()
                         .isCreated())
                 .andReturn();
-        Student actualResponseBody = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        StudentWithClassDto result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), StudentWithClassDto.class);
 
-        assertThat(actualResponseBody.getName()).isEqualTo(createStudentDto.getName());
+        assertThat(result).usingRecursiveComparison()
+                .ignoringFields("studentId")
+                .comparingOnlyFields("name", "surname", "schoolClassName").isEqualTo(createStudentDto);
     }
 
     @Test
@@ -107,9 +109,9 @@ class MockMvcConfig3 {
         SchoolClassRepository schoolClassRepository = mock(SchoolClassRepository.class);
         EmailService emailService = mock(EmailService.class);
         AppUserRepository userRepository = mock(AppUserRepository.class);
-        StudentCreator studentCreator = mock(StudentCreator.class);
+        RoleAdder roleAdder = mock(RoleAdder.class);
         return new AdminStudentService(studentRepository, schoolClassRepository,
-                emailService, userRepository, studentCreator);
+                emailService, userRepository, roleAdder);
     }
 
     @Bean

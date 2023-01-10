@@ -29,7 +29,7 @@ public interface Samples {
     long ID_1 = 1;
     long ID_2 = 2;
 
-    default TeacherDto createTeacherResponseDto() {
+    default TeacherDto createTeacherDto() {
         return new TeacherDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 

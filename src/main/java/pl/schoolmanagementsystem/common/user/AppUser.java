@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.schoolmanagementsystem.common.role.Role;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
+import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
@@ -23,9 +24,10 @@ import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesS
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
+import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
-import pl.schoolmanagementsystem.teacher.utils.TeacherCreator;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -51,7 +53,7 @@ class AdminTeacherServiceTest implements Samples {
     private EmailService emailService;
 
     @Mock
-    private TeacherCreator teacherCreator;
+    private RoleAdder roleAdder;
 
     @InjectMocks
     private AdminTeacherService adminTeacherService;
@@ -60,16 +62,17 @@ class AdminTeacherServiceTest implements Samples {
     void should_create_teacher() {
         CreateTeacherDto createTeacherDto = new CreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
-        Teacher teacher = createTeacherNoSubjectsTaught();
-        SchoolSubject schoolSubject = createSchoolSubject();
         when(userRepository.existsById(any())).thenReturn(false);
-        when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
-        when(teacherCreator.createTeacher(any(), any())).thenReturn(teacher);
-        when(teacherRepository.save(any())).thenReturn(teacher);
+        when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Set.of(createSchoolSubject()));
+        doNothing().when(roleAdder).addRoles(any(), anyBoolean());
+        when(teacherRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
 
-        Teacher result = adminTeacherService.createTeacher(createTeacherDto);
+        TeacherDto result = adminTeacherService.createTeacher(createTeacherDto);
 
-        assertThat(result).isSameAs(teacher);
+        assertThat(result).usingRecursiveComparison()
+                .ignoringFields("id")
+                .comparingOnlyFields("name", "surname")
+                .isEqualTo(createTeacherDto);
         verify(emailService, times(1)).sendEmail(any(), any());
     }
 
@@ -91,11 +94,11 @@ class AdminTeacherServiceTest implements Samples {
         CreateTeacherDto createTeacherDto = new CreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
         when(userRepository.existsById(any())).thenReturn(false);
-        when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
+        when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Collections.emptySet());
 
         assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: Biology");
+                .hasMessage("Some of given subjects does not exist");
         verify(teacherRepository, never()).save(any());
         verify(emailService, never()).sendEmail(any(), any());
     }

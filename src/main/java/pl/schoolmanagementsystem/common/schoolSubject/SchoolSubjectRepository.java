@@ -11,11 +11,14 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, String> {
 
     Optional<SchoolSubject> findByNameIgnoreCase(String name);
+
+    Set<SchoolSubject> findAllByNameIn(Set<String> names);
 
     @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto(s.name) FROM SchoolSubject s")
     Page<SchoolSubjectDto> findAllSchoolSubjects(Pageable pageable);

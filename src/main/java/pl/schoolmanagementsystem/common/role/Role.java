@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.user;
+package pl.schoolmanagementsystem.common.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

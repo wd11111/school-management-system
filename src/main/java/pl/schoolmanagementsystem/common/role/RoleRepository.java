@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.user;
+package pl.schoolmanagementsystem.common.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

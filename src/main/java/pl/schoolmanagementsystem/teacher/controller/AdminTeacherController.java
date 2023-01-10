@@ -37,8 +37,7 @@ public class AdminTeacherController {
 
     @PostMapping
     public ResponseEntity<TeacherDto> createTeacher(@RequestBody @Valid CreateTeacherDto createTeacherDto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapEntityToDto(adminTeacherService.createTeacher(createTeacherDto)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminTeacherService.createTeacher(createTeacherDto));
     }
 
     @PatchMapping("/{id}/subjects")

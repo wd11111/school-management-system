@@ -18,9 +18,10 @@ import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachClassException;
-import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
 
 import java.util.List;
+
+import static pl.schoolmanagementsystem.teacher.utils.MarkMapper.mapDtoToEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +40,12 @@ public class TeacherProfileService {
     @Transactional
     public void addMark(String teacherEmail, MarkDto markDto, long studentId) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
+        String schoolClass = student.getSchoolClass();
         SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(markDto.getSubject())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(markDto.getSubject()));
-        String schoolClass = student.getSchoolClass();
 
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
-        student.addMark(MarkMapper.mapDtoToEntity(markDto, studentId));
+        student.addMark(mapDtoToEntity(markDto, studentId));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {

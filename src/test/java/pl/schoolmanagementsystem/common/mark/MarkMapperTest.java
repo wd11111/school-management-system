@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDoublesinMapStructure;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDoublesInMapStructure;
 
 class MarkMapperTest implements MarkSamples {
 
     @Test
-    void should_map_list_of_bytes_to_map_structure() {
+    void should_map_list_of_doubles_to_map_structure() {
         Map<String, List<MarkDto>> mapToTransform = new HashMap<>(
                 Map.of(SUBJECT, List.of(createMarkDto1(), createMarkDto2())));
         Map<String, List<Double>> expected = new HashMap<>(Map.of(SUBJECT, List.of(4.0, 2.0)));
 
-        Map<String, List<Double>> result = mapToListOfDoublesinMapStructure(mapToTransform);
+        Map<String, List<Double>> result = mapToListOfDoublesInMapStructure(mapToTransform);
 
         assertThat(result).containsExactlyEntriesOf(expected);
     }

@@ -30,7 +30,7 @@ public class AdminClassController {
         return adminClassService.getSchoolClasses(pageable);
     }
 
-    @GetMapping("/{className}")
+    @GetMapping("/{className}/students")
     public List<StudentDto> getAllStudentsInClass(@PathVariable String className) {
         return adminClassService.getAllStudentsInClass(className);
     }

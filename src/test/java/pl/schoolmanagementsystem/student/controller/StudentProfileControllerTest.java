@@ -56,7 +56,7 @@ class StudentProfileControllerTest implements ControllerSamples {
     void should_return_status_ok_when_get_for_grouped_marks_by_subject() throws Exception {
         Principal principal = new UserPrincipal("Student");
         Map<String, List<MarkDto>> groupedMarksBySubject = getGroupedMarksBySubject();
-        Map<String, List<Double>> expectedMap = MarkMapper.mapToListOfDoublesinMapStructure(groupedMarksBySubject);
+        Map<String, List<Double>> expectedMap = MarkMapper.mapToListOfDoublesInMapStructure(groupedMarksBySubject);
         String expectedResponseBody = objectMapper.writeValueAsString(expectedMap);
         when(studentProfileService.getGroupedMarksBySubject(anyString())).thenReturn(groupedMarksBySubject);
 

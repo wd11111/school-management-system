@@ -14,5 +14,5 @@ public class StudentWithMarksDto {
     private long studentId;
     private String name;
     private String surname;
-    private List<Byte> marks;
+    private List<Double> marks;
 }

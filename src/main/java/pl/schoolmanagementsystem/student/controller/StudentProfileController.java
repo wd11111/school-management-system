@@ -11,7 +11,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDoublesinMapStructure;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDoublesInMapStructure;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class StudentProfileController {
 
     @GetMapping("/marks")
     public Map<String, List<Double>> getMarksGroupedBySubject(Principal principal) {
-        return mapToListOfDoublesinMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
+        return mapToListOfDoublesInMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
     }
 
     @GetMapping("/averages")

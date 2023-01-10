@@ -24,8 +24,7 @@ public class StudentMapper {
     }
 
     public static StudentWithClassDto mapEntityToDtoWithSchoolClass(Student student) {
-        return new StudentWithClassDto(student.getId(), student.getName(),
-                student.getSurname(), student.getSchoolClass());
+        return new StudentWithClassDto(student.getId(), student.getName(), student.getSurname(), student.getSchoolClass());
     }
 
     private static AppUser createAppUser(String email) {

@@ -50,7 +50,7 @@ class MarkRepositoryTest implements MarkSamples {
     void should_return_all_marks_for_student() {
         List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
 
-        assertThat(marks).extracting("mark").containsAll(List.of((byte) 1, (byte) 2, (byte) 4));
+        assertThat(marks).extracting("mark").containsAll(List.of(1.0, 2.0, 4.0));
     }
 
     @Test

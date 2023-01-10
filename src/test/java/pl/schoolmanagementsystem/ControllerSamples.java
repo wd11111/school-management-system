@@ -25,7 +25,6 @@ public interface ControllerSamples extends Samples {
     String SURNAME = "Nowak";
     String SUBJECT = "Biology";
     boolean IS_ADMIN = false;
-    byte OUT_OF_RANGE_MARK = 8;
     byte MARK = 2;
     double AVERAGE_MARK = 3.0;
 
@@ -78,11 +77,11 @@ public interface ControllerSamples extends Samples {
     }
 
     default StudentWithMarksDto studentResponseDto3() {
-        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of((byte) 1, (byte) 1, (byte) 1));
+        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of(1.0, 1.0, 1.0));
     }
 
     default Mark getMark1() {
-        return Mark.builder().mark((byte) 1).build();
+        return Mark.builder().mark(1.0).build();
     }
 
     default Map<String, List<MarkDto>> getGroupedMarksBySubject() {

@@ -14,10 +14,10 @@ public class StudentMapper {
                 student.getId(),
                 student.getName(),
                 student.getSurname(),
-                mapListOfMarksToBytes(student.getMarks()));
+                mapListOfMarksToDoubles(student.getMarks()));
     }
 
-    private static List<Byte> mapListOfMarksToBytes(List<Mark> marks) {
+    private static List<Double> mapListOfMarksToDoubles(List<Mark> marks) {
         return marks.stream()
                 .map(Mark::getMark)
                 .collect(Collectors.toList());

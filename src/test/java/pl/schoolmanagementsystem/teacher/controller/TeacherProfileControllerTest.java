@@ -21,7 +21,6 @@ import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
@@ -79,7 +78,7 @@ class TeacherProfileControllerTest implements ControllerSamples {
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
         List<StudentWithMarksDto> listOfStudentsDto = List.of(studentResponseDto3(), studentResponseDto3());
-        List<Student> listOfStudents = List.of(student(), student());
+        List<StudentWithMarksDto> listOfStudents = List.of(studentWithMarksDto(), studentWithMarksDto());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudentsDto);
         when(teacherProfileService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);
 

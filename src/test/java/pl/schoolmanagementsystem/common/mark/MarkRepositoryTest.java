@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +51,7 @@ class MarkRepositoryTest implements MarkSamples {
     void should_return_all_marks_for_student() {
         List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
 
-        assertThat(marks).extracting("mark").containsAll(List.of(1.0, 2.0, 4.0));
+        assertThat(marks).extracting("mark").containsAll(List.of(new BigDecimal("1.00"), new BigDecimal("2.00"), new BigDecimal("4.00")));
     }
 
     @Test

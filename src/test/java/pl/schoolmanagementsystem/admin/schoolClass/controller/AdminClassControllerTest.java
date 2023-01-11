@@ -73,7 +73,7 @@ class AdminClassControllerTest implements ControllerSamples {
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudents);
         when(adminClassService.getAllStudentsInClass("1a")).thenReturn(listOfStudents);
 
-        MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1a"))
+        MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1a/students"))
                 .andExpect(status()
                         .isOk())
                 .andReturn();

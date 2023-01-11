@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
+import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -23,6 +24,7 @@ import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -122,22 +124,23 @@ class TeacherProfileServiceTest implements Samples {
 
     @Test
     void should_return_all_students_in_class_with_marks_of_subject() {
-        List<Student> listOfStudents = List.of(createStudent(), createStudent2());
-        when(classRepository.existsById(anyString())).thenReturn(true);
         when(subjectRepository.existsById(anyString())).thenReturn(true);
+        SchoolClass schoolClass = createSchoolClass();
+        schoolClass.getStudents().addAll(List.of(createStudent(), createStudent2()));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
-        when(studentRepository.findAllInClassWithMarksOfTheSubject(any(), any())).thenReturn(listOfStudents);
+        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.of(schoolClass));
 
-        List<Student> result = teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2);
+        List<StudentWithMarksDto> result = teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2);
 
-        assertThat(result).containsAll(listOfStudents);
+        assertThat(result).hasSize(2);
     }
 
     @Test
     void should_throw_exception_when_school_class_doesnt_exist() {
-        when(classRepository.existsById(anyString())).thenReturn(false);
+        when(subjectRepository.existsById(anyString())).thenReturn(true);
+        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
                 .isInstanceOf(NoSuchSchoolClassException.class)
@@ -146,7 +149,6 @@ class TeacherProfileServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_subject_doesnt_exist() {
-        when(classRepository.existsById(anyString())).thenReturn(true);
         when(subjectRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
@@ -156,8 +158,8 @@ class TeacherProfileServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_teacher_does_not_teach_subject_in_class_while_getting_students() {
-        when(classRepository.existsById(anyString())).thenReturn(true);
         when(subjectRepository.existsById(anyString())).thenReturn(true);
+        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.of(createSchoolClass()));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);

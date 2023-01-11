@@ -9,12 +9,10 @@ import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
-import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,10 +28,7 @@ public class TeacherProfileController {
 
     @GetMapping("/classes/{className}")
     public List<StudentWithMarksDto> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
-        return teacherProfileService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName())
-                .stream()
-                .map(StudentMapper::mapEntityToDtoWithMarks)
-                .collect(Collectors.toList());
+        return teacherProfileService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName());
     }
 
     @PatchMapping("/students/{id}")

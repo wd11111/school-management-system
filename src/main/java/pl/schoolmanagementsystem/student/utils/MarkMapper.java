@@ -2,13 +2,14 @@ package pl.schoolmanagementsystem.student.utils;
 
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MarkMapper {
 
-    public static Map<String, List<Double>> mapToListOfDoublesInMapStructure(Map<String, List<MarkDto>> mapToTransform) {
+    public static Map<String, List<BigDecimal>> mapToListOfDecimalsInMapStructure(Map<String, List<MarkDto>> mapToTransform) {
         return mapToTransform.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,

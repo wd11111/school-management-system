@@ -15,10 +15,10 @@ create table "app_user_roles"
 );
 create table "mark"
 (
-    "id"         bigserial not null,
-    "mark"       int2      not null,
-    "student_id" int8      not null,
-    "subject"    varchar(255) not null,
+    "id"         bigserial      not null,
+    "mark"       numeric(19, 2) not null,
+    "student_id" int8           not null,
+    "subject"    varchar(255)   not null,
     primary key ("id")
 );
 create table "role"
@@ -38,7 +38,7 @@ create table "school_subject"
 );
 create table "student"
 (
-    "id"           bigserial not null,
+    "id"           bigserial    not null,
     "name"         varchar(255) not null,
     "school_class" varchar(255) not null,
     "surname"      varchar(255) not null,
@@ -47,7 +47,7 @@ create table "student"
 );
 create table "teacher"
 (
-    "id"         bigserial not null,
+    "id"         bigserial    not null,
     "name"       varchar(255) not null,
     "surname"    varchar(255) not null,
     "user_email" varchar(255) not null,
@@ -55,9 +55,9 @@ create table "teacher"
 );
 create table "teacher_in_class"
 (
-    "id"             bigserial not null,
+    "id"             bigserial    not null,
     "taught_subject" varchar(255) not null,
-    "teacher_id"     int8 not null,
+    "teacher_id"     int8         not null,
     primary key ("id")
 );
 create table "teacher_in_class_taught_classes"

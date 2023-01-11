@@ -7,6 +7,7 @@ import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.user.AppUser;
+import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public interface Samples {
     default SchoolClass createSchoolClass() {
         return SchoolClass.builder()
                 .name(CLASS_1A)
+                .students(new HashSet<>())
                 .teachersInClass(new HashSet<>())
                 .build();
     }
@@ -62,6 +64,7 @@ public interface Samples {
     default SchoolSubject createSchoolSubject() {
         SchoolSubject schoolSubject = SchoolSubject.builder().build();
         schoolSubject.setName(SUBJECT_BIOLOGY);
+        schoolSubject.setTeachersInClasses(new HashSet<>());
         return schoolSubject;
     }
 
@@ -69,6 +72,14 @@ public interface Samples {
         return List.of(new SubjectAndClassDto(SUBJECT_BIOLOGY, CLASS_1A),
                 new SubjectAndClassDto(SUBJECT_ENGLISH, CLASS_1A),
                 new SubjectAndClassDto(SUBJECT_HISTORY, CLASS_3B));
+    }
+
+    default StudentWithMarksDto createStudentWithMarksDto() {
+        return new StudentWithMarksDto(ID_1 , NAME, SURNAME, new ArrayList<>());
+    }
+
+    default StudentWithMarksDto createStudentWithMarksDto2() {
+        return new StudentWithMarksDto(ID_2 , NAME, SURNAME, new ArrayList<>());
     }
 
     default Student createStudent() {

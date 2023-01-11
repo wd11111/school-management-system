@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.common.mark;
 
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -29,16 +30,16 @@ public enum MarkEnum {
     public final double value;
     public final String name;
 
-    public static Optional<Double> getValueByName(String name) {
+    public static Optional<BigDecimal> getValueByName(String name) {
         return Optional.of(map.get(name));
     }
 
-    private static final Map<String, Double> map;
+    private static final Map<String, BigDecimal> map;
 
     static {
         map = new HashMap<>();
         for (MarkEnum m : MarkEnum.values()) {
-            map.put(m.name, m.value);
+            map.put(m.name, BigDecimal.valueOf(m.value));
         }
     }
 

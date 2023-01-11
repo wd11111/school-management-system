@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.common.mark.MarkEnum;
 import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
+import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -19,7 +20,10 @@ import pl.schoolmanagementsystem.common.student.exception.NoSuchStudentException
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachClassException;
+import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static pl.schoolmanagementsystem.teacher.utils.MarkMapper.mapDtoToEntity;
@@ -40,7 +44,7 @@ public class TeacherProfileService {
 
     @Transactional
     public void addMark(String teacherEmail, AddMarkDto addMarkDto, long studentId) {
-        double mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow();
+        BigDecimal mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow();
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();
@@ -55,15 +59,27 @@ public class TeacherProfileService {
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail, pageable);
     }
 
-    public List<Student> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
-        if (!classRepository.existsById(schoolClassName)) {
+    public List<StudentWithMarksDto> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
+    /*    if (!classRepository.existsById(schoolClassName)) {
             throw new NoSuchSchoolClassException(schoolClassName);
         }
         if (!subjectRepository.existsById(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
         validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
-        return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName);
+        return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName);*/
+
+        if (!subjectRepository.existsById(subjectName)) {
+            throw new NoSuchSchoolSubjectException(subjectName);
+        }
+        SchoolClass schoolClass = classRepository.findClassAndFetchStudentsWithMarks(schoolClassName, subjectName)
+                .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
+
+        validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
+        return schoolClass.getStudents().stream()
+                .map(StudentMapper::mapEntityToDtoWithMarks)
+                .toList();
+
     }
 
     private void validateTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {

@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.student.service.StudentProfileService;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDoublesInMapStructure;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDecimalsInMapStructure;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +22,8 @@ public class StudentProfileController {
     private final StudentProfileService studentProfileService;
 
     @GetMapping("/marks")
-    public Map<String, List<Double>> getMarksGroupedBySubject(Principal principal) {
-        return mapToListOfDoublesInMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
+    public Map<String, List<BigDecimal>> getMarksGroupedBySubject(Principal principal) {
+        return mapToListOfDecimalsInMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
     }
 
     @GetMapping("/averages")

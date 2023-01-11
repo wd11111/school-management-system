@@ -6,7 +6,6 @@ import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
-import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
@@ -16,6 +15,7 @@ import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public interface ControllerSamples extends Samples {
@@ -25,7 +25,7 @@ public interface ControllerSamples extends Samples {
     String SURNAME = "Nowak";
     String SUBJECT = "Biology";
     boolean IS_ADMIN = false;
-    byte MARK = 2;
+    BigDecimal MARK = BigDecimal.valueOf(2.0);
     double AVERAGE_MARK = 3.0;
 
     default SchoolClassDto schoolClassDto() {
@@ -60,8 +60,8 @@ public interface ControllerSamples extends Samples {
         return new CreateStudentDto(NAME, SURNAME, CLASS_NAME, NAME);
     }
 
-    default Student student() {
-        return new Student(ID_1, NAME, SURNAME, getAppUser(), List.of(getMark1(), getMark1(), getMark1()), CLASS_NAME);
+    default StudentWithMarksDto studentWithMarksDto() {
+        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of(BigDecimal.ONE, BigDecimal.ONE));
     }
 
     default TeacherDto teacherResponseDto() {
@@ -77,11 +77,11 @@ public interface ControllerSamples extends Samples {
     }
 
     default StudentWithMarksDto studentResponseDto3() {
-        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of(1.0, 1.0, 1.0));
+        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of(BigDecimal.ONE, BigDecimal.ONE));
     }
 
     default Mark getMark1() {
-        return Mark.builder().mark(1.0).build();
+        return Mark.builder().mark(BigDecimal.ONE).build();
     }
 
     default Map<String, List<MarkDto>> getGroupedMarksBySubject() {

@@ -125,7 +125,7 @@ class AdminTeacherServiceTest implements Samples {
     @Test
     void should_return_taught_classes_by_teacher() {
         Page<SubjectAndClassDto> listOfTaughtClasses = new PageImpl<>(listOfTaughtClasses());
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0, 10);
         when(teacherRepository.existsById(any())).thenReturn(true);
         when(teacherRepository.findEmailById(anyLong())).thenReturn(NAME3);
         when(teacherRepository.findTaughtClassesByTeacher(anyString(), any())).thenReturn(listOfTaughtClasses);
@@ -137,7 +137,7 @@ class AdminTeacherServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_trying_to_get_taught_classes() {
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0, 10);
         when(teacherRepository.existsById(any())).thenReturn(false);
 
         assertThatThrownBy(() -> adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable))
@@ -154,10 +154,12 @@ class AdminTeacherServiceTest implements Samples {
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
 
-        Teacher result = adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto);
+        TeacherDto result = adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto);
 
         assertThat(teacher.getTaughtSubjects()).hasSize(1);
-        assertThat(result).isSameAs(teacher);
+        assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("id", "name", "surname")
+                .isEqualTo(teacher);
     }
 
     @Test

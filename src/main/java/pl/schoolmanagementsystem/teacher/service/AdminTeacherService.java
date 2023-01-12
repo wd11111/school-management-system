@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,11 @@ import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 
+import java.util.List;
 import java.util.Set;
 
 import static pl.schoolmanagementsystem.teacher.utils.TeacherMapper.mapCreateDtoToEntity;
+import static pl.schoolmanagementsystem.teacher.utils.TeacherMapper.mapEntityToDto;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +54,7 @@ public class AdminTeacherService {
         roleAdder.addRoles(teacher, createTeacherDto.isAdmin());
         Teacher savedTeacher = teacherRepository.save(teacher);
         emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
-        return TeacherMapper.mapEntityToDto(savedTeacher);
+        return mapEntityToDto(savedTeacher);
     }
 
     private void validateAllSubjectNamesAreCorrect(Set<SchoolSubject> taughtSubjects, Set<String> givenSubjects) {
@@ -60,8 +63,12 @@ public class AdminTeacherService {
         }
     }
 
-    public Page<Teacher> getAllTeachers(Pageable pageable) {
-        return teacherRepository.findAll(pageable);
+    public Page<TeacherDto> getAllTeachers(Pageable pageable) {
+        List<TeacherDto> teachers = teacherRepository.findAll(pageable)
+                .stream()
+                .map(TeacherMapper::mapEntityToDto)
+                .toList();
+        return new PageImpl<>(teachers);
     }
 
     @Transactional
@@ -72,19 +79,20 @@ public class AdminTeacherService {
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
         validateTeacherExists(teacherId);
+
         String teacherEmail = teacherRepository.findEmailById(teacherId);
         return teacherRepository.findTaughtClassesByTeacher(teacherEmail, pageable);
     }
 
     @Transactional
-    public Teacher addSubjectToTeacher(long teacherId, SchoolSubjectDto schoolSubjectDto) {
+    public TeacherDto addSubjectToTeacher(long teacherId, SchoolSubjectDto schoolSubjectDto) {
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
 
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
         teacher.addSubject(schoolSubject);
-        return teacher;
+        return mapEntityToDto(teacher);
     }
 
     private void validateTeacherExists(long teacherId) {

@@ -13,14 +13,12 @@ import java.util.Optional;
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
-    @Override
     @Query("SELECT t FROM Teacher t LEFT JOIN FETCH t.teacherInClasses LEFT JOIN FETCH t.taughtSubjects " +
             "WHERE t.id = ?1")
     Optional<Teacher> findById(Long id);
 
-    @Override
     @Query("SELECT DISTINCT t FROM Teacher t LEFT JOIN FETCH t.taughtSubjects ORDER BY t.surname")
-    List<Teacher> findAll();
+    List<Teacher> findAllAndFetchSubjects();
 
     @Query("SELECT t.appUser.userEmail FROM Teacher t WHERE t.id=?1")
     String findEmailById(long id);

@@ -19,7 +19,6 @@ import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
@@ -54,9 +53,8 @@ class AdminTeacherControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_get_for_all_teachers() throws Exception {
-        Page<Teacher> listOfTeachers = new PageImpl<>(List.of(createTeacherOfBiology(), createTeacherOfBiology()));
-        Page<TeacherDto> listOfTeachersResponse = new PageImpl<>(List.of(teacherResponseDto(), teacherResponseDto()));
-        String expectedResponseBody = objectMapper.writeValueAsString(listOfTeachersResponse);
+        Page<TeacherDto> listOfTeachers = new PageImpl<>(List.of(teacherResponseDto(), teacherResponseDto()));
+        String expectedResponseBody = objectMapper.writeValueAsString(listOfTeachers);
         when(adminTeacherService.getAllTeachers(any())).thenReturn(listOfTeachers);
 
         MvcResult mvcResult = mockMvc.perform(get("/admin/teachers"))
@@ -119,11 +117,10 @@ class AdminTeacherControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_adding_subject_to_teacher() throws Exception {
         SchoolSubjectDto schoolSubjectDto = schoolSubjectDto();
-        Teacher teacher = createTeacherOfBiology();
         TeacherDto teacherDto = teacherResponseDto();
         String expectedResponse = objectMapper.writeValueAsString(teacherDto);
         String body = objectMapper.writeValueAsString(schoolSubjectDto);
-        when(adminTeacherService.addSubjectToTeacher(anyLong(), any())).thenReturn(teacher);
+        when(adminTeacherService.addSubjectToTeacher(anyLong(), any())).thenReturn(teacherDto);
 
         MvcResult mvcResult = mockMvc.perform(patch("/admin/teachers/1/subjects")
                         .contentType(MediaType.APPLICATION_JSON)

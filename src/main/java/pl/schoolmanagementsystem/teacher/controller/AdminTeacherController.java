@@ -11,11 +11,8 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
-import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 
 import javax.validation.Valid;
-
-import static pl.schoolmanagementsystem.teacher.utils.TeacherMapper.mapEntityToDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +23,7 @@ public class AdminTeacherController {
 
     @GetMapping
     public Page<TeacherDto> getAllTeachers(Pageable pageable) {
-        return adminTeacherService.getAllTeachers(pageable)
-                .map(TeacherMapper::mapEntityToDto);
+        return adminTeacherService.getAllTeachers(pageable);
     }
 
     @GetMapping("/{id}/taught-classes")
@@ -42,7 +38,7 @@ public class AdminTeacherController {
 
     @PatchMapping("/{id}/subjects")
     public TeacherDto addSubjectToTeacher(@PathVariable long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
-        return mapEntityToDto(adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto));
+        return adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto);
     }
 
     @DeleteMapping("/{id}")

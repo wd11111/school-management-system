@@ -64,7 +64,7 @@ class TeacherRepositoryTest {
 
     @Test
     void should_return_all_teachers() {
-        List<Teacher> result = teacherRepository.findAll();
+        List<Teacher> result = teacherRepository.findAllAndFetchSubjects();
 
         assertThat(result).extracting("surname")
                 .containsExactly("teacherSurname1",

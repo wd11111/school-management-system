@@ -12,8 +12,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapToListOfDecimalsInMapStructure;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/student")
@@ -23,7 +21,7 @@ public class StudentProfileController {
 
     @GetMapping("/marks")
     public Map<String, List<BigDecimal>> getMarksGroupedBySubject(Principal principal) {
-        return mapToListOfDecimalsInMapStructure(studentProfileService.getGroupedMarksBySubject(principal.getName()));
+        return studentProfileService.getGroupedMarksBySubject(principal.getName());
     }
 
     @GetMapping("/averages")

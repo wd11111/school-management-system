@@ -5,13 +5,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.MarkSamples;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class StudentProfileServiceTest implements ControllerSamples, MarkSamples {
+class StudentProfileServiceTest implements Samples, MarkSamples {
 
     @Mock
     private StudentRepository studentRepository;
@@ -34,13 +34,13 @@ class StudentProfileServiceTest implements ControllerSamples, MarkSamples {
 
     @Test
     void should_return_marks_grouped_by_subject() {
-        Map<String, List<MarkDto>> expected = new HashMap<>(
-                Map.of(SUBJECT_BIOLOGY, List.of(createMarkDto1()),
-                        SUBJECT_HISTORY, List.of(createMarkDto2())));
+        Map<String, List<BigDecimal>> expected = new HashMap<>(
+                Map.of(SUBJECT_BIOLOGY, List.of(getMark1()),
+                        SUBJECT_HISTORY, List.of(getMark2())));
         when(markRepository.findAllMarksForStudent(anyString()))
-                .thenReturn(List.of(createMarkDto1(), markWithTwoFields2()));
+                .thenReturn(List.of(createMarkDto1(), createMarkDto2()));
 
-        Map<String, List<MarkDto>> result = studentProfileService.getGroupedMarksBySubject(NAME);
+        Map<String, List<BigDecimal>> result = studentProfileService.getGroupedMarksBySubject(NAME);
 
         assertThat(result).isEqualTo(expected);
     }

@@ -32,4 +32,12 @@ public interface MarkSamples {
     default MarkDto createMarkDto2() {
         return new MarkDto(BigDecimal.valueOf(2.0), SUBJECT_2);
     }
+
+    default BigDecimal getMark1() {
+        return BigDecimal.valueOf(4.0);
+    }
+
+    default BigDecimal getMark2() {
+        return BigDecimal.valueOf(2.0);
+    }
 }

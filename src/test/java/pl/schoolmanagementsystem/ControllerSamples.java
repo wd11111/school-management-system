@@ -7,7 +7,6 @@ import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.student.dto.StudentDto;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
@@ -48,10 +47,6 @@ public interface ControllerSamples extends Samples {
         return new TeacherInClassDto(ID_1, SUBJECT, Set.of(CLASS_NAME));
     }
 
-    default TeacherInClass teacherInClass() {
-        return new TeacherInClass(1, createTeacherNoSubjectsTaught(), SUBJECT, Set.of(createSchoolClass()));
-    }
-
     default SchoolSubjectDto schoolSubjectDto() {
         return new SchoolSubjectDto(CLASS_NAME);
     }
@@ -84,10 +79,10 @@ public interface ControllerSamples extends Samples {
         return Mark.builder().mark(BigDecimal.ONE).build();
     }
 
-    default Map<String, List<MarkDto>> getGroupedMarksBySubject() {
+    default Map<String, List<BigDecimal>> getGroupedMarksBySubject() {
         return new HashMap<>(Map.of(
-                SUBJECT_BIOLOGY, List.of(markWithTwoFields1(), markWithTwoFields1()),
-                SUBJECT_HISTORY, List.of(markWithTwoFields2(), markWithTwoFields2())
+                SUBJECT_BIOLOGY, List.of(MARK, MARK),
+                SUBJECT_HISTORY, List.of(MARK, MARK)
         ));
     }
 

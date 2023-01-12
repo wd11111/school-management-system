@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -25,7 +24,6 @@ import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;
 import pl.schoolmanagementsystem.student.service.StudentProfileService;
-import pl.schoolmanagementsystem.student.utils.MarkMapper;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -56,9 +54,8 @@ class StudentProfileControllerTest implements ControllerSamples {
     @Test
     void should_return_status_ok_when_get_for_grouped_marks_by_subject() throws Exception {
         Principal principal = new UserPrincipal("Student");
-        Map<String, List<MarkDto>> groupedMarksBySubject = getGroupedMarksBySubject();
-        Map<String, List<BigDecimal>> expectedMap = MarkMapper.mapToListOfDecimalsInMapStructure(groupedMarksBySubject);
-        String expectedResponseBody = objectMapper.writeValueAsString(expectedMap);
+        Map<String, List<BigDecimal>> groupedMarksBySubject = getGroupedMarksBySubject();
+        String expectedResponseBody = objectMapper.writeValueAsString(groupedMarksBySubject);
         when(studentProfileService.getGroupedMarksBySubject(anyString())).thenReturn(groupedMarksBySubject);
 
         MvcResult mvcResult = mockMvc.perform(get("/student/marks").principal(principal))

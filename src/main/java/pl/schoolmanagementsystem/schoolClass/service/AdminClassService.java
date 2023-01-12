@@ -23,7 +23,9 @@ import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapper;
+import pl.schoolmanagementsystem.schoolClass.utils.TeacherInClassMapper;
 
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class AdminClassService {
         return schoolSubjectRepository.findTaughtSubjectsInClass(schoolClassName);
     }
 
-    public TeacherInClass addTeacherToSchoolClass(AddTeacherToClassDto addTeacherToClassDto, String schoolClassName) {
+    public TeacherInClassDto addTeacherToSchoolClass(AddTeacherToClassDto addTeacherToClassDto, String schoolClassName) {
         Teacher teacher = teacherRepository.findById(addTeacherToClassDto.getTeacherId())
                 .orElseThrow(() -> new NoSuchTeacherException(addTeacherToClassDto.getTeacherId()));
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
@@ -69,7 +71,8 @@ public class AdminClassService {
 
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
-        return teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
+        TeacherInClass teacherInClass = teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
+        return TeacherInClassMapper.mapEntityToDto(teacherInClass);
     }
 
     public List<StudentDto> getAllStudentsInClass(String className) {

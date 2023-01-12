@@ -7,10 +7,12 @@ import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
+import static pl.schoolmanagementsystem.student.utils.MarkMapper.mapListOfMarkDtoToDecimalsInMapStructure;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +22,10 @@ public class StudentProfileService {
 
     private final MarkRepository markRepository;
 
-    public Map<String, List<MarkDto>> getGroupedMarksBySubject(String studentEmail) {
+    public Map<String, List<BigDecimal>> getGroupedMarksBySubject(String studentEmail) {
         List<MarkDto> studentsMarks = markRepository.findAllMarksForStudent(studentEmail);
-        return groupMarksBySubject(studentsMarks);
+        Map<String, List<MarkDto>> groupedUpMarks = groupMarksBySubject(studentsMarks);
+        return mapListOfMarkDtoToDecimalsInMapStructure(groupedUpMarks);
     }
 
     public List<MarkAvgDto> getAverageMarks(String studentEmail) {

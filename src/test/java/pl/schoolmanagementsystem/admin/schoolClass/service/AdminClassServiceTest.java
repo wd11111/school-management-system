@@ -22,6 +22,7 @@ import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
 import pl.schoolmanagementsystem.schoolClass.service.AdminTeacherInClassService;
 
@@ -89,19 +90,20 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_add_teacher_to_school_class() {
-        TeacherInClass expected = new TeacherInClass();
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         Teacher teacher = createTeacherOfBiology();
+        TeacherInClass teacherInClass = new TeacherInClass();
+        teacherInClass.setTeacher(teacher);
+        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
         SchoolClass schoolClass = createSchoolClass();
         SchoolSubject schoolSubject = createSchoolSubject();
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.ofNullable(teacher));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.ofNullable(schoolClass));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
-        when(teacherInClassService.addTeacherToClass(any(), any(), any())).thenReturn(expected);
+        when(teacherInClassService.addTeacherToClass(any(), any(), any())).thenReturn(teacherInClass);
 
-        TeacherInClass result = adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A);
+        TeacherInClassDto result = adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A);
 
-        assertThat(result).isSameAs(expected);
+        assertThat(result.getTeacherId()).isSameAs(teacherInClass.getTeacher().getId());
     }
 
     @Test

@@ -12,7 +12,6 @@ import pl.schoolmanagementsystem.common.student.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
-import pl.schoolmanagementsystem.schoolClass.utils.TeacherInClassMapper;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,7 +25,6 @@ public class AdminClassController {
 
     @GetMapping
     public Page<SchoolClassDto> getSchoolClasses(Pageable pageable) {
-        System.out.println(pageable.getPageSize());
         return adminClassService.getSchoolClasses(pageable);
     }
 
@@ -49,7 +47,7 @@ public class AdminClassController {
     @PatchMapping("/{className}/teachers")
     public TeacherInClassDto addTeacherToSchoolClass(
             @PathVariable String className, @RequestBody @Valid AddTeacherToClassDto addTeacherToClassDto) {
-        return TeacherInClassMapper.mapEntityToDto(adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className));
+        return adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className);
     }
 
     @DeleteMapping("/{className}")

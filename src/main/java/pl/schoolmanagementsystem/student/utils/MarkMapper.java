@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class MarkMapper {
 
-    public static Map<String, List<BigDecimal>> mapToListOfDecimalsInMapStructure(Map<String, List<MarkDto>> mapToTransform) {
+    public static Map<String, List<BigDecimal>> mapListOfMarkDtoToDecimalsInMapStructure(Map<String, List<MarkDto>> mapToTransform) {
         return mapToTransform.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,

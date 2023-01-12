@@ -26,6 +26,7 @@ import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.schoolClass.controller.AdminClassController;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
 import pl.schoolmanagementsystem.schoolClass.service.AdminTeacherInClassService;
 
@@ -127,9 +128,10 @@ class AdminClassControllerTest implements ControllerSamples {
 
     @Test
     void should_return_status_ok_when_adding_subject_to_class() throws Exception {
+        TeacherInClassDto teacherInClassDto = teacherInClassResponse();
         String body = objectMapper.writeValueAsString(teacherInClassRequest());
-        String expectedResponse = objectMapper.writeValueAsString(teacherInClassResponse());
-        when(adminClassService.addTeacherToSchoolClass(any(), anyString())).thenReturn(teacherInClass());
+        String expectedResponse = objectMapper.writeValueAsString(teacherInClassDto);
+        when(adminClassService.addTeacherToSchoolClass(any(), anyString())).thenReturn(teacherInClassDto);
 
         MvcResult mvcResult = mockMvc.perform(patch("/admin/classes/1a/teachers")
                         .content(body)

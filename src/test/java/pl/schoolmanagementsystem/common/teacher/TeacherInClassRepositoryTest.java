@@ -47,7 +47,7 @@ class TeacherInClassRepositoryTest {
 
     @Test
     void should_return_teacher_in_class() {
-        Teacher teacher = teacherRepository.findById(1L).get();
+        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(1L).get();
         TeacherInClass result = teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, "biology").get();
 
         assertThat(result).extracting("id", "taughtSubject")

@@ -49,17 +49,10 @@ class TeacherRepositoryTest {
 
     @Test
     void should_find_teacher_by_id() {
-        Teacher result = teacherRepository.findById(1L).get();
+        Teacher result = teacherRepository.findByIdAndFetchSubjects(1L).get();
 
         assertThat(result).extracting("id", "name", "surname")
                 .containsAll(List.of(1L, "teacherName1", "teacherSurname1"));
-    }
-
-    @Test
-    void should_find_email_by_teacher_id() {
-        String emailById = teacherRepository.findEmailById(1);
-
-        assertThat(emailById).isEqualTo("email2");
     }
 
     @Test

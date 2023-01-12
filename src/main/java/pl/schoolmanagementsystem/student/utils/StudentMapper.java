@@ -1,5 +1,6 @@
 package pl.schoolmanagementsystem.student.utils;
 
+import pl.schoolmanagementsystem.common.email.token.TokenGenerator;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.student.Student;
 import pl.schoolmanagementsystem.common.user.AppUser;
@@ -7,8 +8,6 @@ import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 
 import java.util.ArrayList;
-
-import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.generateToken;
 
 public class StudentMapper {
 
@@ -28,6 +27,6 @@ public class StudentMapper {
     }
 
     private static AppUser createAppUser(String email) {
-        return new AppUser(email, PASSWORD, generateToken(), new ArrayList<>());
+        return new AppUser(email, PASSWORD, TokenGenerator.generateToken(), new ArrayList<>());
     }
 }

@@ -57,12 +57,6 @@ public class AdminTeacherService {
         return mapEntityToDto(savedTeacher);
     }
 
-    private void validateAllSubjectNamesAreCorrect(Set<SchoolSubject> taughtSubjects, Set<String> givenSubjects) {
-        if (taughtSubjects.size() != givenSubjects.size()) {
-            throw new NoSuchSchoolSubjectException();
-        }
-    }
-
     public Page<TeacherDto> getAllTeachers(Pageable pageable) {
         List<TeacherDto> teachers = teacherRepository.findAll(pageable)
                 .stream()
@@ -78,21 +72,30 @@ public class AdminTeacherService {
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
-        validateTeacherExists(teacherId);
-
-        String teacherEmail = teacherRepository.findEmailById(teacherId);
-        return teacherRepository.findTaughtClassesByTeacher(teacherEmail, pageable);
+        List<SubjectAndClassDto> taughtClassesByTeacher = teacherRepository.findByIdAndFetchSubjectsAndClasses(teacherId, pageable)
+                .orElseThrow(() -> new NoSuchTeacherException(teacherId))
+                .getTeacherInClasses().stream()
+                .flatMap(teacherInClass -> teacherInClass.getTaughtClasses().stream()
+                        .map(schoolClass -> new SubjectAndClassDto(teacherInClass.getTaughtSubject(), schoolClass.getName())))
+                .toList();
+        return new PageImpl<>(taughtClassesByTeacher);
     }
 
     @Transactional
     public TeacherDto addSubjectToTeacher(long teacherId, SchoolSubjectDto schoolSubjectDto) {
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
+        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
 
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
         teacher.addSubject(schoolSubject);
         return mapEntityToDto(teacher);
+    }
+
+    private void validateAllSubjectNamesAreCorrect(Set<SchoolSubject> taughtSubjects, Set<String> givenSubjects) {
+        if (taughtSubjects.size() != givenSubjects.size()) {
+            throw new NoSuchSchoolSubjectException();
+        }
     }
 
     private void validateTeacherExists(long teacherId) {

@@ -15,13 +15,13 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     @Query("SELECT t FROM Teacher t LEFT JOIN FETCH t.teacherInClasses LEFT JOIN FETCH t.taughtSubjects " +
             "WHERE t.id = ?1")
-    Optional<Teacher> findById(Long id);
+    Optional<Teacher> findByIdAndFetchSubjectsAndClasses(Long id, Pageable pageable);
+
+    @Query("SELECT t FROM Teacher t LEFT JOIN FETCH t.taughtSubjects WHERE t.id = ?1")
+    Optional<Teacher> findByIdAndFetchSubjects(Long id);
 
     @Query("SELECT DISTINCT t FROM Teacher t LEFT JOIN FETCH t.taughtSubjects ORDER BY t.surname")
     List<Teacher> findAllAndFetchSubjects();
-
-    @Query("SELECT t.appUser.userEmail FROM Teacher t WHERE t.id=?1")
-    String findEmailById(long id);
 
     @Query("SELECT new pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto(" +
             "tc.taughtSubject, tics.name) " +

@@ -19,6 +19,7 @@ import javax.validation.Valid;
 @RequestMapping("/admin/teachers")
 public class AdminTeacherController {
 
+    public static final String ID_TAUGHT_CLASSES = "/{id}/taught-classes";
     private final AdminTeacherService adminTeacherService;
 
     @GetMapping
@@ -26,7 +27,7 @@ public class AdminTeacherController {
         return adminTeacherService.getAllTeachers(pageable);
     }
 
-    @GetMapping("/{id}/taught-classes")
+    @GetMapping(ID_TAUGHT_CLASSES)
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(@PathVariable long id, Pageable pageable) {
         return adminTeacherService.getTaughtClassesByTeacher(id, pageable);
     }

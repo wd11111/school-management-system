@@ -18,7 +18,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "(m.subject=?2 OR m.subject IS NULL)")
     List<Student> findAllInClassWithMarksOfTheSubject(String schoolClass, String subject);
 
-    @Query("SELECT s.id FROM Student s WHERE s.appUser.userEmail=?1")
-    long findIdByEmail(String email);
-
 }

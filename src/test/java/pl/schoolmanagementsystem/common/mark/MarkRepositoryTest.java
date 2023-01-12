@@ -56,7 +56,7 @@ class MarkRepositoryTest implements MarkSamples {
 
     @Test
     void should_return_all_averages_for_student() {
-        List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent(1);
+        List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent("email");
 
         assertThat(allAveragesForStudent).extracting("subject", "avg")
                 .containsAll(List.of(tuple("biology", 2.5),

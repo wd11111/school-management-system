@@ -127,13 +127,13 @@ class AdminClassControllerTest implements ControllerSamples {
     }
 
     @Test
-    void should_return_status_ok_when_adding_subject_to_class() throws Exception {
+    void should_return_status_ok_when_adding_teacher_to_class() throws Exception {
         TeacherInClassDto teacherInClassDto = teacherInClassResponse();
         String body = objectMapper.writeValueAsString(teacherInClassRequest());
         String expectedResponse = objectMapper.writeValueAsString(teacherInClassDto);
         when(adminClassService.addTeacherToSchoolClass(any(), anyString())).thenReturn(teacherInClassDto);
 
-        MvcResult mvcResult = mockMvc.perform(patch("/admin/classes/1a/teachers")
+        MvcResult mvcResult = mockMvc.perform(post("/admin/classes/1a/teachers")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status()
@@ -144,10 +144,10 @@ class AdminClassControllerTest implements ControllerSamples {
     }
 
     @Test
-    void should_return_status_bad_request_when_adding_subject_to_class_doesnt_pass_validation() throws Exception {
+    void should_return_status_bad_request_when_adding_teacher_to_class_doesnt_pass_validation() throws Exception {
         String body = objectMapper.writeValueAsString(new AddTeacherToClassDto());
 
-        mockMvc.perform(patch("/admin/classes/1a/teachers")
+        mockMvc.perform(post("/admin/classes/1a/teachers")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status()

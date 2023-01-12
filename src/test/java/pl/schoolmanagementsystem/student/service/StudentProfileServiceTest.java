@@ -48,8 +48,7 @@ class StudentProfileServiceTest implements Samples, MarkSamples {
     @Test
     void should_return_all_averages_for_student() {
         List<MarkAvgDto> expectedResult = List.of(new MarkAvgDto(SUBJECT_BIOLOGY, 2.0));
-        when(studentRepository.findIdByEmail(anyString())).thenReturn(ID_1);
-        when(markRepository.findAllAveragesForStudent(ID_1)).thenReturn(expectedResult);
+        when(markRepository.findAllAveragesForStudent("email")).thenReturn(expectedResult);
 
         List<MarkAvgDto> result = studentProfileService.getAverageMarks(NAME);
 

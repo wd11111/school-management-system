@@ -44,7 +44,7 @@ public class AdminClassController {
         return ResponseEntity.status(HttpStatus.CREATED).body(schoolClassDto);
     }
 
-    @PatchMapping("/{className}/teachers")
+    @PostMapping("/{className}/teachers")
     public TeacherInClassDto addTeacherToSchoolClass(
             @PathVariable String className, @RequestBody @Valid AddTeacherToClassDto addTeacherToClassDto) {
         return adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className);

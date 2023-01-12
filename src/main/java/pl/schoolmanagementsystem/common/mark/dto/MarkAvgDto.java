@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class MarkAvgDto {
 
     private String subject;
-    private double avg;
+    private Double avg;
 }

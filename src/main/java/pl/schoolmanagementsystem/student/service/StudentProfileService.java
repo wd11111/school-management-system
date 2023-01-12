@@ -29,11 +29,7 @@ public class StudentProfileService {
     }
 
     public List<MarkAvgDto> getAverageMarks(String studentEmail) {
-        return markRepository.findAllAveragesForStudent(getStudentId(studentEmail));
-    }
-
-    private long getStudentId(String studentEmail) {
-        return studentRepository.findIdByEmail(studentEmail);
+        return markRepository.findAllAveragesForStudent(studentEmail);
     }
 
     private Map<String, List<MarkDto>> groupMarksBySubject(List<MarkDto> studentsMarks) {

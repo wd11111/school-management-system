@@ -14,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class StudentWithMarksDto {
 
-    private long studentId;
+    private Long studentId;
     private String name;
     private String surname;
     private List<BigDecimal> marks;

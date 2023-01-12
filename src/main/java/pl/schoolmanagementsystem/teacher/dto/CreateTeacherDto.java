@@ -25,7 +25,7 @@ public class CreateTeacherDto {
     @NotBlank(message = "{not.blank.message}")
     private String surname;
 
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     @NotNull(message = "{not.null.message}")
     private Set<String> taughtSubjects;

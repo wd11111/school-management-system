@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.common.mark.MarkEnum;
 import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
+import pl.schoolmanagementsystem.common.mark.exception.MarkNotInRangeException;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolClass.exception.NoSuchSchoolClassException;
@@ -44,7 +45,7 @@ public class TeacherProfileService {
 
     @Transactional
     public void addMark(String teacherEmail, AddMarkDto addMarkDto, long studentId) {
-        BigDecimal mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow();
+        BigDecimal mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow(MarkNotInRangeException::new);
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();

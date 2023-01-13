@@ -7,9 +7,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pl.schoolmanagementsystem.common.role.Role;
-import pl.schoolmanagementsystem.common.user.AppUser;
-import pl.schoolmanagementsystem.common.user.AppUserRepository;
+import pl.schoolmanagementsystem.common.model.AppUser;
+import pl.schoolmanagementsystem.common.model.Role;
+import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 
 import java.util.List;
 import java.util.Optional;

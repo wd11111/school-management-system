@@ -1,9 +1,9 @@
 package pl.schoolmanagementsystem.student.utils;
 
 import pl.schoolmanagementsystem.common.email.token.TokenGenerator;
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.user.AppUser;
+import pl.schoolmanagementsystem.common.model.AppUser;
+import pl.schoolmanagementsystem.common.model.SchoolClass;
+import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 

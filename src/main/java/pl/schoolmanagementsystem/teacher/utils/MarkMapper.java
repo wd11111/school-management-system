@@ -1,6 +1,6 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
-import pl.schoolmanagementsystem.common.mark.Mark;
+import pl.schoolmanagementsystem.common.model.Mark;
 
 import java.math.BigDecimal;
 

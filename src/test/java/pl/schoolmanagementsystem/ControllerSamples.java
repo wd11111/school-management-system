@@ -1,9 +1,9 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
-import pl.schoolmanagementsystem.common.student.dto.StudentDto;
+import pl.schoolmanagementsystem.common.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.common.dto.StudentDto;
+import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
@@ -23,8 +23,6 @@ public interface ControllerSamples extends Samples {
     String SURNAME = "Nowak";
     String SUBJECT = "Biology";
     boolean IS_ADMIN = false;
-    BigDecimal MARK = BigDecimal.valueOf(2.0);
-    double AVERAGE_MARK_3_0 = 3.0;
 
     default SchoolClassDto schoolClassDto() {
         return new SchoolClassDto(CLASS_NAME);

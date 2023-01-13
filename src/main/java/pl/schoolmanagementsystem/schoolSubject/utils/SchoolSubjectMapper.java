@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.schoolSubject.utils;
 
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.common.model.SchoolSubject;
 
 public class SchoolSubjectMapper {
 

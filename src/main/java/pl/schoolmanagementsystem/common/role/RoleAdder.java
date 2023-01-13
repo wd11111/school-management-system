@@ -2,8 +2,10 @@ package pl.schoolmanagementsystem.common.role;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
+import pl.schoolmanagementsystem.common.model.Role;
+import pl.schoolmanagementsystem.common.model.Student;
+import pl.schoolmanagementsystem.common.model.Teacher;
+import pl.schoolmanagementsystem.common.repository.RoleRepository;
 
 import java.util.NoSuchElementException;
 

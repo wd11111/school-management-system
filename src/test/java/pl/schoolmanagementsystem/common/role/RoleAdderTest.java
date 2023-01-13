@@ -6,8 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
+import pl.schoolmanagementsystem.common.model.Student;
+import pl.schoolmanagementsystem.common.model.Teacher;
+import pl.schoolmanagementsystem.common.repository.RoleRepository;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;

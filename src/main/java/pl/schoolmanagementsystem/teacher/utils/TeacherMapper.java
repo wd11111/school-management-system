@@ -1,8 +1,8 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.user.AppUser;
+import pl.schoolmanagementsystem.common.model.AppUser;
+import pl.schoolmanagementsystem.common.model.SchoolSubject;
+import pl.schoolmanagementsystem.common.model.Teacher;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 

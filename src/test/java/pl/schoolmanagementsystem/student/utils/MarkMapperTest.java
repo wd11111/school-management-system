@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.student.utils;
 
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.common.dto.MarkDto;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

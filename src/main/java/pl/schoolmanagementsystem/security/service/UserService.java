@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.common.user.AppUser;
-import pl.schoolmanagementsystem.common.user.AppUserRepository;
+import pl.schoolmanagementsystem.common.model.AppUser;
+import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

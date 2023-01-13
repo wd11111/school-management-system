@@ -5,11 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
-import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
+import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.common.exception.NoSuchSchoolSubjectException;
+import pl.schoolmanagementsystem.common.exception.SubjectAlreadyExistsException;
+import pl.schoolmanagementsystem.common.model.SchoolSubject;
+import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.schoolSubject.utils.SchoolSubjectMapper;
 
 @Service

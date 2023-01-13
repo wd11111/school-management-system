@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.schoolClass.utils;
 
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
+import pl.schoolmanagementsystem.common.model.TeacherInClass;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 
 import static org.assertj.core.api.Assertions.assertThat;

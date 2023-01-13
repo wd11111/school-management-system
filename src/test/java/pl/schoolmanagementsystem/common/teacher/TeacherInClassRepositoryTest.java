@@ -11,6 +11,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.schoolmanagementsystem.common.model.Teacher;
+import pl.schoolmanagementsystem.common.model.TeacherInClass;
+import pl.schoolmanagementsystem.common.repository.TeacherInClassRepository;
+import pl.schoolmanagementsystem.common.repository.TeacherRepository;
 
 import java.util.List;
 

@@ -11,6 +11,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.schoolmanagementsystem.common.model.AppUser;
+import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

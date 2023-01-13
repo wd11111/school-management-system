@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
+import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
+import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.student.service.StudentProfileService;
 
 import java.math.BigDecimal;

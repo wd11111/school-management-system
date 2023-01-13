@@ -12,8 +12,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.common.dto.MarkDto;
+import pl.schoolmanagementsystem.common.repository.MarkRepository;
+import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
 
 import java.math.BigDecimal;
 import java.util.List;

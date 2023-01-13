@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
+import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
+import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
 
 import javax.validation.Valid;

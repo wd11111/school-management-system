@@ -6,11 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.mark.MarkRepository;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
-import pl.schoolmanagementsystem.common.student.StudentRepository;
+import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
+import pl.schoolmanagementsystem.common.repository.MarkRepository;
+import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.common.repository.StudentRepository;
+import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

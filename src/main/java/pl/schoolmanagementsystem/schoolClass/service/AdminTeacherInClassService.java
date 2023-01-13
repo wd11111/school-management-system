@@ -2,10 +2,10 @@ package pl.schoolmanagementsystem.schoolClass.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
+import pl.schoolmanagementsystem.common.model.SchoolClass;
+import pl.schoolmanagementsystem.common.model.Teacher;
+import pl.schoolmanagementsystem.common.model.TeacherInClass;
+import pl.schoolmanagementsystem.common.repository.TeacherInClassRepository;
 
 @Service
 @RequiredArgsConstructor

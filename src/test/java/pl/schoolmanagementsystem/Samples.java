@@ -1,24 +1,14 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
-import pl.schoolmanagementsystem.common.role.Role;
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
-import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
-import pl.schoolmanagementsystem.common.student.Student;
-import pl.schoolmanagementsystem.common.student.dto.StudentDto;
-import pl.schoolmanagementsystem.common.teacher.Teacher;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
-import pl.schoolmanagementsystem.common.user.AppUser;
+import pl.schoolmanagementsystem.common.dto.*;
+import pl.schoolmanagementsystem.common.model.*;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
+import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.math.BigDecimal;

@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
-import pl.schoolmanagementsystem.common.mark.Mark;
-import pl.schoolmanagementsystem.common.student.Student;
+import pl.schoolmanagementsystem.common.model.Mark;
+import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
 import java.math.BigDecimal;

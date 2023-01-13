@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.schoolClass.utils;
 
-import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
-import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
+import pl.schoolmanagementsystem.common.model.SchoolClass;
+import pl.schoolmanagementsystem.common.model.TeacherInClass;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 
 import java.util.Set;

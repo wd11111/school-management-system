@@ -34,7 +34,7 @@ public class StudentProfileService {
     }
 
     public List<TaughtSubjectDto> getTaughtSubjectsInClass(String studentEmail) {
-        String studentClass = studentRepository.findStudentClass(studentEmail);
+        String studentClass = studentRepository.findStudentsClass(studentEmail);
         return subjectRepository.findTaughtSubjectsInClass(studentClass);
     }
 

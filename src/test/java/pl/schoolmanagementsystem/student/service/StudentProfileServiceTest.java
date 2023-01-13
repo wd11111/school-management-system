@@ -63,7 +63,7 @@ class StudentProfileServiceTest implements Samples {
     @Test
     void should_return_taught_subjects_in_students_class() {
         List<TaughtSubjectDto> expectedResult = List.of(createTaughtSubjectDto(), createTaughtSubjectDto());
-        when(studentRepository.findStudentClass(any())).thenReturn(CLASS_3B);
+        when(studentRepository.findStudentsClass(any())).thenReturn(CLASS_3B);
         when(subjectRepository.findTaughtSubjectsInClass(anyString())).thenReturn(expectedResult);
 
         List<TaughtSubjectDto> result = studentProfileService.getTaughtSubjectsInClass(NAME);

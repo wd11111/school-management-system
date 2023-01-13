@@ -15,6 +15,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<StudentDto> findAllInClass(String schoolClassName);
 
     @Query("SELECT s.schoolClass from Student s where s.appUser.userEmail=?1")
-    String findStudentClass(String studentEmail);
+    String findStudentsClass(String studentEmail);
 
 }

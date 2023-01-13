@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, String> {
 
     @Query("SELECT sc FROM SchoolClass sc LEFT JOIN FETCH sc.students s LEFT JOIN s.marks m WHERE sc.name=?1")
-    Optional<SchoolClass> findClassAndFetchStudentsWithMarks(String schoolClass, String subject);
+    Optional<SchoolClass> findClassAndFetchStudentsWithMarks(String schoolClass);
 
     @Query("SELECT new pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto(c.name) FROM SchoolClass c")
     Page<SchoolClassDto> findAllClasses(Pageable pageable);

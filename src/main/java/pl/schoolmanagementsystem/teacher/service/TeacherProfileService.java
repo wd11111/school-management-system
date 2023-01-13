@@ -65,7 +65,7 @@ public class TeacherProfileService {
         if (!subjectRepository.existsById(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
-        SchoolClass schoolClass = classRepository.findClassAndFetchStudentsWithMarks(schoolClassName, subjectName)
+        SchoolClass schoolClass = classRepository.findClassAndFetchStudentsWithMarks(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
         validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
 

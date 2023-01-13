@@ -33,6 +33,7 @@ class StudentRepositoryTest {
                     .withDatabaseName(POSTGRES)
                     .withPassword(POSTGRES)
                     .withUsername(POSTGRES);
+    public static final String STUDENTS_EMAIL = "email3";
 
     @DynamicPropertySource
     public static void containerConfig(DynamicPropertyRegistry registry) {
@@ -52,5 +53,12 @@ class StudentRepositoryTest {
                 .containsAll(List.of(
                         tuple(1L, "studentName1", "studentSurname1"),
                         tuple(2L, "studentName2", "studentSurname2")));
+    }
+
+    @Test
+    void should_return_students_class() {
+        String studentsClass = studentRepository.findStudentsClass(STUDENTS_EMAIL);
+
+        assertThat(studentsClass).isEqualTo("1a");
     }
 }

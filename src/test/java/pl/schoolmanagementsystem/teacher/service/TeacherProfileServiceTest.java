@@ -131,7 +131,7 @@ class TeacherProfileServiceTest implements Samples {
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
-        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.of(schoolClass));
+        when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(schoolClass));
 
         List<StudentWithMarksDto> result = teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2);
 
@@ -148,7 +148,7 @@ class TeacherProfileServiceTest implements Samples {
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
-        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.of(schoolClass));
+        when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(schoolClass));
 
         List<StudentWithMarksDto> result = teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2);
 
@@ -167,7 +167,7 @@ class TeacherProfileServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_class_doesnt_exist() {
         when(subjectRepository.existsById(anyString())).thenReturn(true);
-        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.empty());
+        when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
                 .isInstanceOf(NoSuchSchoolClassException.class)
@@ -177,7 +177,7 @@ class TeacherProfileServiceTest implements Samples {
     @Test
     void should_throw_exception_when_teacher_does_not_teach_subject_in_class_while_getting_students() {
         when(subjectRepository.existsById(anyString())).thenReturn(true);
-        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.of(createSchoolClass()));
+        when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(createSchoolClass()));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);

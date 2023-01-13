@@ -16,7 +16,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = TeacherProfileController.class)
 @ContextConfiguration(classes = MockMvcConfig5.class)
 @AutoConfigureMockMvc(addFilters = false)
-class TeacherProfileControllerTest implements ControllerSamples {
+class TeacherProfileControllerTest implements Samples {
 
     @MockBean
     private TeacherProfileService teacherProfileService;

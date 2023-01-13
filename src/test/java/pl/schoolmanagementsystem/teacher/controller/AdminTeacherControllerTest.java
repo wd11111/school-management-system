@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.teacher.controller;
+package pl.schoolmanagementsystem.teacher.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
 import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
@@ -23,7 +23,6 @@ import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
-import pl.schoolmanagementsystem.teacher.controller.AdminTeacherController;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = AdminTeacherController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @ContextConfiguration(classes = MockMvcConfig4.class)
-class AdminTeacherControllerTest implements ControllerSamples {
+class AdminTeacherControllerTest implements Samples {
 
     @MockBean
     private AdminTeacherService adminTeacherService;

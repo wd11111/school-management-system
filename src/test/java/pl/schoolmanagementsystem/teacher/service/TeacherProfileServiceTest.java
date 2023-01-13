@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
+import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
@@ -124,9 +125,9 @@ class TeacherProfileServiceTest implements Samples {
 
     @Test
     void should_return_all_students_in_class_with_marks_of_subject() {
-        when(subjectRepository.existsById(anyString())).thenReturn(true);
         SchoolClass schoolClass = createSchoolClass();
         schoolClass.getStudents().addAll(List.of(createStudent(), createStudent2()));
+        when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
@@ -135,6 +136,23 @@ class TeacherProfileServiceTest implements Samples {
         List<StudentWithMarksDto> result = teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2);
 
         assertThat(result).hasSize(2);
+    }
+
+    @Test
+    void should_correctly_filter_marks_when_returning_students_with_marks() {
+        Student student = createStudent();
+        student.addMark(new Mark(1, getMarkAsBigDecimal2(), ID_1, SUBJECT_HISTORY));
+        SchoolClass schoolClass = createSchoolClass();
+        schoolClass.getStudents().add(student);
+        when(subjectRepository.existsById(anyString())).thenReturn(true);
+        when(teacherInClassRepository
+                .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
+                .thenReturn(true);
+        when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.of(schoolClass));
+
+        List<StudentWithMarksDto> result = teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2);
+
+        assertThat(result.get(0).getMarks()).hasSize(0);
     }
 
     @Test

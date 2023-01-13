@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -108,14 +109,15 @@ class MockMvcConfig6 {
     }
 
     @Bean
-    StudentProfileService studentMarkService() {
-        StudentRepository studentRepository = mock(StudentRepository.class);
+    StudentProfileService studentProfileService() {
+        SchoolSubjectRepository schoolSubjectRepository = mock(SchoolSubjectRepository.class);
         MarkRepository markRepository = mock(MarkRepository.class);
-        return new StudentProfileService(studentRepository, markRepository);
+        StudentRepository studentRepository = mock(StudentRepository.class);
+        return new StudentProfileService(schoolSubjectRepository, markRepository, studentRepository);
     }
 
     @Bean
-    StudentProfileController studentMarkController(StudentProfileService studentProfileService) {
+    StudentProfileController studentProfileController(StudentProfileService studentProfileService) {
         return new StudentProfileController(studentProfileService);
     }
 }

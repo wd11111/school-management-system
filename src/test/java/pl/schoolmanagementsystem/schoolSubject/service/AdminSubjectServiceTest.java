@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.schoolSubject.service;
+package pl.schoolmanagementsystem.schoolSubject.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +10,6 @@ import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.SubjectAlreadyExistsException;
-import pl.schoolmanagementsystem.schoolSubject.service.AdminSubjectService;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

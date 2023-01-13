@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.schoolClass.service;
+package pl.schoolmanagementsystem.schoolClass.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +23,6 @@ import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherDoesNotTeachSubjectException;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
-import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
-import pl.schoolmanagementsystem.schoolClass.service.AdminTeacherInClassService;
 
 import java.util.Optional;
 

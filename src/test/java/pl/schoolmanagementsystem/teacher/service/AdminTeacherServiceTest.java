@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.teacher.service;
+package pl.schoolmanagementsystem.teacher.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.Samples;
@@ -18,6 +17,7 @@ import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
+import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherRepository;
 import pl.schoolmanagementsystem.common.teacher.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.teacher.exception.TeacherAlreadyTeachesSubjectException;
@@ -25,15 +25,10 @@ import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
-import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -124,20 +119,24 @@ class AdminTeacherServiceTest implements Samples {
 
     @Test
     void should_return_taught_classes_by_teacher() {
-        Page<SubjectAndClassDto> listOfTaughtClasses = new PageImpl<>(listOfTaughtClasses());
+        Teacher teacher = createTeacherOfBiology();
+        teacher.setTeacherInClasses(Set.of(TeacherInClass.builder()
+                .taughtClasses(Set.of(createSchoolClass()))
+                .taughtSubject(SUBJECT_BIOLOGY)
+                .build()));
         Pageable pageable = PageRequest.of(0, 10);
-        when(teacherRepository.existsById(any())).thenReturn(true);
-        when(teacherRepository.findTaughtClassesByTeacher(anyString(), any())).thenReturn(listOfTaughtClasses);
+        when(teacherRepository.findByIdAndFetchTeacherInClasses(any())).thenReturn(Optional.of(teacher));
 
         Page<SubjectAndClassDto> result = adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable);
 
-        assertThat(result).isSameAs(listOfTaughtClasses);
+        assertThat(result).extracting("schoolSubject", "schoolClass")
+                .containsExactlyElementsOf(List.of(tuple(SUBJECT_BIOLOGY, CLASS_1A)));
     }
 
     @Test
     void should_throw_exception_when_trying_to_get_taught_classes() {
         Pageable pageable = PageRequest.of(0, 10);
-        when(teacherRepository.existsById(any())).thenReturn(false);
+        when(teacherRepository.findByIdAndFetchTeacherInClasses(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable))
                 .isInstanceOf(NoSuchTeacherException.class)

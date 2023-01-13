@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
-import pl.schoolmanagementsystem.common.mark.MarkSamples;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 
@@ -21,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class StudentProfileServiceTest implements Samples, MarkSamples {
+class StudentProfileServiceTest implements Samples {
 
     @Mock
     private StudentRepository studentRepository;
@@ -35,8 +34,8 @@ class StudentProfileServiceTest implements Samples, MarkSamples {
     @Test
     void should_return_marks_grouped_by_subject() {
         Map<String, List<BigDecimal>> expected = new HashMap<>(
-                Map.of(SUBJECT_BIOLOGY, List.of(getMark1()),
-                        SUBJECT_HISTORY, List.of(getMark2())));
+                Map.of(SUBJECT_BIOLOGY, List.of(getMarkAsBigDecimal1()),
+                        SUBJECT_HISTORY, List.of(getMarkAsBigDecimal2())));
         when(markRepository.findAllMarksForStudent(anyString()))
                 .thenReturn(List.of(createMarkDto1(), createMarkDto2()));
 
@@ -48,7 +47,7 @@ class StudentProfileServiceTest implements Samples, MarkSamples {
     @Test
     void should_return_all_averages_for_student() {
         List<MarkAvgDto> expectedResult = List.of(new MarkAvgDto(SUBJECT_BIOLOGY, 2.0));
-        when(markRepository.findAllAveragesForStudent("email")).thenReturn(expectedResult);
+        when(markRepository.findAllAveragesForStudent(NAME)).thenReturn(expectedResult);
 
         List<MarkAvgDto> result = studentProfileService.getAverageMarks(NAME);
 

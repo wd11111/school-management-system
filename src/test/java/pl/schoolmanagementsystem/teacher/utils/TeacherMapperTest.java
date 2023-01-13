@@ -1,10 +1,9 @@
-package pl.schoolmanagementsystem.admin.teacher.mapper;
+package pl.schoolmanagementsystem.teacher.utils;
 
 import org.junit.jupiter.api.Test;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
-import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

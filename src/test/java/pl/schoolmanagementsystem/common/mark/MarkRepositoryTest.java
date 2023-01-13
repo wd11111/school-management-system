@@ -11,6 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 
@@ -24,9 +25,8 @@ import static org.assertj.core.api.Assertions.tuple;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 @ActiveProfiles("test")
-//@DirtiesContext
 @Sql("/scripts/init_db.sql")
-class MarkRepositoryTest implements MarkSamples {
+class MarkRepositoryTest implements Samples {
 
     public static final String POSTGRES = "postgres";
 

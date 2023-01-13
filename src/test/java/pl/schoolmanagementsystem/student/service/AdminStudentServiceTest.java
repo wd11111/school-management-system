@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.student.service;
+package pl.schoolmanagementsystem.student.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,6 @@ import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.common.user.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
-import pl.schoolmanagementsystem.student.service.AdminStudentService;
 
 import java.util.Optional;
 

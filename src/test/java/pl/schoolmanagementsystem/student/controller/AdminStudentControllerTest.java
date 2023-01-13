@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.student.controller;
+package pl.schoolmanagementsystem.student.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
 import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClassRepository;
@@ -19,7 +19,6 @@ import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.common.user.AppUserRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
-import pl.schoolmanagementsystem.student.controller.AdminStudentController;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = AdminStudentController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @ContextConfiguration(classes = MockMvcConfig3.class)
-class AdminStudentControllerTest implements ControllerSamples {
+class AdminStudentControllerTest implements Samples {
 
     @MockBean
     private AdminStudentService adminStudentService;
@@ -50,7 +49,7 @@ class AdminStudentControllerTest implements ControllerSamples {
     void should_return_status_created_when_creating_student() throws Exception {
         CreateStudentDto createStudentDto = studentRequestDto();
         String body = objectMapper.writeValueAsString(createStudentDto);
-        StudentWithClassDto student = new StudentWithClassDto(ID_1, NAME, SURNAME, CLASS_NAME);
+        StudentWithClassDto student = new StudentWithClassDto(ID_1, NAME, SURNAME, CLASS_1A);
         when(adminStudentService.createStudent(any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/students")

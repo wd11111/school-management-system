@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.schoolSubject.controller;
+package pl.schoolmanagementsystem.schoolSubject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -13,13 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
-import pl.schoolmanagementsystem.schoolSubject.controller.AdminSubjectController;
 import pl.schoolmanagementsystem.schoolSubject.service.AdminSubjectService;
 
 import java.util.List;
@@ -34,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = AdminSubjectController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @ContextConfiguration(classes = MockMvcConfig2.class)
-class AdminSubjectControllerTest implements ControllerSamples {
+class AdminSubjectControllerTest implements Samples {
 
     @MockBean
     private AdminSubjectService adminSubjectService;

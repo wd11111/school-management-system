@@ -1,8 +1,5 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.common.mark.Mark;
-import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
-import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
@@ -15,7 +12,9 @@ import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public interface ControllerSamples extends Samples {
 
@@ -25,7 +24,7 @@ public interface ControllerSamples extends Samples {
     String SUBJECT = "Biology";
     boolean IS_ADMIN = false;
     BigDecimal MARK = BigDecimal.valueOf(2.0);
-    double AVERAGE_MARK = 3.0;
+    double AVERAGE_MARK_3_0 = 3.0;
 
     default SchoolClassDto schoolClassDto() {
         return new SchoolClassDto(CLASS_NAME);
@@ -65,37 +64,6 @@ public interface ControllerSamples extends Samples {
 
     default CreateTeacherDto createCreateTeacherDto() {
         return new CreateTeacherDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
-    }
-
-    default TeacherDto createTeacherDto() {
-        return new TeacherDto(ID_1, NAME, SURNAME, Collections.emptySet());
-    }
-
-    default StudentWithMarksDto studentResponseDto3() {
-        return new StudentWithMarksDto(ID_1, NAME, SURNAME, List.of(BigDecimal.ONE, BigDecimal.ONE));
-    }
-
-    default Mark getMark1() {
-        return Mark.builder().mark(BigDecimal.ONE).build();
-    }
-
-    default Map<String, List<BigDecimal>> getGroupedMarksBySubject() {
-        return new HashMap<>(Map.of(
-                SUBJECT_BIOLOGY, List.of(MARK, MARK),
-                SUBJECT_HISTORY, List.of(MARK, MARK)
-        ));
-    }
-
-    default MarkDto markWithTwoFields1() {
-        return new MarkDto(MARK, SUBJECT_BIOLOGY);
-    }
-
-    default MarkDto markWithTwoFields2() {
-        return new MarkDto(MARK, SUBJECT_HISTORY);
-    }
-
-    default MarkAvgDto markAvgDto() {
-        return new MarkAvgDto(SUBJECT_BIOLOGY, AVERAGE_MARK);
     }
 
 }

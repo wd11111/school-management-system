@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.admin.schoolClass.service;
+package pl.schoolmanagementsystem.schoolClass.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +10,6 @@ import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.teacher.Teacher;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClassRepository;
-import pl.schoolmanagementsystem.schoolClass.service.AdminTeacherInClassService;
 
 import java.util.HashSet;
 import java.util.Optional;

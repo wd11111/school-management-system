@@ -75,7 +75,6 @@ public class TeacherProfileService {
         return schoolClass.getStudents().stream()
                 .map(StudentMapper::mapEntityToDtoWithMarks)
                 .toList();
-
     }
 
     private List<Mark> filterMarks(List<Mark> marks, String subject) {

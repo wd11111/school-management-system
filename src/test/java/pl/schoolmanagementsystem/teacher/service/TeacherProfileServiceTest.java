@@ -156,6 +156,15 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
+    void should_throw_exception_when_school_subject_doesnt_exist() {
+        when(subjectRepository.existsById(anyString())).thenReturn(false);
+
+        assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
+                .isInstanceOf(NoSuchSchoolSubjectException.class)
+                .hasMessage("Such a school subject does not exist: " + SUBJECT_BIOLOGY);
+    }
+
+    @Test
     void should_throw_exception_when_school_class_doesnt_exist() {
         when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(classRepository.findClassAndFetchStudentsWithMarks(any(), any())).thenReturn(Optional.empty());
@@ -163,15 +172,6 @@ class TeacherProfileServiceTest implements Samples {
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
                 .isInstanceOf(NoSuchSchoolClassException.class)
                 .hasMessage("Such a school class does not exist: " + CLASS_1A);
-    }
-
-    @Test
-    void should_throw_exception_when_school_subject_doesnt_exist() {
-        when(subjectRepository.existsById(anyString())).thenReturn(false);
-
-        assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
-                .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: " + SUBJECT_BIOLOGY);
     }
 
     @Test

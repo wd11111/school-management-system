@@ -4,6 +4,8 @@ import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.teacher.TeacherInClass;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 
+import java.util.Set;
+
 import static java.util.stream.Collectors.toSet;
 
 public class TeacherInClassMapper {
@@ -12,9 +14,13 @@ public class TeacherInClassMapper {
         return TeacherInClassDto.builder()
                 .teacherId(teacherInClass.getTeacher().getId())
                 .taughtSubject(teacherInClass.getTaughtSubject())
-                .schoolClassName(teacherInClass.getTaughtClasses().stream()
-                        .map(SchoolClass::getName)
-                        .collect(toSet()))
+                .taughtClasses(mapClassesToStrings(teacherInClass.getTaughtClasses()))
                 .build();
+    }
+
+    private static Set<String> mapClassesToStrings(Set<SchoolClass> classes) {
+        return classes.stream()
+                .map(SchoolClass::getName)
+                .collect(toSet());
     }
 }

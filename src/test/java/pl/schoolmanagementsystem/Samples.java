@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem;
 
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.mark.dto.MarkDto;
+import pl.schoolmanagementsystem.common.role.Role;
 import pl.schoolmanagementsystem.common.schoolClass.SchoolClass;
 import pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubject;
@@ -39,7 +40,8 @@ public interface Samples {
     long ID_1 = 1;
     long ID_2 = 2;
 
-    boolean IS_ADMIN = false;
+    boolean IS_NOT_ADMIN = false;
+    boolean IS_ADMIN = true;
 
     double AVERAGE_MARK_3_0 = 3.0;
 
@@ -119,6 +121,7 @@ public interface Samples {
 
     default AppUser getAppUser() {
         AppUser appUser = new AppUser();
+        appUser.setRoles(new ArrayList<>());
         appUser.setToken("aaa");
         return appUser;
     }
@@ -191,7 +194,19 @@ public interface Samples {
     }
 
     default CreateTeacherDto createCreateTeacherDto() {
-        return new CreateTeacherDto(NAME, NAME, SURNAME, IS_ADMIN, Collections.emptySet());
+        return new CreateTeacherDto(NAME, NAME, SURNAME, IS_NOT_ADMIN, Collections.emptySet());
     }
 
+    default TeacherInClass createTeacherInClass() {
+        return TeacherInClass.builder()
+                .id(ID_1)
+                .teacher(createTeacherOfBiology())
+                .taughtClasses(Set.of(createSchoolClass()))
+                .taughtSubject(SUBJECT_ENGLISH)
+                .build();
+    }
+
+    default Role createRole() {
+        return new Role();
+    }
 }

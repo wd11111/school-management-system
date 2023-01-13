@@ -15,5 +15,5 @@ public class TeacherInClassDto {
 
     private Long teacherId;
     private String taughtSubject;
-    private Set<String> schoolClassName;
+    private Set<String> taughtClasses;
 }

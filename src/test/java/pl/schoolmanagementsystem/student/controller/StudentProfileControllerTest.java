@@ -17,6 +17,7 @@ import pl.schoolmanagementsystem.ControllerSamples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
 import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -65,7 +66,7 @@ class StudentProfileControllerTest implements ControllerSamples {
                 .andReturn();
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
 
-        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+        assertThat(actualResponseBody).isEqualTo(expectedResponseBody);
     }
 
     @Test
@@ -81,7 +82,23 @@ class StudentProfileControllerTest implements ControllerSamples {
                 .andReturn();
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
 
-        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+        assertThat(actualResponseBody).isEqualTo(expectedResponseBody);
+    }
+
+    @Test
+    void should_return_status_ok_when_get_for_taught_subjects() throws Exception {
+        Principal principal = new UserPrincipal("Student");
+        List<TaughtSubjectDto> taughtClasses = List.of(createTaughtSubjectDto(), createTaughtSubjectDto());
+        String expectedResponseBody = objectMapper.writeValueAsString(taughtClasses);
+        when(studentProfileService.getTaughtSubjectsInClass(anyString())).thenReturn(taughtClasses);
+
+        MvcResult mvcResult = mockMvc.perform(get("/student/taught-subjects").principal(principal))
+                .andExpect(status()
+                        .isOk())
+                .andReturn();
+        String actualResponseBody = mvcResult.getResponse().getContentAsString();
+
+        assertThat(actualResponseBody).isEqualTo(expectedResponseBody);
     }
 }
 

@@ -34,7 +34,7 @@ public interface ControllerSamples extends Samples {
         return new StudentDto(ID_1, NAME, SURNAME);
     }
 
-    default TaughtSubjectDto subjectAndTeacherResponse() {
+    default TaughtSubjectDto createTaughtSubjectDto() {
         return new TaughtSubjectDto(SUBJECT, NAME, SURNAME);
     }
 

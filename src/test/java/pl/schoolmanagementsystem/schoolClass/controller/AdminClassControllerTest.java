@@ -84,7 +84,7 @@ class AdminClassControllerTest implements Samples {
 
     @Test
     void should_return_status_ok_when_get_for_all_taught_subjects_in_class() throws Exception {
-        List<TaughtSubjectDto> listOfSubjects = List.of(subjectAndTeacherResponse(), subjectAndTeacherResponse());
+        List<TaughtSubjectDto> listOfSubjects = List.of(createTaughtSubjectDto(), createTaughtSubjectDto());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfSubjects);
         when(adminClassService.getTaughtSubjectsInClass("1a")).thenReturn(listOfSubjects);
 

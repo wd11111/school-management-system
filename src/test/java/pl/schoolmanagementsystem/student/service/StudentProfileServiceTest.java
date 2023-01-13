@@ -8,6 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.mark.MarkRepository;
 import pl.schoolmanagementsystem.common.mark.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.common.schoolSubject.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.common.schoolSubject.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.student.StudentRepository;
 
 import java.math.BigDecimal;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +30,9 @@ class StudentProfileServiceTest implements Samples {
 
     @Mock
     private MarkRepository markRepository;
+
+    @Mock
+    private SchoolSubjectRepository subjectRepository;
 
     @InjectMocks
     private StudentProfileService studentProfileService;
@@ -50,6 +56,17 @@ class StudentProfileServiceTest implements Samples {
         when(markRepository.findAllAveragesForStudent(NAME)).thenReturn(expectedResult);
 
         List<MarkAvgDto> result = studentProfileService.getAverageMarks(NAME);
+
+        assertThat(result).isEqualTo(expectedResult);
+    }
+
+    @Test
+    void should_return_taught_subjects_in_students_class() {
+        List<TaughtSubjectDto> expectedResult = List.of(createTaughtSubjectDto(), createTaughtSubjectDto());
+        when(studentRepository.findStudentClass(any())).thenReturn(CLASS_3B);
+        when(subjectRepository.findTaughtSubjectsInClass(anyString())).thenReturn(expectedResult);
+
+        List<TaughtSubjectDto> result = studentProfileService.getTaughtSubjectsInClass(NAME);
 
         assertThat(result).isEqualTo(expectedResult);
     }

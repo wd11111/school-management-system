@@ -1,3 +1,12 @@
+Teacher:<br>
+Teachers can teach many subjects, add marks to students from classes in which they teach the subject which is able due to TeacherInClass entity which is automatically created when adding teacher to school class.
+If teacher already has it's TeacherInClass counterpart, it is added to the class.<br>
+Student:<br>
+Students can view their marks, average marks grouped by subject and list of teachers of subjects in class they belong to.
+Admin: <br>
+An Admin can add new classes, subjects, teachers and students. After creating a student or teacher, a user entity is created, an email is sent, and the account is not available until an email is not confirmed.
+# How to run:
+To run application it is necessary to have running postgreSQL docker container (you can use docker-compose file in docker folder) and run application with "prod" profile active
 # Technologies used across the project:
 Backend:
 - Java <img width="25px" src="https://cdn-icons-png.flaticon.com/512/226/226777.png"/>

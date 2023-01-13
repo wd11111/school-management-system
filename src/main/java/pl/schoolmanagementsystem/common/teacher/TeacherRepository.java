@@ -15,7 +15,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     @Query("SELECT t FROM Teacher t LEFT JOIN FETCH t.teacherInClasses LEFT JOIN FETCH t.taughtSubjects " +
             "WHERE t.id = ?1")
-    Optional<Teacher> findByIdAndFetchSubjectsAndClasses(Long id, Pageable pageable);
+    Optional<Teacher> findByIdAndFetchSubjectsAndClasses(Long id);
 
     @Query("SELECT t FROM Teacher t LEFT JOIN FETCH t.taughtSubjects WHERE t.id = ?1")
     Optional<Teacher> findByIdAndFetchSubjects(Long id);

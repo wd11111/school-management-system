@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, String> {
 
-    @Query("SELECT sc FROM SchoolClass sc LEFT JOIN FETCH sc.students s LEFT JOIN FETCH s.marks m WHERE sc.name=?1 and m.subject=?2")
+    @Query("SELECT sc FROM SchoolClass sc LEFT JOIN FETCH sc.students s LEFT JOIN s.marks m WHERE sc.name=?1")
     Optional<SchoolClass> findClassAndFetchStudentsWithMarks(String schoolClass, String subject);
 
     @Query("SELECT new pl.schoolmanagementsystem.common.schoolClass.dto.SchoolClassDto(c.name) FROM SchoolClass c")

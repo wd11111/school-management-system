@@ -72,13 +72,13 @@ public class AdminTeacherService {
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
-        List<SubjectAndClassDto> taughtClassesByTeacher = teacherRepository.findByIdAndFetchSubjectsAndClasses(teacherId, pageable)
+        List<SubjectAndClassDto> taughtClassesByTeacher = teacherRepository.findByIdAndFetchSubjectsAndClasses(teacherId)
                 .orElseThrow(() -> new NoSuchTeacherException(teacherId))
                 .getTeacherInClasses().stream()
                 .flatMap(teacherInClass -> teacherInClass.getTaughtClasses().stream()
                         .map(schoolClass -> new SubjectAndClassDto(teacherInClass.getTaughtSubject(), schoolClass.getName())))
                 .toList();
-        return new PageImpl<>(taughtClassesByTeacher);
+        return new PageImpl<>(taughtClassesByTeacher, pageable, taughtClassesByTeacher.size());
     }
 
     @Transactional

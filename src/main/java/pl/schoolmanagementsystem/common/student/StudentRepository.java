@@ -14,8 +14,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "FROM Student s WHERE s.schoolClass=?1 ORDER BY s.surname")
     List<StudentDto> findAllInClass(String schoolClassName);
 
-    @Query("SELECT DISTINCT s FROM Student s LEFT JOIN FETCH s.marks m WHERE s.schoolClass=?1 AND " +
-            "(m.subject=?2 OR m.subject IS NULL)")
-    List<Student> findAllInClassWithMarksOfTheSubject(String schoolClass, String subject);
+    @Query("SELECT s.schoolClass from Student s where s.appUser.userEmail=?1")
+    String findStudentClass(String studentEmail);
 
 }

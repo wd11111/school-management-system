@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.schoolmanagementsystem.common.mark.Mark;
 import pl.schoolmanagementsystem.common.mark.MarkEnum;
 import pl.schoolmanagementsystem.common.mark.dto.AddMarkDto;
 import pl.schoolmanagementsystem.common.mark.exception.MarkNotInRangeException;
@@ -61,26 +62,26 @@ public class TeacherProfileService {
     }
 
     public List<StudentWithMarksDto> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
-    /*    if (!classRepository.existsById(schoolClassName)) {
-            throw new NoSuchSchoolClassException(schoolClassName);
-        }
-        if (!subjectRepository.existsById(subjectName)) {
-            throw new NoSuchSchoolSubjectException(subjectName);
-        }
-        validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
-        return studentRepository.findAllInClassWithMarksOfTheSubject(schoolClassName, subjectName);*/
-
         if (!subjectRepository.existsById(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
         SchoolClass schoolClass = classRepository.findClassAndFetchStudentsWithMarks(schoolClassName, subjectName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
-
         validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
+
+        schoolClass.getStudents()
+                .forEach(student -> student.setMarks(filterMarks(student.getMarks(), subjectName)));
+
         return schoolClass.getStudents().stream()
                 .map(StudentMapper::mapEntityToDtoWithMarks)
                 .toList();
 
+    }
+
+    private List<Mark> filterMarks(List<Mark> marks, String subject) {
+        return marks.stream()
+                .filter(mark -> mark.getSubject().equals(subject))
+                .toList();
     }
 
     private void validateTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {

@@ -53,16 +53,4 @@ class StudentRepositoryTest {
                         tuple(1L, "studentName1", "studentSurname1"),
                         tuple(2L, "studentName2", "studentSurname2")));
     }
-
-    @Test
-    void should_return_all_students_in_school_class_with_marks_of_subject() {
-        List<Student> result = studentRepository
-                .findAllInClassWithMarksOfTheSubject("1a", "history");
-
-        assertThat(result).extracting("id", "name", "surname")
-                .containsAll(List.of(tuple(1L, "studentName1", "studentSurname1"),
-                        tuple(2L, "studentName2", "studentSurname2")));
-        assertThat(result.get(0).getMarks()).hasSize(1);
-        assertThat(result.get(1).getMarks()).hasSize(3);
-    }
 }

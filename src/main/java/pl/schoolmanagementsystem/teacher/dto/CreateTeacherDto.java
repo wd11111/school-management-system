@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.teacher.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class CreateTeacherDto {
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")
+    @Email
     private String email;
 
     @NotNull(message = "{not.null.message}")

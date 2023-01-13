@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +14,11 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 public class CreateStudentDto {
+
+    @NotNull(message = "{not.null.message}")
+    @NotBlank(message = "{not.blank.message}")
+    @Email
+    private String email;
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")
@@ -25,9 +31,5 @@ public class CreateStudentDto {
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")
     private String schoolClassName;
-
-    @NotNull(message = "{not.null.message}")
-    @NotBlank(message = "{not.blank.message}")
-    private String email;
 
 }

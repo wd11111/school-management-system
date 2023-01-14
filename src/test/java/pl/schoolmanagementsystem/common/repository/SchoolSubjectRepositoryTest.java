@@ -1,9 +1,12 @@
-package pl.schoolmanagementsystem.common.mark;
+package pl.schoolmanagementsystem.common.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,12 +14,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.dto.MarkDto;
-import pl.schoolmanagementsystem.common.repository.MarkRepository;
-import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.tuple;
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-class MarkRepositoryTest implements Samples {
+class SchoolSubjectRepositoryTest {
 
     public static final String POSTGRES = "postgres";
 
@@ -46,22 +46,23 @@ class MarkRepositoryTest implements Samples {
     }
 
     @Autowired
-    private MarkRepository markRepository;
+    private SchoolSubjectRepository schoolSubjectRepository;
 
     @Test
-    void should_return_all_marks_for_student() {
-        List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
+    void should_return_all_school_subjects() {
+        Pageable pageable = PageRequest.of(0, 5);
 
-        assertThat(marks).extracting("mark").containsAll(List.of(new BigDecimal("1.00"), new BigDecimal("2.00"), new BigDecimal("4.00")));
+        Page<SchoolSubjectDto> result = schoolSubjectRepository.findAllSchoolSubjects(pageable);
+
+        assertThat(result).extracting("subjectName").containsAll(List.of("biology", "history"));
     }
 
     @Test
-    void should_return_all_averages_for_student() {
-        List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent("email");
+    void should_return_all_taught_subjects_in_school_class() {
+        List<TaughtSubjectDto> result = schoolSubjectRepository.findTaughtSubjectsInClass("1a");
 
-        assertThat(allAveragesForStudent).extracting("subject", "avg")
-                .containsAll(List.of(tuple("biology", 2.5),
-                        tuple("history", 2.0)));
+        assertThat(result).extracting("subject", "teacherName", "teacherSurname")
+                .containsAll(List.of(tuple("biology", "teacherName1", "teacherSurname1"),
+                        tuple("history", "teacherName1", "teacherSurname1")));
     }
-
 }

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.student;
+package pl.schoolmanagementsystem.common.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.dto.StudentDto;
-import pl.schoolmanagementsystem.common.repository.StudentRepository;
+import pl.schoolmanagementsystem.Samples;
+import pl.schoolmanagementsystem.common.dto.MarkDto;
+import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +26,7 @@ import static org.assertj.core.api.Assertions.tuple;
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-class StudentRepositoryTest {
+class MarkRepositoryTest implements Samples {
 
     public static final String POSTGRES = "postgres";
 
@@ -34,7 +36,6 @@ class StudentRepositoryTest {
                     .withDatabaseName(POSTGRES)
                     .withPassword(POSTGRES)
                     .withUsername(POSTGRES);
-    public static final String STUDENTS_EMAIL = "email3";
 
     @DynamicPropertySource
     public static void containerConfig(DynamicPropertyRegistry registry) {
@@ -44,22 +45,22 @@ class StudentRepositoryTest {
     }
 
     @Autowired
-    private StudentRepository studentRepository;
+    private MarkRepository markRepository;
 
     @Test
-    void should_return_all_students_in_school_class() {
-        List<StudentDto> result = studentRepository.findAllInClass("1a");
+    void should_return_all_marks_for_student() {
+        List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
 
-        assertThat(result).extracting("studentId", "name", "surname")
-                .containsAll(List.of(
-                        tuple(1L, "studentName1", "studentSurname1"),
-                        tuple(2L, "studentName2", "studentSurname2")));
+        assertThat(marks).extracting("mark").containsAll(List.of(new BigDecimal("1.00"), new BigDecimal("2.00"), new BigDecimal("4.00")));
     }
 
     @Test
-    void should_return_students_class() {
-        String studentsClass = studentRepository.findStudentsClass(STUDENTS_EMAIL);
+    void should_return_all_averages_for_student() {
+        List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent("email");
 
-        assertThat(studentsClass).isEqualTo("1a");
+        assertThat(allAveragesForStudent).extracting("subject", "avg")
+                .containsAll(List.of(tuple("biology", 2.5),
+                        tuple("history", 2.0)));
     }
+
 }

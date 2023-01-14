@@ -1,9 +1,12 @@
-package pl.schoolmanagementsystem.common.teacher;
+package pl.schoolmanagementsystem.common.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,10 +14,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.model.Teacher;
-import pl.schoolmanagementsystem.common.model.TeacherInClass;
-import pl.schoolmanagementsystem.common.repository.TeacherInClassRepository;
-import pl.schoolmanagementsystem.common.repository.TeacherRepository;
+import pl.schoolmanagementsystem.Samples;
+import pl.schoolmanagementsystem.common.dto.SchoolClassDto;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-class TeacherInClassRepositoryTest {
+public class SchoolClassRepositoryTest implements Samples {
 
     public static final String POSTGRES = "postgres";
 
@@ -44,18 +45,14 @@ class TeacherInClassRepositoryTest {
     }
 
     @Autowired
-    private TeacherInClassRepository teacherInClassRepository;
-
-    @Autowired
-    private TeacherRepository teacherRepository;
+    private SchoolClassRepository schoolClassRepository;
 
     @Test
-    void should_return_teacher_in_class() {
-        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(1L).get();
-        TeacherInClass result = teacherInClassRepository.findByTeacherAndTaughtSubject(teacher, "biology").get();
+    void should_return_all_school_classes() {
+        Pageable pageable = PageRequest.of(0, 5);
 
-        assertThat(result).extracting("id", "taughtSubject")
-                .containsAll(List.of(1L, "biology"));
-        assertThat(result.getTaughtClasses()).hasSize(1);
+        Page<SchoolClassDto> result = schoolClassRepository.findAllClasses(pageable);
+
+        assertThat(result).extracting("schoolClassName").containsAll(List.of("1a", "1b"));
     }
 }

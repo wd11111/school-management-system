@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.user;
+package pl.schoolmanagementsystem.common.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +11,19 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.schoolmanagementsystem.common.model.AppUser;
-import pl.schoolmanagementsystem.common.repository.AppUserRepository;
+import pl.schoolmanagementsystem.common.dto.StudentDto;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 @ActiveProfiles("test")
 @Sql("/scripts/init_db.sql")
-class AppUserRepositoryTest {
+class StudentRepositoryTest {
 
     public static final String POSTGRES = "postgres";
 
@@ -31,6 +33,7 @@ class AppUserRepositoryTest {
                     .withDatabaseName(POSTGRES)
                     .withPassword(POSTGRES)
                     .withUsername(POSTGRES);
+    public static final String STUDENTS_EMAIL = "email3";
 
     @DynamicPropertySource
     public static void containerConfig(DynamicPropertyRegistry registry) {
@@ -40,14 +43,22 @@ class AppUserRepositoryTest {
     }
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private StudentRepository studentRepository;
 
     @Test
-    void should_find_user_by_email() {
-        AppUser appUser = appUserRepository.findByUserEmail("email").get();
+    void should_return_all_students_in_school_class() {
+        List<StudentDto> result = studentRepository.findAllInClass("1a");
 
-        assertThat(appUser.getRoles()).hasSize(1);
-        assertThat(appUser.getRoles().get(0).getRole()).isEqualTo("ROLE_STUDENT");
+        assertThat(result).extracting("studentId", "name", "surname")
+                .containsAll(List.of(
+                        tuple(1L, "studentName1", "studentSurname1"),
+                        tuple(2L, "studentName2", "studentSurname2")));
     }
 
+    @Test
+    void should_return_students_class() {
+        String studentsClass = studentRepository.findStudentsClass(STUDENTS_EMAIL);
+
+        assertThat(studentsClass).isEqualTo("1a");
+    }
 }

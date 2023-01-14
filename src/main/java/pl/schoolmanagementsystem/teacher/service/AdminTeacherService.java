@@ -58,11 +58,11 @@ public class AdminTeacherService {
     }
 
     public Page<TeacherDto> getAllTeachers(Pageable pageable) {
-        List<TeacherDto> teachers = teacherRepository.findAll(pageable)
+        List<TeacherDto> teachers = teacherRepository.findAll()
                 .stream()
                 .map(TeacherMapper::mapEntityToDto)
                 .toList();
-        return new PageImpl<>(teachers);
+        return new PageImpl<>(teachers, pageable, teachers.size());
     }
 
     @Transactional

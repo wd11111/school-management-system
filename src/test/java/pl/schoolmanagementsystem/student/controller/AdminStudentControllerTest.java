@@ -49,8 +49,8 @@ class AdminStudentControllerTest implements Samples {
     void should_return_status_created_when_creating_student() throws Exception {
         CreateStudentDto createStudentDto = studentRequestDto();
         String body = objectMapper.writeValueAsString(createStudentDto);
-        StudentWithClassDto student = new StudentWithClassDto(ID_1, NAME, SURNAME, CLASS_1A);
-        when(adminStudentService.createStudent(any())).thenReturn(student);
+        StudentWithClassDto studentResponse = new StudentWithClassDto(ID_1, NAME, SURNAME, CLASS_1A);
+        when(adminStudentService.createStudent(any())).thenReturn(studentResponse);
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/students")
                         .contentType(MediaType.APPLICATION_JSON)

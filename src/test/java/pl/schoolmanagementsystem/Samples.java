@@ -16,7 +16,7 @@ import java.util.*;
 
 public interface Samples {
 
-    String NAME = "Hubert";
+    String NAME = "Hubert@gmail.com";
     String NAME2 = "Adam";
     String NAME3 = "Alicja";
     String SURNAME = "Nowak";
@@ -36,6 +36,10 @@ public interface Samples {
     double AVERAGE_MARK_3_0 = 3.0;
 
     default TeacherDto createTeacherDto() {
+        return new TeacherDto(ID_2, NAME, SURNAME, Collections.emptySet());
+    }
+
+    default TeacherDto createTeacherDto2() {
         return new TeacherDto(ID_2, NAME3, SURNAME2, Set.of(SUBJECT_BIOLOGY));
     }
 
@@ -172,7 +176,7 @@ public interface Samples {
     }
 
     default CreateStudentDto studentRequestDto() {
-        return new CreateStudentDto(NAME, SURNAME, CLASS_1A, NAME);
+        return new CreateStudentDto(NAME, NAME, SURNAME, CLASS_1A);
     }
 
     default StudentWithMarksDto studentWithMarksDto() {

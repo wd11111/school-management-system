@@ -12,7 +12,7 @@ class TeacherMapperTest implements Samples {
     @Test
     void should_map_teacher_to_teacher_response_dto() {
         Teacher teacher = createTeacherOfBiology();
-        TeacherDto expected =  createTeacherDto();
+        TeacherDto expected =  createTeacherDto2();
 
         TeacherDto result = TeacherMapper.mapEntityToDto(teacher);
 

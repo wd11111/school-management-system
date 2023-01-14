@@ -48,4 +48,5 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBadRequestException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));
     }
+
 }

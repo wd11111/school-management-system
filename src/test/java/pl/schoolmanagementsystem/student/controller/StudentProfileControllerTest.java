@@ -13,7 +13,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.schoolmanagementsystem.ControllerSamples;
+import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.repository.MarkRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = StudentProfileController.class)
 @ContextConfiguration(classes = MockMvcConfig6.class)
 @AutoConfigureMockMvc(addFilters = false)
-class StudentProfileControllerTest implements ControllerSamples {
+class StudentProfileControllerTest implements Samples {
 
     @MockBean
     private StudentProfileService studentProfileService;

@@ -57,7 +57,7 @@ class AdminStudentServiceTest implements Samples {
 
         StudentWithClassDto result = adminStudentService.createStudent(createStudentDto);
 
-        assertThat(result.getSchoolClassName()).isEqualTo(createStudentDto.getSchoolClassName());
+        assertThat(result.getSchoolClass()).isEqualTo(createStudentDto.getSchoolClassName());
         verify(emailService, times(1)).sendEmail(any(), any());
     }
 

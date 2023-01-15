@@ -18,7 +18,7 @@ public class TeacherInClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = LAZY)
     private Teacher teacher;

@@ -16,8 +16,8 @@ import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 
-import static pl.schoolmanagementsystem.student.utils.StudentMapper.mapCreateDtoToEntity;
-import static pl.schoolmanagementsystem.student.utils.StudentMapper.mapEntityToDtoWithSchoolClass;
+import static pl.schoolmanagementsystem.student.utils.StudentMapper2.mapCreateDtoToEntity;
+import static pl.schoolmanagementsystem.student.utils.StudentMapper2.mapEntityToDtoWithSchoolClass;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class AdminStudentService {
         return mapEntityToDtoWithSchoolClass(savedStudent);
     }
 
-    public void deleteStudent(long studentId) {
+    public void deleteStudent(Long studentId) {
         if (!studentRepository.existsById(studentId)) {
             throw new NoSuchStudentException(studentId);
         }

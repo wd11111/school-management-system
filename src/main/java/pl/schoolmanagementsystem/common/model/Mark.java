@@ -18,11 +18,11 @@ public class Mark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private BigDecimal mark;
 
-    private long studentId;
+    private Long studentId;
 
     private String subject;
 }

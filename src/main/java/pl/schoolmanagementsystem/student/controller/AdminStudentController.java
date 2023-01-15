@@ -23,7 +23,7 @@ public class AdminStudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable long id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         adminStudentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }

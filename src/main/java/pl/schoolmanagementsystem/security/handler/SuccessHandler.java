@@ -28,7 +28,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public static final String PREFIX = "Bearer ";
     public static final String CLAIM = "roles";
     @Value("${jwt.expirationTime}")
-    private long expirationTime;
+    private Long expirationTime;
     @Value("${jwt.secret}")
     private String secretKey;
 

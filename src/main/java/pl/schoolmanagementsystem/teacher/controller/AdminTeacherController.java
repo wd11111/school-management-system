@@ -19,7 +19,6 @@ import javax.validation.Valid;
 @RequestMapping("/admin/teachers")
 public class AdminTeacherController {
 
-    public static final String ID_TAUGHT_CLASSES = "/{id}/taught-classes";
     private final AdminTeacherService adminTeacherService;
 
     @GetMapping
@@ -27,8 +26,8 @@ public class AdminTeacherController {
         return adminTeacherService.getAllTeachers(pageable);
     }
 
-    @GetMapping(ID_TAUGHT_CLASSES)
-    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(@PathVariable long id, Pageable pageable) {
+    @GetMapping("/{id}/taught-classes")
+    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(@PathVariable Long id, Pageable pageable) {
         return adminTeacherService.getTaughtClassesByTeacher(id, pageable);
     }
 
@@ -38,12 +37,12 @@ public class AdminTeacherController {
     }
 
     @PatchMapping("/{id}/subjects")
-    public TeacherDto addSubjectToTeacher(@PathVariable long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
+    public TeacherDto addSubjectToTeacher(@PathVariable Long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
         return adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable long id) {
+    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
         adminTeacherService.deleteTeacher(id);
         return ResponseEntity.noContent().build();
     }

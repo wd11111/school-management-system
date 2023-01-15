@@ -66,12 +66,12 @@ public class AdminTeacherService {
     }
 
     @Transactional
-    public void deleteTeacher(long teacherId) {
+    public void deleteTeacher(Long teacherId) {
         validateTeacherExists(teacherId);
         teacherRepository.deleteById(teacherId);
     }
 
-    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(long teacherId, Pageable pageable) {
+    public Page<SubjectAndClassDto> getTaughtClassesByTeacher(Long teacherId, Pageable pageable) {
         List<SubjectAndClassDto> taughtClassesByTeacher = teacherRepository.findByIdAndFetchTeacherInClasses(teacherId)
                 .orElseThrow(() -> new NoSuchTeacherException(teacherId))
                 .getTeacherInClasses().stream()
@@ -82,7 +82,7 @@ public class AdminTeacherService {
     }
 
     @Transactional
-    public TeacherDto addSubjectToTeacher(long teacherId, SchoolSubjectDto schoolSubjectDto) {
+    public TeacherDto addSubjectToTeacher(Long teacherId, SchoolSubjectDto schoolSubjectDto) {
         Teacher teacher = teacherRepository.findByIdAndFetchSubjects(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
@@ -98,7 +98,7 @@ public class AdminTeacherService {
         }
     }
 
-    private void validateTeacherExists(long teacherId) {
+    private void validateTeacherExists(Long teacherId) {
         if (!teacherRepository.existsById(teacherId)) {
             throw new NoSuchTeacherException(teacherId);
         }

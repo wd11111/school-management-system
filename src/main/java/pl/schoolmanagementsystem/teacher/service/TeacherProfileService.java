@@ -33,7 +33,7 @@ public class TeacherProfileService {
     private final SchoolClassRepository classRepository;
 
     @Transactional
-    public void addMark(String teacherEmail, AddMarkDto addMarkDto, long studentId) {
+    public void addMark(String teacherEmail, AddMarkDto addMarkDto, Long studentId) {
         BigDecimal mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow(MarkNotInRangeException::new);
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));

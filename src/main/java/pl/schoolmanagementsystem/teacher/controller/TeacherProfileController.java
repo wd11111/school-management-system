@@ -26,12 +26,12 @@ public class TeacherProfileController {
         return teacherProfileService.getTaughtClassesByTeacher(principal.getName(), pageable);
     }
 
-    @GetMapping("/classes/{className}")
+    @GetMapping("/classes/{className}/students")
     public List<StudentWithMarksDto> getStudentsInClass(@PathVariable String className, @RequestParam String subject, Principal principal) {
         return teacherProfileService.getClassStudentsWithMarksOfSubject(className, subject, principal.getName());
     }
 
-    @PatchMapping("/students/{id}")
+    @PostMapping("/students/{id}")
     public ResponseEntity<Void> addMark(@PathVariable Long id, @RequestBody @Valid AddMarkDto addMarkDto, Principal principal) {
         teacherProfileService.addMark(principal.getName(), addMarkDto, id);
         return ResponseEntity.noContent().build();

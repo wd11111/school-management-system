@@ -37,7 +37,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = TeacherProfileController.class)
@@ -78,7 +78,7 @@ class TeacherProfileControllerTest implements Samples {
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudentsDto);
         when(teacherProfileService.getClassStudentsWithMarksOfSubject(anyString(), anyString(), anyString())).thenReturn(listOfStudents);
 
-        MvcResult mvcResult = mockMvc.perform(get("/teacher/classes/1a?subject=biology").principal(principal))
+        MvcResult mvcResult = mockMvc.perform(get("/teacher/classes/1a/students?subject=biology").principal(principal))
                 .andExpect(status()
                         .isOk())
                 .andReturn();
@@ -94,7 +94,7 @@ class TeacherProfileControllerTest implements Samples {
         String body = objectMapper.writeValueAsString(addMarkDto);
         doNothing().when(teacherProfileService).addMark(anyString(), any(), anyLong());
 
-        mockMvc.perform(patch("/teacher/students/1").principal(principal)
+        mockMvc.perform(post("/teacher/students/1").principal(principal)
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status()
@@ -109,7 +109,7 @@ class TeacherProfileControllerTest implements Samples {
         AddMarkDto addMarkDto = new AddMarkDto(null, SUBJECT_BIOLOGY);
         String body = objectMapper.writeValueAsString(addMarkDto);
 
-        mockMvc.perform(patch("/teacher/students/1").principal(principal)
+        mockMvc.perform(post("/teacher/students/1").principal(principal)
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status()

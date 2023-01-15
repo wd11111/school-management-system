@@ -7,7 +7,6 @@ import pl.schoolmanagementsystem.common.email.service.EmailSender;
 import pl.schoolmanagementsystem.common.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.exception.NoSuchStudentException;
-import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
@@ -16,8 +15,8 @@ import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 
-import static pl.schoolmanagementsystem.student.utils.StudentMapper2.mapCreateDtoToEntity;
-import static pl.schoolmanagementsystem.student.utils.StudentMapper2.mapEntityToDtoWithSchoolClass;
+import static pl.schoolmanagementsystem.student.utils.StudentMapper.mapCreateDtoToEntity;
+import static pl.schoolmanagementsystem.student.utils.StudentMapper.mapEntityToDtoWithSchoolClass;
 
 @Service
 @RequiredArgsConstructor
@@ -37,14 +36,20 @@ public class AdminStudentService {
     public StudentWithClassDto createStudent(CreateStudentDto createStudentDto) {
         validateEmailIsAvailable(createStudentDto.getEmail());
 
-        SchoolClass schoolClass = schoolClassRepository.findById(createStudentDto.getSchoolClassName())
-                .orElseThrow(() -> new NoSuchSchoolClassException(createStudentDto.getSchoolClassName()));
 
-        Student student = mapCreateDtoToEntity(createStudentDto, schoolClass);
+        if (!doesClassExist(createStudentDto)) {
+            throw new NoSuchSchoolClassException(createStudentDto.getSchoolClass());
+        }
+
+        Student student = mapCreateDtoToEntity(createStudentDto, createStudentDto.getSchoolClass());
         roleAdder.addRoles(student);
         Student savedStudent = studentRepository.save(student);
         emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
         return mapEntityToDtoWithSchoolClass(savedStudent);
+    }
+
+    private boolean doesClassExist(CreateStudentDto createStudentDto) {
+        return schoolClassRepository.existsById(createStudentDto.getSchoolClass());
     }
 
     public void deleteStudent(Long studentId) {

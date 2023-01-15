@@ -48,7 +48,7 @@ class AdminStudentServiceTest implements Samples {
 
     @Test
     void should_create_student() {
-        CreateStudentDto createStudentDto = CreateStudentDto.builder().schoolClassName(CLASS_1A).build();
+        CreateStudentDto createStudentDto = CreateStudentDto.builder().schoolClass(CLASS_1A).build();
         SchoolClass schoolClass = createSchoolClass();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(schoolClass));
@@ -57,7 +57,7 @@ class AdminStudentServiceTest implements Samples {
 
         StudentWithClassDto result = adminStudentService.createStudent(createStudentDto);
 
-        assertThat(result.getSchoolClass()).isEqualTo(createStudentDto.getSchoolClassName());
+        assertThat(result.getSchoolClass()).isEqualTo(createStudentDto.getSchoolClass());
         verify(emailService, times(1)).sendEmail(any(), any());
     }
 
@@ -75,7 +75,7 @@ class AdminStudentServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_class_not_found() {
-        CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).schoolClassName(CLASS_3B).build();
+        CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).schoolClass(CLASS_3B).build();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 

@@ -30,6 +30,6 @@ public class CreateStudentDto {
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")
-    private String schoolClassName;
+    private String schoolClass;
 
 }

@@ -6,7 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.schoolmanagementsystem.common.exception.*;
-import pl.schoolmanagementsystem.common.model.*;
+import pl.schoolmanagementsystem.common.model.MarkEnum;
+import pl.schoolmanagementsystem.common.model.SchoolClass;
+import pl.schoolmanagementsystem.common.model.SchoolSubject;
+import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.*;
 import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
@@ -15,6 +18,7 @@ import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import static pl.schoolmanagementsystem.teacher.utils.MarkMapper.mapDtoToEntity;
 
@@ -57,18 +61,19 @@ public class TeacherProfileService {
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
         validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
 
-        schoolClass.getStudents()
-                .forEach(student -> student.setMarks(filterMarks(student.getMarks(), subjectName)));
+        filterMarks(schoolClass.getStudents(), subjectName);
 
         return schoolClass.getStudents().stream()
                 .map(StudentMapper::mapEntityToDtoWithMarks)
                 .toList();
     }
 
-    private List<Mark> filterMarks(List<Mark> marks, String subject) {
-        return marks.stream()
-                .filter(mark -> mark.getSubject().equals(subject))
-                .toList();
+    private void filterMarks(Set<Student> students, String subject) {
+        students.forEach(student -> student.setMarks(
+                student.getMarks()
+                        .stream()
+                        .filter(mark -> mark.getSubject().equals(subject))
+                        .toList()));
     }
 
     private void validateTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {

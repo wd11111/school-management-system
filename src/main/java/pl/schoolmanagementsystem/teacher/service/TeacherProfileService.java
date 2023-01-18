@@ -14,13 +14,12 @@ import pl.schoolmanagementsystem.common.repository.*;
 import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
+import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
 import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-
-import static pl.schoolmanagementsystem.teacher.utils.MarkMapper.mapDtoToEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,10 @@ public class TeacherProfileService {
 
     private final SchoolClassRepository classRepository;
 
+    private final StudentMapper studentMapper;
+
+    private final MarkMapper markMapper;
+
     @Transactional
     public void addMark(String teacherEmail, AddMarkDto addMarkDto, Long studentId) {
         BigDecimal mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow(MarkNotInRangeException::new);
@@ -46,7 +49,7 @@ public class TeacherProfileService {
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(addMarkDto.getSubject()));
 
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
-        student.addMark(mapDtoToEntity(mark, studentId, schoolSubject.getName()));
+        student.addMark(markMapper.mapToEntity(mark, studentId, schoolSubject.getName()));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {
@@ -63,9 +66,7 @@ public class TeacherProfileService {
 
         filterMarks(schoolClass.getStudents(), subjectName);
 
-        return schoolClass.getStudents().stream()
-                .map(StudentMapper::mapEntityToDtoWithMarks)
-                .toList();
+        return studentMapper.mapEntitiesToDtosWithMarks(schoolClass.getStudents());
     }
 
     private void filterMarks(Set<Student> students, String subject) {

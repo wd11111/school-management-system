@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +23,10 @@ import pl.schoolmanagementsystem.common.repository.*;
 import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
+import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
+import pl.schoolmanagementsystem.teacher.utils.MarkMapperStub;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapperStub;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +53,12 @@ class TeacherProfileServiceTest implements Samples {
 
     @Mock
     private SchoolClassRepository classRepository;
+
+    @Spy
+    private StudentMapper studentMapper = new StudentMapperStub();
+
+    @Spy
+    private MarkMapper markMapper =  new MarkMapperStub();
 
     @InjectMocks
     private TeacherProfileService teacherProfileService;
@@ -137,7 +148,7 @@ class TeacherProfileServiceTest implements Samples {
     @Test
     void should_correctly_filter_marks_when_returning_students_with_marks() {
         Student student = createStudent();
-        student.addMark(new Mark(1, getMarkAsBigDecimal2(), ID_1, SUBJECT_HISTORY));
+        student.addMark(new Mark(1L, getMarkAsBigDecimal2(), ID_1, SUBJECT_HISTORY));
         SchoolClass schoolClass = createSchoolClass();
         schoolClass.getStudents().add(student);
         when(subjectRepository.existsById(anyString())).thenReturn(true);

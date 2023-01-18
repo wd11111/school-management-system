@@ -28,6 +28,8 @@ import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
+import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import java.security.Principal;
 import java.util.List;
@@ -150,8 +152,10 @@ class MockMvcConfig5 {
         TeacherInClassRepository teacherInClassRepository = mock(TeacherInClassRepository.class);
         SchoolSubjectRepository subjectRepository = mock(SchoolSubjectRepository.class);
         SchoolClassRepository classRepository = mock(SchoolClassRepository.class);
+        MarkMapper markMapper = mock(MarkMapper.class);
+        StudentMapper studentMapper = mock(StudentMapper.class);
         return new TeacherProfileService(teacherRepository, studentRepository, teacherInClassRepository,
-                subjectRepository, classRepository);
+                subjectRepository, classRepository, studentMapper, markMapper);
     }
 
     @Bean

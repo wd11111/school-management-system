@@ -1,44 +1,26 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 import pl.schoolmanagementsystem.common.model.Teacher;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.generateToken;
+@Mapper(componentModel = "spring")
+public interface TeacherMapper {
 
-public class TeacherMapper {
+    @Mapping(source = "taughtSubjects", target = "taughtSubjects")
+    @Mapping(source = "appUser", target = "appUser")
+    Teacher mapCreateDtoToEntity(CreateTeacherDto createTeacherDto, Set<SchoolSubject> taughtSubjects, AppUser appUser);
 
-    public static final String PASSWORD = null;
+    TeacherDto mapEntityToDto(Teacher teacher);
 
-    public static Teacher mapCreateDtoToEntity(CreateTeacherDto createTeacherDto, Set<SchoolSubject> taughtSubjects) {
-        return Teacher.builder()
-                .name(createTeacherDto.getName())
-                .surname(createTeacherDto.getSurname())
-                .appUser(createAppUser(createTeacherDto.getEmail()))
-                .taughtSubjects(taughtSubjects)
-                .teacherInClasses(new HashSet<>())
-                .build();
+    default String schoolSubjectToString(SchoolSubject schoolSubject) {
+        return schoolSubject.getName();
     }
 
-    public static TeacherDto mapEntityToDto(Teacher teacher) {
-        return TeacherDto.builder()
-                .id(teacher.getId())
-                .name(teacher.getName())
-                .surname(teacher.getSurname())
-                .taughtSubjects(teacher.getTaughtSubjects().stream()
-                        .map(SchoolSubject::getName)
-                        .collect(Collectors.toSet()))
-                .build();
-    }
-
-    private static AppUser createAppUser(String email) {
-        return new AppUser(email, PASSWORD, generateToken(), new ArrayList<>());
-    }
 }

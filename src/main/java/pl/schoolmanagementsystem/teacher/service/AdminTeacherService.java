@@ -12,6 +12,7 @@ import pl.schoolmanagementsystem.common.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.exception.NoSuchTeacherException;
 import pl.schoolmanagementsystem.common.exception.TeacherAlreadyTeachesSubjectException;
+import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 import pl.schoolmanagementsystem.common.model.Teacher;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
@@ -26,8 +27,7 @@ import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 import java.util.List;
 import java.util.Set;
 
-import static pl.schoolmanagementsystem.teacher.utils.TeacherMapper.mapCreateDtoToEntity;
-import static pl.schoolmanagementsystem.teacher.utils.TeacherMapper.mapEntityToDto;
+import static pl.schoolmanagementsystem.common.role.AppUserService.createAppUser;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +43,8 @@ public class AdminTeacherService {
 
     private final RoleAdder roleAdder;
 
+    private final TeacherMapper teacherMapper;
+
     @Transactional
     public TeacherDto createTeacher(CreateTeacherDto createTeacherDto) {
         validateEmailIsAvailable(createTeacherDto.getEmail());
@@ -50,17 +52,18 @@ public class AdminTeacherService {
         Set<SchoolSubject> taughtSubjects = schoolSubjectRepository.findAllByNameIn(createTeacherDto.getTaughtSubjects());
         validateAllSubjectNamesAreCorrect(taughtSubjects, createTeacherDto.getTaughtSubjects());
 
-        Teacher teacher = mapCreateDtoToEntity(createTeacherDto, taughtSubjects);
+        AppUser appUser = createAppUser(createTeacherDto.getEmail());
+        Teacher teacher = teacherMapper.mapCreateDtoToEntity(createTeacherDto, taughtSubjects, appUser);
         roleAdder.addRoles(teacher, createTeacherDto.isAdmin());
         Teacher savedTeacher = teacherRepository.save(teacher);
         emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
-        return mapEntityToDto(savedTeacher);
+        return teacherMapper.mapEntityToDto(savedTeacher);
     }
 
     public Page<TeacherDto> getAllTeachers(Pageable pageable) {
         List<TeacherDto> teachers = teacherRepository.findAll()
                 .stream()
-                .map(TeacherMapper::mapEntityToDto)
+                .map(teacherMapper::mapEntityToDto)
                 .toList();
         return new PageImpl<>(teachers, pageable, teachers.size());
     }
@@ -89,7 +92,7 @@ public class AdminTeacherService {
 
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
         teacher.addSubject(schoolSubject);
-        return mapEntityToDto(teacher);
+        return teacherMapper.mapEntityToDto(teacher);
     }
 
     private void validateAllSubjectNamesAreCorrect(Set<SchoolSubject> taughtSubjects, Set<String> givenSubjects) {

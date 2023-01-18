@@ -1,16 +1,17 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import pl.schoolmanagementsystem.common.model.Mark;
 
 import java.math.BigDecimal;
 
-public class MarkMapper {
+@Mapper(componentModel = "spring")
+public interface MarkMapper {
 
-    public static Mark mapDtoToEntity(BigDecimal mark, Long studentId, String schoolSubject) {
-        return Mark.builder()
-                .mark(mark)
-                .studentId(studentId)
-                .subject(schoolSubject)
-                .build();
-    }
+    @Mapping(source = "mark", target = "mark")
+    @Mapping(source = "studentId", target = "studentId")
+    @Mapping(source = "subject", target = "subject")
+    Mark mapToEntity(BigDecimal mark, Long studentId, String subject);
+
 }

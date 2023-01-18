@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.common.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.FetchType.LAZY;
@@ -31,7 +32,7 @@ public class Teacher {
     private Set<SchoolSubject> taughtSubjects;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private Set<TeacherInClass> teacherInClasses;
+    private Set<TeacherInClass> teacherInClasses = new HashSet<>();
 
     public void addSubject(SchoolSubject schoolSubject) {
         taughtSubjects.add(schoolSubject);

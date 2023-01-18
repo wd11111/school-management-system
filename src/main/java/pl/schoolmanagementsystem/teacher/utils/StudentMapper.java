@@ -1,26 +1,23 @@
 package pl.schoolmanagementsystem.teacher.utils;
 
+import org.mapstruct.Mapper;
 import pl.schoolmanagementsystem.common.model.Mark;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-public class StudentMapper {
+@Mapper(componentModel = "spring")
+public interface StudentMapper {
 
-    public static StudentWithMarksDto mapEntityToDtoWithMarks(Student student) {
-        return new StudentWithMarksDto(
-                student.getId(),
-                student.getName(),
-                student.getSurname(),
-                mapListOfMarksToDecimals(student.getMarks()));
+    StudentWithMarksDto mapEntityToDtoWithMarks(Student student);
+
+    List<StudentWithMarksDto> mapEntitiesToDtosWithMarks(Set<Student> students);
+
+    default BigDecimal markToBigDecimal(Mark mark) {
+        return mark.getMark();
     }
 
-    private static List<BigDecimal> mapListOfMarksToDecimals(List<Mark> marks) {
-        return marks.stream()
-                .map(Mark::getMark)
-                .collect(Collectors.toList());
-    }
 }

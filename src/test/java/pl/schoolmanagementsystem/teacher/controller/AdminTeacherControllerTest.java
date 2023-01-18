@@ -26,6 +26,7 @@ import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 import pl.schoolmanagementsystem.teacher.service.AdminTeacherService;
+import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
 
 import java.util.List;
 
@@ -175,8 +176,9 @@ class MockMvcConfig4 {
         AppUserRepository userRepository = mock(AppUserRepository.class);
         EmailService emailService = mock(EmailService.class);
         RoleAdder roleAdder = mock(RoleAdder.class);
+        TeacherMapper teacherMapper = mock(TeacherMapper.class);
         return new AdminTeacherService(teacherRepository, schoolSubjectRepository, userRepository,
-                emailService, roleAdder);
+                emailService, roleAdder, teacherMapper);
     }
 
     @Bean

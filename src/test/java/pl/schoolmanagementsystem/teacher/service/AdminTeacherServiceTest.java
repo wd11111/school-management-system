@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,8 @@ import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
+import pl.schoolmanagementsystem.teacher.utils.TeacherMapper;
+import pl.schoolmanagementsystem.teacher.utils.TeacherMapperStub;
 
 import java.util.*;
 
@@ -50,12 +53,15 @@ class AdminTeacherServiceTest implements Samples {
     @Mock
     private RoleAdder roleAdder;
 
+    @Spy
+    private TeacherMapper teacherMapper = new TeacherMapperStub();
+
     @InjectMocks
     private AdminTeacherService adminTeacherService;
 
     @Test
     void should_create_teacher() {
-        CreateTeacherDto createTeacherDto = new CreateTeacherDto();
+        CreateTeacherDto createTeacherDto = createCreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Set.of(createSchoolSubject()));

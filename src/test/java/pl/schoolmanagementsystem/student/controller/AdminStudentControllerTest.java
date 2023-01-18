@@ -22,6 +22,7 @@ import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
+import pl.schoolmanagementsystem.student.utils.StudentMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -62,7 +63,7 @@ class AdminStudentControllerTest implements Samples {
 
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("studentId")
-                .comparingOnlyFields("name", "surname", "schoolClassName").isEqualTo(createStudentDto);
+                .comparingOnlyFields("name", "surname", "schoolClassName").isEqualTo(studentResponse);
     }
 
     @Test
@@ -109,8 +110,9 @@ class MockMvcConfig3 {
         EmailService emailService = mock(EmailService.class);
         AppUserRepository userRepository = mock(AppUserRepository.class);
         RoleAdder roleAdder = mock(RoleAdder.class);
+        StudentMapper studentMapper = mock(StudentMapper.class);
         return new AdminStudentService(studentRepository, schoolClassRepository,
-                emailService, userRepository, roleAdder);
+                emailService, userRepository, roleAdder, studentMapper);
     }
 
     @Bean

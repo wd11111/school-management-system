@@ -38,6 +38,10 @@ public class AdminClassService {
 
     private final StudentRepository studentRepository;
 
+    private final SchoolClassMapper schoolClassMapper;
+
+    private final TeacherInClassMapper teacherInClassMapper;
+
     public Page<SchoolClassDto> getSchoolClasses(Pageable pageable) {
         return schoolClassRepository.findAllClasses(pageable);
     }
@@ -46,7 +50,7 @@ public class AdminClassService {
         if (doesSchoolClassExist(schoolClassDto.getSchoolClassName())) {
             throw new ClassAlreadyExistsException(schoolClassDto);
         }
-        return schoolClassRepository.save(SchoolClassMapper.mapDtoToEntity(schoolClassDto));
+        return schoolClassRepository.save(schoolClassMapper.mapDtoToEntity(schoolClassDto));
     }
 
     public List<TaughtSubjectDto> getTaughtSubjectsInClass(String schoolClassName) {
@@ -67,7 +71,7 @@ public class AdminClassService {
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
         TeacherInClass teacherInClass = teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
-        return TeacherInClassMapper.mapEntityToDto(teacherInClass);
+        return teacherInClassMapper.mapEntityToDto(teacherInClass);
     }
 
     public List<StudentDto> getAllStudentsInClass(String className) {

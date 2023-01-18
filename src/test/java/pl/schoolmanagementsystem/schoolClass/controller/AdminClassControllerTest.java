@@ -28,6 +28,8 @@ import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
 import pl.schoolmanagementsystem.schoolClass.service.AdminTeacherInClassService;
+import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapper;
+import pl.schoolmanagementsystem.schoolClass.utils.TeacherInClassMapper;
 
 import java.util.List;
 
@@ -184,8 +186,10 @@ class MockMvcConfig {
         SchoolSubjectRepository schoolSubjectRepository = mock(SchoolSubjectRepository.class);
         AdminTeacherInClassService teacherInClassService = mock(AdminTeacherInClassService.class);
         StudentRepository studentRepository = mock(StudentRepository.class);
+        SchoolClassMapper schoolClassMapper = mock(SchoolClassMapper.class);
+        TeacherInClassMapper teacherInClassMapper = mock(TeacherInClassMapper.class);
         return new AdminClassService(schoolClassRepository, teacherRepository,
-                schoolSubjectRepository, teacherInClassService, studentRepository);
+                schoolSubjectRepository, teacherInClassService, studentRepository, schoolClassMapper, teacherInClassMapper);
     }
 
     @Bean

@@ -1,13 +1,11 @@
 package pl.schoolmanagementsystem.schoolSubject.utils;
 
+import org.mapstruct.Mapper;
 import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 
-public class SchoolSubjectMapper {
+@Mapper(componentModel = "spring")
+public interface SchoolSubjectMapper {
 
-    public static SchoolSubject mapDtoToEntity(SchoolSubjectDto schoolSubjectDto) {
-        return SchoolSubject.builder()
-                .name(schoolSubjectDto.getSubjectName())
-                .build();
-    }
+    SchoolSubject mapDtoToEntity(SchoolSubjectDto schoolSubjectDto);
 }

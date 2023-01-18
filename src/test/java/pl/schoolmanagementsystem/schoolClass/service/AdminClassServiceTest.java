@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.dto.SchoolClassDto;
@@ -18,6 +19,10 @@ import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.common.repository.TeacherRepository;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
+import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapper;
+import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapperStub;
+import pl.schoolmanagementsystem.schoolClass.utils.TeacherInClassMapper;
+import pl.schoolmanagementsystem.schoolClass.utils.TeacherInClassMapperStub;
 
 import java.util.Optional;
 
@@ -44,6 +49,12 @@ class AdminClassServiceTest implements Samples {
 
     @Mock
     private StudentRepository studentRepository;
+
+    @Spy
+    private SchoolClassMapper schoolClassMapper = new SchoolClassMapperStub();
+
+    @Spy
+    private TeacherInClassMapper teacherInClassMapper = new TeacherInClassMapperStub();
 
     @InjectMocks
     private AdminClassService adminClassService;

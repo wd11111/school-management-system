@@ -1,26 +1,18 @@
 package pl.schoolmanagementsystem.schoolClass.utils;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.TeacherInClass;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 
-import java.util.Set;
+@Mapper(componentModel = "spring")
+public interface TeacherInClassMapper {
 
-import static java.util.stream.Collectors.toSet;
+    @Mapping(source = "teacherInClass.teacher.id", target = "teacherId")
+    TeacherInClassDto mapEntityToDto(TeacherInClass teacherInClass);
 
-public class TeacherInClassMapper {
-
-    public static TeacherInClassDto mapEntityToDto(TeacherInClass teacherInClass) {
-        return TeacherInClassDto.builder()
-                .teacherId(teacherInClass.getTeacher().getId())
-                .taughtSubject(teacherInClass.getTaughtSubject())
-                .taughtClasses(mapClassesToStrings(teacherInClass.getTaughtClasses()))
-                .build();
-    }
-
-    private static Set<String> mapClassesToStrings(Set<SchoolClass> classes) {
-        return classes.stream()
-                .map(SchoolClass::getName)
-                .collect(toSet());
+    default String schoolClassToString(SchoolClass schoolClass) {
+        return schoolClass.getName();
     }
 }

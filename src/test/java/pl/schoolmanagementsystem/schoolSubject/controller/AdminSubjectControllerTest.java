@@ -20,6 +20,7 @@ import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.schoolSubject.service.AdminSubjectService;
+import pl.schoolmanagementsystem.schoolSubject.utils.SchoolSubjectMapper;
 
 import java.util.List;
 
@@ -113,7 +114,8 @@ class MockMvcConfig2 {
     @Bean
     AdminSubjectService adminSubjectService() {
         SchoolSubjectRepository schoolSubjectRepository = mock(SchoolSubjectRepository.class);
-        return new AdminSubjectService(schoolSubjectRepository);
+        SchoolSubjectMapper schoolSubjectMapper = mock(SchoolSubjectMapper.class);
+        return new AdminSubjectService(schoolSubjectRepository, schoolSubjectMapper);
     }
 
     @Bean

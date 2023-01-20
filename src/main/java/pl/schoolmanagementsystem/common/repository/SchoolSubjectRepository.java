@@ -24,6 +24,9 @@ public interface SchoolSubjectRepository extends JpaRepository<SchoolSubject, St
     @Query("SELECT new pl.schoolmanagementsystem.common.dto.SchoolSubjectDto(s.name) FROM SchoolSubject s")
     Page<SchoolSubjectDto> findAllSchoolSubjects(Pageable pageable);
 
+    @Query("SELECT s FROM SchoolSubject s left join fetch s.teachersInClasses sc")
+    List<SchoolSubject> aaaaaaaaaaaa(Pageable pageable);
+
     @Modifying
     @Query(nativeQuery = true, value = "DELETE FROM teacher_taught_subjects WHERE taught_subjects_name=?1")
     void deleteTaughtSubjects(String name);

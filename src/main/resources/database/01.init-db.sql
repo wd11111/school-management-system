@@ -10,8 +10,8 @@ create table "app_user"
 );
 create table "app_user_roles"
 (
-    "app_user_user_email" varchar(255) not null,
-    "roles_role"          varchar(255) not null
+    "users_user_email" varchar(255) not null,
+    "roles_role"       varchar(255) not null
 );
 create table "mark"
 (

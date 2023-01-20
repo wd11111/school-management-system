@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,4 +20,7 @@ public class Role {
 
     @Id
     private String role;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<AppUser> users = new HashSet<>();
 }

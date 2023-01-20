@@ -9,6 +9,7 @@ import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.exception.NoSuchSchoolSubjectException;
 import pl.schoolmanagementsystem.common.exception.SubjectAlreadyExistsException;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
+import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.schoolSubject.utils.SchoolSubjectMapper;
 
@@ -19,6 +20,8 @@ public class AdminSubjectService {
     private final SchoolSubjectRepository schoolSubjectRepository;
 
     private final SchoolSubjectMapper schoolSubjectMapper;
+
+    private final AppUserRepository appUserRepository;
 
     public SchoolSubject createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         if (doesSubjectExist(schoolSubjectDto.getSubjectName())) {

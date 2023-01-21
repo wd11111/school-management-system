@@ -32,5 +32,6 @@ Other:
 
 
 # Database diagram:
-![db diagram](https://user-images.githubusercontent.com/112166269/209821722-515f4417-f95f-4a3b-ad62-58feeb44b5ca.JPG)
+![diagram](https://user-images.githubusercontent.com/112166269/213867353-9eb68e44-46b5-430b-9b65-8899cb3f63bc.PNG)
+
 

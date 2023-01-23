@@ -13,6 +13,9 @@ public interface TeacherInClassMapper {
     TeacherInClassDto mapEntityToDto(TeacherInClass teacherInClass);
 
     default String schoolClassToString(SchoolClass schoolClass) {
+        if (schoolClass == null) {
+            return null;
+        }
         return schoolClass.getName();
     }
 }

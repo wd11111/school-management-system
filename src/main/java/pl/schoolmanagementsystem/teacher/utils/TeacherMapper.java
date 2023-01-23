@@ -20,6 +20,9 @@ public interface TeacherMapper {
     TeacherDto mapEntityToDto(Teacher teacher);
 
     default String schoolSubjectToString(SchoolSubject schoolSubject) {
+        if (schoolSubject == null) {
+            return null;
+        }
         return schoolSubject.getName();
     }
 

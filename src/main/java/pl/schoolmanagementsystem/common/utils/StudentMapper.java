@@ -24,6 +24,9 @@ public interface StudentMapper {
     StudentWithMarksDto mapEntityToDtoWithMarks(Student student);
 
     default BigDecimal markToBigDecimal(Mark mark) {
+        if (mark == null) {
+            return null;
+        }
         return mark.getMark();
     }
 

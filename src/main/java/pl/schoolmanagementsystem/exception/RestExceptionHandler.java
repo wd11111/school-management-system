@@ -43,7 +43,8 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = {
             CouldNotConfirmUserException.class,
             PasswordsDoNotMatchException.class,
-            MarkNotInRangeException.class
+            MarkNotInRangeException.class,
+            IllegalArgumentException.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));

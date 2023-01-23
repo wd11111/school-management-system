@@ -33,7 +33,7 @@ public class CreateStudentDto {
     @NotBlank(message = "{not.blank.message}")
     private String schoolClass;
 
-    @Past
+    @Past(message = "{date.past.message}")
     @DateTimeFormat(pattern = "yyyy.MM.dd")
     private LocalDate birthDate;
 

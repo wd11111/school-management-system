@@ -18,12 +18,12 @@ import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.common.role.RoleAdder;
-import pl.schoolmanagementsystem.common.utils.StudentMapper;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
+import pl.schoolmanagementsystem.student.utils.StudentMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

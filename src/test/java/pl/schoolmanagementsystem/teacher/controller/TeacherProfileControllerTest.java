@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.repository.*;
-import pl.schoolmanagementsystem.common.utils.StudentMapper;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.security.config.SecurityConfig;
@@ -30,6 +29,7 @@ import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
 import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import java.security.Principal;
 import java.util.List;
@@ -153,7 +153,7 @@ class MockMvcConfig5 {
         SchoolSubjectRepository subjectRepository = mock(SchoolSubjectRepository.class);
         SchoolClassRepository classRepository = mock(SchoolClassRepository.class);
         MarkMapper markMapper = mock(MarkMapper.class);
-        StudentMapper studentMapper = mock(StudentMapper.class);
+        pl.schoolmanagementsystem.teacher.utils.StudentMapper studentMapper = mock(StudentMapper.class);
         return new TeacherProfileService(teacherRepository, studentRepository, teacherInClassRepository,
                 subjectRepository, classRepository, studentMapper, markMapper);
     }

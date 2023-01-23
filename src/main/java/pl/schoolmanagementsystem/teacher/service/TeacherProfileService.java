@@ -11,11 +11,11 @@ import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.*;
-import pl.schoolmanagementsystem.common.utils.StudentMapper;
 import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
+import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -12,6 +12,7 @@ import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 public interface Samples {
@@ -176,7 +177,7 @@ public interface Samples {
     }
 
     default CreateStudentDto studentRequestDto() {
-        return new CreateStudentDto(NAME, NAME, SURNAME, CLASS_1A);
+        return new CreateStudentDto(NAME, NAME, SURNAME, CLASS_1A, LocalDate.of(2002, 01, 01));
     }
 
     default StudentWithMarksDto studentWithMarksDto() {

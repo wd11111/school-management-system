@@ -51,7 +51,11 @@ class MarkRepositoryTest implements Samples {
     void should_return_all_marks_for_student() {
         List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
 
-        assertThat(marks).extracting("mark").containsAll(List.of(new BigDecimal("1.00"), new BigDecimal("2.00"), new BigDecimal("4.00")));
+        assertThat(marks).extracting("mark")
+                .containsAll(List.of(
+                        new BigDecimal("1.00"),
+                        new BigDecimal("2.00"),
+                        new BigDecimal("4.00")));
     }
 
     @Test
@@ -59,7 +63,8 @@ class MarkRepositoryTest implements Samples {
         List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent("email");
 
         assertThat(allAveragesForStudent).extracting("subject", "avg")
-                .containsAll(List.of(tuple("biology", 2.5),
+                .containsAll(List.of(
+                        tuple("biology", 2.5),
                         tuple("history", 2.0)));
     }
 

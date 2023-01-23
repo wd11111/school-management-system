@@ -11,14 +11,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
 
 @Service
 public class FilterService<T> {
 
     public static final String UNEXPECTED_VALUE_TYPE_MESSAGE = "Unexpected value type";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
-    public static final String DATE_SPLIT_REGEX = "to";
+    public static final String SPLIT_REGEX = "to";
 
     public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) {
         return (root, query, criteriaBuilder) -> {
@@ -28,7 +27,8 @@ public class FilterService<T> {
                 switch (searchRequestDto.getOperation()) {
                     case EQUAL -> doEqualOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case LIKE -> doLikeOperation(searchRequestDto, predicates, root, criteriaBuilder);
-                    case BETWEEN -> doBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
+                    case BETWEEN_NUMBER -> doBetweenNumberOperation(searchRequestDto, predicates, root, criteriaBuilder);
+                    case BETWEEN_DATE -> doBetweenDateOperation(root, criteriaBuilder, predicates, searchRequestDto);
                     default -> throw new IllegalArgumentException("Unexpected operation type");
                 }
             });
@@ -37,50 +37,26 @@ public class FilterService<T> {
     }
 
     private void doEqualOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-        switch (searchRequestDto.getValueType()) {
-            case STRING -> {
-                Predicate equal = criteriaBuilder.equal(root.get(searchRequestDto.getColumn()), searchRequestDto.getValue());
-                predicates.add(equal);
-            }
-            case NUMBER -> {
-                Predicate equal = criteriaBuilder.equal(root.get(searchRequestDto.getColumn()), Long.parseLong(searchRequestDto.getValue()));
-                predicates.add(equal);
-            }
-            case DATE -> {
-                LocalDate localDate = getLocalDate(searchRequestDto.getValue());
-                Predicate equal = criteriaBuilder.equal(root.get(searchRequestDto.getColumn()), localDate);
-                predicates.add(equal);
-            }
-            default -> throw new IllegalArgumentException(UNEXPECTED_VALUE_TYPE_MESSAGE);
-        }
+        Predicate equal = criteriaBuilder.equal(root.get(searchRequestDto.getColumn()), searchRequestDto.getValue());
+        predicates.add(equal);
     }
 
     private void doLikeOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-
-        switch (searchRequestDto.getValueType()) {
-            case STRING -> {
-                Predicate like = criteriaBuilder.like(root.get(searchRequestDto.getColumn()), "%" + searchRequestDto.getValue() + "%");
-                predicates.add(like);
-            }
-            default -> throw new IllegalArgumentException(UNEXPECTED_VALUE_TYPE_MESSAGE);
-        }
+        Predicate like = criteriaBuilder.like(root.get(searchRequestDto.getColumn()), "%" + searchRequestDto.getValue() + "%");
+        predicates.add(like);
 
     }
 
-    private void doBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-        switch (searchRequestDto.getValueType()) {
-            case NUMBER -> {
-                String[] splitted = doSplit(searchRequestDto.getValue());
-                Predicate between = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), Long.parseLong(splitted[0]), Long.parseLong(splitted[1]));
-                predicates.add(between);
-            }
-            case DATE -> {
-                String[] splitted = doSplit(searchRequestDto.getValue());
-                Predicate between = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
-                predicates.add(between);
-            }
-            default -> throw new IllegalArgumentException(UNEXPECTED_VALUE_TYPE_MESSAGE);
-        }
+    private void doBetweenNumberOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
+        String[] splitted = doSplit(searchRequestDto.getValue());
+        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), Long.parseLong(splitted[0]), Long.parseLong(splitted[1]));
+        predicates.add(betweenNumber);
+    }
+
+    private void doBetweenDateOperation(Root<T> root, CriteriaBuilder criteriaBuilder, List<Predicate> predicates, SearchRequestDto searchRequestDto) {
+        String[] splitted = doSplit(searchRequestDto.getValue());
+        Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
+        predicates.add(betweenDate);
     }
 
     private LocalDate getLocalDate(String date) {
@@ -89,15 +65,26 @@ public class FilterService<T> {
         try {
             return LocalDate.parse(date, pattern);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("DateTimeParseException");
+            throw new IllegalArgumentException("Wrong date pattern! Use: " + DATE_PATTERN);
         }
     }
 
     private String[] doSplit(String value) {
-        try {
-            return value.split(DATE_SPLIT_REGEX);
-        } catch (PatternSyntaxException e) {
-            throw new IllegalArgumentException("PatternSyntaxException");
+        validateRegexCorrectness(value);
+        String[] splitted = value.split(SPLIT_REGEX);
+        validateArrayLength(splitted);
+        return splitted;
+    }
+
+    private void validateRegexCorrectness(String value) {
+        if (!value.contains(SPLIT_REGEX)) {
+            throw new IllegalArgumentException("Wrong split regex! Use: " + SPLIT_REGEX);
+        }
+    }
+
+    private void validateArrayLength(String[] splitted) {
+        if (splitted.length < 2) {
+            throw new IllegalArgumentException();
         }
     }
 }

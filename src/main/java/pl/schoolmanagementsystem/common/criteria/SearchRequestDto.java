@@ -14,13 +14,8 @@ public class SearchRequestDto {
     private String column;
     private String value;
     private Operation operation;
-    private ValueType valueType;
 
     public enum Operation {
-        EQUAL, LIKE, BETWEEN
-    }
-
-    public enum ValueType {
-        STRING, NUMBER, DATE
+        EQUAL, LIKE, BETWEEN_NUMBER, BETWEEN_DATE
     }
 }

@@ -5,15 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.schoolmanagementsystem.BaseContainerTest;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
 import pl.schoolmanagementsystem.common.model.Student;
@@ -33,29 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Testcontainers
-@ActiveProfiles("test")
-@Sql("/scripts/init_db.sql")
-public class FilterServiceTest implements Samples {
-
-    public static final String POSTGRES = "postgres";
-
-    @Container
-    private static final PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>("postgres:14.1")
-                    .withDatabaseName(POSTGRES)
-                    .withPassword(POSTGRES)
-                    .withUsername(POSTGRES);
-
-    @DynamicPropertySource
-    public static void containerConfig(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-    }
-
+public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Autowired
     StudentRepository studentRepository;
@@ -64,15 +34,10 @@ public class FilterServiceTest implements Samples {
     @BeforeEach
     public void setUp() {
         SchoolClassRepository schoolClassRepository = mock(SchoolClassRepository.class);
-
         EmailSender emailSender = mock(EmailSender.class);
-
         AppUserRepository userRepository = mock(AppUserRepository.class);
-
         RoleAdder roleAdder = mock(RoleAdder.class);
-
         StudentMapper studentMapper = new StudentMapperStub();
-
         FilterService<Student> filterService = new FilterService<>();
 
         adminStudentService = new AdminStudentService(studentRepository, schoolClassRepository, emailSender, userRepository, roleAdder, studentMapper, filterService);

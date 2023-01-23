@@ -27,7 +27,7 @@ public class FilterService<T> {
                     case EQUAL -> doEqualOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case LIKE -> doLikeOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case BETWEEN_NUMBER -> doBetweenNumberOperation(searchRequestDto, predicates, root, criteriaBuilder);
-                    case BETWEEN_DATE -> doBetweenDateOperation(root, criteriaBuilder, predicates, searchRequestDto);
+                    case BETWEEN_DATE -> doBetweenDateOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     default -> throw new IllegalArgumentException("Unexpected operation type");
                 }
             });
@@ -52,7 +52,7 @@ public class FilterService<T> {
         predicates.add(betweenNumber);
     }
 
-    private void doBetweenDateOperation(Root<T> root, CriteriaBuilder criteriaBuilder, List<Predicate> predicates, SearchRequestDto searchRequestDto) {
+    private void doBetweenDateOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(searchRequestDto.getValue());
         Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
         predicates.add(betweenDate);

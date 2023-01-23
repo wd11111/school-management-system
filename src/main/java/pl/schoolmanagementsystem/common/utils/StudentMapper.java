@@ -6,6 +6,7 @@ import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.model.Mark;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.StudentSearchDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
@@ -31,5 +32,9 @@ public interface StudentMapper {
     }
 
     List<StudentWithMarksDto> mapEntitiesToDtosWithMarks(Set<Student> students);
+
+    StudentSearchDto mapEntityToSearchDto(Student student);
+
+    List<StudentSearchDto> mapEntitiesToSearchDtos(List<Student> students);
 
 }

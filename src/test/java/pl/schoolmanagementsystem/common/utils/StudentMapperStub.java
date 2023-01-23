@@ -4,6 +4,7 @@ import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.model.Mark;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.StudentSearchDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 
@@ -28,6 +29,24 @@ public class StudentMapperStub implements StudentMapper {
     public List<StudentWithMarksDto> mapEntitiesToDtosWithMarks(Set<Student> students) {
         return students.stream()
                 .map(this::mapEntityToDtoWithMarks)
+                .toList();
+    }
+
+    @Override
+    public StudentSearchDto mapEntityToSearchDto(Student student) {
+        StudentSearchDto studentSearchDto = new StudentSearchDto();
+        studentSearchDto.setId(studentSearchDto.getId());
+        studentSearchDto.setName(studentSearchDto.getName());
+        studentSearchDto.setSurname(student.getSurname());
+        studentSearchDto.setBirthDate(student.getBirthDate());
+        studentSearchDto.setSchoolClass(student.getSchoolClass());
+        return studentSearchDto;
+    }
+
+    @Override
+    public List<StudentSearchDto> mapEntitiesToSearchDtos(List<Student> students) {
+        return students.stream()
+                .map(this::mapEntityToSearchDto)
                 .toList();
     }
 

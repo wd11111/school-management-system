@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.Samples;
+import pl.schoolmanagementsystem.common.criteria.FilterService;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
@@ -111,8 +112,9 @@ class MockMvcConfig3 {
         AppUserRepository userRepository = mock(AppUserRepository.class);
         RoleAdder roleAdder = mock(RoleAdder.class);
         StudentMapper studentMapper = mock(StudentMapper.class);
+        FilterService filterService = mock(FilterService.class);
         return new AdminStudentService(studentRepository, schoolClassRepository,
-                emailService, userRepository, roleAdder, studentMapper);
+                emailService, userRepository, roleAdder, studentMapper, filterService);
     }
 
     @Bean

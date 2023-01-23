@@ -1,8 +1,11 @@
 package pl.schoolmanagementsystem.student.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.schoolmanagementsystem.common.criteria.FilterService;
+import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
 import pl.schoolmanagementsystem.common.exception.EmailAlreadyInUseException;
 import pl.schoolmanagementsystem.common.exception.NoSuchSchoolClassException;
@@ -16,7 +19,10 @@ import pl.schoolmanagementsystem.common.role.AppUserService;
 import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.common.utils.StudentMapper;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.StudentSearchDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +40,8 @@ public class AdminStudentService {
 
     private final StudentMapper studentMapper;
 
+    private final FilterService<Student> filterService;
+
     @Transactional
     public StudentWithClassDto createStudent(CreateStudentDto createStudentDto) {
         validateEmailIsAvailable(createStudentDto.getEmail());
@@ -45,6 +53,12 @@ public class AdminStudentService {
         Student savedStudent = studentRepository.save(student);
         emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
         return studentMapper.mapEntityToDtoWithSchoolClass(savedStudent);
+    }
+
+    public List<StudentSearchDto> searchStudent(List<SearchRequestDto> searchRequestDtos) {
+        Specification<Student> searchSpecification = filterService.getSearchSpecification(searchRequestDtos);
+        List<Student> students = studentRepository.findAll(searchSpecification);
+        return studentMapper.mapEntitiesToSearchDtos(students);
     }
 
     public void deleteStudent(Long studentId) {

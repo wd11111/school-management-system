@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
+import pl.schoolmanagementsystem.student.dto.StudentSearchDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +23,11 @@ public class AdminStudentController {
     @PostMapping
     public ResponseEntity<StudentWithClassDto> createStudent(@RequestBody @Valid CreateStudentDto createStudentDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body((adminStudentService.createStudent(createStudentDto)));
+    }
+
+    @PostMapping("/search")
+    public List<StudentSearchDto> searchStudents(@RequestBody List<SearchRequestDto> searchRequestDtos) {
+        return adminStudentService.searchStudent(searchRequestDtos);
     }
 
     @DeleteMapping("/{id}")

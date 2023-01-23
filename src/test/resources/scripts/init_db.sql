@@ -18,9 +18,9 @@ INSERT INTO school_class
 VALUES ('1a'),
        ('1b');
 
-INSERT INTO student
-VALUES (1, 'studentName1', '1a', 'studentSurname1', 'email'),
-       (2, 'studentName2', '1a', 'studentSurname2', 'email3');
+INSERT INTO student (id, name, school_class, birth_date, surname, user_email)
+VALUES (1, 'studentName1', '1a', '2002-01-01', 'studentSurname1', 'email'),
+       (2, 'studentName2', '1a', '2002-02-01', 'studentSurname2', 'email3');
 
 INSERT INTO school_subject
 VALUES ('biology'),

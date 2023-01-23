@@ -16,6 +16,6 @@ public class SearchRequestDto {
     private Operation operation;
 
     public enum Operation {
-        EQUAL, LIKE, BETWEEN_NUMBER, BETWEEN_DATE
+        EQUAL, LIKE, NUMBER_BETWEEN, DATE_BETWEEN
     }
 }

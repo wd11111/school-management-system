@@ -18,7 +18,7 @@ public class FilterService<T> {
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String SPLIT_REGEX = "to";
 
-    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) {
+    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) throws IllegalArgumentException {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>(searchRequestDtos.size());
 
@@ -26,8 +26,9 @@ public class FilterService<T> {
                 switch (searchRequestDto.getOperation()) {
                     case EQUAL -> doEqualOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case LIKE -> doLikeOperation(searchRequestDto, predicates, root, criteriaBuilder);
-                    case BETWEEN_NUMBER -> doBetweenNumberOperation(searchRequestDto, predicates, root, criteriaBuilder);
-                    case BETWEEN_DATE -> doBetweenDateOperation(searchRequestDto, predicates, root, criteriaBuilder);
+                    case NUMBER_BETWEEN ->
+                            doNumberBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
+                    case DATE_BETWEEN -> doDateBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     default -> throw new IllegalArgumentException("Unexpected operation type");
                 }
             });
@@ -45,13 +46,13 @@ public class FilterService<T> {
         predicates.add(like);
     }
 
-    private void doBetweenNumberOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
+    private void doNumberBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(searchRequestDto.getValue());
         Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), Long.parseLong(splitted[0]), Long.parseLong(splitted[1]));
         predicates.add(betweenNumber);
     }
 
-    private void doBetweenDateOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
+    private void doDateBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(searchRequestDto.getValue());
         Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
         predicates.add(betweenDate);
@@ -81,8 +82,8 @@ public class FilterService<T> {
     }
 
     private void validateArrayLength(String[] splitted) {
-        if (splitted.length < 2) {
-            throw new IllegalArgumentException();
+        if (splitted.length != 2) {
+            throw new IllegalArgumentException("Wrong format!");
         }
     }
 }

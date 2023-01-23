@@ -1,11 +1,10 @@
-package pl.schoolmanagementsystem.common.utils;
+package pl.schoolmanagementsystem.student.utils;
 
 import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentSearchDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
-import pl.schoolmanagementsystem.student.utils.StudentMapper;
 
 import java.util.List;
 
@@ -14,8 +13,8 @@ public class StudentMapperStub implements StudentMapper {
     @Override
     public StudentSearchDto mapEntityToSearchDto(Student student) {
         StudentSearchDto studentSearchDto = new StudentSearchDto();
-        studentSearchDto.setId(studentSearchDto.getId());
-        studentSearchDto.setName(studentSearchDto.getName());
+        studentSearchDto.setId(student.getId());
+        studentSearchDto.setName(student.getName());
         studentSearchDto.setSurname(student.getSurname());
         studentSearchDto.setBirthDate(student.getBirthDate());
         studentSearchDto.setSchoolClass(student.getSchoolClass());

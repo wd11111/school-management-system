@@ -1,17 +1,15 @@
 package pl.schoolmanagementsystem.teacher.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class StudentWithMarksDto {
 
     private Long id;

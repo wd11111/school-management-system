@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Setter
 public class CreateTeacherDto {
 
     @NotNull(message = "{not.null.message}")

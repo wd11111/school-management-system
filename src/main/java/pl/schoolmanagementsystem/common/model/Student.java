@@ -3,6 +3,7 @@ package pl.schoolmanagementsystem.common.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class Student {
     private String name;
 
     private String surname;
+
+    private LocalDate birthDate;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userEmail")

@@ -41,6 +41,7 @@ create table "student"
     "id"           bigserial    not null,
     "name"         varchar(255) not null,
     "school_class" varchar(255) not null,
+    "birth_date"   date         not null,
     "surname"      varchar(255) not null,
     "user_email"   varchar(255) not null,
     primary key ("id")
@@ -75,7 +76,7 @@ create table "teacher_taught_subjects"
 alter table if exists "app_user_roles"
     add constraint "FK_roles_role_role" foreign key ("roles_role") references "role";
 alter table if exists "app_user_roles"
-    add constraint "FK_app_user_user_email_app_user" foreign key ("app_user_user_email") references "app_user";
+    add constraint "FK_users_user_email_app_user" foreign key ("users_user_email") references "app_user";
 alter table if exists "mark"
     add constraint "FK_subject_school_subject" foreign key ("subject") references "school_subject";
 alter table if exists "student"

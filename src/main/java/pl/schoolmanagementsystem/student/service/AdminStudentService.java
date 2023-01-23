@@ -57,7 +57,6 @@ public class AdminStudentService {
 
     public List<StudentSearchDto> searchStudent(List<SearchRequestDto> searchRequestDtos) {
         Specification<Student> searchSpecification = filterService.getSearchSpecification(searchRequestDtos);
-        searchSpecification.toString();
         List<Student> students = studentRepository.findAll(searchSpecification);
         return studentMapper.mapEntitiesToSearchDtos(students);
     }

@@ -1,7 +1,7 @@
 package pl.schoolmanagementsystem.student.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -34,7 +34,7 @@ public class CreateStudentDto {
     private String schoolClass;
 
     @Past
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "yyyy.MM.dd")
     private LocalDate birthDate;
 
 }

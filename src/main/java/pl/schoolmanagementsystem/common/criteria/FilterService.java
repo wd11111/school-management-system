@@ -15,7 +15,6 @@ import java.util.List;
 @Service
 public class FilterService<T> {
 
-    public static final String UNEXPECTED_VALUE_TYPE_MESSAGE = "Unexpected value type";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String SPLIT_REGEX = "to";
 

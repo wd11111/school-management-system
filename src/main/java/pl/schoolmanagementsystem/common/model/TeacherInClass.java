@@ -10,8 +10,8 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Builder
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherInClass {

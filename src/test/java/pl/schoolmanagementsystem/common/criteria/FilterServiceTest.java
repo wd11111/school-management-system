@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pl.schoolmanagementsystem.BaseContainerTest;
 import pl.schoolmanagementsystem.Samples;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
+import pl.schoolmanagementsystem.common.exception.FilterException;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
@@ -121,8 +122,8 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "01-01-2002to2002-01-30", SearchRequestDto.Operation.DATE_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
-                .isInstanceOf(Exception.class)
-                .hasMessageContaining("Wrong date pattern! Use: yyyy-MM-dd");
+                .isInstanceOf(FilterException.class)
+                .hasMessage("Wrong date pattern! Use: yyyy-MM-dd");
     }
 
     @Test
@@ -130,8 +131,8 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01from2002-01-30", SearchRequestDto.Operation.DATE_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
-                .isInstanceOf(Exception.class)
-                .hasMessageContaining("Wrong split regex! Use: to");
+                .isInstanceOf(FilterException.class)
+                .hasMessage("Wrong split regex! Use: to");
     }
 
     @Test
@@ -139,7 +140,16 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-01-30to2003-01-01", SearchRequestDto.Operation.DATE_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
-                .isInstanceOf(Exception.class)
-                .hasMessageContaining("Wrong format!");
+                .isInstanceOf(FilterException.class)
+                .hasMessage("Wrong format!");
+    }
+
+    @Test
+    void should_throw_exception_when_value_can_not_be_parsed_to_number() {
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1toa", SearchRequestDto.Operation.NUMBER_BETWEEN));
+
+        assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
+                .isInstanceOf(FilterException.class)
+                .hasMessage("Value does not contain a parsable number!");
     }
 }

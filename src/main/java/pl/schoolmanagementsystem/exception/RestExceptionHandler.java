@@ -9,8 +9,6 @@ import pl.schoolmanagementsystem.exception.dto.ErrorResponse;
 import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
 import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
-import javax.validation.ConstraintViolationException;
-
 @RestControllerAdvice
 public class RestExceptionHandler {
 
@@ -46,8 +44,8 @@ public class RestExceptionHandler {
             CouldNotConfirmUserException.class,
             PasswordsDoNotMatchException.class,
             MarkNotInRangeException.class,
-            IllegalArgumentException.class,
-            ConstraintViolationException.class
+            FilterException.class,
+      //      ConstraintViolationException.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));

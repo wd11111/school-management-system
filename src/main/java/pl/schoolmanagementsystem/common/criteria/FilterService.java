@@ -2,6 +2,7 @@ package pl.schoolmanagementsystem.common.criteria;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import pl.schoolmanagementsystem.common.exception.FilterException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
@@ -28,7 +29,7 @@ public class FilterService<T> {
                     case LIKE -> doLikeOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case NUMBER_BETWEEN -> doNumberBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case DATE_BETWEEN -> doDateBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
-                    default -> throw new IllegalArgumentException("Unexpected operation type");
+                    default -> throw new FilterException("Unexpected operation type");
                 }
             });
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
@@ -47,7 +48,7 @@ public class FilterService<T> {
 
     private void doNumberBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(searchRequestDto.getValue());
-        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), Long.parseLong(splitted[0]), Long.parseLong(splitted[1]));
+        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), parseNumber(splitted[0]), parseNumber(splitted[1]));
         predicates.add(betweenNumber);
     }
 
@@ -63,7 +64,7 @@ public class FilterService<T> {
         try {
             return LocalDate.parse(date, pattern);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Wrong date pattern! Use: " + DATE_PATTERN);
+            throw new FilterException("Wrong date pattern! Use: " + DATE_PATTERN);
         }
     }
 
@@ -76,13 +77,22 @@ public class FilterService<T> {
 
     private void validateRegexCorrectness(String value) {
         if (!value.contains(SPLIT_REGEX)) {
-            throw new IllegalArgumentException("Wrong split regex! Use: " + SPLIT_REGEX);
+            throw new FilterException("Wrong split regex! Use: " + SPLIT_REGEX);
         }
     }
 
     private void validateArrayLength(String[] splitted) {
         if (splitted.length != 2) {
-            throw new IllegalArgumentException("Wrong format!");
+            throw new FilterException("Wrong format!");
         }
     }
+
+    private Long parseNumber(String value) {
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            throw new FilterException("Value does not contain a parsable number!");
+        }
+    }
+
 }

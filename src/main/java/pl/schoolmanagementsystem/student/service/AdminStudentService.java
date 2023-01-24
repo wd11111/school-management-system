@@ -8,6 +8,7 @@ import pl.schoolmanagementsystem.common.criteria.FilterService;
 import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
 import pl.schoolmanagementsystem.common.exception.EmailAlreadyInUseException;
+import pl.schoolmanagementsystem.common.exception.FilterException;
 import pl.schoolmanagementsystem.common.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.model.AppUser;
@@ -57,7 +58,12 @@ public class AdminStudentService {
 
     public List<StudentSearchDto> searchStudent(List<SearchRequestDto> searchRequestDtos) {
         Specification<Student> searchSpecification = filterService.getSearchSpecification(searchRequestDtos);
-        List<Student> students = studentRepository.findAll(searchSpecification);
+        List<Student> students;
+        try {
+            students = studentRepository.findAll(searchSpecification);
+        } catch (RuntimeException e) {
+            throw new FilterException(e.getMessage().split(";")[0]);
+        }
         return studentMapper.mapEntitiesToSearchDtos(students);
     }
 

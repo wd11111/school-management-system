@@ -1,6 +1,3 @@
---liquibase formatted sql
---changeset wd:3
-
 INSERT INTO app_user
 VALUES ('Adam@', '$2a$10$7IqOSL/QkiC8i.i.uTcAFOLBnGm51BKOIava3A6SRV16JbS5LtXDK', '123');
 

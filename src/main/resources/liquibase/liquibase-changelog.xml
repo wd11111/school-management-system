@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="01-init-db" author="wd">
+        <sqlFile path="/sql/01-init-db.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="02-roles-init" author="wd">
+        <sqlFile path="/sql/02-roles-init.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="03-init" author="wd">
+        <sqlFile path="/sql/03-init.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>

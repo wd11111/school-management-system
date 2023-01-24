@@ -1,6 +1,3 @@
---liquibase formatted sql
---changeset wd:1
-
 create table "app_user"
 (
     "user_email" varchar(255) not null,

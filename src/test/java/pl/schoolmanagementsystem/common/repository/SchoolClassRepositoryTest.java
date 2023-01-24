@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.schoolmanagementsystem.BaseContainerTest;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 
 import java.util.List;
 

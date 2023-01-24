@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.dto;
+package pl.schoolmanagementsystem.schoolClass.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

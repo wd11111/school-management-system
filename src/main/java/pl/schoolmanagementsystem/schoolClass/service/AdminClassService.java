@@ -5,8 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.dto.StudentDto;
 import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.exception.*;
 import pl.schoolmanagementsystem.common.model.SchoolClass;
@@ -18,6 +16,8 @@ import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.common.repository.TeacherRepository;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapper;
 import pl.schoolmanagementsystem.schoolClass.utils.TeacherInClassMapper;
@@ -48,7 +48,7 @@ public class AdminClassService {
 
     public SchoolClass createSchoolClass(SchoolClassDto schoolClassDto) {
         if (doesSchoolClassExist(schoolClassDto.getSchoolClassName())) {
-            throw new ClassAlreadyExistsException(schoolClassDto);
+            throw new ClassAlreadyExistsException(schoolClassDto.getSchoolClassName());
         }
         return schoolClassRepository.save(schoolClassMapper.mapDtoToEntity(schoolClassDto));
     }

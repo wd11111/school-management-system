@@ -6,10 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.schoolmanagementsystem.common.dto.SchoolClassDto;
-import pl.schoolmanagementsystem.common.dto.StudentDto;
 import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
 

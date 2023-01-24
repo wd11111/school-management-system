@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem.common.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.schoolmanagementsystem.BaseContainerTest;
-import pl.schoolmanagementsystem.common.dto.StudentDto;
+import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 
 import java.util.List;
 

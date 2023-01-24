@@ -2,12 +2,12 @@ package pl.schoolmanagementsystem.student.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schoolmanagementsystem.common.dto.MarkDto;
 import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.repository.MarkRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.student.dto.MarkDto;
 
 import java.math.BigDecimal;
 import java.util.List;

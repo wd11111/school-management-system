@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.schoolmanagementsystem.BaseContainerTest;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.dto.MarkDto;
 import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.student.dto.MarkDto;
 
 import java.math.BigDecimal;
 import java.util.List;

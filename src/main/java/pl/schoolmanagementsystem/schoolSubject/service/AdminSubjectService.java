@@ -22,7 +22,7 @@ public class AdminSubjectService {
 
     public SchoolSubject createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
         if (doesSubjectExist(schoolSubjectDto.getSubjectName())) {
-            throw new SubjectAlreadyExistsException(schoolSubjectDto);
+            throw new SubjectAlreadyExistsException(schoolSubjectDto.getSubjectName());
         }
         return schoolSubjectRepository.save(schoolSubjectMapper.mapDtoToEntity(schoolSubjectDto));
     }

@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.dto;
+package pl.schoolmanagementsystem.student.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

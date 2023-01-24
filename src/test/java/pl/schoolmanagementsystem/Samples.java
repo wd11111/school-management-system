@@ -1,11 +1,15 @@
 package pl.schoolmanagementsystem;
 
-import pl.schoolmanagementsystem.common.dto.*;
+import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
+import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.model.*;
 import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.MarkAvgDto;
+import pl.schoolmanagementsystem.student.dto.MarkDto;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;

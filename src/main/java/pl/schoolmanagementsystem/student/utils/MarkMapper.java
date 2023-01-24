@@ -1,6 +1,6 @@
 package pl.schoolmanagementsystem.student.utils;
 
-import pl.schoolmanagementsystem.common.dto.MarkDto;
+import pl.schoolmanagementsystem.student.dto.MarkDto;
 
 import java.math.BigDecimal;
 import java.util.List;

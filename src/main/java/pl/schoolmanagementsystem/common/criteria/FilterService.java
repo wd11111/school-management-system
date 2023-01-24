@@ -18,7 +18,7 @@ public class FilterService<T> {
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String SPLIT_REGEX = "to";
 
-    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) throws IllegalArgumentException {
+    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>(searchRequestDtos.size());
 
@@ -26,8 +26,7 @@ public class FilterService<T> {
                 switch (searchRequestDto.getOperation()) {
                     case EQUAL -> doEqualOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case LIKE -> doLikeOperation(searchRequestDto, predicates, root, criteriaBuilder);
-                    case NUMBER_BETWEEN ->
-                            doNumberBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
+                    case NUMBER_BETWEEN -> doNumberBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case DATE_BETWEEN -> doDateBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     default -> throw new IllegalArgumentException("Unexpected operation type");
                 }

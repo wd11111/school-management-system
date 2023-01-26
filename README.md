@@ -17,6 +17,7 @@ Backend:
 - Lombok <img width="40px" src="https://kodejava.org/wp-content/uploads/2018/12/lombok.png"/>
 - Swagger <img width="22px" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png"/>
 - Apache Commons Lang  <img width="18px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Apache_Feather_Logo.svg/1200px-Apache_Feather_Logo.svg.png"/>
+- MapStruct <img width="80px" src="https://user-images.githubusercontent.com/112166269/214404167-1614aaf4-fb84-412f-91bd-9ad1b09f3ad4.png"/>
 
 Tests:
 - JUnit 5 <img width="54px" src="https://upload.wikimedia.org/wikipedia/commons/5/59/JUnit_5_Banner.png"/>

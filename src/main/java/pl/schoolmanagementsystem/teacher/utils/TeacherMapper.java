@@ -8,6 +8,7 @@ import pl.schoolmanagementsystem.common.model.Teacher;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
+import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
@@ -25,5 +26,7 @@ public interface TeacherMapper {
         }
         return schoolSubject.getName();
     }
+
+    List<TeacherDto> mapEntitiesToDtos(List<Teacher> teachers);
 
 }

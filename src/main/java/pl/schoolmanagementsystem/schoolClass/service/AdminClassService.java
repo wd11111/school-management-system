@@ -75,7 +75,7 @@ public class AdminClassService {
     }
 
     public List<StudentDto> getAllStudentsInClass(String className) {
-        if (!schoolClassRepository.existsById(className)) {
+        if (!doesSchoolClassExist(className)) {
             throw new NoSuchSchoolClassException(className);
         }
         return studentRepository.findAllInClass(className);

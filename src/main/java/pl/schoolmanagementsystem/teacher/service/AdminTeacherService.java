@@ -55,7 +55,9 @@ public class AdminTeacherService {
         AppUser appUser = createAppUser(createTeacherDto.getEmail());
         Teacher teacher = teacherMapper.mapCreateDtoToEntity(createTeacherDto, taughtSubjects, appUser);
         roleAdder.addRoles(teacher, createTeacherDto.isAdmin());
+
         Teacher savedTeacher = teacherRepository.save(teacher);
+
         emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
         return teacherMapper.mapEntityToDto(savedTeacher);
     }
@@ -88,6 +90,7 @@ public class AdminTeacherService {
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
 
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
+
         teacher.addSubject(schoolSubject);
         return teacherMapper.mapEntityToDto(teacher);
     }

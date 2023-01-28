@@ -49,6 +49,7 @@ public class TeacherProfileService {
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(addMarkDto.getSubject()));
 
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
+
         student.addMark(markMapper.mapToEntity(mark, studentId, schoolSubject.getName()));
     }
 
@@ -57,13 +58,12 @@ public class TeacherProfileService {
     }
 
     public List<StudentWithMarksDto> getClassStudentsWithMarksOfSubject(String schoolClassName, String subjectName, String teacherEmail) {
-        if (!subjectRepository.existsById(subjectName)) {
-            throw new NoSuchSchoolSubjectException(subjectName);
-        }
+        validateSchoolSubjectExists(subjectName);
+
         SchoolClass schoolClass = classRepository.findClassAndFetchStudentsWithMarks(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
-        validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
 
+        validateTeacherTeachesSubjectInClass(teacherEmail, subjectName, schoolClassName);
         filterMarks(schoolClass.getStudents(), subjectName);
 
         return studentMapper.mapEntitiesToDtosWithMarks(schoolClass.getStudents());
@@ -75,6 +75,12 @@ public class TeacherProfileService {
                         .stream()
                         .filter(mark -> mark.getSubject().equals(subject))
                         .toList()));
+    }
+
+    private void validateSchoolSubjectExists(String subjectName) {
+        if (!subjectRepository.existsById(subjectName)) {
+            throw new NoSuchSchoolSubjectException(subjectName);
+        }
     }
 
     private void validateTeacherTeachesSubjectInClass(String teacherEmail, String subject, String schoolClass) {

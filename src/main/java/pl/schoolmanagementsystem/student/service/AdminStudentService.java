@@ -51,7 +51,9 @@ public class AdminStudentService {
         AppUser appUser = AppUserService.createAppUser(createStudentDto.getEmail());
         Student student = studentMapper.mapCreateDtoToEntity(createStudentDto, appUser);
         roleAdder.addRoles(student);
+
         Student savedStudent = studentRepository.save(student);
+
         emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
         return studentMapper.mapEntityToDtoWithSchoolClass(savedStudent);
     }

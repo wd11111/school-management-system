@@ -70,6 +70,7 @@ public class AdminClassService {
 
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
+
         TeacherInClass teacherInClass = teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
         return teacherInClassMapper.mapEntityToDto(teacherInClass);
     }

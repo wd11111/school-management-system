@@ -104,13 +104,9 @@ public class AdminClassService {
     }
 
     private void validateTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        if (!doesTeacherTeachSubject(teacher, schoolSubject)) {
+        if (!teacher.getTaughtSubjects().contains(schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject.getName());
         }
-    }
-
-    private boolean doesTeacherTeachSubject(Teacher teacher, SchoolSubject schoolSubject) {
-        return teacher.getTaughtSubjects().contains(schoolSubject);
     }
 
     private boolean doesSchoolClassExist(String schoolClassName) {

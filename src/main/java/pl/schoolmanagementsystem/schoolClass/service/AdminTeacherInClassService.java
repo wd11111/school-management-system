@@ -3,10 +3,7 @@ package pl.schoolmanagementsystem.schoolClass.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.exception.NoSuchSchoolClassException;
-import pl.schoolmanagementsystem.common.exception.NoSuchTeacherException;
-import pl.schoolmanagementsystem.common.exception.TeacherDoesNotTeachClassException;
-import pl.schoolmanagementsystem.common.exception.TeacherDoesNotTeachSubjectException;
+import pl.schoolmanagementsystem.common.exception.*;
 import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.Teacher;
 import pl.schoolmanagementsystem.common.model.TeacherInClass;
@@ -43,12 +40,14 @@ public class AdminTeacherInClassService {
         Long teacherId = removeTeacherDto.getTeacherId();
         String subjectName = removeTeacherDto.getTaughtSubject();
 
-        Teacher teacher = teacherRepository.findByIdFetchClassesFilterBySubject(teacherId, removeTeacherDto.getTaughtSubject())
+        validateSchoolSubjectExists(schoolClassName);
+
+        Teacher teacher = teacherRepository.findByIdAndFetchClasses(teacherId)
                 .orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolClass schoolClass = classRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
 
-        TeacherInClass teacherInClass = filterTeachersBySubject(teacher, subjectName);
+        TeacherInClass teacherInClass = findTeacherOfSubject(teacher, subjectName);
         validateTeacherTeachesClass(teacherInClass, schoolClass, subjectName);
 
         teacherInClass.removeFromClass(schoolClass);
@@ -66,12 +65,18 @@ public class AdminTeacherInClassService {
                 .anyMatch(schoolClassStream -> schoolClassStream.equals(schoolClass));
     }
 
-    private TeacherInClass filterTeachersBySubject(Teacher teacher, String subject) {
+    private TeacherInClass findTeacherOfSubject(Teacher teacher, String subject) {
         return teacher.getTeacherInClasses()
                 .stream()
                 .filter(teacherInClass -> teacherInClass.getTaughtSubject().equals(subject))
                 .findFirst()
                 .orElseThrow(() -> new TeacherDoesNotTeachSubjectException(teacher, subject));
+    }
+
+    private void validateSchoolSubjectExists(String subjectName) {
+        if (!schoolSubjectRepository.existsById(subjectName)) {
+            throw new NoSuchSchoolSubjectException(subjectName);
+        }
     }
 
     private boolean hasTeacherInClassBeenJustCreated(TeacherInClass teacherInClass) {

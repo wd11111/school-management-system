@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
-import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.AddOrRemoveTeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
@@ -46,8 +46,8 @@ public class AdminClassController {
 
     @PostMapping("/{className}/teachers")
     public TeacherInClassDto addTeacherToSchoolClass(
-            @PathVariable String className, @RequestBody @Valid AddTeacherToClassDto addTeacherToClassDto) {
-        return adminClassService.addTeacherToSchoolClass(addTeacherToClassDto, className);
+            @PathVariable String className, @RequestBody @Valid AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto) {
+        return adminClassService.addTeacherToSchoolClass(addOrRemoveTeacherInClassDto, className);
     }
 
     @DeleteMapping("/{className}")

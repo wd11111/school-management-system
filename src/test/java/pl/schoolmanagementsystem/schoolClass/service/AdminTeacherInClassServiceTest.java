@@ -34,7 +34,7 @@ class AdminTeacherInClassServiceTest implements Samples {
         TeacherInClass teacherInClass = new TeacherInClass();
         teacherInClass.setTaughtClasses(new HashSet<>());
         teacherInClass.setTaughtSubject(SUBJECT_BIOLOGY);
-        when(teacherInClassRepository.findByTeacherAndTaughtSubject(any(), any())).thenReturn(Optional.of(teacherInClass));
+        when(teacherInClassRepository.findByTeacherIdAndTaughtSubject(any(), any())).thenReturn(Optional.of(teacherInClass));
 
         adminTeacherInClassService.addTeacherToClass(teacher, SUBJECT_BIOLOGY, schoolClass);
 

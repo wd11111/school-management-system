@@ -131,7 +131,7 @@ class AdminTeacherServiceTest implements Samples {
                 .taughtSubject(SUBJECT_BIOLOGY)
                 .build()));
         Pageable pageable = PageRequest.of(0, 10);
-        when(teacherRepository.findByIdAndFetchTeacherInClasses(any())).thenReturn(Optional.of(teacher));
+        when(teacherRepository.findByIdAndFetchClasses(any())).thenReturn(Optional.of(teacher));
 
         Page<SubjectAndClassDto> result = adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable);
 
@@ -142,7 +142,7 @@ class AdminTeacherServiceTest implements Samples {
     @Test
     void should_throw_exception_when_trying_to_get_taught_classes() {
         Pageable pageable = PageRequest.of(0, 10);
-        when(teacherRepository.findByIdAndFetchTeacherInClasses(any())).thenReturn(Optional.empty());
+        when(teacherRepository.findByIdAndFetchClasses(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminTeacherService.getTaughtClassesByTeacher(ID_1, pageable))
                 .isInstanceOf(NoSuchTeacherException.class)

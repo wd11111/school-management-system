@@ -15,7 +15,7 @@ import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.common.repository.TeacherRepository;
-import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.AddOrRemoveTeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
@@ -60,13 +60,13 @@ public class AdminClassService {
         return schoolSubjectRepository.findTaughtSubjectsInClass(schoolClassName);
     }
 
-    public TeacherInClassDto addTeacherToSchoolClass(AddTeacherToClassDto addTeacherToClassDto, String schoolClassName) {
-        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(addTeacherToClassDto.getTeacherId())
-                .orElseThrow(() -> new NoSuchTeacherException(addTeacherToClassDto.getTeacherId()));
+    public TeacherInClassDto addTeacherToSchoolClass(AddOrRemoveTeacherInClassDto addTeacherDto, String schoolClassName) {
+        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(addTeacherDto.getTeacherId())
+                .orElseThrow(() -> new NoSuchTeacherException(addTeacherDto.getTeacherId()));
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
-        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(addTeacherToClassDto.getTaughtSubject())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(addTeacherToClassDto.getTaughtSubject()));
+        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(addTeacherDto.getTaughtSubject())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(addTeacherDto.getTaughtSubject()));
 
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
@@ -101,7 +101,7 @@ public class AdminClassService {
 
     private void validateTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
         if (!doesTeacherTeachSubject(teacher, schoolSubject)) {
-            throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject);
+            throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject.getName());
         }
     }
 

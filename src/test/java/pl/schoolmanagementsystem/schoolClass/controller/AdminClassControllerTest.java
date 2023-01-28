@@ -22,7 +22,7 @@ import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.common.repository.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
-import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.AddOrRemoveTeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
@@ -146,7 +146,7 @@ class AdminClassControllerTest implements Samples {
 
     @Test
     void should_return_status_bad_request_when_adding_teacher_to_class_doesnt_pass_validation() throws Exception {
-        String body = objectMapper.writeValueAsString(new AddTeacherToClassDto());
+        String body = objectMapper.writeValueAsString(new AddOrRemoveTeacherInClassDto());
 
         mockMvc.perform(post("/admin/classes/1a/teachers")
                         .content(body)

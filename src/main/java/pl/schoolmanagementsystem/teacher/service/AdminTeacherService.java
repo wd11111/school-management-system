@@ -72,7 +72,7 @@ public class AdminTeacherService {
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(Long teacherId, Pageable pageable) {
-        List<SubjectAndClassDto> taughtClassesByTeacher = teacherRepository.findByIdAndFetchTeacherInClasses(teacherId)
+        List<SubjectAndClassDto> taughtClassesByTeacher = teacherRepository.findByIdAndFetchClasses(teacherId)
                 .orElseThrow(() -> new NoSuchTeacherException(teacherId))
                 .getTeacherInClasses().stream()
                 .flatMap(teacherInClass -> teacherInClass.getTaughtClasses().stream()

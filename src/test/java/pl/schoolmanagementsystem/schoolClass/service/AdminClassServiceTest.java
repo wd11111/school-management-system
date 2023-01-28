@@ -16,7 +16,7 @@ import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import pl.schoolmanagementsystem.common.repository.TeacherRepository;
-import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.AddOrRemoveTeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.utils.SchoolClassMapper;
@@ -97,7 +97,7 @@ class AdminClassServiceTest implements Samples {
         Teacher teacher = createTeacherOfBiology();
         TeacherInClass teacherInClass = new TeacherInClass();
         teacherInClass.setTeacher(teacher);
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+        AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         SchoolClass schoolClass = createSchoolClass();
         SchoolSubject schoolSubject = createSchoolSubject();
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.ofNullable(teacher));
@@ -112,7 +112,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_teacher_doesnt_exist() {
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+        AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
@@ -123,7 +123,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_class_doesnt_exist_while_adding_teacher() {
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+        AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
@@ -135,7 +135,7 @@ class AdminClassServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_school_subject_doesnt_exist_while_adding_teacher() {
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+        AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
@@ -149,7 +149,7 @@ class AdminClassServiceTest implements Samples {
     @Test
     void should_throw_exception_when_teacher_doesnt_teach_subject() {
         Teacher teacherWithOutSubjects = createTeacherNoSubjectsTaught();
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+        AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));
@@ -164,7 +164,7 @@ class AdminClassServiceTest implements Samples {
     void should_throw_exception_when_school_class_already_has_teacher_of_subject() {
         Teacher teacherWithOutSubjects = createTeacherOfBiology();
         SchoolClass schoolClassWithTeacher = createSchoolClassWithTeacher();
-        AddTeacherToClassDto teacherRequest = new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+        AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(schoolClassWithTeacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));

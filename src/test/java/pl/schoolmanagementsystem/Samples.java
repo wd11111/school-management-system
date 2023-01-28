@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem;
 import pl.schoolmanagementsystem.common.dto.SchoolSubjectDto;
 import pl.schoolmanagementsystem.common.dto.TaughtSubjectDto;
 import pl.schoolmanagementsystem.common.model.*;
-import pl.schoolmanagementsystem.schoolClass.dto.AddTeacherToClassDto;
+import pl.schoolmanagementsystem.schoolClass.dto.AddOrRemoveTeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
@@ -168,8 +168,8 @@ public interface Samples {
         return new TaughtSubjectDto(SUBJECT_BIOLOGY, NAME, SURNAME);
     }
 
-    default AddTeacherToClassDto teacherInClassRequest() {
-        return new AddTeacherToClassDto(ID_1, SUBJECT_BIOLOGY);
+    default AddOrRemoveTeacherInClassDto teacherInClassRequest() {
+        return new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
     }
 
     default TeacherInClassDto teacherInClassResponse() {

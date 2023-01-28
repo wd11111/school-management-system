@@ -40,7 +40,7 @@ public class AdminTeacherInClassService {
         Long teacherId = removeTeacherDto.getTeacherId();
         String subjectName = removeTeacherDto.getTaughtSubject();
 
-        validateSchoolSubjectExists(schoolClassName);
+        validateSchoolSubjectExists(subjectName);
 
         Teacher teacher = teacherRepository.findByIdAndFetchClasses(teacherId)
                 .orElseThrow(() -> new NoSuchTeacherException(teacherId));

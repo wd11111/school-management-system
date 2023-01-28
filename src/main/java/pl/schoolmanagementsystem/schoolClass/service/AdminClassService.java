@@ -61,12 +61,15 @@ public class AdminClassService {
     }
 
     public TeacherInClassDto addTeacherToSchoolClass(AddOrRemoveTeacherInClassDto addTeacherDto, String schoolClassName) {
-        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(addTeacherDto.getTeacherId())
-                .orElseThrow(() -> new NoSuchTeacherException(addTeacherDto.getTeacherId()));
+        Long teacherId = addTeacherDto.getTeacherId();
+        String taughtSubjectName = addTeacherDto.getTaughtSubject();
+
+        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(teacherId)
+                .orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
-        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(addTeacherDto.getTaughtSubject())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(addTeacherDto.getTaughtSubject()));
+        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(taughtSubjectName)
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(taughtSubjectName));
 
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);

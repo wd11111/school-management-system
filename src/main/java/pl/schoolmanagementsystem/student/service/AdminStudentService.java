@@ -52,10 +52,10 @@ public class AdminStudentService {
         Student student = studentMapper.mapCreateDtoToEntity(createStudentDto, appUser);
         roleAdder.addRoles(student);
 
-        Student savedStudent = studentRepository.save(student);
+        studentRepository.saveAndFlush(student);
 
         emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
-        return studentMapper.mapEntityToDtoWithSchoolClass(savedStudent);
+        return studentMapper.mapEntityToDtoWithSchoolClass(student);
     }
 
     public List<StudentSearchDto> searchStudent(List<SearchRequestDto> searchRequestDtos) {

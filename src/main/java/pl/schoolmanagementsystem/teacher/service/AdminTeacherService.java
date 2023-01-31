@@ -56,10 +56,10 @@ public class AdminTeacherService {
         Teacher teacher = teacherMapper.mapCreateDtoToEntity(createTeacherDto, taughtSubjects, appUser);
         roleAdder.addRoles(teacher, createTeacherDto.isAdmin());
 
-        Teacher savedTeacher = teacherRepository.save(teacher);
+        teacherRepository.saveAndFlush(teacher);
 
         emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
-        return teacherMapper.mapEntityToDto(savedTeacher);
+        return teacherMapper.mapEntityToDto(teacher);
     }
 
     public Page<TeacherDto> getAllTeachers(Pageable pageable) {

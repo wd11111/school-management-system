@@ -1,14 +1,9 @@
 package pl.schoolmanagementsystem.security.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class PasswordDto {
+public record PasswordDto(@NotNull @NotEmpty String password,
+                          @NotNull @NotEmpty String confirmPassword) {
 
-    private String password;
-    private String confirmPassword;
 }

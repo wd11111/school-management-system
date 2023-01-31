@@ -29,7 +29,7 @@ public class AccountService {
         }
         userRepository.findByToken(token)
                 .ifPresentOrElse(appUser -> {
-                            appUser.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+                            appUser.setPassword(passwordEncoder.encode(passwordDto.password()));
                             appUser.setToken(null);
                         },
                         () -> {
@@ -48,6 +48,6 @@ public class AccountService {
     }
 
     private boolean doPasswordsMatch(PasswordDto passwordDto) {
-        return passwordDto.getPassword().equals(passwordDto.getConfirmPassword());
+        return passwordDto.password().equals(passwordDto.confirmPassword());
     }
 }

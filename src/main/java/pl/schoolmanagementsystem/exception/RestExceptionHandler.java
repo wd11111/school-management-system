@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.schoolmanagementsystem.common.exception.*;
 import pl.schoolmanagementsystem.exception.dto.ErrorResponse;
+import pl.schoolmanagementsystem.security.exception.AuthenticationException;
 import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
 import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
@@ -25,8 +26,13 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(TeacherDoesNotTeachClassException.class)
-    public ResponseEntity<ErrorResponse> handleForbiddenException(TeacherDoesNotTeachClassException exception) {
+    public ResponseEntity<ErrorResponse> handleForbiddenException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(RuntimeException exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(value = {
@@ -45,7 +51,6 @@ public class RestExceptionHandler {
             PasswordsDoNotMatchException.class,
             MarkNotInRangeException.class,
             FilterException.class,
-      //      ConstraintViolationException.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(exception.getMessage()));

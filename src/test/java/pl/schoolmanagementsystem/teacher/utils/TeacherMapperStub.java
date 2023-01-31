@@ -6,6 +6,7 @@ import pl.schoolmanagementsystem.common.model.Teacher;
 import pl.schoolmanagementsystem.teacher.dto.CreateTeacherDto;
 import pl.schoolmanagementsystem.teacher.dto.TeacherDto;
 
+import java.util.List;
 import java.util.Set;
 
 public class TeacherMapperStub implements TeacherMapper {
@@ -32,5 +33,12 @@ public class TeacherMapperStub implements TeacherMapper {
     @Override
     public String schoolSubjectToString(SchoolSubject schoolSubject) {
         return TeacherMapper.super.schoolSubjectToString(schoolSubject);
+    }
+
+    @Override
+    public List<TeacherDto> mapEntitiesToDtos(List<Teacher> teachers) {
+        return teachers.stream()
+                .map(this::mapEntityToDto)
+                .toList();
     }
 }

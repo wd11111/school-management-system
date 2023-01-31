@@ -2,7 +2,7 @@ create table "app_user"
 (
     "user_email" varchar(255) not null,
     "password"   varchar(255),
-    "token"      varchar(255) not null,
+    "token"      varchar(255),
     primary key ("user_email")
 );
 create table "app_user_roles"

@@ -55,7 +55,7 @@ class AdminStudentServiceTest implements Samples {
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.existsById(anyString())).thenReturn(true);
         doNothing().when(roleAdder).addRoles(any());
-        when(studentRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
+        when(studentRepository.saveAndFlush(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
 
         StudentWithClassDto result = adminStudentService.createStudent(createStudentDto);
 
@@ -72,7 +72,7 @@ class AdminStudentServiceTest implements Samples {
                 .isInstanceOf(EmailAlreadyInUseException.class)
                 .hasMessage("Email already in use: " + SURNAME);
         verify(emailService, never()).sendEmail(any(), any());
-        verify(studentRepository, never()).save(any());
+        verify(studentRepository, never()).saveAndFlush(any());
     }
 
     @Test
@@ -85,7 +85,7 @@ class AdminStudentServiceTest implements Samples {
                 .isInstanceOf(NoSuchSchoolClassException.class)
                 .hasMessage("Such a school class does not exist: " + CLASS_3B);
         verify(emailService, never()).sendEmail(any(), any());
-        verify(studentRepository, never()).save(any());
+        verify(studentRepository, never()).saveAndFlush(any());
     }
 
     @Test

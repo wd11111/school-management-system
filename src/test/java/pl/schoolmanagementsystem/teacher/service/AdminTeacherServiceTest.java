@@ -66,7 +66,7 @@ class AdminTeacherServiceTest implements Samples {
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Set.of(createSchoolSubject()));
         doNothing().when(roleAdder).addRoles(any(), anyBoolean());
-        when(teacherRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
+        when(teacherRepository.saveAndFlush(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
 
         TeacherDto result = adminTeacherService.createTeacher(createTeacherDto);
 
@@ -86,7 +86,7 @@ class AdminTeacherServiceTest implements Samples {
         assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
                 .hasMessage("Email already in use: " + NAME);
-        verify(teacherRepository, never()).save(any());
+        verify(teacherRepository, never()).saveAndFlush(any());
         verify(emailService, never()).sendEmail(any(), any());
     }
 
@@ -100,7 +100,7 @@ class AdminTeacherServiceTest implements Samples {
         assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
                 .hasMessage("Some of given subjects does not exist");
-        verify(teacherRepository, never()).save(any());
+        verify(teacherRepository, never()).saveAndFlush(any());
         verify(emailService, never()).sendEmail(any(), any());
     }
 

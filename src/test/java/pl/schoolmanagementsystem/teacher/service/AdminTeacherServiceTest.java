@@ -66,7 +66,7 @@ class AdminTeacherServiceTest implements Samples {
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Set.of(createSchoolSubject()));
         doNothing().when(roleAdder).addRoles(any(), anyBoolean());
-        when(teacherRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
+        when(teacherRepository.saveAndFlush(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
 
         TeacherDto result = adminTeacherService.createTeacher(createTeacherDto);
 

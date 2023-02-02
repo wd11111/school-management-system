@@ -24,7 +24,7 @@ public class FilterService<T> {
             List<Predicate> predicates = new ArrayList<>(searchRequestDtos.size());
 
             searchRequestDtos.forEach(searchRequestDto -> {
-                switch (searchRequestDto.getOperation()) {
+                switch (searchRequestDto.operation()) {
                     case EQUAL -> doEqualOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case LIKE -> doLikeOperation(searchRequestDto, predicates, root, criteriaBuilder);
                     case NUMBER_BETWEEN -> doNumberBetweenOperation(searchRequestDto, predicates, root, criteriaBuilder);
@@ -37,24 +37,24 @@ public class FilterService<T> {
     }
 
     private void doEqualOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-        Predicate equal = criteriaBuilder.equal(root.get(searchRequestDto.getColumn()), searchRequestDto.getValue());
+        Predicate equal = criteriaBuilder.equal(root.get(searchRequestDto.column()), searchRequestDto.value());
         predicates.add(equal);
     }
 
     private void doLikeOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-        Predicate like = criteriaBuilder.like(root.get(searchRequestDto.getColumn()), "%" + searchRequestDto.getValue() + "%");
+        Predicate like = criteriaBuilder.like(root.get(searchRequestDto.column()), "%" + searchRequestDto.value() + "%");
         predicates.add(like);
     }
 
     private void doNumberBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-        String[] splitted = doSplit(searchRequestDto.getValue());
-        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), parseNumber(splitted[0]), parseNumber(splitted[1]));
+        String[] splitted = doSplit(searchRequestDto.value());
+        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.column()), parseNumber(splitted[0]), parseNumber(splitted[1]));
         predicates.add(betweenNumber);
     }
 
     private void doDateBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
-        String[] splitted = doSplit(searchRequestDto.getValue());
-        Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.getColumn()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
+        String[] splitted = doSplit(searchRequestDto.value());
+        Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.column()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
         predicates.add(betweenDate);
     }
 

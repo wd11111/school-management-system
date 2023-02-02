@@ -46,7 +46,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_one_student_when_searching_by_id() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1", SearchRequestDto.Operation.EQUAL));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1", OperationType.EQUAL));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -55,7 +55,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_two_students_when_searching_by_class() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("schoolClass", "1a", SearchRequestDto.Operation.EQUAL));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("schoolClass", "1a", OperationType.EQUAL));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -64,8 +64,8 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_one_student_when_searching_by_class_and_name() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("schoolClass", "1a", SearchRequestDto.Operation.EQUAL),
-                new SearchRequestDto("name", "studentName1", SearchRequestDto.Operation.EQUAL));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("schoolClass", "1a", OperationType.EQUAL),
+                new SearchRequestDto("name", "studentName1", OperationType.EQUAL));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -74,7 +74,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_one_student_when_searching_by_name_using_like_operation() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("name", "2", SearchRequestDto.Operation.LIKE));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("name", "2", OperationType.LIKE));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -83,7 +83,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_two_students_when_searching_by_id_using_number_between_operation() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1to2", SearchRequestDto.Operation.NUMBER_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1to2", OperationType.NUMBER_BETWEEN));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -92,7 +92,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_one_student_when_searching_by_id_using_number_between_operation() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1to1", SearchRequestDto.Operation.NUMBER_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1to1", OperationType.NUMBER_BETWEEN));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -101,7 +101,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_two_students_when_searching_by_date_using_between_operation() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-03-01", SearchRequestDto.Operation.DATE_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-03-01", OperationType.DATE_BETWEEN));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -110,7 +110,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_one_student_when_searching_by_date_using_between_operation() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-01-30", SearchRequestDto.Operation.DATE_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-01-30", OperationType.DATE_BETWEEN));
 
         List<StudentSearchDto> studentSearchDtos = adminStudentService.searchStudent(searchRequestDtos);
 
@@ -119,7 +119,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_throw_exception_when_local_date_format_is_wrong() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "01-01-2002to2002-01-30", SearchRequestDto.Operation.DATE_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "01-01-2002to2002-01-30", OperationType.DATE_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
                 .isInstanceOf(FilterException.class)
@@ -128,7 +128,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_throw_exception_when_regex_is_not_correct() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01from2002-01-30", SearchRequestDto.Operation.DATE_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01from2002-01-30", OperationType.DATE_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
                 .isInstanceOf(FilterException.class)
@@ -137,7 +137,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_throw_exception_when_splitted_array_size_is_not_2() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-01-30to2003-01-01", SearchRequestDto.Operation.DATE_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "2002-01-01to2002-01-30to2003-01-01", OperationType.DATE_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
                 .isInstanceOf(FilterException.class)
@@ -146,7 +146,7 @@ public class FilterServiceTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_throw_exception_when_value_can_not_be_parsed_to_number() {
-        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1toa", SearchRequestDto.Operation.NUMBER_BETWEEN));
+        List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "1toa", OperationType.NUMBER_BETWEEN));
 
         assertThatThrownBy(() -> adminStudentService.searchStudent(searchRequestDtos))
                 .isInstanceOf(FilterException.class)

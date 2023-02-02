@@ -1,7 +1,6 @@
 package pl.schoolmanagementsystem.student.dto;
 
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +17,7 @@ public class CreateStudentDto {
 
     @NotNull(message = "{not.null.message}")
     @NotBlank(message = "{not.blank.message}")
-    @Email
+    @Email(message = "invalid format")
     private String email;
 
     @NotNull(message = "{not.null.message}")
@@ -34,7 +33,6 @@ public class CreateStudentDto {
     private String schoolClass;
 
     @Past(message = "{date.past.message}")
-    @DateTimeFormat(pattern = "yyyy.MM.dd")
     private LocalDate birthDate;
 
 }

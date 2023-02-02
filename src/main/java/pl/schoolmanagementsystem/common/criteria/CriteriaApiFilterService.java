@@ -8,16 +8,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class FilterService<T> {
+import static pl.schoolmanagementsystem.common.criteria.FilterUtil.*;
 
-    public static final String DATE_PATTERN = "yyyy-MM-dd";
-    public static final String SPLIT_REGEX = "to";
+@Service
+public class CriteriaApiFilterService<T> {
 
     public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) {
         return (root, query, criteriaBuilder) -> {
@@ -48,51 +45,22 @@ public class FilterService<T> {
 
     private void doNumberBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(searchRequestDto.value());
-        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.column()), parseNumber(splitted[0]), parseNumber(splitted[1]));
+
+        Long from = parseNumber(splitted[0]);
+        Long to = parseNumber(splitted[1]);
+
+        Predicate betweenNumber = criteriaBuilder.between(root.get(searchRequestDto.column()), from, to);
         predicates.add(betweenNumber);
     }
 
     private void doDateBetweenOperation(SearchRequestDto searchRequestDto, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(searchRequestDto.value());
-        Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.column()), getLocalDate(splitted[0]), getLocalDate(splitted[1]));
+
+        LocalDate from = getLocalDate(splitted[0]);
+        LocalDate to = getLocalDate(splitted[1]);
+
+        Predicate betweenDate = criteriaBuilder.between(root.get(searchRequestDto.column()), from, to);
         predicates.add(betweenDate);
-    }
-
-    private LocalDate getLocalDate(String date) {
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern(DATE_PATTERN);
-
-        try {
-            return LocalDate.parse(date, pattern);
-        } catch (DateTimeParseException e) {
-            throw new FilterException("Wrong date pattern! Use: " + DATE_PATTERN);
-        }
-    }
-
-    private String[] doSplit(String value) {
-        validateRegexCorrectness(value);
-        String[] splitted = value.split(SPLIT_REGEX);
-        validateArrayLength(splitted);
-        return splitted;
-    }
-
-    private void validateRegexCorrectness(String value) {
-        if (!value.contains(SPLIT_REGEX)) {
-            throw new FilterException("Wrong split regex! Use: " + SPLIT_REGEX);
-        }
-    }
-
-    private void validateArrayLength(String[] splitted) {
-        if (splitted.length != 2) {
-            throw new FilterException("Wrong format!");
-        }
-    }
-
-    private Long parseNumber(String value) {
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException e) {
-            throw new FilterException("Value does not contain a parsable number!");
-        }
     }
 
 }

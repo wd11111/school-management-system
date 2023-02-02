@@ -1,6 +1,7 @@
 package pl.schoolmanagementsystem.common.model;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class Student {
 
     private String surname;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)

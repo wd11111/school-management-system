@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.criteria.FilterService;
 import pl.schoolmanagementsystem.common.email.service.EmailService;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
@@ -22,6 +21,7 @@ import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
+import pl.schoolmanagementsystem.student.search.StudentSearcher;
 import pl.schoolmanagementsystem.student.service.AdminStudentService;
 import pl.schoolmanagementsystem.student.utils.StudentMapper;
 
@@ -112,9 +112,9 @@ class MockMvcConfig3 {
         AppUserRepository userRepository = mock(AppUserRepository.class);
         RoleAdder roleAdder = mock(RoleAdder.class);
         StudentMapper studentMapper = mock(StudentMapper.class);
-        FilterService filterService = mock(FilterService.class);
+        StudentSearcher studentSearcher = mock(StudentSearcher.class);
         return new AdminStudentService(studentRepository, schoolClassRepository,
-                emailService, userRepository, roleAdder, studentMapper, filterService);
+                emailService, userRepository, roleAdder, studentMapper, studentSearcher);
     }
 
     @Bean

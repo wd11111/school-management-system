@@ -1,14 +1,11 @@
 package pl.schoolmanagementsystem.student.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.criteria.FilterService;
 import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
 import pl.schoolmanagementsystem.common.email.service.EmailSender;
 import pl.schoolmanagementsystem.common.exception.EmailAlreadyInUseException;
-import pl.schoolmanagementsystem.common.exception.FilterException;
 import pl.schoolmanagementsystem.common.exception.NoSuchSchoolClassException;
 import pl.schoolmanagementsystem.common.exception.NoSuchStudentException;
 import pl.schoolmanagementsystem.common.model.AppUser;
@@ -21,6 +18,7 @@ import pl.schoolmanagementsystem.common.role.RoleAdder;
 import pl.schoolmanagementsystem.student.dto.CreateStudentDto;
 import pl.schoolmanagementsystem.student.dto.StudentSearchDto;
 import pl.schoolmanagementsystem.student.dto.StudentWithClassDto;
+import pl.schoolmanagementsystem.student.search.StudentSearcher;
 import pl.schoolmanagementsystem.student.utils.StudentMapper;
 
 import java.util.List;
@@ -41,7 +39,7 @@ public class AdminStudentService {
 
     private final StudentMapper studentMapper;
 
-    private final FilterService<Student> filterService;
+    private final StudentSearcher studentSearcher;
 
     @Transactional
     public StudentWithClassDto createStudent(CreateStudentDto createStudentDto) {
@@ -59,13 +57,8 @@ public class AdminStudentService {
     }
 
     public List<StudentSearchDto> searchStudent(List<SearchRequestDto> searchRequestDtos) {
-        Specification<Student> searchSpecification = filterService.getSearchSpecification(searchRequestDtos);
-        List<Student> students;
-        try {
-            students = studentRepository.findAll(searchSpecification);
-        } catch (RuntimeException e) {
-            throw new FilterException(e.getMessage().split(";")[0]);
-        }
+        List<Student> students = studentSearcher.searchStudent(searchRequestDtos);
+
         return studentMapper.mapEntitiesToSearchDtos(students);
     }
 

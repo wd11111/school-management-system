@@ -80,6 +80,7 @@ public class AdminTeacherService {
                 .flatMap(teacherInClass -> teacherInClass.getTaughtClasses().stream()
                         .map(schoolClass -> new SubjectAndClassDto(teacherInClass.getTaughtSubject(), schoolClass.getName())))
                 .toList();
+
         return new PageImpl<>(taughtClassesByTeacher, pageable, taughtClassesByTeacher.size());
     }
 

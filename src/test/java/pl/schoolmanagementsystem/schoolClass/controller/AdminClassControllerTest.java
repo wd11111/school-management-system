@@ -192,8 +192,11 @@ class MockMvcConfig {
                 schoolSubjectRepository, teacherInClassService, studentRepository, schoolClassMapper, teacherInClassMapper);
     }
 
+    @MockBean
+    AdminTeacherInClassService adminTeacherInClassService;
+
     @Bean
-    AdminClassController AdminClassController(AdminClassService adminClassService) {
-        return new AdminClassController(adminClassService);
+    AdminClassController AdminClassController(AdminClassService adminClassService, AdminTeacherInClassService adminTeacherInClassService) {
+        return new AdminClassController(adminClassService, adminTeacherInClassService);
     }
 }

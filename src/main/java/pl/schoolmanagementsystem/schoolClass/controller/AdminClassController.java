@@ -12,6 +12,7 @@ import pl.schoolmanagementsystem.schoolClass.dto.SchoolClassDto;
 import pl.schoolmanagementsystem.schoolClass.dto.StudentDto;
 import pl.schoolmanagementsystem.schoolClass.dto.TeacherInClassDto;
 import pl.schoolmanagementsystem.schoolClass.service.AdminClassService;
+import pl.schoolmanagementsystem.schoolClass.service.AdminTeacherInClassService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,6 +23,8 @@ import java.util.List;
 public class AdminClassController {
 
     private final AdminClassService adminClassService;
+
+    private final AdminTeacherInClassService teacherInClassService;
 
     @GetMapping
     public Page<SchoolClassDto> getSchoolClasses(Pageable pageable) {
@@ -50,9 +53,15 @@ public class AdminClassController {
         return adminClassService.addTeacherToSchoolClass(addOrRemoveTeacherInClassDto, className);
     }
 
+    @DeleteMapping("/{className}/teachers")
+    public void removeTeacherFromSchoolClass(@PathVariable String className, AddOrRemoveTeacherInClassDto removeTeacherDto) {
+        teacherInClassService.removeTeacherFromSchoolClass(removeTeacherDto, className);
+    }
+
     @DeleteMapping("/{className}")
     public ResponseEntity<Void> deleteSchoolClass(@PathVariable String className) {
         adminClassService.deleteSchoolClass(className);
         return ResponseEntity.noContent().build();
     }
+
 }

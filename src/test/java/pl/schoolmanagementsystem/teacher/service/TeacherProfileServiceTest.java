@@ -82,7 +82,7 @@ class TeacherProfileServiceTest implements Samples {
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassRepository
-                .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
+                .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
 
         teacherProfileService.addMark(NAME2, addMarkDto, student.getId());
@@ -121,7 +121,7 @@ class TeacherProfileServiceTest implements Samples {
         when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
         when(teacherInClassRepository
-                .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
+                .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);
 
         assertThatThrownBy(() -> teacherProfileService.addMark(NAME2, addMarkDto, ID_1))
@@ -136,7 +136,7 @@ class TeacherProfileServiceTest implements Samples {
         schoolClass.getStudents().addAll(List.of(createStudent(), createStudent2()));
         when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherInClassRepository
-                .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
+                .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
         when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(schoolClass));
 
@@ -153,7 +153,7 @@ class TeacherProfileServiceTest implements Samples {
         schoolClass.getStudents().add(student);
         when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherInClassRepository
-                .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
+                .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
         when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(schoolClass));
 
@@ -186,7 +186,7 @@ class TeacherProfileServiceTest implements Samples {
         when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(createSchoolClass()));
         when(teacherInClassRepository
-                .existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
+                .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);
 
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))

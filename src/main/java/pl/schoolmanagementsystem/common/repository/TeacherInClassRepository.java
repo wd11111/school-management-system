@@ -14,5 +14,5 @@ public interface TeacherInClassRepository extends JpaRepository<TeacherInClass, 
             "WHERE t.teacher.id=?1 AND t.taughtSubject=?2")
     Optional<TeacherInClass> findByTeacherIdAndTaughtSubject(Long teacherId, String schoolSubject);
 
-    boolean existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(String email, String taughtSubject, String className);
+    boolean existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(String email, String taughtSubject, String className);
 }

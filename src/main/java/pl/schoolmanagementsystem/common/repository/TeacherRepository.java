@@ -27,7 +27,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
             "tc.taughtSubject, tics.name) " +
             "FROM TeacherInClass tc " +
             "LEFT JOIN tc.taughtClasses tics " +
-            "WHERE tc.teacher.appUser.userEmail=?1 " +
+            "WHERE tc.teacher.appUser.email=?1 " +
             "ORDER BY tics.name")
     Page<SubjectAndClassDto> findTaughtClassesByTeacher(String email, Pageable pageable);
 }

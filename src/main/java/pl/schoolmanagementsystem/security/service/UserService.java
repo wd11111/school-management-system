@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
         appUser.getRoles()
                 .forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRole())));
 
-        return new User(appUser.getUserEmail(), appUser.getPassword(), authorities);
+        return new User(appUser.getEmail(), appUser.getPassword(), authorities);
     }
 
     private void validatePassword(String password) {

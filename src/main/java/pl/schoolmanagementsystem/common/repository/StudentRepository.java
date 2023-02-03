@@ -17,7 +17,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpec
             "FROM Student s WHERE s.schoolClass=?1 ORDER BY s.surname")
     List<StudentDto> findAllInClass(String schoolClassName);
 
-    @Query("SELECT s.schoolClass from Student s where s.appUser.userEmail=?1")
+    @Query("SELECT s.schoolClass from Student s where s.appUser.email=?1")
     String findStudentsClass(String studentEmail);
 
 }

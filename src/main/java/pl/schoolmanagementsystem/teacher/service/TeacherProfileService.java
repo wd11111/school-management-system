@@ -90,6 +90,6 @@ public class TeacherProfileService {
     }
 
     private boolean doesTeacherTeachSubjectInClass(String teacherEmail, String subject, String schoolClass) {
-        return teacherInClassRepository.existsByTeacher_AppUser_UserEmailAndTaughtSubjectAndTaughtClasses_Name(teacherEmail, subject, schoolClass);
+        return teacherInClassRepository.existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(teacherEmail, subject, schoolClass);
     }
 }

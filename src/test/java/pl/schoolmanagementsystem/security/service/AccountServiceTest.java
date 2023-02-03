@@ -79,7 +79,7 @@ class AccountServiceTest {
     @Test
     void should_correctly_reset_password() {
         AppUser appUser = new AppUser();
-        appUser.setUserEmail(EMAIL);
+        appUser.setEmail(EMAIL);
         when(userRepository.findByUserEmail(anyString())).thenReturn(Optional.of(appUser));
 
         accountService.resetPassword(EMAIL);

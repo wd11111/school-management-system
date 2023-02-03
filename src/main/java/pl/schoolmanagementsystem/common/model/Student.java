@@ -31,7 +31,7 @@ public class Student {
     private LocalDate birthDate;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userEmail")
+    @JoinColumn(name = "appUserId", referencedColumnName = "id")
     private AppUser appUser;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = LAZY, mappedBy = "studentId")

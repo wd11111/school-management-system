@@ -2,10 +2,7 @@ package pl.schoolmanagementsystem.common.model;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +15,10 @@ import java.util.List;
 public class AppUser {
 
     @Id
-    private String userEmail;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String email;
 
     private String password;
 

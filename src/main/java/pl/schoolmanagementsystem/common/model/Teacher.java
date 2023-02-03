@@ -25,7 +25,7 @@ public class Teacher {
     private String surname;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userEmail")
+    @JoinColumn(name = "appUserId", referencedColumnName = "id")
     private AppUser appUser;
 
     @ManyToMany(cascade = CascadeType.PERSIST)

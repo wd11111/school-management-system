@@ -12,7 +12,7 @@ public class AppUserService {
 
     public static AppUser createAppUser(String email) {
         return AppUser.builder()
-                .userEmail(email)
+                .email(email)
                 .password(PASSWORD)
                 .token(generateToken())
                 .roles(new ArrayList<>())

@@ -33,12 +33,12 @@ public class AdminClassController {
 
     @GetMapping("/{className}/students")
     public List<StudentDto> getAllStudentsInClass(@PathVariable String className) {
-        return adminClassService.getAllStudentsInClass(className);
+        return adminClassService.getAllStudentsInClass(className.toUpperCase());
     }
 
     @GetMapping("/{className}/subjects")
     public List<TaughtSubjectDto> getAllTaughtSubjectsInSchoolClass(@PathVariable String className) {
-        return adminClassService.getTaughtSubjectsInClass(className);
+        return adminClassService.getTaughtSubjectsInClass(className.toUpperCase());
     }
 
     @PostMapping
@@ -50,17 +50,17 @@ public class AdminClassController {
     @PostMapping("/{className}/teachers")
     public TeacherInClassDto addTeacherToSchoolClass(
             @PathVariable String className, @RequestBody @Valid AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto) {
-        return adminClassService.addTeacherToSchoolClass(addOrRemoveTeacherInClassDto, className);
+        return adminClassService.addTeacherToSchoolClass(addOrRemoveTeacherInClassDto, className.toUpperCase());
     }
 
     @DeleteMapping("/{className}/teachers")
     public void removeTeacherFromSchoolClass(@PathVariable String className, AddOrRemoveTeacherInClassDto removeTeacherDto) {
-        teacherInClassService.removeTeacherFromSchoolClass(removeTeacherDto, className);
+        teacherInClassService.removeTeacherFromSchoolClass(removeTeacherDto, className.toUpperCase());
     }
 
     @DeleteMapping("/{className}")
     public ResponseEntity<Void> deleteSchoolClass(@PathVariable String className) {
-        adminClassService.deleteSchoolClass(className);
+        adminClassService.deleteSchoolClass(className.toUpperCase());
         return ResponseEntity.noContent().build();
     }
 

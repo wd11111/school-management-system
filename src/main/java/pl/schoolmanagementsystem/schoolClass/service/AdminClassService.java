@@ -47,8 +47,10 @@ public class AdminClassService {
     }
 
     public SchoolClass createSchoolClass(SchoolClassDto schoolClassDto) {
-        if (doesSchoolClassExist(schoolClassDto.getSchoolClassName())) {
-            throw new ClassAlreadyExistsException(schoolClassDto.getSchoolClassName());
+        String schoolClassName = schoolClassDto.getSchoolClassName().toUpperCase();
+
+        if (doesSchoolClassExist(schoolClassName)) {
+            throw new ClassAlreadyExistsException(schoolClassName);
         }
         return schoolClassRepository.save(schoolClassMapper.mapDtoToEntity(schoolClassDto));
     }

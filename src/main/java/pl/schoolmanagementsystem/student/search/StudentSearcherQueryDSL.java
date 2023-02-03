@@ -34,20 +34,21 @@ public class StudentSearcherQueryDSL implements StudentSearcher {
 
         searchRequestDtos.forEach(searchRequestDto -> {
             String value = searchRequestDto.value();
+            String column = searchRequestDto.column();
 
             switch (searchRequestDto.operation()) {
-                case EQUAL -> doEqualOperation(searchRequestDto, booleanBuilder, value);
-                case LIKE -> doLikeOperation(searchRequestDto, booleanBuilder, value);
-                case NUMBER_BETWEEN -> doNumberBetweenOperation(searchRequestDto, booleanBuilder, value);
-                case DATE_BETWEEN -> doDateBetweenOperation(searchRequestDto, booleanBuilder, value);
+                case EQUAL -> doEqualOperation(column, value, booleanBuilder);
+                case LIKE -> doLikeOperation(column, value, booleanBuilder);
+                case NUMBER_BETWEEN -> doNumberBetweenOperation(column, value, booleanBuilder);
+                case DATE_BETWEEN -> doDateBetweenOperation(column, value, booleanBuilder);
                 default -> throw new FilterException("Unexpected operation type");
             }
         });
         return (List<Student>) studentRepository.findAll(booleanBuilder);
     }
 
-    private void doEqualOperation(SearchRequestDto searchRequestDto, BooleanBuilder booleanBuilder, String value) {
-        switch (searchRequestDto.column()) {
+    private void doEqualOperation(String column, String value, BooleanBuilder booleanBuilder) {
+        switch (column) {
             case NAME -> booleanBuilder.and(student.name.equalsIgnoreCase(value));
             case SURNAME -> booleanBuilder.and(student.surname.equalsIgnoreCase(value));
             case EMAIL -> booleanBuilder.and(student.appUser.userEmail.equalsIgnoreCase(value));
@@ -56,8 +57,8 @@ public class StudentSearcherQueryDSL implements StudentSearcher {
         }
     }
 
-    private void doLikeOperation(SearchRequestDto searchRequestDto, BooleanBuilder booleanBuilder, String value) {
-        switch (searchRequestDto.column()) {
+    private void doLikeOperation(String column, String value, BooleanBuilder booleanBuilder) {
+        switch (column) {
             case NAME -> booleanBuilder.and(student.name.containsIgnoreCase(value));
             case SURNAME -> booleanBuilder.and(student.surname.containsIgnoreCase(value));
             case EMAIL -> booleanBuilder.and(student.appUser.userEmail.containsIgnoreCase(value));
@@ -65,25 +66,25 @@ public class StudentSearcherQueryDSL implements StudentSearcher {
         }
     }
 
-    private void doNumberBetweenOperation(SearchRequestDto searchRequestDto, BooleanBuilder booleanBuilder, String value) {
+    private void doNumberBetweenOperation(String column, String value, BooleanBuilder booleanBuilder) {
         String[] splitted = doSplit(value);
 
         Long from = parseNumber(splitted[0]);
         Long to = parseNumber(splitted[1]);
 
-        switch (searchRequestDto.column()) {
+        switch (column) {
             case ID -> booleanBuilder.and(student.id.between(from, to));
             default -> throw new FilterException(INVALID_DATA_MESSAGE);
         }
     }
 
-    private void doDateBetweenOperation(SearchRequestDto searchRequestDto, BooleanBuilder booleanBuilder, String value) {
+    private void doDateBetweenOperation(String column, String value, BooleanBuilder booleanBuilder) {
         String[] splitted = doSplit(value);
 
         LocalDate from = getLocalDate(splitted[0]);
         LocalDate to = getLocalDate(splitted[1]);
 
-        switch (searchRequestDto.column()) {
+        switch (column) {
             case BIRTH_DATE -> booleanBuilder.and(student.birthDate.between(from, to));
             default -> throw new FilterException(INVALID_DATA_MESSAGE);
         }

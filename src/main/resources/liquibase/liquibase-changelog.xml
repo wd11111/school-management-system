@@ -16,4 +16,8 @@
         <sqlFile path="/sql/03-init.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>
+    <changeSet id="04-dummy-data" author="wd">
+        <sqlFile path="/sql/04-dummy-data.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

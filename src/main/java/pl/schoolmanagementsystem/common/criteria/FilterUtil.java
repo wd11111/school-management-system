@@ -8,9 +8,9 @@ import java.time.format.DateTimeParseException;
 
 public class FilterUtil {
 
-    public static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
 
-    public static final String SPLIT_REGEX = "to";
+    private static final String SPLIT_REGEX = "to";
 
     public static LocalDate getLocalDate(String date) {
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern(DATE_PATTERN);

@@ -1,6 +1,6 @@
 package pl.schoolmanagementsystem.student.search;
 
-import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
+import pl.schoolmanagementsystem.common.criteria.dto.SearchRequestDto;
 import pl.schoolmanagementsystem.common.model.Student;
 
 import java.util.List;

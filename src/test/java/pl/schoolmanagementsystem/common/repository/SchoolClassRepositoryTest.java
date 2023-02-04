@@ -24,6 +24,6 @@ public class SchoolClassRepositoryTest extends BaseContainerTest implements Samp
 
         Page<SchoolClassDto> result = schoolClassRepository.findAllClasses(pageable);
 
-        assertThat(result).extracting("schoolClassName").containsAll(List.of("1a", "1b"));
+        assertThat(result).extracting("schoolClassName").containsAll(List.of("1A", "1B"));
     }
 }

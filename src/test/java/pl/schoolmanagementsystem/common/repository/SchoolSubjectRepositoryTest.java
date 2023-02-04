@@ -30,7 +30,7 @@ class SchoolSubjectRepositoryTest extends BaseContainerTest {
 
     @Test
     void should_return_all_taught_subjects_in_school_class() {
-        List<TaughtSubjectDto> result = schoolSubjectRepository.findTaughtSubjectsInClass("1a");
+        List<TaughtSubjectDto> result = schoolSubjectRepository.findTaughtSubjectsInClass("1A");
 
         assertThat(result).extracting("subject", "teacherName", "teacherSurname")
                 .containsAll(List.of(

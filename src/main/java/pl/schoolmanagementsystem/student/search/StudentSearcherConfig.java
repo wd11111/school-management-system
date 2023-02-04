@@ -3,7 +3,7 @@ package pl.schoolmanagementsystem.student.search;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.schoolmanagementsystem.common.criteria.CriteriaApiFilterService;
+import pl.schoolmanagementsystem.common.criteria.service.CriteriaApiFilterService;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
 

@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AdminClassServiceTest implements Samples {
 
-    public static final String CLASS_NAME = "1a";
+    public static final String CLASS_NAME = "1A";
     @Mock
     private SchoolClassRepository schoolClassRepository;
 
@@ -79,7 +79,7 @@ class AdminClassServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminClassService.createSchoolClass(schoolClassDto))
                 .isInstanceOf(ClassAlreadyExistsException.class)
-                .hasMessage("Class 1a already exists");
+                .hasMessage("Class 1A already exists");
         verify(schoolClassRepository, never()).save(any());
     }
 
@@ -89,7 +89,7 @@ class AdminClassServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminClassService.getTaughtSubjectsInClass(CLASS_NAME))
                 .isInstanceOf(NoSuchSchoolClassException.class)
-                .hasMessage("Such a school class does not exist: 1a");
+                .hasMessage("Such a school class does not exist: 1A");
     }
 
     @Test

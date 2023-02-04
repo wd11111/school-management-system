@@ -1,7 +1,8 @@
-package pl.schoolmanagementsystem.common.criteria;
+package pl.schoolmanagementsystem.common.criteria.service;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import pl.schoolmanagementsystem.common.criteria.dto.SearchRequestDto;
 import pl.schoolmanagementsystem.common.exception.FilterException;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.schoolmanagementsystem.common.criteria.FilterUtil.*;
+import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.*;
 
 @Service
 public class CriteriaApiFilterService<T> {

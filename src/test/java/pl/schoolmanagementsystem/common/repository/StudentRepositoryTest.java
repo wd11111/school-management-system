@@ -12,25 +12,26 @@ import static org.assertj.core.api.Assertions.tuple;
 
 class StudentRepositoryTest extends BaseContainerTest {
 
-    public static final String STUDENTS_EMAIL = "email3";
-
     @Autowired
     private StudentRepository studentRepository;
 
     @Test
     void should_return_all_students_in_school_class() {
-        List<StudentDto> result = studentRepository.findAllInClass("1a");
+        List<StudentDto> result = studentRepository.findAllInClass("1A");
 
-        assertThat(result).extracting("studentId", "name", "surname")
+        assertThat(result).extracting("name", "surname")
                 .containsAll(List.of(
-                        tuple(1L, "studentName1", "studentSurname1"),
-                        tuple(2L, "studentName2", "studentSurname2")));
+                        tuple("Jan", "Kowalski"),
+                        tuple("Joanna", "Nowak"),
+                        tuple("Tomasz", "Wiśniewski"),
+                        tuple("Anna", "Wójcik"),
+                        tuple("Piotr", "Kowalczyk")));
     }
 
     @Test
     void should_return_students_class() {
-        String studentsClass = studentRepository.findStudentsClass(STUDENTS_EMAIL);
+        String studentsClass = studentRepository.findStudentsClass("joanna.nowak.2@example.com");
 
-        assertThat(studentsClass).isEqualTo("1a");
+        assertThat(studentsClass).isEqualTo("1A");
     }
 }

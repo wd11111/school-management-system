@@ -41,11 +41,11 @@ class TeacherRepositoryTest extends BaseContainerTest {
     void should_return_taught_classes_by_teacher() {
         Pageable pageable = PageRequest.of(0, 5);
 
-        Page<SubjectAndClassDto> result = teacherRepository.findTaughtClassesByTeacher("email2", pageable);
+        Page<SubjectAndClassDto> result = teacherRepository.findTaughtClassesByTeacher("teacher1@example.com", pageable);
 
         assertThat(result).extracting("schoolSubject", "schoolClass")
                 .containsAll(List.of(
-                        tuple("biology", "1a"),
-                        tuple("history", "1a")));
+                        tuple("biology", "1A"),
+                        tuple("history", "1A")));
     }
 }

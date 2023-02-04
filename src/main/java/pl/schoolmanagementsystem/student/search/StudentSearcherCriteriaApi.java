@@ -2,8 +2,8 @@ package pl.schoolmanagementsystem.student.search;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import pl.schoolmanagementsystem.common.criteria.CriteriaApiFilterService;
-import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
+import pl.schoolmanagementsystem.common.criteria.dto.SearchRequestDto;
+import pl.schoolmanagementsystem.common.criteria.service.CriteriaApiFilterService;
 import pl.schoolmanagementsystem.common.exception.FilterException;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;

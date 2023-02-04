@@ -20,18 +20,18 @@ class MarkRepositoryTest extends BaseContainerTest implements Samples {
 
     @Test
     void should_return_all_marks_for_student() {
-        List<MarkDto> marks = markRepository.findAllMarksForStudent("email");
+        List<MarkDto> marks = markRepository.findAllMarksForStudent("jan.kowalski.1@example.com");
 
         assertThat(marks).extracting("mark")
                 .containsAll(List.of(
+                        new BigDecimal("4.00"),
                         new BigDecimal("1.00"),
-                        new BigDecimal("2.00"),
-                        new BigDecimal("4.00")));
+                        new BigDecimal("2.00")));
     }
 
     @Test
     void should_return_all_averages_for_student() {
-        List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent("email");
+        List<MarkAvgDto> allAveragesForStudent = markRepository.findAllAveragesForStudent("jan.kowalski.1@example.com");
 
         assertThat(allAveragesForStudent).extracting("subject", "avg")
                 .containsAll(List.of(

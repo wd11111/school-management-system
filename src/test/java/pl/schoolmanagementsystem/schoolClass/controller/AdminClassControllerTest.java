@@ -73,9 +73,9 @@ class AdminClassControllerTest implements Samples {
     void should_return_status_ok_when_get_for_all_students_in_class() throws Exception {
         List<StudentDto> listOfStudents = List.of(studentResponseDto2(), studentResponseDto2());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfStudents);
-        when(adminClassService.getAllStudentsInClass("1a")).thenReturn(listOfStudents);
+        when(adminClassService.getAllStudentsInClass("1A")).thenReturn(listOfStudents);
 
-        MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1a/students"))
+        MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1A/students"))
                 .andExpect(status()
                         .isOk())
                 .andReturn();
@@ -88,9 +88,9 @@ class AdminClassControllerTest implements Samples {
     void should_return_status_ok_when_get_for_all_taught_subjects_in_class() throws Exception {
         List<TaughtSubjectDto> listOfSubjects = List.of(createTaughtSubjectDto(), createTaughtSubjectDto());
         String expectedResponseBody = objectMapper.writeValueAsString(listOfSubjects);
-        when(adminClassService.getTaughtSubjectsInClass("1a")).thenReturn(listOfSubjects);
+        when(adminClassService.getTaughtSubjectsInClass("1A")).thenReturn(listOfSubjects);
 
-        MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1a/subjects"))
+        MvcResult mvcResult = mockMvc.perform(get("/admin/classes/1A/subjects"))
                 .andExpect(status()
                         .isOk())
                 .andReturn();

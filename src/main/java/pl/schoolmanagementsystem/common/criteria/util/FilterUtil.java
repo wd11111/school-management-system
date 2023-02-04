@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.criteria;
+package pl.schoolmanagementsystem.common.criteria.util;
 
 import pl.schoolmanagementsystem.common.exception.FilterException;
 

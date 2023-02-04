@@ -1,4 +1,4 @@
-package pl.schoolmanagementsystem.common.criteria;
+package pl.schoolmanagementsystem.common.criteria.dto;
 
 public enum OperationType {
 

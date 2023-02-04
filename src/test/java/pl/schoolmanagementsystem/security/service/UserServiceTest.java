@@ -36,7 +36,7 @@ class UserServiceTest {
     void should_load_user() {
         Role role = new Role();
         role.setRole(ROLE);
-        AppUser appUser = new AppUser(EMAIL, PASSWORD, TOKEN, List.of(role));
+        AppUser appUser = new AppUser(1L, EMAIL, PASSWORD, TOKEN, List.of(role));
         when(userRepository.findByUserEmail(anyString())).thenReturn(Optional.of(appUser));
 
         UserDetails user = userService.loadUserByUsername(EMAIL);

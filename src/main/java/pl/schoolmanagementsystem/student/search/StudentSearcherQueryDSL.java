@@ -2,7 +2,7 @@ package pl.schoolmanagementsystem.student.search;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
-import pl.schoolmanagementsystem.common.criteria.SearchRequestDto;
+import pl.schoolmanagementsystem.common.criteria.dto.SearchRequestDto;
 import pl.schoolmanagementsystem.common.exception.FilterException;
 import pl.schoolmanagementsystem.common.model.QStudent;
 import pl.schoolmanagementsystem.common.model.Student;
@@ -11,7 +11,7 @@ import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-import static pl.schoolmanagementsystem.common.criteria.FilterUtil.*;
+import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.*;
 
 @RequiredArgsConstructor
 public class StudentSearcherQueryDSL implements StudentSearcher {

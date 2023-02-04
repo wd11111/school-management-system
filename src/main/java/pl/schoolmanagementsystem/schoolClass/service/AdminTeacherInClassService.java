@@ -54,15 +54,15 @@ public class AdminTeacherInClassService {
     }
 
     private void validateTeacherTeachesClass(TeacherInClass teacher, SchoolClass schoolClass, String subject) {
-        if (!doesTeacherTeachClass(teacher, schoolClass)) {
+        if (!doesTeacherTeachClass(teacher, schoolClass.getName())) {
             throw new TeacherDoesNotTeachClassException(teacher.getId(), subject, schoolClass.getName());
         }
     }
 
-    private boolean doesTeacherTeachClass(TeacherInClass teacher, SchoolClass schoolClass) {
+    private boolean doesTeacherTeachClass(TeacherInClass teacher, String schoolClassName) {
         return teacher.getTaughtClasses()
                 .stream()
-                .anyMatch(schoolClassStream -> schoolClassStream.equals(schoolClass));
+                .anyMatch(schoolClass -> schoolClass.getName().equals(schoolClassName));
     }
 
     private TeacherInClass findTeacherOfSubject(Teacher teacher, String subject) {

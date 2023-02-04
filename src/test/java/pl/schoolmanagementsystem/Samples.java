@@ -27,8 +27,8 @@ public interface Samples {
     String SURNAME = "Nowak";
     String SURNAME2 = "Kowalczyk";
 
-    String SUBJECT_BIOLOGY = "Biology";
-    String SUBJECT_HISTORY = "History";
+    String SUBJECT_BIOLOGY = "biology";
+    String SUBJECT_HISTORY = "history";
     String SUBJECT_ENGLISH = "english";
     String CLASS_1A = "1a";
     String CLASS_3B = "3b";
@@ -56,6 +56,14 @@ public interface Samples {
                 .build();
     }
 
+    default SchoolClass createSchoolClass2() {
+        return SchoolClass.builder()
+                .name(CLASS_3B)
+                .students(new HashSet<>())
+                .teachersInClass(new HashSet<>())
+                .build();
+    }
+
     default Teacher createTeacherNoSubjectsTaught() {
         return Teacher.builder()
                 .id(ID_1)
@@ -72,6 +80,7 @@ public interface Samples {
                 .name(NAME3)
                 .surname(SURNAME2)
                 .taughtSubjects(new HashSet<>(Set.of(createSchoolSubject())))
+                .teacherInClasses(new HashSet<>())
                 .build();
     }
 
@@ -200,7 +209,16 @@ public interface Samples {
         return TeacherInClass.builder()
                 .id(ID_1)
                 .teacher(createTeacherOfBiology())
-                .taughtClasses(Set.of(createSchoolClass()))
+                .taughtClasses(new HashSet<>(Set.of(createSchoolClass())))
+                .taughtSubject(SUBJECT_BIOLOGY)
+                .build();
+    }
+
+    default TeacherInClass createTeacherInClass2() {
+        return TeacherInClass.builder()
+                .id(ID_1)
+                .teacher(createTeacherOfBiology())
+                .taughtClasses(new HashSet<>(Set.of(createSchoolClass())))
                 .taughtSubject(SUBJECT_ENGLISH)
                 .build();
     }

@@ -47,7 +47,7 @@ class AdminSubjectServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminSubjectService.createSchoolSubject(schoolSubjectDto))
                 .isInstanceOf(SubjectAlreadyExistsException.class)
-                .hasMessage("Subject History already exists");
+                .hasMessage("Subject history already exists");
         verify(schoolSubjectRepository, never()).save(any());
     }
 
@@ -67,7 +67,7 @@ class AdminSubjectServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminSubjectService.deleteSchoolSubject(SUBJECT_BIOLOGY))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: Biology");
+                .hasMessage("Such a school subject does not exist: biology");
 
         verify(schoolSubjectRepository, never()).deleteTaughtSubjects(any());
         verify(schoolSubjectRepository, never()).deleteById(any());

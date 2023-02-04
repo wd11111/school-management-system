@@ -186,7 +186,7 @@ class AdminTeacherServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: Biology");
+                .hasMessage("Such a school subject does not exist: biology");
     }
 
     @Test
@@ -200,7 +200,7 @@ class AdminTeacherServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
                 .isInstanceOf(TeacherAlreadyTeachesSubjectException.class)
-                .hasMessage("Alicja Kowalczyk already teaches Biology");
+                .hasMessage("Alicja Kowalczyk already teaches biology");
         assertThat(teacher.getTaughtSubjects()).hasSize(1);
     }
 }

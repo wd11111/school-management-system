@@ -171,7 +171,7 @@ class AdminClassServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(ClassAlreadyHasTeacherException.class)
-                .hasMessage("Alicja Kowalczyk already teaches Biology in 1a");
+                .hasMessage("Alicja Kowalczyk already teaches biology in 1a");
         verify(teacherInClassService, never()).addTeacherToClass(any(), any(), any());
     }
 

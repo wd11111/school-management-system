@@ -60,7 +60,7 @@ class AdminTeacherInClassServiceTest implements Samples {
         TeacherInClass teacherInClass = createTeacherInClass();
         Teacher teacher = teacherInClass.getTeacher();
         teacher.getTeacherInClasses().add(teacherInClass);
-        SchoolClass schoolClass= teacherInClass.getTaughtClasses().stream().findFirst().get();
+        SchoolClass schoolClass = teacherInClass.getTaughtClasses().stream().findFirst().get();
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherRepository.findByIdAndFetchClasses(anyLong())).thenReturn(Optional.of(teacher));
         when(classRepository.findById(anyString())).thenReturn(Optional.of(schoolClass));
@@ -114,7 +114,7 @@ class AdminTeacherInClassServiceTest implements Samples {
         TeacherInClass teacherInClass = createTeacherInClass2();
         Teacher teacher = teacherInClass.getTeacher();
         teacher.getTeacherInClasses().add(teacherInClass);
-        SchoolClass schoolClass= teacherInClass.getTaughtClasses().stream().findFirst().get();
+        SchoolClass schoolClass = teacherInClass.getTaughtClasses().stream().findFirst().get();
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherRepository.findByIdAndFetchClasses(anyLong())).thenReturn(Optional.of(teacher));
         when(classRepository.findById(anyString())).thenReturn(Optional.of(schoolClass));
@@ -131,7 +131,7 @@ class AdminTeacherInClassServiceTest implements Samples {
         TeacherInClass teacherInClass = createTeacherInClass();
         Teacher teacher = teacherInClass.getTeacher();
         teacher.getTeacherInClasses().add(teacherInClass);
-        SchoolClass schoolClass= createSchoolClass2();
+        SchoolClass schoolClass = createSchoolClass2();
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherRepository.findByIdAndFetchClasses(anyLong())).thenReturn(Optional.of(teacher));
         when(classRepository.findById(anyString())).thenReturn(Optional.of(schoolClass));

@@ -45,7 +45,7 @@ public class CriteriaApiFilterServiceTest extends BaseContainerTest implements S
     }
 
     @Test
-    void should_return_two_students_when_searching_by_class() {
+    void should_return_five_students_when_searching_by_class() {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("schoolClass", "1A", OperationType.EQUAL));
 
         List<Student> studentSearchDtos = studentSearcherCriteriaApi.searchStudent(searchRequestDtos);
@@ -54,7 +54,7 @@ public class CriteriaApiFilterServiceTest extends BaseContainerTest implements S
     }
 
     @Test
-    void should_return_one_student_when_searching_by_class_and_name() {
+    void should_return_two_students_when_searching_by_class_and_name() {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("schoolClass", "1B", OperationType.EQUAL),
                 new SearchRequestDto("name", "g", OperationType.LIKE));
 
@@ -73,7 +73,7 @@ public class CriteriaApiFilterServiceTest extends BaseContainerTest implements S
     }
 
     @Test
-    void should_return_two_students_when_searching_by_id_using_number_between_operation() {
+    void should_return_three_students_when_searching_by_id_using_number_between_operation() {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("id", "3to5", OperationType.NUMBER_BETWEEN));
 
         List<Student> studentSearchDtos = studentSearcherCriteriaApi.searchStudent(searchRequestDtos);
@@ -91,7 +91,7 @@ public class CriteriaApiFilterServiceTest extends BaseContainerTest implements S
     }
 
     @Test
-    void should_return_two_students_when_searching_by_date_using_between_operation() {
+    void should_return_seven_students_when_searching_by_date_using_between_operation() {
         List<SearchRequestDto> searchRequestDtos = List.of(new SearchRequestDto("birthDate", "1999-01-01to1999-12-31", OperationType.DATE_BETWEEN));
 
         List<Student> studentSearchDtos = studentSearcherCriteriaApi.searchStudent(searchRequestDtos);

@@ -51,7 +51,7 @@ public class StudentSearcherQueryDSL implements StudentSearcher {
         switch (column) {
             case NAME -> booleanBuilder.and(student.name.equalsIgnoreCase(value));
             case SURNAME -> booleanBuilder.and(student.surname.equalsIgnoreCase(value));
-            case EMAIL -> booleanBuilder.and(student.appUser.userEmail.equalsIgnoreCase(value));
+            case EMAIL -> booleanBuilder.and(student.appUser.email.equalsIgnoreCase(value));
             case SCHOOL_CLASS -> booleanBuilder.and(student.schoolClass.equalsIgnoreCase(value));
             default -> throw new FilterException(INVALID_DATA_MESSAGE);
         }
@@ -61,7 +61,7 @@ public class StudentSearcherQueryDSL implements StudentSearcher {
         switch (column) {
             case NAME -> booleanBuilder.and(student.name.containsIgnoreCase(value));
             case SURNAME -> booleanBuilder.and(student.surname.containsIgnoreCase(value));
-            case EMAIL -> booleanBuilder.and(student.appUser.userEmail.containsIgnoreCase(value));
+            case EMAIL -> booleanBuilder.and(student.appUser.email.containsIgnoreCase(value));
             default -> throw new FilterException(INVALID_DATA_MESSAGE);
         }
     }

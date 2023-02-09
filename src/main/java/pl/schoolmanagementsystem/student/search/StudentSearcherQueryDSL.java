@@ -12,17 +12,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.*;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.*;
 
 @RequiredArgsConstructor
 public class StudentSearcherQueryDSL implements StudentSearcher {
 
     private static final String INVALID_DATA_MESSAGE = "Invalid data";
-    private static final String ID = "id";
-    private static final String EMAIL = "email";
-    private static final String NAME = "name";
-    private static final String SURNAME = "surname";
-    private static final String BIRTH_DATE = "birthDate";
-    private static final String SCHOOL_CLASS = "schoolClass";
 
     private final static QStudent student = QStudent.student;
 

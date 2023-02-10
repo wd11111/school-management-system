@@ -49,8 +49,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secret))
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, REPLACEMENT));
+
             String username = jwt.getSubject();
             Collection<SimpleGrantedAuthority> authorities = getAuthorities(jwt);
+
             return new UsernamePasswordAuthenticationToken(username, null, authorities);
         }
         return null;

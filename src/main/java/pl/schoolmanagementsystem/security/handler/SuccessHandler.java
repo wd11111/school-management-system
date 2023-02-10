@@ -39,6 +39,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         String token = createToken(principal);
         String jsonToken = objectMapper.writeValueAsString(new Token(PREFIX + token));
+
         response.setContentType(APPLICATION_JSON_VALUE);
         response.getWriter().write(jsonToken);
     }

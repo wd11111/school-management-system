@@ -60,8 +60,8 @@ public class CriteriaApiFilterService<T> {
     private void doDateBetweenOperation(String column, String value, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder) {
         String[] splitted = doSplit(value);
 
-        LocalDate from = getLocalDate(splitted[0]);
-        LocalDate to = getLocalDate(splitted[1]);
+        LocalDate from = parseToLocalDate(splitted[0]);
+        LocalDate to = parseToLocalDate(splitted[1]);
 
         Predicate betweenDate = criteriaBuilder.between(root.get(column), from, to);
         predicates.add(betweenDate);

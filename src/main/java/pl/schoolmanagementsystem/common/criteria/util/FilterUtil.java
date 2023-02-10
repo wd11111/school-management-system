@@ -12,7 +12,7 @@ public class FilterUtil {
 
     private static final String SPLIT_REGEX = "to";
 
-    public static LocalDate getLocalDate(String date) {
+    public static LocalDate parseToLocalDate(String date) {
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
         try {

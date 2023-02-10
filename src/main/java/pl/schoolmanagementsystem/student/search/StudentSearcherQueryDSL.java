@@ -76,8 +76,8 @@ public class StudentSearcherQueryDSL implements StudentSearcher {
     private void doDateBetweenOperation(String column, String value, BooleanBuilder booleanBuilder) {
         String[] splitted = doSplit(value);
 
-        LocalDate from = getLocalDate(splitted[0]);
-        LocalDate to = getLocalDate(splitted[1]);
+        LocalDate from = parseToLocalDate(splitted[0]);
+        LocalDate to = parseToLocalDate(splitted[1]);
 
         switch (column) {
             case BIRTH_DATE -> booleanBuilder.and(student.birthDate.between(from, to));

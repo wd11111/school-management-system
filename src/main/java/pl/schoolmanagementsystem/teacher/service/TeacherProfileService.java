@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.schoolmanagementsystem.common.exception.*;
-import pl.schoolmanagementsystem.common.model.MarkEnum;
+import pl.schoolmanagementsystem.common.exception.NoSuchSchoolClassException;
+import pl.schoolmanagementsystem.common.exception.NoSuchSchoolSubjectException;
+import pl.schoolmanagementsystem.common.exception.NoSuchStudentException;
+import pl.schoolmanagementsystem.common.exception.TeacherDoesNotTeachClassException;
 import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 import pl.schoolmanagementsystem.common.model.Student;
@@ -41,8 +43,7 @@ public class TeacherProfileService {
 
     @Transactional
     public void addMark(String teacherEmail, AddMarkDto addMarkDto, Long studentId) {
-        BigDecimal mark = MarkEnum.getValueByName(addMarkDto.getMark()).orElseThrow(MarkNotInRangeException::new);
-
+        BigDecimal mark = addMarkDto.getMark().value;
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();
         SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(addMarkDto.getSubject())

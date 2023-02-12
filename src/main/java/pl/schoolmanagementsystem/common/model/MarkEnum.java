@@ -3,44 +3,27 @@ package pl.schoolmanagementsystem.common.model;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public enum MarkEnum {
 
-    A(6, "6"),
-    A_MINUS(5.75, "6-"),
-    B_PLUS(5.25, "5+"),
-    B(5.0, "5"),
-    B_MINUS(4.75, "5-"),
-    C_PLUS(4.25, "4+"),
-    C(4.0, "4"),
-    C_MINUS(3.75, "4-"),
-    D_PLUS(3.25, "3+"),
-    D(3.0, "3"),
-    D_MINUS(2.75, "3-"),
-    E_PLUS(2.25, "2+"),
-    E(2.0, "2"),
-    E_MINUS(1.75, "2-"),
-    F_PLUS(1.25, "1+"),
-    F(1.0, "1");
+    A(BigDecimal.valueOf(6)),
+    A_MINUS(BigDecimal.valueOf(5.75)),
+    B_PLUS(BigDecimal.valueOf(5.25)),
+    B(BigDecimal.valueOf(5.25)),
+    B_MINUS(BigDecimal.valueOf(4.75)),
+    C_PLUS(BigDecimal.valueOf(4.25)),
+    C(BigDecimal.valueOf(4.0)),
+    C_MINUS(BigDecimal.valueOf(3.75)),
+    D_PLUS(BigDecimal.valueOf(3.25)),
+    D(BigDecimal.valueOf(3.0)),
+    D_MINUS(BigDecimal.valueOf(2.75)),
+    E_PLUS(BigDecimal.valueOf(2.25)),
+    E(BigDecimal.valueOf(2.0)),
+    E_MINUS(BigDecimal.valueOf(1.75)),
+    F_PLUS(BigDecimal.valueOf(1.25)),
+    F(BigDecimal.valueOf(1.0));
 
-    public final double value;
-    public final String name;
-
-    public static Optional<BigDecimal> getValueByName(String name) {
-        return Optional.of(map.get(name));
-    }
-
-    private static final Map<String, BigDecimal> map;
-
-    static {
-        map = new HashMap<>();
-        for (MarkEnum m : MarkEnum.values()) {
-            map.put(m.name, BigDecimal.valueOf(m.value));
-        }
-    }
+    public final BigDecimal value;
 
 }

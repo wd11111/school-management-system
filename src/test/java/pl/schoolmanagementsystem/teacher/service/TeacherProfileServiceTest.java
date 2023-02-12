@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static pl.schoolmanagementsystem.common.model.MarkEnum.E;
 
 @ExtendWith(MockitoExtension.class)
 class TeacherProfileServiceTest implements Samples {
@@ -78,7 +79,7 @@ class TeacherProfileServiceTest implements Samples {
     void should_correctly_add_mark_to_student() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        AddMarkDto addMarkDto = new AddMarkDto("2", SUBJECT_BIOLOGY);
+        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassRepository
@@ -92,7 +93,7 @@ class TeacherProfileServiceTest implements Samples {
 
     @Test
     void should_throw_exception_when_student_not_found() {
-        AddMarkDto addMarkDto = new AddMarkDto("2", SUBJECT_BIOLOGY);
+        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teacherProfileService.addMark(NAME2, addMarkDto, ID_1))
@@ -103,7 +104,7 @@ class TeacherProfileServiceTest implements Samples {
     @Test
     void should_throw_exception_when_school_subject_is_incorrect() {
         Student student = createStudent();
-        AddMarkDto addMarkDto = new AddMarkDto("2", SUBJECT_BIOLOGY);
+        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
@@ -117,7 +118,7 @@ class TeacherProfileServiceTest implements Samples {
     void should_throw_exception_when_teacher_does_not_teach_subject_in_class() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        AddMarkDto addMarkDto = new AddMarkDto("2", SUBJECT_BIOLOGY);
+        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
         when(teacherInClassRepository

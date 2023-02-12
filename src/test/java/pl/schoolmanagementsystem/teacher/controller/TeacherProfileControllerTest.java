@@ -41,6 +41,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.schoolmanagementsystem.common.model.MarkEnum.E_PLUS;
 
 @WebMvcTest(controllers = TeacherProfileController.class)
 @ContextConfiguration(classes = MockMvcConfig5.class)
@@ -92,7 +93,7 @@ class TeacherProfileControllerTest implements Samples {
     @Test
     void should_return_status_no_content_when_adding_marks() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        AddMarkDto addMarkDto = new AddMarkDto("2+", SUBJECT_BIOLOGY);
+        AddMarkDto addMarkDto = new AddMarkDto(E_PLUS, SUBJECT_BIOLOGY);
         String body = objectMapper.writeValueAsString(addMarkDto);
         doNothing().when(teacherProfileService).addMark(anyString(), any(), anyLong());
 

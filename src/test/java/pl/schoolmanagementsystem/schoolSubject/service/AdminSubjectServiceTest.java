@@ -32,7 +32,7 @@ class AdminSubjectServiceTest implements Samples {
     private AdminSubjectService adminSubjectService;
 
     @Test
-    void should_create_subject() {
+    void should_correctly_create_subject() {
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto(SUBJECT_HISTORY);
 
         adminSubjectService.createSchoolSubject(schoolSubjectDto);
@@ -41,7 +41,7 @@ class AdminSubjectServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_subject_already_exists() {
+    void should_throw_exception_when_trying_to_create_subject_but_name_is_already_taken() {
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto(SUBJECT_HISTORY);
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(true);
 
@@ -52,7 +52,7 @@ class AdminSubjectServiceTest implements Samples {
     }
 
     @Test
-    void should_delete_subject() {
+    void should_correctly_delete_subject() {
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(true);
 
         adminSubjectService.deleteSchoolSubject(SUBJECT_BIOLOGY);
@@ -62,7 +62,7 @@ class AdminSubjectServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_subject_doesnt_exist() {
+    void should_throw_exception_when_trying_to_delete_school_subject_but_it_doesnt_exist() {
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> adminSubjectService.deleteSchoolSubject(SUBJECT_BIOLOGY))

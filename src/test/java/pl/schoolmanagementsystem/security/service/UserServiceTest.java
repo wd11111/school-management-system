@@ -33,7 +33,7 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    void should_load_user() {
+    void should_correctly_load_user() {
         Role role = new Role();
         role.setRole(ROLE);
         AppUser appUser = new AppUser(1L, EMAIL, PASSWORD, TOKEN, List.of(role));

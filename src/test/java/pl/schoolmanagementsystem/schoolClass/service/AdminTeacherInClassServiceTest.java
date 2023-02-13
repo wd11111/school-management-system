@@ -40,7 +40,7 @@ class AdminTeacherInClassServiceTest implements Samples {
     private AdminTeacherInClassService adminTeacherInClassService;
 
     @Test
-    void should_add_teacher_to_class_when_teacher_in_class_already_exists() {
+    void should_correctly_add_teacher_to_class_when_its_teacher_in_class_already_exists() {
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolClass schoolClass = createSchoolClass();
         TeacherInClass teacherInClass = new TeacherInClass();
@@ -55,7 +55,7 @@ class AdminTeacherInClassServiceTest implements Samples {
     }
 
     @Test
-    void should_remove_teacher_from_class() {
+    void should_correctly_remove_teacher_from_school_class() {
         AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto = new AddOrRemoveTeacherInClassDto(1L, "biology");
         TeacherInClass teacherInClass = createTeacherInClass();
         Teacher teacher = teacherInClass.getTeacher();
@@ -71,7 +71,7 @@ class AdminTeacherInClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_subject_doesnt_exist_when_trying_to_remove_teacher_from_school_class() {
+    void should_throw_exception_when_trying_to_remove_teacher_from_class_but_given_subject_doesnt_exist() {
         AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto = new AddOrRemoveTeacherInClassDto(1L, "biology");
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(false);
 
@@ -82,7 +82,7 @@ class AdminTeacherInClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_doesnt_exist_when_trying_to_remove_teacher_from_school_class() {
+    void should_throw_exception_when_trying_to_remove_teacher_from_class_but_given_teacher_doesnt_exist() {
         AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto = new AddOrRemoveTeacherInClassDto(1L, "biology");
         when(schoolSubjectRepository.existsById(anyString())).thenReturn(true);
         when(teacherRepository.findByIdAndFetchClasses(anyLong())).thenReturn(Optional.empty());
@@ -93,7 +93,7 @@ class AdminTeacherInClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_doesnt_exist_when_trying_to_remove_teacher_from_school_class() {
+    void should_throw_exception_when_trying_to_remove_teacher_from_class_but_given_school_class_doesnt_exist() {
         AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto = new AddOrRemoveTeacherInClassDto(1L, "biology");
         TeacherInClass teacherInClass = createTeacherInClass();
         Teacher teacher = teacherInClass.getTeacher();

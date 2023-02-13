@@ -27,7 +27,7 @@ class RoleAdderTest implements Samples {
     private RoleAdder roleAdder;
 
     @Test
-    void should_add_roles_to_student() {
+    void should_add_one_role_to_student() {
         when(roleRepository.findById(RoleAdder.ROLE_STUDENT)).thenReturn(Optional.of(createRole()));
         Student student = createStudent2();
 

@@ -60,7 +60,7 @@ class AdminTeacherServiceTest implements Samples {
     private AdminTeacherService adminTeacherService;
 
     @Test
-    void should_create_teacher() {
+    void should_correctly_create_teacher() {
         CreateTeacherDto createTeacherDto = createCreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
         when(userRepository.existsById(any())).thenReturn(false);
@@ -78,7 +78,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_email_is_not_available() {
+    void should_throw_exception_when_trying_to_create_teacher_but_given_email_is_not_available() {
         CreateTeacherDto createTeacherDto = new CreateTeacherDto();
         createTeacherDto.setEmail(NAME);
         when(userRepository.existsById(any())).thenReturn(true);
@@ -91,7 +91,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_subject_is_not_found() {
+    void should_throw_exception_when_trying_to_create_teacher_but_given_taguht_subject_is_not_found() {
         CreateTeacherDto createTeacherDto = new CreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
         when(userRepository.existsById(any())).thenReturn(false);
@@ -105,7 +105,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_delete_teacher() {
+    void should_correctly_delete_teacher() {
         when(teacherRepository.existsById(any())).thenReturn(true);
 
         adminTeacherService.deleteTeacher(ID_1);
@@ -114,7 +114,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_trying_to_delete() {
+    void should_throw_exception_when_trying_to_delete_not_existing_teacher() {
         when(teacherRepository.existsById(any())).thenReturn(false);
 
         assertThatThrownBy(() -> adminTeacherService.deleteTeacher(ID_1))
@@ -140,7 +140,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_trying_to_get_taught_classes() {
+    void should_throw_exception_when_trying_to_get_taught_classes_by_teacher_but_could_not_find_teacher_with_given_id() {
         Pageable pageable = PageRequest.of(0, 10);
         when(teacherRepository.findByIdAndFetchClasses(any())).thenReturn(Optional.empty());
 
@@ -150,7 +150,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_add_subject_to_teacher() {
+    void should_correctly_add_subject_to_teacher() {
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolSubject schoolSubject = createSchoolSubject();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
@@ -167,7 +167,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_not_found_while_adding_subject() {
+    void should_throw_exception_when_trying_to_add_subject_to_not_existing_teacher() {
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.empty());
 
@@ -177,7 +177,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_given_subject_not_found() {
+    void should_throw_exception_when_trying_to_add_subject_to_teacher_but_given_subject_is_not_found() {
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         schoolSubjectDto.setSubjectName(SUBJECT_BIOLOGY);
@@ -190,7 +190,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_already_teaches_subject() {
+    void should_throw_exception_when_trying_to_add_subject_to_teacher_but_teacher_already_teaches_one() {
         Teacher teacher = createTeacherOfBiology();
         SchoolSubject schoolSubject = createSchoolSubject();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();

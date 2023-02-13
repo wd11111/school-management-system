@@ -65,7 +65,7 @@ class TeacherProfileServiceTest implements Samples {
     private TeacherProfileService teacherProfileService;
 
     @Test
-    void should_return_taught_classes_by_teacher() {
+    void should_correctly_return_taught_classes_by_teacher() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<SubjectAndClassDto> expectedList = new PageImpl<>(listOfTaughtClasses());
         when(teacherRepository.findTaughtClassesByTeacher(anyString(), any())).thenReturn(expectedList);
@@ -92,7 +92,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_student_not_found() {
+    void should_throw_exception_when_trying_to_add_mark_to_student_but_one_doesnt_exist() {
         AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -102,7 +102,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_subject_is_incorrect() {
+    void should_throw_exception_when_trying_to_add_mark_to_student_but_given_subject_is_not_found() {
         Student student = createStudent();
         AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
@@ -115,7 +115,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_does_not_teach_subject_in_class() {
+    void should_throw_exception_when_teacher_is_trying_to_add_mark_in_class_it_doesnt_teach() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
         AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
@@ -132,7 +132,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_return_all_students_in_class_with_marks_of_subject() {
+    void should_return_all_students_in_class_with_marks_of_given_subject() {
         SchoolClass schoolClass = createSchoolClass();
         schoolClass.getStudents().addAll(List.of(createStudent(), createStudent2()));
         when(subjectRepository.existsById(anyString())).thenReturn(true);
@@ -164,7 +164,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_subject_doesnt_exist() {
+    void should_throw_exception_when_trying_to_get_list_of_students_of_given_class_with_marks_of_given_subject_but_given_subject_doesnt_exist() {
         when(subjectRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
@@ -173,7 +173,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_doesnt_exist() {
+    void should_throw_exception_when_trying_to_get_list_of_students_of_given_class_with_marks_of_given_subject_but_given_class_doesnt_exist() {
         when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.empty());
 
@@ -183,7 +183,7 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_does_not_teach_subject_in_class_while_getting_students() {
+    void should_throw_exception_when_teacher_trying_to_get_students_of_class_it_doesnt_teach() {
         when(subjectRepository.existsById(anyString())).thenReturn(true);
         when(classRepository.findClassAndFetchStudentsWithMarks(any())).thenReturn(Optional.of(createSchoolClass()));
         when(teacherInClassRepository

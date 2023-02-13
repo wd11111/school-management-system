@@ -20,8 +20,10 @@ public class BaseContainerTest {
 
     static final PostgreSQLContainer<?> postgreSQLContainer;
 
+    public static final String POSTGRES_DOCKER_IMAGE = "postgres:14.1";
+
     static {
-        postgreSQLContainer = new PostgreSQLContainer<>("postgres:14.1")
+        postgreSQLContainer = new PostgreSQLContainer<>(POSTGRES_DOCKER_IMAGE)
                 .withDatabaseName(POSTGRES)
                 .withPassword(POSTGRES)
                 .withUsername(POSTGRES)

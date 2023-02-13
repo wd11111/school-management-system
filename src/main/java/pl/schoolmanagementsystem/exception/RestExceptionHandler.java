@@ -8,7 +8,6 @@ import pl.schoolmanagementsystem.common.exception.*;
 import pl.schoolmanagementsystem.exception.dto.ErrorResponse;
 import pl.schoolmanagementsystem.security.exception.AuthenticationException;
 import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -48,7 +47,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = {
             CouldNotConfirmUserException.class,
-            PasswordsDoNotMatchException.class,
             MarkNotInRangeException.class,
             FilterException.class,
     })

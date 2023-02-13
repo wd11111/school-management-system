@@ -10,7 +10,6 @@ import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.security.dto.PasswordDto;
 import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
 import static pl.schoolmanagementsystem.common.email.token.TokenGenerator.generateToken;
 
@@ -24,9 +23,6 @@ public class AccountService {
 
     @Transactional
     public void confirmPassword(PasswordDto passwordDto, String token) {
-        if (!doPasswordsMatch(passwordDto)) {
-            throw new PasswordsDoNotMatchException();
-        }
         userRepository.findByToken(token)
                 .ifPresentOrElse(appUser -> {
                             appUser.setPassword(passwordEncoder.encode(passwordDto.password()));
@@ -47,7 +43,4 @@ public class AccountService {
         userRepository.save(user);
     }
 
-    private boolean doPasswordsMatch(PasswordDto passwordDto) {
-        return passwordDto.password().equals(passwordDto.confirmPassword());
-    }
 }

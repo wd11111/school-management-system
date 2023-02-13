@@ -12,7 +12,6 @@ import pl.schoolmanagementsystem.common.model.AppUser;
 import pl.schoolmanagementsystem.common.repository.AppUserRepository;
 import pl.schoolmanagementsystem.security.dto.PasswordDto;
 import pl.schoolmanagementsystem.security.exception.CouldNotConfirmUserException;
-import pl.schoolmanagementsystem.security.exception.PasswordsDoNotMatchException;
 
 import java.util.Optional;
 
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.*;
 class AccountServiceTest {
 
     public static final String PASSWORD = "aaa";
-    public static final String NOT_MATCHING_PASSWORD = "bbb";
     public static final String TOKEN = "abc";
     public static final String EMAIL = "Email@";
 
@@ -51,17 +49,6 @@ class AccountServiceTest {
         accountService.confirmPassword(passwordDto, TOKEN);
 
         assertThat(appUser.getPassword()).isEqualTo(PASSWORD);
-    }
-
-    @Test
-    void should_throw_exception_when_trying_to_confirm_account_but_given_passwords_dont_match() {
-        AppUser appUser = new AppUser();
-        PasswordDto passwordDto = new PasswordDto(PASSWORD, NOT_MATCHING_PASSWORD);
-
-        assertThatThrownBy(() -> accountService.confirmPassword(passwordDto, TOKEN))
-                .isInstanceOf(PasswordsDoNotMatchException.class)
-                .hasMessage("Passwords do not match!");
-        assertThat(appUser.getPassword()).isNull();
     }
 
     @Test

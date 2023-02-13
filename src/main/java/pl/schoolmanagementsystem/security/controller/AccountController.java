@@ -16,7 +16,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/confirm/{token}")
-    public void confirm(@PathVariable String token, @RequestBody PasswordDto passwordDto) {
+    public void confirm(@PathVariable String token, @RequestBody @Valid PasswordDto passwordDto) {
         accountService.confirmPassword(passwordDto, token);
     }
 

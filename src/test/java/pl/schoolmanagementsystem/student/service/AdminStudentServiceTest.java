@@ -50,7 +50,7 @@ class AdminStudentServiceTest implements Samples {
     private AdminStudentService adminStudentService;
 
     @Test
-    void should_create_student() {
+    void should_correctly_create_student() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().schoolClass(CLASS_1A).build();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.existsById(anyString())).thenReturn(true);
@@ -64,7 +64,7 @@ class AdminStudentServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_email_is_not_available() {
+    void should_throw_exception_when_trying_to_create_student_but_given_email_is_not_available() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).build();
         when(userRepository.existsById(any())).thenReturn(true);
 
@@ -76,7 +76,7 @@ class AdminStudentServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_not_found() {
+    void should_throw_exception_when_trying_to_create_student_but_given_school_class_doesnt_exist() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).schoolClass(CLASS_3B).build();
         when(userRepository.existsById(any())).thenReturn(false);
         when(schoolClassRepository.existsById(anyString())).thenReturn(false);
@@ -89,7 +89,7 @@ class AdminStudentServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_deleting_not_existing_student() {
+    void should_throw_exception_when_trying_to_delete_not_existing_student() {
         when(studentRepository.existsById(anyLong())).thenReturn(false);
 
         assertThatThrownBy(() -> adminStudentService.deleteStudent(ID_2))

@@ -60,7 +60,7 @@ class AdminClassServiceTest implements Samples {
     private AdminClassService adminClassService;
 
     @Test
-    void should_create_school_class() {
+    void should_correctly_create_school_class() {
         SchoolClass schoolClass = new SchoolClass();
         schoolClass.setName(CLASS_NAME);
         when(schoolClassRepository.existsById(anyString())).thenReturn(false);
@@ -73,7 +73,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_already_exists() {
+    void should_throw_exception_when_creating_school_class_but_name_already_taken() {
         SchoolClassDto schoolClassDto = new SchoolClassDto(CLASS_NAME);
         when(schoolClassRepository.existsById(anyString())).thenReturn(true);
 
@@ -84,7 +84,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_doesnt_exist() {
+    void should_throw_exception_when_trying_to_get_taught_subjects_in_class_but_class_doesnt_exist() {
         when(schoolClassRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> adminClassService.getTaughtSubjectsInClass(CLASS_NAME))
@@ -93,7 +93,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_add_teacher_to_school_class() {
+    void should_correctly_add_teacher_to_school_class() {
         Teacher teacher = createTeacherOfBiology();
         TeacherInClass teacherInClass = new TeacherInClass();
         teacherInClass.setTeacher(teacher);
@@ -111,7 +111,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_doesnt_exist() {
+    void should_throw_exception_when_trying_to_add_teacher_to_class_but_such_teacher_doesnt_exist() {
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.empty());
 
@@ -122,7 +122,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_doesnt_exist_while_adding_teacher() {
+    void should_throw_exception_when_trying_to_add_teacher_to_class_but_such_school_class_doesnt_exist() {
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
@@ -134,7 +134,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_subject_doesnt_exist_while_adding_teacher() {
+    void should_throw_exception_when_trying_to_add_teacher_to_class_but_given_subject_doesnt_exist() {
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
@@ -147,7 +147,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_teacher_doesnt_teach_subject() {
+    void should_throw_exception_when_trying_to_add_teacher_to_school_class_but_teacher_doesnt_teach_given_subject() {
         Teacher teacherWithOutSubjects = createTeacherNoSubjectsTaught();
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
@@ -161,7 +161,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_already_has_teacher_of_subject() {
+    void should_throw_exception_when_trying_to_add_teacher_to_school_class_but_the_class_already_has_teacher_of_subject() {
         Teacher teacherWithOutSubjects = createTeacherOfBiology();
         SchoolClass schoolClassWithTeacher = createSchoolClassWithTeacher();
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
@@ -176,7 +176,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_doesnt_exist_while_while_getting_students() {
+    void should_throw_exception_when_school_class_doesnt_exist_while_trying_to_get_all_students_from_class() {
         when(schoolClassRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> adminClassService.getAllStudentsInClass(CLASS_1A))
@@ -185,7 +185,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_delete_school_class() {
+    void should_correctly_delete_school_class() {
         when(schoolClassRepository.existsById(anyString())).thenReturn(true);
 
         adminClassService.deleteSchoolClass(CLASS_1A);
@@ -195,7 +195,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_school_class_doesnt_exist_while_while_deleting() {
+    void should_throw_exception_when_trying_to_remove_not_existing_school_class() {
         when(schoolClassRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> adminClassService.deleteSchoolClass(CLASS_1A))

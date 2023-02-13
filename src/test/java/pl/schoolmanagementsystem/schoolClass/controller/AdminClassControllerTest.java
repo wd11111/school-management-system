@@ -115,7 +115,7 @@ class AdminClassControllerTest implements Samples {
     }
 
     @Test
-    void should_return_status_bad_request_when_body_doesnt_pass_validation() throws Exception {
+    void should_return_bad_request_when_post_for_classes_and_body_doesnt_pass_validation() throws Exception {
         String body = objectMapper.writeValueAsString(new SchoolClassDto());
 
         mockMvc.perform(post("/admin/classes")
@@ -145,7 +145,7 @@ class AdminClassControllerTest implements Samples {
     }
 
     @Test
-    void should_return_status_bad_request_when_adding_teacher_to_class_doesnt_pass_validation() throws Exception {
+    void should_return_status_bad_request_when_adding_teacher_to_class_and_doesnt_pass_validation() throws Exception {
         String body = objectMapper.writeValueAsString(new AddOrRemoveTeacherInClassDto());
 
         mockMvc.perform(post("/admin/classes/1a/teachers")

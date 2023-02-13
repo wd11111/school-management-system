@@ -42,7 +42,7 @@ class AccountServiceTest {
     private AccountService accountService;
 
     @Test
-    void should_confirm_account() {
+    void should_correctly_confirm_account_when_passwords_match_and_token_is_correct() {
         AppUser appUser = new AppUser();
         PasswordDto passwordDto = new PasswordDto(PASSWORD, PASSWORD);
         when(userRepository.findByToken(anyString())).thenReturn(Optional.of(appUser));
@@ -54,7 +54,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void should_throw_exception_when_passwords_dont_match() {
+    void should_throw_exception_when_trying_to_confirm_account_but_given_passwords_dont_match() {
         AppUser appUser = new AppUser();
         PasswordDto passwordDto = new PasswordDto(PASSWORD, NOT_MATCHING_PASSWORD);
 
@@ -65,7 +65,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void should_throw_exception_when_user_not_found() {
+    void should_throw_exception_when_trying_to_confirm_account_but_user_not_found() {
         AppUser appUser = new AppUser();
         PasswordDto passwordDto = new PasswordDto(PASSWORD, PASSWORD);
         when(userRepository.findByToken(anyString())).thenReturn(Optional.empty());
@@ -90,7 +90,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void should_throw_exception_when_trying_to_rest_password() {
+    void should_throw_exception_when_trying_to_rest_password_but_given_email_doesnt_exist() {
         when(userRepository.findByUserEmail(EMAIL)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> accountService.resetPassword(EMAIL))

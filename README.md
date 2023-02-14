@@ -4,6 +4,12 @@
 
 - Administrators can add new classes, subjects, teachers, and students. When a new student or teacher is created, a user entity is generated and an email is sent to confirm the account. The account remains inactive until the confirmation using token sent with email.
 
+# How to run
+- Make sure you have Postgres installed on your machine or have access to a Postgres server. You can use docker container (docker-compose file in docker folder)
+- Open a terminal in the root directory of the project.
+- Run the command mvn package to build the project and generate the executable jar file.
+- Finally, run the command "java -jar .\target\schoolmanagementsystem-0.0.1-SNAPSHOT.jar --spring.profiles.active=local" to start the application.
+
 # Technologies used across the project:
 Backend:
 - Java <img width="25px" src="https://cdn-icons-png.flaticon.com/512/226/226777.png"/>

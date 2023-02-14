@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = StudentProfileController.class)
-@ContextConfiguration(classes = MockMvcConfig6.class)
+@ContextConfiguration(classes = MockMvcConfigProfile.class)
 @AutoConfigureMockMvc(addFilters = false)
 class StudentProfileControllerTest implements Samples {
 
@@ -102,7 +102,7 @@ class StudentProfileControllerTest implements Samples {
     }
 }
 
-class MockMvcConfig6 {
+class MockMvcConfigProfile {
 
     @Bean
     SecurityConfig securityConfig() {

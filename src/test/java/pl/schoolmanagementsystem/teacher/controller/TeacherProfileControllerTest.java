@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static pl.schoolmanagementsystem.common.model.MarkEnum.E_PLUS;
 
 @WebMvcTest(controllers = TeacherProfileController.class)
-@ContextConfiguration(classes = MockMvcConfig5.class)
+@ContextConfiguration(classes = MockMvcConfigProfile.class)
 @AutoConfigureMockMvc(addFilters = false)
 class TeacherProfileControllerTest implements Samples {
 
@@ -123,7 +123,7 @@ class TeacherProfileControllerTest implements Samples {
 
 }
 
-class MockMvcConfig5 {
+class MockMvcConfigProfile {
 
     @Bean
     SecurityConfig securityConfig() {

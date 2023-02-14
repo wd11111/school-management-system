@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AdminStudentController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-@ContextConfiguration(classes = MockMvcConfig3.class)
+@ContextConfiguration(classes = MockMvcConfigAdmin.class)
 class AdminStudentControllerTest implements Samples {
 
     @MockBean
@@ -92,7 +92,7 @@ class AdminStudentControllerTest implements Samples {
     }
 }
 
-class MockMvcConfig3 {
+class MockMvcConfigAdmin {
 
     @Bean
     ValidationErrorHandler validationErrorHandler() {

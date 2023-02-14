@@ -1,10 +1,8 @@
-Teacher:<br>
-Teachers can teach many subjects, add marks to students from classes in which they teach the subject which is able due to TeacherInClass entity which is automatically created when adding teacher to school class.
-If teacher already has it's TeacherInClass counterpart, it is added to the class.<br>
-Student:<br>
-Students can view their marks, average marks grouped by subject and list of teachers of subjects in class they belong to.
-Admin: <br>
-Admins can add new classes, subjects, teachers and students. After creating a student or teacher, a user entity is created, an email is sent, and the account is not available until an email is not confirmed.
+- Teachers are able to teach various subjects and assign marks to students in the classes they teach. When a teacher is added to a school class, a corresponding TeacherInClass entity is automatically created. If the teacher already has a TeacherInClass entity, it is simply added to the class.
+
+- Students can view their marks, average marks grouped by subject, and a list of teachers who teach subjects in their class.
+
+- Administrators can add new classes, subjects, teachers, and students. When a new student or teacher is created, a user entity is generated and an email is sent to confirm the account. The account remains inactive until the confirmation using token sent with email.
 # How to run:
 To run the application it is necessary to have running postgreSQL docker container (you can use docker-compose file in docker folder) and run application with "prod" profile active
 # Technologies used across the project:
@@ -32,7 +30,8 @@ Other:
 - Git <img width="23px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Git_icon.svg/1024px-Git_icon.svg.png"/>
 
 # Endpoints:
-![swagger](https://user-images.githubusercontent.com/112166269/209846352-1ff07d10-eb16-45e0-b4de-d34625053b1a.png)
+![localhost_8080_swagger-ui html](https://user-images.githubusercontent.com/112166269/218687664-561c953a-7f83-4fab-82fa-f2fb5dd7be4f.png)
+
 
 
 # Database diagram:

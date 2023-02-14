@@ -46,19 +46,19 @@ public class AdminTeacherService {
     private final TeacherMapper teacherMapper;
 
     @Transactional
-    public TeacherDto createTeacher(CreateTeacherDto createTeacherDto) {
-        validateEmailIsAvailable(createTeacherDto.getEmail());
+    public TeacherDto createTeacher(CreateTeacherDto dto) {
+        validateEmailIsAvailable(dto.getEmail());
 
-        Set<SchoolSubject> taughtSubjects = schoolSubjectRepository.findAllByNameIn(createTeacherDto.getTaughtSubjects());
-        validateAllSubjectNamesAreCorrect(taughtSubjects, createTeacherDto.getTaughtSubjects());
+        Set<SchoolSubject> taughtSubjects = schoolSubjectRepository.findAllByNameIn(dto.getTaughtSubjects());
+        validateAllSubjectNamesAreCorrect(taughtSubjects, dto.getTaughtSubjects());
 
-        AppUser appUser = createAppUser(createTeacherDto.getEmail());
-        Teacher teacher = teacherMapper.mapCreateDtoToEntity(createTeacherDto, taughtSubjects, appUser);
-        roleAdder.addRoles(teacher, createTeacherDto.isAdmin());
+        AppUser appUser = createAppUser(dto.getEmail());
+        Teacher teacher = teacherMapper.mapCreateDtoToEntity(dto, taughtSubjects, appUser);
+        roleAdder.addRoles(teacher, dto.isAdmin());
 
         teacherRepository.saveAndFlush(teacher);
 
-        emailSender.sendEmail(createTeacherDto.getEmail(), teacher.getAppUser().getToken());
+        emailSender.sendEmail(dto.getEmail(), teacher.getAppUser().getToken());
         return teacherMapper.mapEntityToDto(teacher);
     }
 
@@ -85,10 +85,10 @@ public class AdminTeacherService {
     }
 
     @Transactional
-    public TeacherDto addSubjectToTeacher(Long teacherId, SchoolSubjectDto schoolSubjectDto) {
+    public TeacherDto addSubjectToTeacher(Long teacherId, SchoolSubjectDto subjectDto) {
         Teacher teacher = teacherRepository.findByIdAndFetchSubjects(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
-        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(schoolSubjectDto.getSubjectName())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(schoolSubjectDto.getSubjectName()));
+        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(subjectDto.getSubjectName())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(subjectDto.getSubjectName()));
 
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
 

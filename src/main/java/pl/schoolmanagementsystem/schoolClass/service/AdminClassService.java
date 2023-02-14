@@ -46,13 +46,13 @@ public class AdminClassService {
         return schoolClassRepository.findAllClasses(pageable);
     }
 
-    public SchoolClass createSchoolClass(SchoolClassDto schoolClassDto) {
-        String schoolClassName = schoolClassDto.getSchoolClassName().toUpperCase();
+    public SchoolClass createSchoolClass(SchoolClassDto dto) {
+        String schoolClassName = dto.getSchoolClassName().toUpperCase();
 
         if (doesSchoolClassExist(schoolClassName)) {
             throw new ClassAlreadyExistsException(schoolClassName);
         }
-        return schoolClassRepository.save(schoolClassMapper.mapDtoToEntity(schoolClassDto));
+        return schoolClassRepository.save(schoolClassMapper.mapDtoToEntity(dto));
     }
 
     public List<TaughtSubjectDto> getTaughtSubjectsInClass(String schoolClassName) {
@@ -62,16 +62,13 @@ public class AdminClassService {
         return schoolSubjectRepository.findTaughtSubjectsInClass(schoolClassName);
     }
 
-    public TeacherInClassDto addTeacherToSchoolClass(AddOrRemoveTeacherInClassDto addTeacherDto, String schoolClassName) {
-        Long teacherId = addTeacherDto.getTeacherId();
-        String taughtSubjectName = addTeacherDto.getTaughtSubject();
-
-        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(teacherId)
-                .orElseThrow(() -> new NoSuchTeacherException(teacherId));
+    public TeacherInClassDto addTeacherToSchoolClass(AddOrRemoveTeacherInClassDto dto, String schoolClassName) {
+        Teacher teacher = teacherRepository.findByIdAndFetchSubjects(dto.getTeacherId())
+                .orElseThrow(() -> new NoSuchTeacherException(dto.getTeacherId()));
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
-        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(taughtSubjectName)
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(taughtSubjectName));
+        SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(dto.getTaughtSubject())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(dto.getTaughtSubject()));
 
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);

@@ -20,11 +20,11 @@ public class AdminSubjectService {
 
     private final SchoolSubjectMapper schoolSubjectMapper;
 
-    public SchoolSubject createSchoolSubject(SchoolSubjectDto schoolSubjectDto) {
-        if (doesSubjectExist(schoolSubjectDto.getSubjectName())) {
-            throw new SubjectAlreadyExistsException(schoolSubjectDto.getSubjectName());
+    public SchoolSubject createSchoolSubject(SchoolSubjectDto dto) {
+        if (doesSubjectExist(dto.getSubjectName())) {
+            throw new SubjectAlreadyExistsException(dto.getSubjectName());
         }
-        return schoolSubjectRepository.save(schoolSubjectMapper.mapDtoToEntity(schoolSubjectDto));
+        return schoolSubjectRepository.save(schoolSubjectMapper.mapDtoToEntity(dto));
     }
 
     public Page<SchoolSubjectDto> getAllSubjects(Pageable pageable) {

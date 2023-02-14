@@ -42,17 +42,17 @@ public class AdminStudentService {
     private final StudentSearcher studentSearcher;
 
     @Transactional
-    public StudentWithClassDto createStudent(CreateStudentDto createStudentDto) {
-        validateEmailIsAvailable(createStudentDto.getEmail());
-        validateClassExists(createStudentDto.getSchoolClass());
+    public StudentWithClassDto createStudent(CreateStudentDto dto) {
+        validateEmailIsAvailable(dto.getEmail());
+        validateClassExists(dto.getSchoolClass());
 
-        AppUser appUser = AppUserService.createAppUser(createStudentDto.getEmail());
-        Student student = studentMapper.mapCreateDtoToEntity(createStudentDto, appUser);
+        AppUser appUser = AppUserService.createAppUser(dto.getEmail());
+        Student student = studentMapper.mapCreateDtoToEntity(dto, appUser);
         roleAdder.addRoles(student);
 
         studentRepository.saveAndFlush(student);
 
-        emailSender.sendEmail(createStudentDto.getEmail(), student.getAppUser().getToken());
+        emailSender.sendEmail(dto.getEmail(), student.getAppUser().getToken());
         return studentMapper.mapEntityToDtoWithSchoolClass(student);
     }
 

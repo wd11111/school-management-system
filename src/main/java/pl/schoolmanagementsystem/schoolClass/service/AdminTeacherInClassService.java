@@ -36,19 +36,16 @@ public class AdminTeacherInClassService {
     }
 
     @Transactional
-    public void removeTeacherFromSchoolClass(AddOrRemoveTeacherInClassDto removeTeacherDto, String schoolClassName) {
-        Long teacherId = removeTeacherDto.getTeacherId();
-        String subjectName = removeTeacherDto.getTaughtSubject();
+    public void removeTeacherFromSchoolClass(AddOrRemoveTeacherInClassDto dto, String schoolClassName) {
+        validateSchoolSubjectExists(dto.getTaughtSubject());
 
-        validateSchoolSubjectExists(subjectName);
-
-        Teacher teacher = teacherRepository.findByIdAndFetchClasses(teacherId)
-                .orElseThrow(() -> new NoSuchTeacherException(teacherId));
+        Teacher teacher = teacherRepository.findByIdAndFetchClasses(dto.getTeacherId())
+                .orElseThrow(() -> new NoSuchTeacherException(dto.getTeacherId()));
         SchoolClass schoolClass = classRepository.findById(schoolClassName)
                 .orElseThrow(() -> new NoSuchSchoolClassException(schoolClassName));
 
-        TeacherInClass teacherInClass = findTeacherOfSubject(teacher, subjectName);
-        validateTeacherTeachesClass(teacherInClass, schoolClass, subjectName);
+        TeacherInClass teacherInClass = findTeacherOfSubject(teacher, dto.getTaughtSubject());
+        validateTeacherTeachesClass(teacherInClass, schoolClass, dto.getTaughtSubject());
 
         teacherInClass.removeFromClass(schoolClass);
     }

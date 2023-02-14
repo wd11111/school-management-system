@@ -32,6 +32,7 @@ class AccountControllerTest {
 
     public static final String PASSWORD = "password";
     public static final String NOT_MATCHING_PASSWORD = "badPassword";
+
     @MockBean
     private AccountService accountService;
 
@@ -77,7 +78,7 @@ class AccountControllerTest {
 
     @Test
     void should_return_status_ok_when_post_for_reset_password() throws Exception {
-        EmailDto emailDto = new EmailDto("email@gmail.com");
+        EmailDto emailDto = new EmailDto("exampleForTest@gmail.com");
         String requestBody = objectMapper.writeValueAsString(emailDto);
         doNothing().when(accountService).resetPassword(anyString());
 

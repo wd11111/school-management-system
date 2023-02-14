@@ -3,8 +3,7 @@
 - Students can view their marks, average marks grouped by subject, and a list of teachers who teach subjects in their class.
 
 - Administrators can add new classes, subjects, teachers, and students. When a new student or teacher is created, a user entity is generated and an email is sent to confirm the account. The account remains inactive until the confirmation using token sent with email.
-# How to run:
-To run the application it is necessary to have running postgreSQL docker container (you can use docker-compose file in docker folder) and run application with "prod" profile active
+
 # Technologies used across the project:
 Backend:
 - Java <img width="25px" src="https://cdn-icons-png.flaticon.com/512/226/226777.png"/>

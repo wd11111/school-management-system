@@ -54,7 +54,7 @@ public class AdminClassController {
     }
 
     @DeleteMapping("/{className}/teachers")
-    public void removeTeacherFromSchoolClass(@PathVariable String className, AddOrRemoveTeacherInClassDto removeTeacherDto) {
+    public void removeTeacherFromSchoolClass(@PathVariable String className, @RequestBody AddOrRemoveTeacherInClassDto removeTeacherDto) {
         teacherInClassService.removeTeacherFromSchoolClass(removeTeacherDto, className.toUpperCase());
     }
 

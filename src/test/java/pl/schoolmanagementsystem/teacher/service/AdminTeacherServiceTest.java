@@ -63,7 +63,7 @@ class AdminTeacherServiceTest implements Samples {
     void should_correctly_create_teacher() {
         CreateTeacherDto createTeacherDto = createCreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
-        when(userRepository.existsById(any())).thenReturn(false);
+        when(userRepository.existsByEmail(any())).thenReturn(false);
         when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Set.of(createSchoolSubject()));
         doNothing().when(roleAdder).addRoles(any(), anyBoolean());
         when(teacherRepository.saveAndFlush(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
@@ -81,7 +81,7 @@ class AdminTeacherServiceTest implements Samples {
     void should_throw_exception_when_trying_to_create_teacher_but_given_email_is_not_available() {
         CreateTeacherDto createTeacherDto = new CreateTeacherDto();
         createTeacherDto.setEmail(NAME);
-        when(userRepository.existsById(any())).thenReturn(true);
+        when(userRepository.existsByEmail(any())).thenReturn(true);
 
         assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
@@ -94,7 +94,7 @@ class AdminTeacherServiceTest implements Samples {
     void should_throw_exception_when_trying_to_create_teacher_but_given_taguht_subject_is_not_found() {
         CreateTeacherDto createTeacherDto = new CreateTeacherDto();
         createTeacherDto.setTaughtSubjects(new HashSet<>(Set.of(SUBJECT_BIOLOGY)));
-        when(userRepository.existsById(any())).thenReturn(false);
+        when(userRepository.existsByEmail(any())).thenReturn(false);
         when(schoolSubjectRepository.findAllByNameIn(any())).thenReturn(Collections.emptySet());
 
         assertThatThrownBy(() -> adminTeacherService.createTeacher(createTeacherDto))

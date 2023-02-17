@@ -52,7 +52,7 @@ class AdminStudentServiceTest implements Samples {
     @Test
     void should_correctly_create_student() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().schoolClass(CLASS_1A).build();
-        when(userRepository.existsById(any())).thenReturn(false);
+        when(userRepository.existsByEmail(any())).thenReturn(false);
         when(schoolClassRepository.existsById(anyString())).thenReturn(true);
         doNothing().when(roleAdder).addRoles(any());
         when(studentRepository.saveAndFlush(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
@@ -66,7 +66,7 @@ class AdminStudentServiceTest implements Samples {
     @Test
     void should_throw_exception_when_trying_to_create_student_but_given_email_is_not_available() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).build();
-        when(userRepository.existsById(any())).thenReturn(true);
+        when(userRepository.existsByEmail(any())).thenReturn(true);
 
         assertThatThrownBy(() -> adminStudentService.createStudent(createStudentDto))
                 .isInstanceOf(EmailAlreadyInUseException.class)
@@ -78,7 +78,7 @@ class AdminStudentServiceTest implements Samples {
     @Test
     void should_throw_exception_when_trying_to_create_student_but_given_school_class_doesnt_exist() {
         CreateStudentDto createStudentDto = CreateStudentDto.builder().email(SURNAME).schoolClass(CLASS_3B).build();
-        when(userRepository.existsById(any())).thenReturn(false);
+        when(userRepository.existsByEmail(any())).thenReturn(false);
         when(schoolClassRepository.existsById(anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> adminStudentService.createStudent(createStudentDto))

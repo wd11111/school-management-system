@@ -23,11 +23,11 @@ public class AdminTeacherInClassService {
 
     private final SchoolSubjectRepository schoolSubjectRepository;
 
-    public TeacherInClass addTeacherToClass(Teacher teacher, String schoolSubject, SchoolClass schoolClass) {
+    public TeacherInClass assignTeacherToClass(Teacher teacher, String schoolSubject, SchoolClass schoolClass) {
         TeacherInClass teacherInClass = teacherInClassRepository.findByTeacherIdAndTaughtSubject(teacher.getId(), schoolSubject)
                 .orElseGet(TeacherInClass::new);
 
-        teacherInClass.getTaughtClasses().add(schoolClass);
+        teacherInClass.assignToClass(schoolClass);
         if (hasTeacherInClassBeenJustCreated(teacherInClass)) {
             teacherInClass.setTeacher(teacher);
             teacherInClass.setTaughtSubject(schoolSubject);

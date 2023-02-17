@@ -62,7 +62,7 @@ public class AdminClassService {
         return schoolSubjectRepository.findTaughtSubjectsInClass(schoolClassName);
     }
 
-    public TeacherInClassDto addTeacherToSchoolClass(AddOrRemoveTeacherInClassDto dto, String schoolClassName) {
+    public TeacherInClassDto assignTeacherToSchoolClass(AddOrRemoveTeacherInClassDto dto, String schoolClassName) {
         Teacher teacher = teacherRepository.findByIdAndFetchSubjects(dto.getTeacherId())
                 .orElseThrow(() -> new NoSuchTeacherException(dto.getTeacherId()));
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassName)
@@ -73,7 +73,7 @@ public class AdminClassService {
         validateTeacherTeachesSubject(teacher, schoolSubject);
         validateClassDoesntAlreadyHaveTeacher(schoolClass, schoolSubject);
 
-        TeacherInClass teacherInClass = teacherInClassService.addTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
+        TeacherInClass teacherInClass = teacherInClassService.assignTeacherToClass(teacher, schoolSubject.getName(), schoolClass);
         return teacherInClassMapper.mapEntityToDto(teacherInClass);
     }
 

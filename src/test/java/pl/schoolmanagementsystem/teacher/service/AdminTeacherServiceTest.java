@@ -150,7 +150,7 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_correctly_add_subject_to_teacher() {
+    void should_correctly_assign_subject_to_teacher() {
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolSubject schoolSubject = createSchoolSubject();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
@@ -158,7 +158,7 @@ class AdminTeacherServiceTest implements Samples {
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
 
-        TeacherDto result = adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto);
+        TeacherDto result = adminTeacherService.assignSubjectToTeacher(ID_1, schoolSubjectDto);
 
         assertThat(teacher.getTaughtSubjects()).hasSize(1);
         assertThat(result).usingRecursiveComparison()
@@ -167,30 +167,30 @@ class AdminTeacherServiceTest implements Samples {
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_subject_to_not_existing_teacher() {
+    void should_throw_exception_when_trying_to_assign_subject_to_not_existing_teacher() {
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
+        assertThatThrownBy(() -> adminTeacherService.assignSubjectToTeacher(ID_1, schoolSubjectDto))
                 .isInstanceOf(NoSuchTeacherException.class)
                 .hasMessage("Teacher with such an id does not exist: " + ID_1);
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_subject_to_teacher_but_given_subject_is_not_found() {
+    void should_throw_exception_when_trying_to_assign_subject_to_teacher_but_given_subject_is_not_found() {
         Teacher teacher = createTeacherNoSubjectsTaught();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         schoolSubjectDto.setSubjectName(SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
+        assertThatThrownBy(() -> adminTeacherService.assignSubjectToTeacher(ID_1, schoolSubjectDto))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
                 .hasMessage("Such a school subject does not exist: biology");
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_subject_to_teacher_but_teacher_already_teaches_one() {
+    void should_throw_exception_when_trying_to_assign_subject_to_teacher_but_teacher_already_teaches_one() {
         Teacher teacher = createTeacherOfBiology();
         SchoolSubject schoolSubject = createSchoolSubject();
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
@@ -198,7 +198,7 @@ class AdminTeacherServiceTest implements Samples {
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
 
-        assertThatThrownBy(() -> adminTeacherService.addSubjectToTeacher(ID_1, schoolSubjectDto))
+        assertThatThrownBy(() -> adminTeacherService.assignSubjectToTeacher(ID_1, schoolSubjectDto))
                 .isInstanceOf(TeacherAlreadyTeachesSubjectException.class)
                 .hasMessage("Alicja Kowalczyk already teaches biology");
         assertThat(teacher.getTaughtSubjects()).hasSize(1);

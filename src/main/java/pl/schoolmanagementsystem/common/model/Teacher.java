@@ -34,7 +34,7 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private Set<TeacherInClass> teacherInClasses = new HashSet<>();
 
-    public void addSubject(SchoolSubject schoolSubject) {
+    public void assignSubject(SchoolSubject schoolSubject) {
         taughtSubjects.add(schoolSubject);
     }
 }

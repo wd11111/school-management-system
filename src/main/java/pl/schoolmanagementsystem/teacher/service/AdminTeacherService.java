@@ -85,14 +85,14 @@ public class AdminTeacherService {
     }
 
     @Transactional
-    public TeacherDto addSubjectToTeacher(Long teacherId, SchoolSubjectDto subjectDto) {
+    public TeacherDto assignSubjectToTeacher(Long teacherId, SchoolSubjectDto subjectDto) {
         Teacher teacher = teacherRepository.findByIdAndFetchSubjects(teacherId).orElseThrow(() -> new NoSuchTeacherException(teacherId));
         SchoolSubject schoolSubject = schoolSubjectRepository.findByNameIgnoreCase(subjectDto.getSubjectName())
                 .orElseThrow(() -> new NoSuchSchoolSubjectException(subjectDto.getSubjectName()));
 
         validateTeacherDoesntAlreadyTeachSubject(teacher, schoolSubject);
 
-        teacher.addSubject(schoolSubject);
+        teacher.assignSubject(schoolSubject);
         return teacherMapper.mapEntityToDto(teacher);
     }
 

@@ -28,6 +28,13 @@ public class TeacherInClass {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<SchoolClass> taughtClasses = new HashSet<>();
 
+    public void assignToClass(SchoolClass schoolClass) {
+        if (taughtClasses.contains(schoolClass)) {
+            throw new IllegalArgumentException();
+        }
+        taughtClasses.add(schoolClass);
+    }
+
     public void removeFromClass(SchoolClass schoolClass) {
         if (!taughtClasses.contains(schoolClass)) {
             throw new IllegalArgumentException();

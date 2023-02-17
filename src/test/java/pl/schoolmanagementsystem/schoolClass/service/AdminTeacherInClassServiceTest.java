@@ -48,7 +48,7 @@ class AdminTeacherInClassServiceTest implements Samples {
         teacherInClass.setTaughtSubject(SUBJECT_BIOLOGY);
         when(teacherInClassRepository.findByTeacherIdAndTaughtSubject(any(), any())).thenReturn(Optional.of(teacherInClass));
 
-        adminTeacherInClassService.addTeacherToClass(teacher, SUBJECT_BIOLOGY, schoolClass);
+        adminTeacherInClassService.assignTeacherToClass(teacher, SUBJECT_BIOLOGY, schoolClass);
 
         assertThat(teacherInClass.getTaughtClasses()).hasSize(1);
         verify(teacherInClassRepository, times(1)).save(any());

@@ -24,7 +24,7 @@ import pl.schoolmanagementsystem.security.config.SecurityConfig;
 import pl.schoolmanagementsystem.security.handler.FailureHandler;
 import pl.schoolmanagementsystem.security.handler.SuccessHandler;
 import pl.schoolmanagementsystem.security.service.UserService;
-import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
+import pl.schoolmanagementsystem.teacher.dto.GiveMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
@@ -91,11 +91,11 @@ class TeacherProfileControllerTest implements Samples {
     }
 
     @Test
-    void should_return_status_no_content_when_adding_marks() throws Exception {
+    void should_return_status_no_content_when_giving_marks() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        AddMarkDto addMarkDto = new AddMarkDto(E_PLUS, SUBJECT_BIOLOGY);
-        String body = objectMapper.writeValueAsString(addMarkDto);
-        doNothing().when(teacherProfileService).addMark(anyString(), any(), anyLong());
+        GiveMarkDto giveMarkDto = new GiveMarkDto(E_PLUS, SUBJECT_BIOLOGY);
+        String body = objectMapper.writeValueAsString(giveMarkDto);
+        doNothing().when(teacherProfileService).giveMark(anyString(), any(), anyLong());
 
         mockMvc.perform(post("/teacher/students/1").principal(principal)
                         .content(body)
@@ -103,14 +103,14 @@ class TeacherProfileControllerTest implements Samples {
                 .andExpect(status()
                         .isNoContent());
 
-        verify(teacherProfileService, times(1)).addMark(anyString(), any(), anyLong());
+        verify(teacherProfileService, times(1)).giveMark(anyString(), any(), anyLong());
     }
 
     @Test
-    void should_return_status_bad_request_when_adding_marks() throws Exception {
+    void should_return_status_bad_request_when_giving_marks() throws Exception {
         Principal principal = new UserPrincipal("Teacher");
-        AddMarkDto addMarkDto = new AddMarkDto(null, SUBJECT_BIOLOGY);
-        String body = objectMapper.writeValueAsString(addMarkDto);
+        GiveMarkDto giveMarkDto = new GiveMarkDto(null, SUBJECT_BIOLOGY);
+        String body = objectMapper.writeValueAsString(giveMarkDto);
 
         mockMvc.perform(post("/teacher/students/1").principal(principal)
                         .content(body)

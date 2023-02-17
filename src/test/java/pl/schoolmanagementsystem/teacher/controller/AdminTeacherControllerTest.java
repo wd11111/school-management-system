@@ -115,12 +115,12 @@ class AdminTeacherControllerTest implements Samples {
     }
 
     @Test
-    void should_return_status_ok_when_adding_subject_to_teacher() throws Exception {
+    void should_return_status_ok_when_assigning_subject_to_teacher() throws Exception {
         SchoolSubjectDto schoolSubjectDto = schoolSubjectDto();
         TeacherDto teacherDto = teacherResponseDto();
         String expectedResponse = objectMapper.writeValueAsString(teacherDto);
         String body = objectMapper.writeValueAsString(schoolSubjectDto);
-        when(adminTeacherService.addSubjectToTeacher(anyLong(), any())).thenReturn(teacherDto);
+        when(adminTeacherService.assignSubjectToTeacher(anyLong(), any())).thenReturn(teacherDto);
 
         MvcResult mvcResult = mockMvc.perform(patch("/admin/teachers/1/subjects")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -134,7 +134,7 @@ class AdminTeacherControllerTest implements Samples {
     }
 
     @Test
-    void should_return_status_bad_request_when_adding_subject_to_teacher() throws Exception {
+    void should_return_status_bad_request_when_assigning_subject_to_teacher() throws Exception {
         SchoolSubjectDto schoolSubjectDto = new SchoolSubjectDto();
         String body = objectMapper.writeValueAsString(schoolSubjectDto);
 

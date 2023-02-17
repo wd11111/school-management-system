@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
-public class AddMarkDto {
+public class GiveMarkDto {
 
     @NotNull(message = "{not.null.message}")
     private MarkEnum mark;

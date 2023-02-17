@@ -37,8 +37,8 @@ public class AdminTeacherController {
     }
 
     @PatchMapping("/{id}/subjects")
-    public TeacherDto addSubjectToTeacher(@PathVariable Long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
-        return adminTeacherService.addSubjectToTeacher(id, schoolSubjectDto);
+    public TeacherDto assignSubjectToTeacher(@PathVariable Long id, @RequestBody @Valid SchoolSubjectDto schoolSubjectDto) {
+        return adminTeacherService.assignSubjectToTeacher(id, schoolSubjectDto);
     }
 
     @DeleteMapping("/{id}")

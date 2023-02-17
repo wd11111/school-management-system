@@ -20,7 +20,7 @@ import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.*;
-import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
+import pl.schoolmanagementsystem.teacher.dto.GiveMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
@@ -76,56 +76,56 @@ class TeacherProfileServiceTest implements Samples {
     }
 
     @Test
-    void should_correctly_add_mark_to_student() {
+    void should_correctly_give_mark_to_student() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
+        GiveMarkDto giveMarkDto = new GiveMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(true);
 
-        teacherProfileService.addMark(NAME2, addMarkDto, student.getId());
+        teacherProfileService.giveMark(NAME2, giveMarkDto, student.getId());
 
         assertThat(student.getMarks()).hasSize(1);
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_mark_to_student_but_one_doesnt_exist() {
-        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
+    void should_throw_exception_when_trying_to_give_mark_to_student_but_one_doesnt_exist() {
+        GiveMarkDto giveMarkDto = new GiveMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> teacherProfileService.addMark(NAME2, addMarkDto, ID_1))
+        assertThatThrownBy(() -> teacherProfileService.giveMark(NAME2, giveMarkDto, ID_1))
                 .isInstanceOf(NoSuchStudentException.class)
                 .hasMessage("Student with such an id does not exist: " + ID_1);
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_mark_to_student_but_given_subject_is_not_found() {
+    void should_throw_exception_when_trying_to_give_mark_to_student_but_given_subject_is_not_found() {
         Student student = createStudent();
-        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
+        GiveMarkDto giveMarkDto = new GiveMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> teacherProfileService.addMark(NAME2, addMarkDto, ID_1))
+        assertThatThrownBy(() -> teacherProfileService.giveMark(NAME2, giveMarkDto, ID_1))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
-                .hasMessage("Such a school subject does not exist: " + addMarkDto.getSubject());
+                .hasMessage("Such a school subject does not exist: " + giveMarkDto.getSubject());
         assertThat(student.getMarks()).hasSize(0);
     }
 
     @Test
-    void should_throw_exception_when_teacher_is_trying_to_add_mark_in_class_it_doesnt_teach() {
+    void should_throw_exception_when_teacher_is_trying_to_give_mark_in_class_it_doesnt_teach() {
         Student student = createStudent();
         SchoolSubject schoolSubject = createSchoolSubject();
-        AddMarkDto addMarkDto = new AddMarkDto(E, SUBJECT_BIOLOGY);
+        GiveMarkDto giveMarkDto = new GiveMarkDto(E, SUBJECT_BIOLOGY);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         when(subjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(schoolSubject));
         when(teacherInClassRepository
                 .existsByTeacher_AppUser_EmailAndTaughtSubjectAndTaughtClasses_Name(any(), any(), any()))
                 .thenReturn(false);
 
-        assertThatThrownBy(() -> teacherProfileService.addMark(NAME2, addMarkDto, ID_1))
+        assertThatThrownBy(() -> teacherProfileService.giveMark(NAME2, giveMarkDto, ID_1))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
                 .hasMessage("You do not teach biology in 1a");
         assertThat(student.getMarks()).hasSize(0);
@@ -149,7 +149,7 @@ class TeacherProfileServiceTest implements Samples {
     @Test
     void should_correctly_filter_marks_when_returning_students_with_marks() {
         Student student = createStudent();
-        student.addMark(new Mark(1L, getMarkAsBigDecimal2(), ID_1, SUBJECT_HISTORY));
+        student.giveMark(new Mark(1L, getMarkAsBigDecimal2(), ID_1, SUBJECT_HISTORY));
         SchoolClass schoolClass = createSchoolClass();
         schoolClass.getStudents().add(student);
         when(subjectRepository.existsById(anyString())).thenReturn(true);

@@ -13,7 +13,7 @@ import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.model.SchoolSubject;
 import pl.schoolmanagementsystem.common.model.Student;
 import pl.schoolmanagementsystem.common.repository.*;
-import pl.schoolmanagementsystem.teacher.dto.AddMarkDto;
+import pl.schoolmanagementsystem.teacher.dto.GiveMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
@@ -42,16 +42,16 @@ public class TeacherProfileService {
     private final MarkMapper markMapper;
 
     @Transactional
-    public void addMark(String teacherEmail, AddMarkDto addMarkDto, Long studentId) {
-        BigDecimal mark = addMarkDto.getMark().value;
+    public void giveMark(String teacherEmail, GiveMarkDto giveMarkDto, Long studentId) {
+        BigDecimal mark = giveMarkDto.getMark().value;
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchStudentException(studentId));
         String schoolClass = student.getSchoolClass();
-        SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(addMarkDto.getSubject())
-                .orElseThrow(() -> new NoSuchSchoolSubjectException(addMarkDto.getSubject()));
+        SchoolSubject schoolSubject = subjectRepository.findByNameIgnoreCase(giveMarkDto.getSubject())
+                .orElseThrow(() -> new NoSuchSchoolSubjectException(giveMarkDto.getSubject()));
 
         validateTeacherTeachesSubjectInClass(teacherEmail, schoolSubject.getName(), schoolClass);
 
-        student.addMark(markMapper.mapToEntity(mark, studentId, schoolSubject.getName()));
+        student.giveMark(markMapper.mapToEntity(mark, studentId, schoolSubject.getName()));
     }
 
     public Page<SubjectAndClassDto> getTaughtClassesByTeacher(String teacherEmail, Pageable pageable) {

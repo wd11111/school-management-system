@@ -39,7 +39,7 @@ public class Student {
 
     private String schoolClass;
 
-    public void addMark(Mark mark) {
+    public void giveMark(Mark mark) {
         marks.add(mark);
     }
 }

@@ -48,9 +48,9 @@ public class AdminClassController {
     }
 
     @PostMapping("/{className}/teachers")
-    public TeacherInClassDto addTeacherToSchoolClass(
+    public TeacherInClassDto assignTeacherToSchoolClass(
             @PathVariable String className, @RequestBody @Valid AddOrRemoveTeacherInClassDto addOrRemoveTeacherInClassDto) {
-        return adminClassService.addTeacherToSchoolClass(addOrRemoveTeacherInClassDto, className.toUpperCase());
+        return adminClassService.assignTeacherToSchoolClass(addOrRemoveTeacherInClassDto, className.toUpperCase());
     }
 
     @DeleteMapping("/{className}/teachers")

@@ -93,7 +93,7 @@ class AdminClassServiceTest implements Samples {
     }
 
     @Test
-    void should_correctly_add_teacher_to_school_class() {
+    void should_correctly_assign_teacher_to_school_class() {
         Teacher teacher = createTeacherOfBiology();
         TeacherInClass teacherInClass = new TeacherInClass();
         teacherInClass.setTeacher(teacher);
@@ -103,65 +103,65 @@ class AdminClassServiceTest implements Samples {
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.ofNullable(teacher));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.ofNullable(schoolClass));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(schoolSubject));
-        when(teacherInClassService.addTeacherToClass(any(), any(), any())).thenReturn(teacherInClass);
+        when(teacherInClassService.assignTeacherToClass(any(), any(), any())).thenReturn(teacherInClass);
 
-        TeacherInClassDto result = adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A);
+        TeacherInClassDto result = adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A);
 
         assertThat(result.getTeacherId()).isSameAs(teacherInClass.getTeacher().getId());
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_teacher_to_class_but_such_teacher_doesnt_exist() {
+    void should_throw_exception_when_trying_to_assign_teacher_to_class_but_such_teacher_doesnt_exist() {
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
+        assertThatThrownBy(() -> adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(NoSuchTeacherException.class)
                 .hasMessage("Teacher with such an id does not exist: " + teacherRequest.getTeacherId());
-        verify(teacherInClassService, never()).addTeacherToClass(any(), any(), any());
+        verify(teacherInClassService, never()).assignTeacherToClass(any(), any(), any());
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_teacher_to_class_but_such_school_class_doesnt_exist() {
+    void should_throw_exception_when_trying_to_assign_teacher_to_class_but_such_school_class_doesnt_exist() {
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
+        assertThatThrownBy(() -> adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(NoSuchSchoolClassException.class)
                 .hasMessage("Such a school class does not exist: " + CLASS_1A);
-        verify(teacherInClassService, never()).addTeacherToClass(any(), any(), any());
+        verify(teacherInClassService, never()).assignTeacherToClass(any(), any(), any());
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_teacher_to_class_but_given_subject_doesnt_exist() {
+    void should_throw_exception_when_trying_to_assign_teacher_to_class_but_given_subject_doesnt_exist() {
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(new Teacher()));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
+        assertThatThrownBy(() -> adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(NoSuchSchoolSubjectException.class)
                 .hasMessage("Such a school subject does not exist: " + teacherRequest.getTaughtSubject());
-        verify(teacherInClassService, never()).addTeacherToClass(any(), any(), any());
+        verify(teacherInClassService, never()).assignTeacherToClass(any(), any(), any());
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_teacher_to_school_class_but_teacher_doesnt_teach_given_subject() {
+    void should_throw_exception_when_trying_to_assign_teacher_to_school_class_but_teacher_doesnt_teach_given_subject() {
         Teacher teacherWithOutSubjects = createTeacherNoSubjectsTaught();
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
         when(teacherRepository.findByIdAndFetchSubjects(anyLong())).thenReturn(Optional.of(teacherWithOutSubjects));
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(new SchoolClass()));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));
 
-        assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
+        assertThatThrownBy(() -> adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(TeacherDoesNotTeachSubjectException.class)
                 .hasMessage("Adam Nowak does not teach " + teacherRequest.getTaughtSubject());
-        verify(teacherInClassService, never()).addTeacherToClass(any(), any(), any());
+        verify(teacherInClassService, never()).assignTeacherToClass(any(), any(), any());
     }
 
     @Test
-    void should_throw_exception_when_trying_to_add_teacher_to_school_class_but_the_class_already_has_teacher_of_subject() {
+    void should_throw_exception_when_trying_to_assign_teacher_to_school_class_but_the_class_already_has_teacher_of_subject() {
         Teacher teacherWithOutSubjects = createTeacherOfBiology();
         SchoolClass schoolClassWithTeacher = createSchoolClassWithTeacher();
         AddOrRemoveTeacherInClassDto teacherRequest = new AddOrRemoveTeacherInClassDto(ID_1, SUBJECT_BIOLOGY);
@@ -169,10 +169,10 @@ class AdminClassServiceTest implements Samples {
         when(schoolClassRepository.findById(anyString())).thenReturn(Optional.of(schoolClassWithTeacher));
         when(schoolSubjectRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(createSchoolSubject()));
 
-        assertThatThrownBy(() -> adminClassService.addTeacherToSchoolClass(teacherRequest, CLASS_1A))
+        assertThatThrownBy(() -> adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(ClassAlreadyHasTeacherException.class)
                 .hasMessage("Alicja Kowalczyk already teaches biology in 1a");
-        verify(teacherInClassService, never()).addTeacherToClass(any(), any(), any());
+        verify(teacherInClassService, never()).assignTeacherToClass(any(), any(), any());
     }
 
     @Test

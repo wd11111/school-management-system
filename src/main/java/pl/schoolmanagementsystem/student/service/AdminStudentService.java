@@ -76,7 +76,7 @@ public class AdminStudentService {
     }
 
     private void validateEmailIsAvailable(String email) {
-        if (userRepository.existsById(email)) {
+        if (userRepository.existsByEmail(email)) {
             throw new EmailAlreadyInUseException(email);
         }
     }

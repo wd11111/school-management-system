@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -111,8 +110,7 @@ class MockMvcConfigProfile {
         ObjectMapper objectMapper = mock(ObjectMapper.class);
         FailureHandler failureHandler = mock(FailureHandler.class);
         AuthenticationEntryPoint authenticationEntryPoint = mock(AuthenticationEntryPoint.class);
-        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        return new SecurityConfig(userService, successHandler, objectMapper, failureHandler, authenticationEntryPoint, passwordEncoder);
+        return new SecurityConfig(userService, successHandler, objectMapper, failureHandler, authenticationEntryPoint);
     }
 
     @Bean

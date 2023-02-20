@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -132,8 +131,7 @@ class MockMvcConfigProfile {
         ObjectMapper objectMapper = mock(ObjectMapper.class);
         FailureHandler failureHandler = mock(FailureHandler.class);
         AuthenticationEntryPoint authenticationEntryPoint = mock(AuthenticationEntryPoint.class);
-        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        return new SecurityConfig(userService, successHandler, objectMapper, failureHandler, authenticationEntryPoint, passwordEncoder);
+        return new SecurityConfig(userService, successHandler, objectMapper, failureHandler, authenticationEntryPoint);
     }
 
     @Bean

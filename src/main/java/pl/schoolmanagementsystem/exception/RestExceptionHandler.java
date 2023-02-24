@@ -39,7 +39,6 @@ public class RestExceptionHandler {
             NoSuchSchoolSubjectException.class,
             NoSuchStudentException.class,
             NoSuchTeacherException.class,
-            NoSuchStudentEmailException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(exception.getMessage()));
@@ -47,7 +46,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = {
             CouldNotConfirmUserException.class,
-            MarkNotInRangeException.class,
             FilterException.class,
     })
     public ResponseEntity<ErrorResponse> handleBadRequestException(RuntimeException exception) {

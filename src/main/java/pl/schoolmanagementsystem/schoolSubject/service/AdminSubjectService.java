@@ -21,9 +21,7 @@ public class AdminSubjectService {
     private final SchoolSubjectMapper schoolSubjectMapper;
 
     public SchoolSubject createSchoolSubject(SchoolSubjectDto dto) {
-        if (doesSubjectExist(dto.getSubjectName())) {
-            throw new SubjectAlreadyExistsException(dto.getSubjectName());
-        }
+        validateSubjectNameAvailability(dto.getSubjectName());
         return schoolSubjectRepository.save(schoolSubjectMapper.mapDtoToEntity(dto));
     }
 
@@ -33,11 +31,22 @@ public class AdminSubjectService {
 
     @Transactional
     public void deleteSchoolSubject(String subjectName) {
+        validateSubjectExists(subjectName);
+
+        schoolSubjectRepository.deleteTaughtSubjects(subjectName);
+        schoolSubjectRepository.deleteById(subjectName);
+    }
+
+    private void validateSubjectExists(String subjectName) {
         if (!doesSubjectExist(subjectName)) {
             throw new NoSuchSchoolSubjectException(subjectName);
         }
-        schoolSubjectRepository.deleteTaughtSubjects(subjectName);
-        schoolSubjectRepository.deleteById(subjectName);
+    }
+
+    private void validateSubjectNameAvailability(String subjectName) {
+        if (doesSubjectExist(subjectName)) {
+            throw new SubjectAlreadyExistsException(subjectName);
+        }
     }
 
     private boolean doesSubjectExist(String schoolSubjectName) {

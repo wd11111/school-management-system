@@ -47,18 +47,12 @@ public class AdminClassService {
     }
 
     public SchoolClass createSchoolClass(SchoolClassDto dto) {
-        String schoolClassName = dto.getSchoolClassName().toUpperCase();
-
-        if (doesSchoolClassExist(schoolClassName)) {
-            throw new ClassAlreadyExistsException(schoolClassName);
-        }
+        validateClassNameAvailability(dto.getSchoolClassName());
         return schoolClassRepository.save(schoolClassMapper.mapDtoToEntity(dto));
     }
 
     public List<TaughtSubjectDto> getTaughtSubjectsInClass(String schoolClassName) {
-        if (!doesSchoolClassExist((schoolClassName))) {
-            throw new NoSuchSchoolClassException(schoolClassName);
-        }
+        validateClassExists(schoolClassName);
         return schoolSubjectRepository.findTaughtSubjectsInClass(schoolClassName);
     }
 
@@ -77,18 +71,15 @@ public class AdminClassService {
         return teacherInClassMapper.mapEntityToDto(teacherInClass);
     }
 
-    public List<StudentDto> getAllStudentsInClass(String className) {
-        if (!doesSchoolClassExist(className)) {
-            throw new NoSuchSchoolClassException(className);
-        }
-        return studentRepository.findAllInClass(className);
+    public List<StudentDto> getAllStudentsInClass(String schoolClassName) {
+        validateClassExists(schoolClassName);
+        return studentRepository.findAllInClass(schoolClassName);
     }
 
     @Transactional
     public void deleteSchoolClass(String schoolClassName) {
-        if (!doesSchoolClassExist(schoolClassName)) {
-            throw new NoSuchSchoolClassException(schoolClassName);
-        }
+        validateClassExists(schoolClassName);
+
         schoolClassRepository.deleteTaughtClasses(schoolClassName);
         schoolClassRepository.deleteById(schoolClassName);
     }
@@ -105,6 +96,18 @@ public class AdminClassService {
     private void validateTeacherTeachesSubject(Teacher teacher, SchoolSubject schoolSubject) {
         if (!teacher.getTaughtSubjects().contains(schoolSubject)) {
             throw new TeacherDoesNotTeachSubjectException(teacher, schoolSubject.getName());
+        }
+    }
+
+    private void validateClassNameAvailability(String schoolClassName) {
+        if (doesSchoolClassExist(schoolClassName)) {
+            throw new ClassAlreadyExistsException(schoolClassName);
+        }
+    }
+
+    private void validateClassExists(String schoolClassName) {
+        if (doesSchoolClassExist(schoolClassName)) {
+            throw new ClassAlreadyExistsException(schoolClassName);
         }
     }
 

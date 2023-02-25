@@ -63,10 +63,14 @@ public class AdminStudentService {
     }
 
     public void deleteStudent(Long studentId) {
+        validateStudentExists(studentId);
+        studentRepository.deleteById(studentId);
+    }
+
+    private void validateStudentExists(Long studentId) {
         if (!studentRepository.existsById(studentId)) {
             throw new NoSuchStudentException(studentId);
         }
-        studentRepository.deleteById(studentId);
     }
 
     private void validateClassExists(String schoolClassName) {

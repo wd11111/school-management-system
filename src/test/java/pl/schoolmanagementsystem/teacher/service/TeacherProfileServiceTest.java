@@ -127,7 +127,7 @@ class TeacherProfileServiceTest implements Samples {
 
         assertThatThrownBy(() -> teacherProfileService.giveMark(NAME2, giveMarkDto, ID_1))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
-                .hasMessage("You do not teach biology in 1a");
+                .hasMessage("You do not teach biology in 1A");
         assertThat(student.getMarks()).hasSize(0);
     }
 
@@ -192,6 +192,6 @@ class TeacherProfileServiceTest implements Samples {
 
         assertThatThrownBy(() -> teacherProfileService.getClassStudentsWithMarksOfSubject(CLASS_1A, SUBJECT_BIOLOGY, NAME2))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
-                .hasMessage("You do not teach biology in 1a");
+                .hasMessage("You do not teach biology in 1A");
     }
 }

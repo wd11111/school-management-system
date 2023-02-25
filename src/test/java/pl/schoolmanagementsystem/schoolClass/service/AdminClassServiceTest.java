@@ -171,7 +171,7 @@ class AdminClassServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminClassService.assignTeacherToSchoolClass(teacherRequest, CLASS_1A))
                 .isInstanceOf(ClassAlreadyHasTeacherException.class)
-                .hasMessage("Alicja Kowalczyk already teaches biology in 1a");
+                .hasMessage("Alicja Kowalczyk already teaches biology in 1A");
         verify(teacherInClassService, never()).assignTeacherToClass(any(), any(), any());
     }
 
@@ -181,7 +181,7 @@ class AdminClassServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminClassService.getAllStudentsInClass(CLASS_1A))
                 .isInstanceOf(NoSuchSchoolClassException.class)
-                .hasMessage("Such a school class does not exist: 1a");
+                .hasMessage("Such a school class does not exist: 1A");
     }
 
     @Test
@@ -200,7 +200,7 @@ class AdminClassServiceTest implements Samples {
 
         assertThatThrownBy(() -> adminClassService.deleteSchoolClass(CLASS_1A))
                 .isInstanceOf(NoSuchSchoolClassException.class)
-                .hasMessage("Such a school class does not exist: 1a");
+                .hasMessage("Such a school class does not exist: 1A");
     }
 
 

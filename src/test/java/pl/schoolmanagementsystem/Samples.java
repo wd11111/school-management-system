@@ -30,8 +30,8 @@ public interface Samples {
     String SUBJECT_BIOLOGY = "biology";
     String SUBJECT_HISTORY = "history";
     String SUBJECT_ENGLISH = "english";
-    String CLASS_1A = "1a";
-    String CLASS_3B = "3b";
+    String CLASS_1A = "1A";
+    String CLASS_3B = "3B";
     long ID_1 = 1;
     long ID_2 = 2;
 

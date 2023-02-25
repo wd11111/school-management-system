@@ -136,9 +136,9 @@ class AdminTeacherInClassServiceTest implements Samples {
         when(teacherRepository.findByIdAndFetchClasses(anyLong())).thenReturn(Optional.of(teacher));
         when(classRepository.findById(anyString())).thenReturn(Optional.of(schoolClass));
 
-        assertThatThrownBy(() -> adminTeacherInClassService.removeTeacherFromSchoolClass(addOrRemoveTeacherInClassDto, "3b"))
+        assertThatThrownBy(() -> adminTeacherInClassService.removeTeacherFromSchoolClass(addOrRemoveTeacherInClassDto, "3B"))
                 .isInstanceOf(TeacherDoesNotTeachClassException.class)
-                .hasMessage("Teacher with id 1 does not teach biology in 3b");
+                .hasMessage("Teacher with id 1 does not teach biology in 3B");
         assertThat(teacher.getTeacherInClasses()).hasSize(1);
     }
 

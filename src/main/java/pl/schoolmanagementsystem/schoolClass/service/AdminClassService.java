@@ -106,8 +106,8 @@ public class AdminClassService {
     }
 
     private void validateClassExists(String schoolClassName) {
-        if (doesSchoolClassExist(schoolClassName)) {
-            throw new ClassAlreadyExistsException(schoolClassName);
+        if (!doesSchoolClassExist(schoolClassName)) {
+            throw new NoSuchSchoolClassException(schoolClassName);
         }
     }
 

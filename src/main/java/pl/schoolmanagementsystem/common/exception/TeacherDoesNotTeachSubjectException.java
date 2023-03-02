@@ -8,4 +8,8 @@ public class TeacherDoesNotTeachSubjectException extends RuntimeException {
         super(String.format("%s %s does not teach %s",
                 teacher.getName(), teacher.getSurname(), schoolSubject));
     }
+
+    public TeacherDoesNotTeachSubjectException(String schoolSubject) {
+        super(String.format("You do not teach %s", schoolSubject));
+    }
 }

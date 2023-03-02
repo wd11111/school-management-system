@@ -16,7 +16,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.schoolmanagementsystem.Samples;
-import pl.schoolmanagementsystem.common.repository.*;
+import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
+import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
+import pl.schoolmanagementsystem.common.repository.StudentRepository;
+import pl.schoolmanagementsystem.common.repository.TeacherInClassRepository;
+import pl.schoolmanagementsystem.common.repository.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
 import pl.schoolmanagementsystem.security.config.SecurityConfig;
@@ -27,6 +31,7 @@ import pl.schoolmanagementsystem.teacher.dto.GiveMarkDto;
 import pl.schoolmanagementsystem.teacher.dto.StudentWithMarksDto;
 import pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto;
 import pl.schoolmanagementsystem.teacher.service.TeacherProfileService;
+import pl.schoolmanagementsystem.teacher.service.TeacherStatisticsService;
 import pl.schoolmanagementsystem.teacher.utils.MarkMapper;
 import pl.schoolmanagementsystem.teacher.utils.StudentMapper;
 
@@ -34,9 +39,15 @@ import java.security.Principal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -159,6 +170,7 @@ class MockMvcConfigProfile {
 
     @Bean
     TeacherProfileController teacherClassController(TeacherProfileService teacherProfileService) {
-        return new TeacherProfileController(teacherProfileService);
+        TeacherStatisticsService teacherStatisticsService = mock(TeacherStatisticsService.class);
+        return new TeacherProfileController(teacherProfileService, teacherStatisticsService);
     }
 }

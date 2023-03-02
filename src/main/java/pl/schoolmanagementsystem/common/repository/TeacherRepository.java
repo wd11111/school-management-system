@@ -24,10 +24,20 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     List<Teacher> findAllAndFetchSubjects();
 
     @Query("SELECT new pl.schoolmanagementsystem.teacher.dto.SubjectAndClassDto(" +
-            "tc.taughtSubject, tics.name) " +
-            "FROM TeacherInClass tc " +
-            "LEFT JOIN tc.taughtClasses tics " +
-            "WHERE tc.teacher.appUser.email=?1 " +
-            "ORDER BY tics.name")
-    Page<SubjectAndClassDto> findTaughtClassesByTeacher(String email, Pageable pageable);
+            "tic.taughtSubject, c.name) " +
+            "FROM TeacherInClass tic " +
+            "LEFT JOIN tic.taughtClasses c " +
+            "WHERE tic.teacher.appUser.email=?1 " +
+            "ORDER BY c.name")
+    Page<SubjectAndClassDto> findTaughtClassesByTeacher(String teacherEmail, Pageable pageable);
+
+    @Query("SELECT c.name " +
+            "FROM TeacherInClass tic " +
+            "LEFT JOIN tic.taughtClasses c " +
+            "WHERE tic.teacher.appUser.email=?1 " +
+            "AND tic.taughtSubject=?2 " +
+            "ORDER BY c.name")
+    List<String> findTaughtClassesNamesByTeacher(String teacherEmail, String subject);
+
+    boolean existsByTaughtSubjects_Name(String subject);
 }

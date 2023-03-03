@@ -13,8 +13,12 @@ public class MarkMapper {
         return mapToTransform.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        m -> m.getValue().stream()
-                                .map(MarkDto::getMark)
-                                .collect(Collectors.toList())));
+                        mapEntry -> mapMarksToBigDecimals(mapEntry.getValue())));
+    }
+
+    private static List<BigDecimal> mapMarksToBigDecimals(List<MarkDto> markDtos) {
+        return markDtos.stream()
+                .map(MarkDto::getMark)
+                .collect(Collectors.toList());
     }
 }

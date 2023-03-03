@@ -11,8 +11,15 @@ import pl.schoolmanagementsystem.common.repository.StudentRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.*;
-import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.*;
+import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.doSplit;
+import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.parseNumber;
+import static pl.schoolmanagementsystem.common.criteria.util.FilterUtil.parseToLocalDate;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.BIRTH_DATE;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.EMAIL;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.ID;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.NAME;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.SCHOOL_CLASS;
+import static pl.schoolmanagementsystem.student.search.StudentFieldsUtil.SURNAME;
 
 @RequiredArgsConstructor
 public class StudentSearcherQueryDSL implements StudentSearcher {

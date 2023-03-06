@@ -28,6 +28,7 @@ import java.util.List;
 public class TeacherProfileController {
 
     private final TeacherProfileService teacherProfileService;
+
     private final TeacherStatisticsService teacherStatisticsService;
 
     @GetMapping("/classes")

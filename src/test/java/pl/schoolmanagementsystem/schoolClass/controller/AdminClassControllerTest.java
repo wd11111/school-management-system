@@ -19,6 +19,7 @@ import pl.schoolmanagementsystem.common.model.SchoolClass;
 import pl.schoolmanagementsystem.common.repository.SchoolClassRepository;
 import pl.schoolmanagementsystem.common.repository.SchoolSubjectRepository;
 import pl.schoolmanagementsystem.common.repository.StudentRepository;
+import pl.schoolmanagementsystem.common.repository.TeacherInClassRepository;
 import pl.schoolmanagementsystem.common.repository.TeacherRepository;
 import pl.schoolmanagementsystem.exception.RestExceptionHandler;
 import pl.schoolmanagementsystem.exception.ValidationErrorHandler;
@@ -37,8 +38,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AdminClassController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
@@ -47,6 +52,9 @@ class AdminClassControllerTest implements Samples {
 
     @MockBean
     private AdminClassService adminClassService;
+
+    @MockBean
+    private AdminTeacherInClassService adminTeacherInClassService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -132,7 +140,7 @@ class AdminClassControllerTest implements Samples {
         TeacherInClassDto teacherInClassDto = teacherInClassResponse();
         String body = objectMapper.writeValueAsString(teacherInClassRequest());
         String expectedResponse = objectMapper.writeValueAsString(teacherInClassDto);
-        when(adminClassService.assignTeacherToSchoolClass(any(), anyString())).thenReturn(teacherInClassDto);
+        when(adminTeacherInClassService.assignTeacherToSchoolClass(any(), anyString())).thenReturn(teacherInClassDto);
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/classes/1a/teachers")
                         .content(body)
@@ -169,6 +177,14 @@ class AdminClassControllerTest implements Samples {
 
 class MockMvcConfig {
 
+    SchoolClassRepository schoolClassRepository = mock(SchoolClassRepository.class);
+    SchoolSubjectRepository schoolSubjectRepository = mock(SchoolSubjectRepository.class);
+    StudentRepository studentRepository = mock(StudentRepository.class);
+    SchoolClassMapper schoolClassMapper = mock(SchoolClassMapper.class);
+    TeacherInClassRepository teacherInClassRepository = mock(TeacherInClassRepository.class);
+    TeacherRepository teacherRepository = mock(TeacherRepository.class);
+    TeacherInClassMapper teacherInClassMapper = mock(TeacherInClassMapper.class);
+
     @Bean
     ValidationErrorHandler validationErrorHandler() {
         return new ValidationErrorHandler();
@@ -181,19 +197,13 @@ class MockMvcConfig {
 
     @Bean
     AdminClassService adminClassService() {
-        SchoolClassRepository schoolClassRepository = mock(SchoolClassRepository.class);
-        TeacherRepository teacherRepository = mock(TeacherRepository.class);
-        SchoolSubjectRepository schoolSubjectRepository = mock(SchoolSubjectRepository.class);
-        AdminTeacherInClassService teacherInClassService = mock(AdminTeacherInClassService.class);
-        StudentRepository studentRepository = mock(StudentRepository.class);
-        SchoolClassMapper schoolClassMapper = mock(SchoolClassMapper.class);
-        TeacherInClassMapper teacherInClassMapper = mock(TeacherInClassMapper.class);
-        return new AdminClassService(schoolClassRepository, teacherRepository,
-                schoolSubjectRepository, teacherInClassService, studentRepository, schoolClassMapper, teacherInClassMapper);
+        return new AdminClassService(schoolClassRepository, schoolSubjectRepository, studentRepository, schoolClassMapper);
     }
 
-    @MockBean
-    AdminTeacherInClassService adminTeacherInClassService;
+    @Bean
+    AdminTeacherInClassService adminTeacherInClassService(){
+        return new AdminTeacherInClassService(teacherInClassRepository, schoolClassRepository, teacherRepository, schoolSubjectRepository, teacherInClassMapper);
+    }
 
     @Bean
     AdminClassController AdminClassController(AdminClassService adminClassService, AdminTeacherInClassService adminTeacherInClassService) {

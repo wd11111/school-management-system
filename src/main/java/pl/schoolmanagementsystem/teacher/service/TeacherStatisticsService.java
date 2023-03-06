@@ -14,6 +14,7 @@ import java.util.List;
 public class TeacherStatisticsService {
 
     private final TeacherRepository teacherRepository;
+
     private final MarkRepository markRepository;
 
     public List<MarkStatisticsDto> getStatistics(String teacherEmail, String subject) {

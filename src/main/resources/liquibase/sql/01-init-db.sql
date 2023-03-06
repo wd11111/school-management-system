@@ -1,6 +1,9 @@
 create sequence if not exists hibernate_sequence;
 alter sequence if exists hibernate_sequence owner to admin;
 
+drop sequence if exists "app_user_sequence";
+create sequence "app_user_sequence" start 20 increment 50;
+
 create table "app_user"
 (
     "id"       int8         not null,

@@ -1,8 +1,18 @@
 package pl.schoolmanagementsystem.common.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +25,8 @@ import java.util.List;
 public class AppUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "app_user_sequence", sequenceName = "app_user_sequence", initialValue = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_user_sequence")
     private Long id;
 
     private String email;

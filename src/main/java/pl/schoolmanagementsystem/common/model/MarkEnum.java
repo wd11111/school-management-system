@@ -10,7 +10,7 @@ public enum MarkEnum {
     A(BigDecimal.valueOf(6)),
     A_MINUS(BigDecimal.valueOf(5.75)),
     B_PLUS(BigDecimal.valueOf(5.25)),
-    B(BigDecimal.valueOf(5.25)),
+    B(BigDecimal.valueOf(5.0)),
     B_MINUS(BigDecimal.valueOf(4.75)),
     C_PLUS(BigDecimal.valueOf(4.25)),
     C(BigDecimal.valueOf(4.0)),
